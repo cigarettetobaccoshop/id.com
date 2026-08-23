@@ -859,5 +859,11 @@ tailwind.config = {
 <!-- Skrip Eksternal -->
 <script src="data.js" defer></script>
 <script src="app.js" defer></script>
+
+<!-- Vercel Web Analytics -->
+<script type="module">
+  import { inject } from 'https://cdn.jsdelivr.net/npm/@vercel/analytics@1/+esm';
+  inject();
+</script>
 </body>
 </html>

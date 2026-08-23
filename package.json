@@ -1,0 +1,30 @@
+{
+  "name": "id-com",
+  "version": "1.0.0",
+  "description": "R2 Nusantara - Distributor Rokok Grosir Premium Malang",
+  "main": "app.js",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve .",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cigarettetobaccoshop/id.com.git"
+  },
+  "keywords": [
+    "vercel",
+    "analytics",
+    "distributor",
+    "cigarette"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cigarettetobaccoshop/id.com/issues"
+  },
+  "homepage": "https://github.com/cigarettetobaccoshop/id.com#readme",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
