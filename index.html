@@ -59,6 +59,11 @@ tailwind.config = {
  ivory: '#F6F8FA',
  brand: { 400: '#8FA8C9', 700: '#1E5FA8' }
  },
+ borderRadius: {
+ '3xl': '0.75rem',
+ '2xl': '0.75rem',
+ xl: '0.5rem'
+ },
  fontFamily: {
  sans: ['Inter', 'system-ui', 'sans-serif'],
  serif: ['"Playfair Display"', 'Georgia', 'serif'],
@@ -210,8 +215,31 @@ tailwind.config = {
  </div>
  </div>
 
+ <!-- Value Proposition Slider -->
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 flex justify-center mt-8">
+ <div id="valuePropSlider" class="vp-slider-wrap">
+ <div class="vp-slide is-active" data-slide="0">
+ <i class="fa-solid fa-certificate vp-icon"></i>
+ <div class="vp-text"><b>100% Original</b><span>Semua produk dijamin asli langsung dari distributor resmi.</span></div>
+ </div>
+ <div class="vp-slide" data-slide="1">
+ <i class="fa-solid fa-box-open vp-icon"></i>
+ <div class="vp-text"><b>Pengiriman Discreet</b><span>Kemasan polos tanpa logo mencolok, privasi terjaga.</span></div>
+ </div>
+ <div class="vp-slide" data-slide="2">
+ <i class="fa-solid fa-tags vp-icon"></i>
+ <div class="vp-text"><b>Harga Grosir</b><span>Minimal pembelian 1 slop, harga khusus untuk pembelian banyak.</span></div>
+ </div>
+ <div class="vp-dots" role="tablist" aria-label="Navigasi keunggulan">
+ <button class="vp-dot is-active" data-dot="0" aria-label="Keunggulan 1: 100% Original"></button>
+ <button class="vp-dot" data-dot="1" aria-label="Keunggulan 2: Pengiriman Discreet"></button>
+ <button class="vp-dot" data-dot="2" aria-label="Keunggulan 3: Harga Grosir"></button>
+ </div>
+ </div>
+ </div>
+
  <!-- Marquee -->
- <div class="marquee-wrap mt-16 py-6 border-y border-slate-200 bg-white/60 relative">
+ <div class="marquee-wrap mt-10 py-6 border-y border-slate-200 bg-white/60 relative">
  <div class="marquee-track">
  <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/jne-express.png" alt="JNE" loading="lazy" onerror="__ekspFail(this)"></span>
  <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/j&amp;t-express.png" alt="J&amp;T" loading="lazy" onerror="__ekspFail(this)"></span>
@@ -859,11 +887,5 @@ tailwind.config = {
 <!-- Skrip Eksternal -->
 <script src="data.js" defer></script>
 <script src="app.js" defer></script>
-
-<!-- Vercel Web Analytics -->
-<script type="module">
-  import { inject } from 'https://cdn.jsdelivr.net/npm/@vercel/analytics@1/+esm';
-  inject();
-</script>
 </body>
 </html>
