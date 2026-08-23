@@ -20,14 +20,17 @@ window.R2Context = {
 };
 window.R2Context.init();
 window.chtlConfig = { chatbotId: "4136889914" };
-window.addEventListener('load', function () {
- setTimeout(function () {
+window.__chatlingLoaded = false;
+window.loadChatWidget = function (btn) {
+ if (window.__chatlingLoaded) return;
+ window.__chatlingLoaded = true;
+ if (btn) { btn.classList.add('chat-trigger-loading'); btn.querySelector('i').className = 'fa-solid fa-spinner fa-spin'; }
  var s = document.createElement('script');
  s.async = true; s.dataset.id = "4136889914"; s.id = "chtl-script";
  s.type = "text/javascript"; s.src = "https://chatling.ai/js/embed.js";
+ s.onload = function () { if (btn) btn.style.display = 'none'; };
  document.body.appendChild(s);
- }, 3000);
-});
+};
 
 /* ============ 3. STATE GLOBAL ============ */
 var cart = [], wishlist = [];

@@ -117,15 +117,15 @@ tailwind.config = {
  <a href="#faq" class="nav-link">FAQ</a>
  </nav>
  <div class="flex items-center gap-2">
- <button onclick="toggleWishlistSidebar()" class="relative w-9 h-9 rounded-xl border border-slate-200 bg-white text-deep flex items-center justify-center hover:border-gold transition-colors" aria-label="Wishlist">
+ <button onclick="toggleWishlistSidebar()" class="relative w-11 h-11 rounded-xl border border-slate-200 bg-white text-deep flex items-center justify-center hover:border-gold transition-colors" aria-label="Wishlist">
  <i class="fa-solid fa-heart text-[13px] sm:text-sm"></i>
  <span id="wishlistBadge" class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center scale-0 transition-transform">0</span>
  </button>
- <button onclick="toggleCart()" class="relative w-9 h-9 rounded-xl border border-slate-200 bg-white text-deep flex items-center justify-center hover:border-gold transition-colors" aria-label="Keranjang">
+ <button onclick="toggleCart()" class="relative w-11 h-11 rounded-xl border border-slate-200 bg-white text-deep flex items-center justify-center hover:border-gold transition-colors" aria-label="Keranjang">
  <i class="fa-solid fa-cart-shopping text-[13px] sm:text-sm"></i>
  <span id="cartBadge" class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-gold text-white text-[9px] font-bold flex items-center justify-center scale-0 transition-transform">0</span>
  </button>
- <button onclick="toggleMobileMenu()" class="lg:hidden w-9 h-9 rounded-xl border border-slate-200 bg-white text-deep flex items-center justify-center" aria-label="Menu">
+ <button onclick="toggleMobileMenu()" class="lg:hidden w-11 h-11 rounded-xl border border-slate-200 bg-white text-deep flex items-center justify-center" aria-label="Menu">
  <i id="mobileMenuIcon" class="fa-solid fa-bars text-sm"></i>
  </button>
  </div>
@@ -643,7 +643,7 @@ tailwind.config = {
 <aside id="cartSidebar" role="dialog" aria-modal="true" aria-label="Keranjang Belanja" class="fixed top-0 right-0 h-full w-full max-w-md glass-surface-strong z-[71] shadow-2xl translate-x-full transition-transform duration-300 flex flex-col">
  <div class="p-5 border-b border-slate-100 flex items-center justify-between">
  <h3 class="font-serif font-bold text-deep"><i class="fa-solid fa-cart-shopping text-gold mr-2"></i>Draft Pesanan</h3>
- <button onclick="toggleCart()" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" aria-label="Tutup"><i class="fa-solid fa-xmark text-sm"></i></button>
+ <button onclick="toggleCart()" class="w-11 h-11 rounded-xl bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" aria-label="Tutup"><i class="fa-solid fa-xmark text-sm"></i></button>
  </div>
  <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
  <div id="cartSummary" class="hidden border-t border-slate-100 p-5">
@@ -657,7 +657,7 @@ tailwind.config = {
 <aside id="wishlistSidebar" role="dialog" aria-modal="true" aria-label="Wishlist" class="fixed top-0 right-0 h-full w-full max-w-md glass-surface-strong z-[71] shadow-2xl translate-x-full transition-transform duration-300 flex flex-col">
  <div class="p-5 border-b border-slate-100 flex items-center justify-between">
  <h3 class="font-serif font-bold text-deep"><i class="fa-solid fa-heart text-red-400 mr-2"></i>Wishlist</h3>
- <button onclick="toggleWishlistSidebar()" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" aria-label="Tutup"><i class="fa-solid fa-xmark text-sm"></i></button>
+ <button onclick="toggleWishlistSidebar()" class="w-11 h-11 rounded-xl bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" aria-label="Tutup"><i class="fa-solid fa-xmark text-sm"></i></button>
  </div>
  <div id="wishlistItemsContainer" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
 </aside>
@@ -674,7 +674,7 @@ tailwind.config = {
 <!-- ============ LEGAL MODAL ============ -->
 <div id="legalOverlay" class="fixed inset-0 z-[80] bg-black/50 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300" onclick="closeLegalModal()"></div>
 <div id="legalModal" role="dialog" aria-modal="true" aria-labelledby="legalTitle" class="fixed left-1/2 top-1/2 z-[81] w-[92%] max-w-lg -translate-x-1/2 -translate-y-1/2 scale-95 opacity-0 pointer-events-none transition-all duration-300 bg-white rounded-3xl p-8 shadow-2xl max-h-[80vh] overflow-y-auto">
- <button onclick="closeLegalModal()" class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" aria-label="Tutup"><i class="fa-solid fa-xmark text-sm"></i></button>
+ <button onclick="closeLegalModal()" class="absolute top-4 right-4 w-11 h-11 rounded-xl bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" aria-label="Tutup"><i class="fa-solid fa-xmark text-sm"></i></button>
  <h3 id="legalTitle" class="font-serif font-extrabold text-xl text-deep mb-4 pr-8">Judul</h3>
  <div id="legalBody" class="text-xs text-slate-600 leading-relaxed space-y-3"></div>
 </div>
@@ -682,7 +682,7 @@ tailwind.config = {
 <!-- ============ QUICK VIEW ============ -->
 <div id="quickViewOverlay" class="fixed inset-0 z-[80] bg-black/50 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300" onclick="closeQuickView()"></div>
 <div id="quickViewModal" role="dialog" aria-modal="true" aria-label="Lihat Cepat Produk" class="fixed left-1/2 top-1/2 z-[81] w-[92%] max-w-md -translate-x-1/2 -translate-y-1/2 scale-95 opacity-0 pointer-events-none transition-all duration-300 bg-white rounded-3xl p-8 shadow-2xl max-h-[88vh] overflow-y-auto">
- <button onclick="closeQuickView()" class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" aria-label="Tutup"><i class="fa-solid fa-xmark text-sm"></i></button>
+ <button onclick="closeQuickView()" class="absolute top-4 right-4 w-11 h-11 rounded-xl bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" aria-label="Tutup"><i class="fa-solid fa-xmark text-sm"></i></button>
  <div id="qvImageWrap" class="aspect-square rounded-2xl overflow-hidden border border-slate-100 mb-5"></div>
  <div class="flex items-center justify-between gap-2"><span id="qvBadge" class="segment-badge tier-populer">R2</span><span id="qvId" class="text-slate-300 text-[10px] font-mono font-bold">R2-000</span></div>
  <h3 id="qvTitle" class="font-serif font-extrabold text-2xl text-deep mt-4">Nama Produk</h3>
@@ -701,7 +701,7 @@ tailwind.config = {
  <div class="p-6 sm:p-8">
  <div class="flex items-center justify-between mb-8">
  <h3 class="font-serif font-extrabold text-xl text-deep"><i class="fa-solid fa-clipboard-check text-gold mr-2"></i>Checkout</h3>
- <button onclick="closeCheckoutModal()" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" aria-label="Tutup"><i class="fa-solid fa-xmark text-sm"></i></button>
+ <button onclick="closeCheckoutModal()" class="w-11 h-11 rounded-xl bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" aria-label="Tutup"><i class="fa-solid fa-xmark text-sm"></i></button>
  </div>
  <div class="relative mb-9">
  <div class="absolute top-3.5 left-[12.5%] right-[12.5%] h-0.5 bg-slate-100 rounded"><div id="stepProgressLine" class="h-full bg-emerald-500 rounded transition-all duration-500" style="width:0%"></div></div>
@@ -801,7 +801,7 @@ tailwind.config = {
 <div id="reviewModal" class="fixed left-1/2 top-1/2 z-[86] w-[92%] max-w-md -translate-x-1/2 -translate-y-1/2 scale-95 opacity-0 pointer-events-none transition-all duration-300 bg-white rounded-3xl p-8 shadow-2xl">
  <div class="flex items-center justify-between mb-6">
  <h3 class="font-serif font-extrabold text-xl text-deep"><i class="fa-solid fa-pen-nib text-gold mr-2"></i>Tulis Ulasan</h3>
- <button onclick="closeReviewModal()" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" aria-label="Tutup"><i class="fa-solid fa-xmark text-sm"></i></button>
+ <button onclick="closeReviewModal()" class="w-11 h-11 rounded-xl bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" aria-label="Tutup"><i class="fa-solid fa-xmark text-sm"></i></button>
  </div>
  <form id="reviewForm" onsubmit="event.preventDefault(); submitReview();" class="space-y-4">
  <input type="hidden" id="reviewRating" value="5">
@@ -822,6 +822,7 @@ tailwind.config = {
 <!-- ============ FIXED UI ============ -->
 <div id="toast-container" class="fixed top-24 right-4 z-[95] space-y-2 w-[calc(100%-2rem)] max-w-xs"></div>
 <a href="https://wa.me/6285715905079" target="_blank" rel="noopener" class="hidden lg:flex fixed bottom-6 right-20 z-40 w-12 h-12 rounded-full bg-[#25D366] text-white items-center justify-center shadow-xl hover:scale-110 transition-transform" aria-label="Chat WhatsApp"><i class="fa-brands fa-whatsapp text-xl"></i></a>
+<button onclick="loadChatWidget(this)" class="hidden lg:flex chat-trigger-btn" aria-label="Buka Live Chat" title="Live Chat"><i class="fa-solid fa-comment-dots"></i></button>
 <button id="backToTop" class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Kembali ke atas"><i class="fa-solid fa-arrow-up text-sm"></i></button>
 
 <!-- ============ MOBILE BOTTOM NAVIGATION ============ -->
@@ -856,7 +857,7 @@ tailwind.config = {
 </div>
 
 <!-- Skrip Eksternal -->
-<script src="data.js"></script>
-<script src="app.js"></script>
+<script src="data.js" defer></script>
+<script src="app.js" defer></script>
 </body>
 </html>
