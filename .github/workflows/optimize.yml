@@ -1,0 +1,79 @@
+name: Optimize & Deploy to GitHub Pages
+
+# Jalan otomatis tiap push ke main — minify HTML/CSS/JS SEBELUM di-publish,
+# source asli di repo tidak diubah (kerja di folder terpisah _site/), jadi
+# tetap gampang di-edit manual seperti biasa.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install minifier (html-minifier-terser, csso, terser)
+        run: npm install -g html-minifier-terser csso-cli terser
+
+      - name: Siapkan folder output (_site) — salin semua aset apa adanya dulu
+        run: |
+          mkdir -p _site
+          rsync -av --exclude='.git' --exclude='.github' --exclude='_site' --exclude='node_modules' ./ _site/
+
+      - name: Minify HTML
+        run: |
+          html-minifier-terser _site/index.html -o _site/index.html \
+            --collapse-whitespace --remove-comments --minify-css true --minify-js true \
+            --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes
+
+      - name: Minify CSS
+        run: csso _site/style.css -o _site/style.css
+
+      - name: Minify JS (app.js & data.js)
+        run: |
+          terser _site/app.js -o _site/app.js --compress --mangle
+          terser _site/data.js -o _site/data.js --compress --mangle
+
+      - name: Laporkan penghematan ukuran
+        run: |
+          echo "### 📦 Hasil Minifikasi" >> $GITHUB_STEP_SUMMARY
+          for f in index.html style.css app.js data.js; do
+            before=$(wc -c < "$f")
+            after=$(wc -c < "_site/$f")
+            saved=$((before - after))
+            pct=$((saved * 100 / before))
+            echo "- **$f**: $before → $after bytes (hemat $saved bytes, $pct%)" >> $GITHUB_STEP_SUMMARY
+          done
+
+      - name: Upload artifact untuk Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy ke GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
