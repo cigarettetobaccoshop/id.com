@@ -866,7 +866,7 @@ function initValuePropSlider() {
  function goTo(n) {
  idx = (n + slides.length) % slides.length;
  slides.forEach(function (s, i) { s.classList.toggle('is-active', i === idx); });
- dots.forEach(function (d, i) { d.classList.toggle('is-active', i === idx); });
+ dots.forEach(function (d, i) { d.classList.toggle('is-active', i === idx); d.setAttribute('aria-selected', i === idx ? 'true' : 'false'); });
  }
  function start() { stop(); timer = setInterval(function () { goTo(idx + 1); }, 4500); }
  function stop() { if (timer) clearInterval(timer); }
