@@ -1,20 +1,8 @@
-# Dependencies
-node_modules/
-
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Environment variables
-.env
 .env.local
-.env.production.local
-
-# IDE
-.vscode/
-.idea/
-
-# OS
+.env
+node_modules/
+.next/
 .DS_Store
-Thumbs.db
+
+# Optional: local debug files
+.env.test
