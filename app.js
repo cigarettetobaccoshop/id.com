@@ -857,6 +857,65 @@ window.runHeaderSearch = function () {
  setTimeout(function () { si.focus(); }, 500);
 };
 /* Glass Capsule Dock — indicator bergeser magnetis ke item yang di-tap */
+/* Value Proposition Slider — auto-play, pause on hover, dot nav */
+/* Info Card 2x2 -> jadi slider khusus mobile (<768px). Desktop/tablet tetap grid, tidak disentuh. */
+function initInfoCardSlider() {
+ var card = document.getElementById('infoCard2x2'), dotsWrap = document.querySelector('.info-slider-dots');
+ if (!card || !dotsWrap) return;
+ var quads = card.querySelectorAll('.info-quad'), dots = dotsWrap.querySelectorAll('.info-dot');
+ var idx = 0, timer = null;
+ function isMobile() { return window.innerWidth < 768; }
+ function render() {
+ quads.forEach(function (q, i) { q.classList.toggle('is-active-slide', isMobile() ? i === idx : true); });
+ dots.forEach(function (d, i) { d.classList.toggle('is-active', i === idx); d.setAttribute('aria-selected', i === idx ? 'true' : 'false'); });
+ }
+ function goTo(n) { idx = (n + quads.length) % quads.length; render(); }
+ function start() { stop(); if (!isMobile()) return; timer = setInterval(function () { goTo(idx + 1); }, 6000); }
+ function stop() { if (timer) clearInterval(timer); }
+ dots.forEach(function (d, i) { d.addEventListener('click', function () { goTo(i); start(); }); });
+ card.addEventListener('mouseenter', stop);
+ card.addEventListener('mouseleave', start);
+ window.addEventListener('resize', function () { render(); start(); });
+
+ /* Swipe gesture (mobile) */
+ var touchStartX = 0, touchStartY = 0, touchMoved = false;
+ card.addEventListener('touchstart', function (e) {
+ if (!isMobile()) return;
+ touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; touchMoved = false;
+ stop();
+ }, { passive: true });
+ card.addEventListener('touchmove', function () { touchMoved = true; }, { passive: true });
+ card.addEventListener('touchend', function (e) {
+ if (!isMobile() || !touchMoved) { start(); return; }
+ var dx = e.changedTouches[0].clientX - touchStartX, dy = e.changedTouches[0].clientY - touchStartY;
+ if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+ if (dx < 0) goTo(idx + 1); else goTo(idx - 1);
+ }
+ start();
+ });
+
+ render();
+ start();
+}
+
+function initValuePropSlider() {
+ var wrap = document.getElementById('valuePropSlider');
+ if (!wrap) return;
+ var slides = wrap.querySelectorAll('.vp-slide'), dots = wrap.querySelectorAll('.vp-dot');
+ var idx = 0, timer = null;
+ function goTo(n) {
+ idx = (n + slides.length) % slides.length;
+ slides.forEach(function (s, i) { s.classList.toggle('is-active', i === idx); });
+ dots.forEach(function (d, i) { d.classList.toggle('is-active', i === idx); d.setAttribute('aria-selected', i === idx ? 'true' : 'false'); });
+ }
+ function start() { stop(); timer = setInterval(function () { goTo(idx + 1); }, 4500); }
+ function stop() { if (timer) clearInterval(timer); }
+ dots.forEach(function (d, i) { d.addEventListener('click', function () { goTo(i); start(); }); });
+ wrap.addEventListener('mouseenter', stop);
+ wrap.addEventListener('mouseleave', start);
+ start();
+}
+
 function initDockNav() {
  var dock = document.querySelector('.mb-dock'), indicator = document.getElementById('mbDockIndicator');
  if (!dock || !indicator) return;
@@ -902,6 +961,8 @@ document.addEventListener('DOMContentLoaded', function () {
  initEkspedisiPicker();
  initHeaderSearch();
  initDockNav();
+ initValuePropSlider();
+ initInfoCardSlider();
  updateWishlistUI();
  renderRecentlyViewed();
  buildFilterChips();

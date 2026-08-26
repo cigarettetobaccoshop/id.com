@@ -59,6 +59,11 @@ tailwind.config = {
  ivory: '#F6F8FA',
  brand: { 400: '#8FA8C9', 700: '#1E5FA8' }
  },
+ borderRadius: {
+ '3xl': '0.75rem',
+ '2xl': '0.75rem',
+ xl: '0.5rem'
+ },
  fontFamily: {
  sans: ['Inter', 'system-ui', 'sans-serif'],
  serif: ['"Playfair Display"', 'Georgia', 'serif'],
@@ -73,7 +78,8 @@ tailwind.config = {
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;600;700;800&display=swap">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></noscript>
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-white font-sans text-slate-800">
@@ -84,7 +90,7 @@ tailwind.config = {
  <div class="loader-bg-overlay" aria-hidden="true"></div>
  <div class="logo-frame logo-frame-lg logo-pulse relative z-10">
  <div class="logo-orbit"></div>
- <img src="assets/logo/logo.png" alt="Logo R2 Nusantara" class="logo-core-img" onerror="__logoFail(this,'lg')">
+ <img src="assets/logo/logo.png" alt="Logo R2 Nusantara" class="logo-core-img" onerror="__logoFail(this,'lg')" width="40" height="40">
  </div>
  <div class="mt-7 font-serif text-2xl tracking-[0.35em] text-white loader-shine font-extrabold relative z-10">R2 NUSANTARA</div>
  <div class="mt-2 text-[10px] uppercase tracking-[0.4em] text-slate-500 relative z-10">Cigarette Tobacco Shop</div>
@@ -98,7 +104,7 @@ tailwind.config = {
  <a href="#beranda" class="flex items-center gap-3 group">
  <div class="logo-frame logo-frame-sm logo-pulse">
  <div class="logo-orbit"></div>
- <img src="assets/logo/logo.png" alt="Logo R2 Nusantara" class="logo-core-img" onerror="__logoFail(this,'sm')">
+ <img src="assets/logo/logo.png" alt="Logo R2 Nusantara" class="logo-core-img" onerror="__logoFail(this,'sm')" width="40" height="40">
  </div>
  <div>
  <div class="flex items-center gap-1.5">
@@ -147,6 +153,7 @@ tailwind.config = {
  </div>
 </header>
 
+<main>
 <!-- ============ HERO ============ -->
 <section id="beranda" class="relative overflow-hidden pt-44 lg:pt-36 pb-16">
  <div class="hero-bg" aria-hidden="true"></div>
@@ -191,10 +198,10 @@ tailwind.config = {
 
  <div class="relative hero-visual">
  <div class="hero-card glass-pill rounded-3xl p-3 relative">
- <img src="assets/logo/preview.jpg" alt="Preview Gudang R2 Nusantara" class="rounded-2xl w-full h-[340px] sm:h-[420px] object-cover" onerror="__imgFail(this,600,420,'R2 NUSANTARA')">
+ <img src="assets/logo/preview.jpg" alt="Preview Gudang R2 Nusantara" class="rounded-2xl w-full h-[340px] sm:h-[420px] object-cover" onerror="__imgFail(this,600,420,'R2 NUSANTARA')" width="600" height="420">
  <div class="absolute -top-9 -left-6 logo-frame logo-frame-lg logo-pulse">
  <div class="logo-orbit"></div>
- <img src="assets/logo/logo.png" alt="Logo R2 Nusantara" class="logo-core-img" onerror="__logoFail(this,'lg')">
+ <img src="assets/logo/logo.png" alt="Logo R2 Nusantara" class="logo-core-img" onerror="__logoFail(this,'lg')" width="40" height="40">
  </div>
  <div class="absolute bottom-6 left-6 right-6 glass-dark rounded-2xl px-5 py-4 flex items-center justify-between">
  <div>
@@ -210,20 +217,43 @@ tailwind.config = {
  </div>
  </div>
 
+ <!-- Value Proposition Slider -->
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 flex justify-center mt-8">
+ <div id="valuePropSlider" class="vp-slider-wrap">
+ <div class="vp-slide is-active" data-slide="0">
+ <i class="fa-solid fa-certificate vp-icon"></i>
+ <div class="vp-text"><b>100% Original</b><span>Semua produk dijamin asli langsung dari distributor resmi.</span></div>
+ </div>
+ <div class="vp-slide" data-slide="1">
+ <i class="fa-solid fa-box-open vp-icon"></i>
+ <div class="vp-text"><b>Pengiriman Discreet</b><span>Kemasan polos tanpa logo mencolok, privasi terjaga.</span></div>
+ </div>
+ <div class="vp-slide" data-slide="2">
+ <i class="fa-solid fa-tags vp-icon"></i>
+ <div class="vp-text"><b>Harga Grosir</b><span>Minimal pembelian 1 slop, harga khusus untuk pembelian banyak.</span></div>
+ </div>
+ <div class="vp-dots" role="tablist" aria-label="Navigasi keunggulan">
+ <button class="vp-dot is-active" role="tab" aria-selected="true" data-dot="0" aria-label="Keunggulan 1: 100% Original"></button>
+ <button class="vp-dot" role="tab" aria-selected="false" data-dot="1" aria-label="Keunggulan 2: Pengiriman Discreet"></button>
+ <button class="vp-dot" role="tab" aria-selected="false" data-dot="2" aria-label="Keunggulan 3: Harga Grosir"></button>
+ </div>
+ </div>
+ </div>
+
  <!-- Marquee -->
- <div class="marquee-wrap mt-16 py-6 border-y border-slate-200 bg-white/60 relative">
+ <div class="marquee-wrap mt-10 py-6 border-y border-slate-200 bg-white/60 relative">
  <div class="marquee-track">
- <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/jne-express.png" alt="JNE" loading="lazy" onerror="__ekspFail(this)"></span>
- <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/j&amp;t-express.png" alt="J&amp;T" loading="lazy" onerror="__ekspFail(this)"></span>
- <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/sicepat-ekspres.png" alt="SiCepat Express" loading="lazy" onerror="__ekspFail(this)"></span>
- <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/indah-cargo.png" alt="Indah Cargo" loading="lazy" onerror="__ekspFail(this)"></span>
+ <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/jne-express.png" alt="JNE" loading="lazy" onerror="__ekspFail(this)" width="128" height="40"></span>
+ <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/j&amp;t-express.png" alt="J&amp;T" loading="lazy" onerror="__ekspFail(this)" width="128" height="40"></span>
+ <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/sicepat-ekspres.png" alt="SiCepat Express" loading="lazy" onerror="__ekspFail(this)" width="128" height="40"></span>
+ <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/indah-cargo.png" alt="Indah Cargo" loading="lazy" onerror="__ekspFail(this)" width="128" height="40"></span>
  <span class="marquee-item gold"><i class="fa-solid fa-warehouse"></i> R2 Nusantara</span>
  <span class="marquee-item gold"><i class="fa-solid fa-map-pin"></i> Gudang Malang</span>
  <span class="marquee-item gold"><i class="fa-solid fa-certificate"></i> Distributor Resmi</span>
- <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/jne-express.png" alt="JNE" loading="lazy" onerror="__ekspFail(this)"></span>
- <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/j&amp;t-express.png" alt="J&amp;T" loading="lazy" onerror="__ekspFail(this)"></span>
- <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/sicepat-ekspres.png" alt="SiCepat Express" loading="lazy" onerror="__ekspFail(this)"></span>
- <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/indah-cargo.png" alt="Indah Cargo" loading="lazy" onerror="__ekspFail(this)"></span>
+ <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/jne-express.png" alt="JNE" loading="lazy" onerror="__ekspFail(this)" width="128" height="40"></span>
+ <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/j&amp;t-express.png" alt="J&amp;T" loading="lazy" onerror="__ekspFail(this)" width="128" height="40"></span>
+ <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/sicepat-ekspres.png" alt="SiCepat Express" loading="lazy" onerror="__ekspFail(this)" width="128" height="40"></span>
+ <span class="marquee-item marquee-logo"><img src="assets/ekspedisi/indah-cargo.png" alt="Indah Cargo" loading="lazy" onerror="__ekspFail(this)" width="128" height="40"></span>
  <span class="marquee-item gold"><i class="fa-solid fa-warehouse"></i> R2 Nusantara</span>
  <span class="marquee-item gold"><i class="fa-solid fa-map-pin"></i> Gudang Malang</span>
  <span class="marquee-item gold"><i class="fa-solid fa-certificate"></i> Distributor Resmi</span>
@@ -232,7 +262,7 @@ tailwind.config = {
 </section>
 
 <!-- ============ KOLEKSI UNGGULAN ============ -->
-<section class="py-20 bg-ivory relative overflow-hidden">
+<section class="py-12 bg-ivory relative overflow-hidden">
  <div class="max-w-7xl mx-auto px-4 sm:px-6">
  <div class="flex flex-wrap items-end justify-between gap-4 mb-10 fade-on-scroll">
  <div>
@@ -242,7 +272,7 @@ tailwind.config = {
  </div>
  <a href="#produk" class="btn-outline px-5 py-2.5 rounded-xl text-xs font-bold">Lihat semua <i class="fa-solid fa-arrow-right ml-1"></i></a>
  </div>
- <div class="grid md:grid-cols-3 gap-6 md:items-start">
+ <div class="grid md:grid-cols-3 gap-4 md:items-start">
  <div class="featured-card card-enter bg-white rounded-3xl border border-slate-200 p-6 relative overflow-hidden group fade-on-scroll md:mt-6">
  <div class="absolute top-5 left-6 z-20 flex gap-2">
  <span class="pick-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> Editor's Pick</span>
@@ -296,44 +326,52 @@ tailwind.config = {
 </section>
 
 <!-- ============ KEUNGGULAN ============ -->
-<section id="why" class="py-20 relative overflow-hidden">
+<section id="why" class="py-12 relative overflow-hidden">
  <div class="max-w-7xl mx-auto px-4 sm:px-6">
  <div class="text-center mb-12 fade-on-scroll">
  <span data-scramble class="section-label">WHY R2 NUSANTARA</span>
  <h2 data-word-reveal class="section-title">Sistem B2B Tanpa Risiko.</h2>
  <p class="text-sm text-slate-500 mt-3 max-w-xl mx-auto">Dirancang khusus untuk keamanan dan kenyamanan mitra grosir di seluruh Indonesia.</p>
  </div>
- <div class="grid md:grid-cols-3 gap-6 md:items-start">
- <div class="why-card card-glow card-premium bg-white rounded-3xl p-8 border border-slate-200 fade-on-scroll">
- <div class="why-icon wi-emerald"><i class="fa-solid fa-file-invoice-dollar"></i></div>
- <h3 class="font-serif font-bold text-lg text-deep mt-5">Bayar Setelah Resi Keluar</h3>
- <p class="text-sm text-slate-500 mt-2 leading-relaxed">Tidak ada transfer di awal. Tagihan dibayar setelah barang masuk ekspedisi dan resi terbit. 100% Anti Penipuan.</p>
- <div class="mt-5 flex gap-2"><span class="trust-badge"><i class="fa-solid fa-shield-halved text-emerald-500"></i> Aman</span><span class="trust-badge"><i class="fa-solid fa-eye text-brand-700"></i> Transparan</span></div>
+ <div class="info-card-2x2 fade-on-scroll" id="infoCard2x2">
+ <div class="info-quad" data-islide="0">
+ <div class="info-icon-box" style="background:#EFF6FF"><i class="fa-solid fa-truck-fast" style="color:#2563EB"></i></div>
+ <h3 class="info-quad-title">Subsidi Ongkos Kirim</h3>
+ <p class="info-quad-desc">Dapatkan gratis ongkir langsung dari gudang tanpa syarat tersembunyi. Minimal 1 Bal (20 Slop).</p>
+ <div class="info-pill-row"><span class="info-pill info-pill-blue">Promo Mitra</span><span class="info-pill info-pill-gray">1 Bal</span></div>
  </div>
- <div class="why-card card-glow card-premium bg-white rounded-3xl p-8 border border-slate-200 fade-on-scroll md:-mt-5" style="transition-delay:100ms">
- <div class="why-icon wi-silver"><i class="fa-solid fa-video"></i></div>
- <h3 class="font-serif font-bold text-lg text-deep mt-5">Real-time Packing</h3>
- <p class="text-sm text-slate-500 mt-2 leading-relaxed">Dokumentasi foto &amp; video langsung dari gudang hingga packing. Mitra melihat pesanan disiapkan secara transparan.</p>
- <div class="mt-5 flex gap-2"><span class="trust-badge"><i class="fa-solid fa-camera text-gold"></i> Foto</span><span class="trust-badge"><i class="fa-solid fa-clapperboard text-gold"></i> Video</span></div>
+ <div class="info-quad" data-islide="1">
+ <div class="info-icon-box" style="background:#F3F4F6"><i class="fa-solid fa-video" style="color:#4B5563"></i></div>
+ <h3 class="info-quad-title">Real-time Packing</h3>
+ <p class="info-quad-desc">Dokumentasi foto &amp; video langsung dari gudang hingga packing. Mitra melihat pesanan disiapkan secara transparan.</p>
+ <div class="info-pill-row"><span class="info-pill info-pill-gray">Foto</span><span class="info-pill info-pill-gray">Video</span></div>
  </div>
- <div class="why-card card-glow card-premium bg-white rounded-3xl p-8 border border-slate-200 fade-on-scroll md:-mt-10" style="transition-delay:200ms">
- <div class="why-icon wi-blue"><i class="fa-solid fa-truck-fast"></i></div>
- <h3 class="font-serif font-bold text-lg text-deep mt-5">Subsidi Ongkos Kirim</h3>
- <p class="text-sm text-slate-500 mt-2 leading-relaxed">Dapatkan gratis ongkir langsung dari gudang tanpa syarat tersembunyi. Minimal 1 Bal (20 Slop).</p>
- <div class="mt-5 flex gap-2"><span class="trust-badge"><i class="fa-solid fa-gift text-brand-700"></i> Promo Mitra</span><span class="trust-badge"><i class="fa-solid fa-boxes-stacked text-brand-700"></i> 1 Bal</span></div>
+ <div class="info-quad" data-islide="2">
+ <div class="info-icon-box" style="background:#ECFDF5"><i class="fa-solid fa-file-invoice-dollar" style="color:#059669"></i></div>
+ <h3 class="info-quad-title">Bayar Setelah Resi Keluar</h3>
+ <p class="info-quad-desc">Tidak ada transfer di awal. Tagihan dibayar setelah barang masuk ekspedisi dan resi terbit. 100% Anti Penipuan.</p>
+ <div class="info-pill-row"><span class="info-pill info-pill-green">Aman</span><span class="info-pill info-pill-gray">Transparan</span></div>
+ </div>
+ <div class="info-quad info-quad-stats" data-islide="3">
+ <div class="info-stat-grid">
+ <div><div class="stat-counter info-stat-num" data-count-to="233" data-count-suffix="">0</div><span class="info-stat-label">Merek Tersedia</span></div>
+ <div><div class="stat-counter info-stat-num" data-count-to="500" data-count-suffix="+">0</div><span class="info-stat-label">Mitra Toko</span></div>
+ <div><div class="stat-counter info-stat-num" data-count-to="4" data-count-suffix="">0</div><span class="info-stat-label">Ekspedisi Partner</span></div>
+ <div><div class="stat-counter info-stat-num info-stat-green" data-count-to="100" data-count-suffix="%">0</div><span class="info-stat-label">Anti Penipuan</span></div>
  </div>
  </div>
- <div class="mt-10 stat-band rounded-3xl p-8 grid grid-cols-2 lg:grid-cols-4 gap-6 fade-on-scroll">
- <div class="text-center"><div class="stat-counter font-mono font-bold text-3xl text-white" data-count-to="233" data-count-suffix="">0</div><div class="text-[10px] uppercase tracking-widest text-slate-300 mt-1">Merek Tersedia</div></div>
- <div class="text-center"><div class="stat-counter font-mono font-bold text-3xl text-gold-light" data-count-to="500" data-count-suffix="+">0</div><div class="text-[10px] uppercase tracking-widest text-slate-300 mt-1">Mitra Toko</div></div>
- <div class="text-center"><div class="stat-counter font-mono font-bold text-3xl text-white" data-count-to="4" data-count-suffix="">0</div><div class="text-[10px] uppercase tracking-widest text-slate-300 mt-1">Ekspedisi Partner</div></div>
- <div class="text-center"><div class="stat-counter font-mono font-bold text-3xl text-emerald-400" data-count-to="100" data-count-suffix="%">0</div><div class="text-[10px] uppercase tracking-widest text-slate-300 mt-1">Anti Penipuan</div></div>
+ </div>
+ <div class="info-slider-dots lg:hidden" role="tablist" aria-label="Navigasi keunggulan">
+ <button class="info-dot is-active" role="tab" aria-selected="true" data-idot="0" aria-label="Subsidi Ongkos Kirim"></button>
+ <button class="info-dot" role="tab" aria-selected="false" data-idot="1" aria-label="Real-time Packing"></button>
+ <button class="info-dot" role="tab" aria-selected="false" data-idot="2" aria-label="Bayar Setelah Resi Keluar"></button>
+ <button class="info-dot" role="tab" aria-selected="false" data-idot="3" aria-label="Statistik"></button>
  </div>
  </div>
 </section>
 
 <!-- ============ KATALOG ============ -->
-<section id="produk" class="py-20 bg-ivory relative">
+<section id="produk" class="py-12 bg-ivory relative">
  <div class="max-w-7xl mx-auto px-4 sm:px-6">
  <div class="flex flex-wrap items-end justify-between gap-6 mb-8 fade-on-scroll">
  <div>
@@ -362,8 +400,8 @@ tailwind.config = {
 
  <div class="flex flex-wrap items-center justify-between gap-4 mb-5 fade-on-scroll">
  <div class="catalog-tab-switcher" role="tablist">
- <button class="catalog-tab active" data-tab="r2" onclick="switchCatalog('r2')" aria-selected="true"><i class="fa-solid fa-fire-flame-curved"></i> Katalog R2 <span class="tab-count">167</span></button>
- <button class="catalog-tab" data-tab="resmi" onclick="switchCatalog('resmi')" aria-selected="false"><i class="fa-solid fa-certificate"></i> Katalog Resmi <span class="tab-count">66</span></button>
+ <button class="catalog-tab active" role="tab" data-tab="r2" onclick="switchCatalog('r2')" aria-selected="true"><i class="fa-solid fa-fire-flame-curved"></i> Katalog R2 <span class="tab-count">167</span></button>
+ <button class="catalog-tab" role="tab" data-tab="resmi" onclick="switchCatalog('resmi')" aria-selected="false"><i class="fa-solid fa-certificate"></i> Katalog Resmi <span class="tab-count">66</span></button>
  </div>
  <div class="flex items-center gap-3">
  <div class="relative w-full sm:w-64">
@@ -424,7 +462,7 @@ tailwind.config = {
 </section>
 
 <!-- ============ TESTIMONI ============ -->
-<section id="testimoni" class="py-20 relative overflow-hidden">
+<section id="testimoni" class="py-12 relative overflow-hidden">
  <div class="max-w-7xl mx-auto px-4 sm:px-6">
  <div class="flex flex-wrap items-end justify-between gap-4 mb-10 fade-on-scroll">
  <div>
@@ -483,7 +521,7 @@ tailwind.config = {
 </section>
 
 <!-- ============ FAQ ============ -->
-<section id="faq" class="py-20 bg-ivory">
+<section id="faq" class="py-12 bg-ivory">
  <div class="max-w-4xl mx-auto px-4 sm:px-6">
  <div class="text-center mb-10 fade-on-scroll">
  <span data-scramble class="section-label">FAQ</span>
@@ -519,23 +557,23 @@ tailwind.config = {
 </section>
 
 <!-- ============ LOKASI GUDANG ============ -->
-<section id="lokasi" class="py-20 relative overflow-hidden">
+<section id="lokasi" class="py-12 relative overflow-hidden">
  <div class="max-w-7xl mx-auto px-4 sm:px-6">
  <div class="text-center mb-10 fade-on-scroll">
  <span data-scramble class="section-label">WAREHOUSE LOCATION</span>
  <h2 data-word-reveal class="section-title">Lokasi Gudang Fisik Kami.</h2>
  <p class="text-sm text-slate-500 mt-3 max-w-xl mx-auto">Transparansi adalah prioritas — verifikasi keberadaan gudang kami langsung di peta.</p>
  </div>
- <div class="grid lg:grid-cols-5 gap-6 items-stretch">
+ <div class="grid lg:grid-cols-5 gap-4 items-stretch">
  <div class="lg:col-span-3 map-frame rounded-3xl overflow-hidden relative fade-on-scroll">
  <iframe src="https://maps.google.com/maps?q=Malang%2C%20Jawa%20Timur%2C%20Indonesia&z=12&output=embed&hl=id" class="w-full h-[380px] lg:h-full lg:min-h-[460px] block" style="border:0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" title="Peta Lokasi Gudang R2 Nusantara Malang"></iframe>
  <div class="map-overlay-pill glass-dark"><i class="fa-solid fa-location-dot text-gold"></i> Gudang R2 Nusantara — Malang, Jawa Timur</div>
  </div>
  <div class="lg:col-span-2 bg-white rounded-3xl border border-slate-200 p-7 flex flex-col gap-5 fade-on-scroll lg:-ml-10 relative z-10 shadow-2xl shadow-deep/10" style="transition-delay:120ms">
- <img src="assets/logo/hero-bg.jpg" alt="Area loading gudang R2 Nusantara" loading="lazy" class="rounded-2xl h-36 w-full object-cover" onerror="__imgFail(this,400,144,'GUDANG R2')">
+ <img src="assets/logo/hero-bg.jpg" alt="Area loading gudang R2 Nusantara" loading="lazy" class="rounded-2xl h-36 w-full object-cover" onerror="__imgFail(this,400,144,'GUDANG R2')" width="400" height="144">
  <div class="flex items-start gap-4">
  <div class="logo-frame logo-frame-sm shrink-0">
- <img src="assets/logo/logo.png" alt="Logo R2 Nusantara" class="logo-core-img" onerror="__logoFail(this,'sm')">
+ <img src="assets/logo/logo.png" alt="Logo R2 Nusantara" class="logo-core-img" onerror="__logoFail(this,'sm')" width="40" height="40">
  </div>
  <div>
  <h3 class="font-serif font-bold text-deep">Gudang Pusat R2 Nusantara</h3>
@@ -561,13 +599,15 @@ tailwind.config = {
  </div>
 </section>
 
+</main>
+
 <!-- ============ FOOTER ============ -->
 <footer class="footer-bg bg-deep text-slate-400 pt-16 pb-8 relative overflow-hidden">
  <div class="max-w-7xl mx-auto px-4 sm:px-6">
  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
  <div>
  <div class="flex items-center gap-3 mb-5">
- <div class="logo-frame logo-frame-sm"><div class="logo-orbit"></div><img src="assets/logo/logo.png" alt="Logo R2 Nusantara" class="logo-core-img" onerror="__logoFail(this,'sm')"></div>
+ <div class="logo-frame logo-frame-sm"><div class="logo-orbit"></div><img src="assets/logo/logo.png" alt="Logo R2 Nusantara" class="logo-core-img" onerror="__logoFail(this,'sm')" width="40" height="40"></div>
  <div><div class="font-serif font-extrabold text-white leading-none">R2 Nusantara</div><div class="text-[8px] uppercase tracking-[0.3em] text-slate-500 mt-0.5">Cigarette Tobacco Shop</div></div>
  </div>
  <h4 class="footer-title">Tentang Kami</h4>
@@ -715,7 +755,7 @@ tailwind.config = {
  <div class="checkout-summary-box mb-7">
  <div class="flex items-center justify-between mb-3">
  <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500"><i class="fa-solid fa-cart-shopping text-gold mr-1"></i> Ringkasan Pesanan</span>
- <span id="checkoutItemCount" class="text-[10px] font-bold text-slate-400">0 item</span>
+ <span id="checkoutItemCount" class="text-[10px] font-bold text-slate-500">0 item</span>
  </div>
  <div id="checkoutSummaryList" class="checkout-summary-list"></div>
  <div class="mt-3 pt-3 border-t border-dashed border-slate-200 space-y-1.5">
@@ -740,7 +780,7 @@ tailwind.config = {
  <div>
  <label for="newAlamat" class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-1.5">Alamat Lengkap *</label>
  <textarea id="newAlamat" rows="2" placeholder="Jl., No. Rumah, RT/RW, Kelurahan, Kecamatan, patokan (min. 20 karakter)" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-4 focus:ring-gold/10 focus:border-gold transition-all resize-none"></textarea>
- <p class="text-[10px] text-slate-400 mt-1.5 flex items-center gap-1.5"><i class="fa-solid fa-circle-info"></i> Pastikan sertakan kecamatan &amp; kelurahan agar kurir tidak salah antar.</p>
+ <p class="text-[10px] text-slate-500 mt-1.5 flex items-center gap-1.5"><i class="fa-solid fa-circle-info"></i> Pastikan sertakan kecamatan &amp; kelurahan agar kurir tidak salah antar.</p>
  <div id="newErrAlamat" class="error-message"><i class="fa-solid fa-circle-exclamation"></i><span>Minimal 20 karakter</span></div>
  </div>
  <div class="flex items-center justify-between">
@@ -761,10 +801,10 @@ tailwind.config = {
  <option value="">— Pilih Ekspedisi —</option><option>JNE</option><option>J&amp;T</option><option>SiCepat Express</option><option>Indah Cargo</option>
  </select>
  <div id="ekspedisiPicker" class="ekspedisi-picker" role="group" aria-label="Pilih Ekspedisi">
- <button type="button" class="eksp-card" data-eksp="JNE"><span class="eksp-card-img"><img src="assets/ekspedisi/jne-express.png" alt="JNE" loading="lazy" onerror="__ekspFail(this)"></span><span class="eksp-card-label">JNE</span></button>
- <button type="button" class="eksp-card" data-eksp="J&amp;T"><span class="eksp-card-img"><img src="assets/ekspedisi/j&amp;t-express.png" alt="J&amp;T" loading="lazy" onerror="__ekspFail(this)"></span><span class="eksp-card-label">J&amp;T</span></button>
- <button type="button" class="eksp-card" data-eksp="SiCepat Express"><span class="eksp-card-img"><img src="assets/ekspedisi/sicepat-ekspres.png" alt="SiCepat Express" loading="lazy" onerror="__ekspFail(this)"></span><span class="eksp-card-label">SiCepat</span></button>
- <button type="button" class="eksp-card" data-eksp="Indah Cargo"><span class="eksp-card-img"><img src="assets/ekspedisi/indah-cargo.png" alt="Indah Cargo" loading="lazy" onerror="__ekspFail(this)"></span><span class="eksp-card-label">Indah Cargo</span></button>
+ <button type="button" class="eksp-card" data-eksp="JNE"><span class="eksp-card-img"><img src="assets/ekspedisi/jne-express.png" alt="JNE" loading="lazy" onerror="__ekspFail(this)" width="128" height="40"></span><span class="eksp-card-label">JNE</span></button>
+ <button type="button" class="eksp-card" data-eksp="J&amp;T"><span class="eksp-card-img"><img src="assets/ekspedisi/j&amp;t-express.png" alt="J&amp;T" loading="lazy" onerror="__ekspFail(this)" width="128" height="40"></span><span class="eksp-card-label">J&amp;T</span></button>
+ <button type="button" class="eksp-card" data-eksp="SiCepat Express"><span class="eksp-card-img"><img src="assets/ekspedisi/sicepat-ekspres.png" alt="SiCepat Express" loading="lazy" onerror="__ekspFail(this)" width="128" height="40"></span><span class="eksp-card-label">SiCepat</span></button>
+ <button type="button" class="eksp-card" data-eksp="Indah Cargo"><span class="eksp-card-img"><img src="assets/ekspedisi/indah-cargo.png" alt="Indah Cargo" loading="lazy" onerror="__ekspFail(this)" width="128" height="40"></span><span class="eksp-card-label">Indah Cargo</span></button>
  </div>
  </div>
  <div>
@@ -859,11 +899,5 @@ tailwind.config = {
 <!-- Skrip Eksternal -->
 <script src="data.js" defer></script>
 <script src="app.js" defer></script>
-
-<!-- Vercel Web Analytics -->
-<script type="module">
-  import { inject } from 'https://cdn.jsdelivr.net/npm/@vercel/analytics@1/+esm';
-  inject();
-</script>
 </body>
 </html>
