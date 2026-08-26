@@ -1,74 +1,91 @@
-# Supabase integration — recommended setup for Next.js + Vercel
+# Supabase integration (upgraded)
 
-This document explains the changes in the `supabase/integration` branch and how to configure environment variables and deployment in Vercel.
+This branch includes upgrades for a safer and more complete Supabase integration for Next.js + Vercel.
 
-## Files added
+Changes in this update
+- Environment validation and dual clients (public + admin) in `lib/supabaseClient.js`.
+- Improved server-side test route with input validation and clearer error codes: `pages/api/supatest.js`.
+- Client-side demo page: `pages/supabase-demo.js` — quick auth demo (magic link) and data fetch example.
+- Documentation expanded below for Vercel env scoping and recommended steps.
 
-- `lib/supabaseClient.js` — initializes the Supabase client using environment variables.
-- `pages/api/supatest.js` — simple API route for testing server-side access to Supabase.
-- `.env.example` — shows the environment variables you must set (do NOT commit real keys).
-- `.gitignore` — ensure local .env files are ignored.
+Important: No keys are committed in this branch. Use `.env.local` for local testing and set environment variables in Vercel for Preview & Production.
 
-## Environment variables
+## What changed — details
 
-Recommended variable names (used by the code in this PR):
+1) lib/supabaseClient.js
+- Validates `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` at startup and throws if missing (prevents silent build/runtime failures).
+- Exports two clients:
+  - `supabase` — public client using anon key for client-side usage.
+  - `supabaseAdmin` — admin client using `SUPABASE_SERVICE_ROLE_KEY` when available (server-only). This client is only created when the service role key is present in environment variables.
 
-- NEXT_PUBLIC_SUPABASE_URL — e.g. `https://<project-ref>.supabase.co`
-- NEXT_PUBLIC_SUPABASE_ANON_KEY — `sb_publishable_...` (anon/public key for client-side usage)
-- SUPABASE_SERVICE_ROLE_KEY — `service_role_...` (server-only; **do not** expose to the client)
+2) pages/api/supatest.js
+- Accepts query params: `table` (defaults to `todos`) and `limit` (defaults to 10).
+- Returns 400 for invalid input, 401/403 for auth/RLS issues, 500 for server errors.
+- Prefers admin client for server-side queries (when `SUPABASE_SERVICE_ROLE_KEY` is set), otherwise uses public client.
 
-## Add variables to Vercel
+3) pages/supabase-demo.js
+- Demo page to test signInWithOtp (magic link) and to fetch `todos` from the client.
+- Useful to verify client-side auth and RLS behavior.
 
+## Environment variables and Vercel scoping (recommended)
+
+- NEXT_PUBLIC_SUPABASE_URL — `https://<project-ref>.supabase.co` (Preview & Production)
+- NEXT_PUBLIC_SUPABASE_ANON_KEY — `sb_publishable_...` (Preview & Production)
+- SUPABASE_SERVICE_ROLE_KEY — `service_role_...` (Production only) **server-only privileged key**
+
+Why scope service role to Production only?
+- Preview deployments are accessible publicly via preview URLs and should avoid exposing privileged keys. Only Production (the final deploy) should have the service role key to perform admin tasks.
+
+Add variables in Vercel:
 1. Go to Vercel → Projects → [your project] → Settings → Environment Variables.
-2. Add the following (Target: Preview & Production for public keys):
-   - `NEXT_PUBLIC_SUPABASE_URL` = `https://<project-ref>.supabase.co`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` = `sb_publishable_...`
-3. If you need server-only privileged operations, add `SUPABASE_SERVICE_ROLE_KEY` and mark it for Production only.
-4. After adding, trigger a redeploy (Vercel will re-run the build and the env vars will be available to the app).
+2. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY for Preview & Production.
+3. Add SUPABASE_SERVICE_ROLE_KEY for Production only (if you need privileged server operations).
 
 ## Local testing
 
-1. Create a local `.env.local` file (do NOT commit):
+1. Create `.env.local` (do NOT commit) with:
 
-   NEXT_PUBLIC_SUPABASE_URL=https://<project-ref>.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_...
+```
+NEXT_PUBLIC_SUPABASE_URL=https://<project-ref>.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_...
+# SUPABASE_SERVICE_ROLE_KEY=service_role_...  // only if testing privileged server ops locally
+```
 
-2. Install dependencies:
+2. Install client library if not present:
 
-   npm install @supabase/supabase-js
+```
+npm install @supabase/supabase-js
+```
 
 3. Run dev server:
 
-   npm run dev
+```
+npm run dev
+```
 
-4. Test server-side API route:
+4. Test endpoints and pages:
+- http://localhost:3000/api/supatest?table=todos
+- http://localhost:3000/supabase-demo
 
-   http://localhost:3000/api/supatest
+## Row Level Security (RLS) recommendations
+- If you enable RLS on tables, add explicit policies to permit the access expected by your client and server flows.
+- Example: allow public read for a public `todos` table:
 
-   - The route uses `lib/supabaseClient.js` and will return up to 10 rows from the `todos` table.
-   - Replace `todos` with a table present in your database for meaningful results.
+```sql
+ALTER TABLE todos ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public read" ON todos FOR SELECT USING (true);
+```
 
-## Row Level Security (RLS) & Auth
+- For authenticated per-user access, use `auth.uid()` in policies.
 
-- If you enable RLS on tables, create policies to allow authenticated users to read/write the rows they should access.
-- For client-side requests, use the anon key plus user JWTs managed by Supabase Auth.
-- For background or privileged tasks (backups, imports), call Supabase from server code using the `SUPABASE_SERVICE_ROLE_KEY` stored in Vercel secrets.
-
-## Rotating keys
-
-- Rotate keys in the Supabase Dashboard → Settings → API.
-- Update the values in Vercel environment variables and redeploy immediately.
-- Revoke old keys if they were exposed.
+## Checklist before merging
+- [ ] Add Vercel env vars (Preview & Production for public keys; Production only for service_role)
+- [ ] Verify Preview deployment and test `/api/supatest` and `/supabase-demo`
+- [ ] Update `pages/api/supatest.js` or demo to use your actual table names (if not `todos`)
+- [ ] If using RLS, add policies and verify behavior
 
 ## Security notes
+- Do NOT commit service role keys.
+- Rotate keys immediately if exposed: Supabase Dashboard → Settings → API → Rotate keys; then update Vercel envs and redeploy.
 
-- `sb_publishable_*` keys are intended for client-side use. They are not a secret but avoid publishing them publicly where not intended.
-- `service_role_*` keys are highly privileged and MUST remain secret; never commit them or expose to client bundles.
-
-## After merge
-
-1. Add the recommended env vars to Vercel as described above.
-2. Verify Preview deployment (Vercel) and open `/api/supatest` to ensure server-side queries work.
-3. Merge to main to trigger Production deploy once env vars are added for Production.
-
-If you want, I can also add a GitHub Actions workflow to run tests or deploy, but for Next.js + Vercel the easiest path is to let Vercel handle builds and deploys.
+If you want, I can also add CI to run `npm run build` on PRs to prevent merge regressions. Let me know and I will add a minimal GitHub Actions workflow.
