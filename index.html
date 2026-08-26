@@ -333,26 +333,26 @@ tailwind.config = {
  <h2 data-word-reveal class="section-title">Sistem B2B Tanpa Risiko.</h2>
  <p class="text-sm text-slate-500 mt-3 max-w-xl mx-auto">Dirancang khusus untuk keamanan dan kenyamanan mitra grosir di seluruh Indonesia.</p>
  </div>
- <div class="info-card-2x2 fade-on-scroll">
- <div class="info-quad">
+ <div class="info-card-2x2 fade-on-scroll" id="infoCard2x2">
+ <div class="info-quad" data-islide="0">
  <div class="info-icon-box" style="background:#EFF6FF"><i class="fa-solid fa-truck-fast" style="color:#2563EB"></i></div>
  <h3 class="info-quad-title">Subsidi Ongkos Kirim</h3>
  <p class="info-quad-desc">Dapatkan gratis ongkir langsung dari gudang tanpa syarat tersembunyi. Minimal 1 Bal (20 Slop).</p>
  <div class="info-pill-row"><span class="info-pill info-pill-blue">Promo Mitra</span><span class="info-pill info-pill-gray">1 Bal</span></div>
  </div>
- <div class="info-quad">
+ <div class="info-quad" data-islide="1">
  <div class="info-icon-box" style="background:#F3F4F6"><i class="fa-solid fa-video" style="color:#4B5563"></i></div>
  <h3 class="info-quad-title">Real-time Packing</h3>
  <p class="info-quad-desc">Dokumentasi foto &amp; video langsung dari gudang hingga packing. Mitra melihat pesanan disiapkan secara transparan.</p>
  <div class="info-pill-row"><span class="info-pill info-pill-gray">Foto</span><span class="info-pill info-pill-gray">Video</span></div>
  </div>
- <div class="info-quad">
+ <div class="info-quad" data-islide="2">
  <div class="info-icon-box" style="background:#ECFDF5"><i class="fa-solid fa-file-invoice-dollar" style="color:#059669"></i></div>
  <h3 class="info-quad-title">Bayar Setelah Resi Keluar</h3>
  <p class="info-quad-desc">Tidak ada transfer di awal. Tagihan dibayar setelah barang masuk ekspedisi dan resi terbit. 100% Anti Penipuan.</p>
  <div class="info-pill-row"><span class="info-pill info-pill-green">Aman</span><span class="info-pill info-pill-gray">Transparan</span></div>
  </div>
- <div class="info-quad info-quad-stats">
+ <div class="info-quad info-quad-stats" data-islide="3">
  <div class="info-stat-grid">
  <div><div class="stat-counter info-stat-num" data-count-to="233" data-count-suffix="">0</div><span class="info-stat-label">Merek Tersedia</span></div>
  <div><div class="stat-counter info-stat-num" data-count-to="500" data-count-suffix="+">0</div><span class="info-stat-label">Mitra Toko</span></div>
@@ -360,6 +360,12 @@ tailwind.config = {
  <div><div class="stat-counter info-stat-num info-stat-green" data-count-to="100" data-count-suffix="%">0</div><span class="info-stat-label">Anti Penipuan</span></div>
  </div>
  </div>
+ </div>
+ <div class="info-slider-dots lg:hidden" role="tablist" aria-label="Navigasi keunggulan">
+ <button class="info-dot is-active" role="tab" aria-selected="true" data-idot="0" aria-label="Subsidi Ongkos Kirim"></button>
+ <button class="info-dot" role="tab" aria-selected="false" data-idot="1" aria-label="Real-time Packing"></button>
+ <button class="info-dot" role="tab" aria-selected="false" data-idot="2" aria-label="Bayar Setelah Resi Keluar"></button>
+ <button class="info-dot" role="tab" aria-selected="false" data-idot="3" aria-label="Statistik"></button>
  </div>
  </div>
 </section>

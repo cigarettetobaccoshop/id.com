@@ -858,6 +858,28 @@ window.runHeaderSearch = function () {
 };
 /* Glass Capsule Dock — indicator bergeser magnetis ke item yang di-tap */
 /* Value Proposition Slider — auto-play, pause on hover, dot nav */
+/* Info Card 2x2 -> jadi slider khusus mobile (<768px). Desktop/tablet tetap grid, tidak disentuh. */
+function initInfoCardSlider() {
+ var card = document.getElementById('infoCard2x2'), dotsWrap = document.querySelector('.info-slider-dots');
+ if (!card || !dotsWrap) return;
+ var quads = card.querySelectorAll('.info-quad'), dots = dotsWrap.querySelectorAll('.info-dot');
+ var idx = 0, timer = null;
+ function isMobile() { return window.innerWidth < 768; }
+ function render() {
+ quads.forEach(function (q, i) { q.classList.toggle('is-active-slide', isMobile() ? i === idx : true); });
+ dots.forEach(function (d, i) { d.classList.toggle('is-active', i === idx); d.setAttribute('aria-selected', i === idx ? 'true' : 'false'); });
+ }
+ function goTo(n) { idx = (n + quads.length) % quads.length; render(); }
+ function start() { stop(); if (!isMobile()) return; timer = setInterval(function () { goTo(idx + 1); }, 6000); }
+ function stop() { if (timer) clearInterval(timer); }
+ dots.forEach(function (d, i) { d.addEventListener('click', function () { goTo(i); start(); }); });
+ card.addEventListener('mouseenter', stop);
+ card.addEventListener('mouseleave', start);
+ window.addEventListener('resize', function () { render(); start(); });
+ render();
+ start();
+}
+
 function initValuePropSlider() {
  var wrap = document.getElementById('valuePropSlider');
  if (!wrap) return;
@@ -922,6 +944,7 @@ document.addEventListener('DOMContentLoaded', function () {
  initHeaderSearch();
  initDockNav();
  initValuePropSlider();
+ initInfoCardSlider();
  updateWishlistUI();
  renderRecentlyViewed();
  buildFilterChips();
