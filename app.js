@@ -876,6 +876,24 @@ function initInfoCardSlider() {
  card.addEventListener('mouseenter', stop);
  card.addEventListener('mouseleave', start);
  window.addEventListener('resize', function () { render(); start(); });
+
+ /* Swipe gesture (mobile) */
+ var touchStartX = 0, touchStartY = 0, touchMoved = false;
+ card.addEventListener('touchstart', function (e) {
+ if (!isMobile()) return;
+ touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; touchMoved = false;
+ stop();
+ }, { passive: true });
+ card.addEventListener('touchmove', function () { touchMoved = true; }, { passive: true });
+ card.addEventListener('touchend', function (e) {
+ if (!isMobile() || !touchMoved) { start(); return; }
+ var dx = e.changedTouches[0].clientX - touchStartX, dy = e.changedTouches[0].clientY - touchStartY;
+ if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+ if (dx < 0) goTo(idx + 1); else goTo(idx - 1);
+ }
+ start();
+ });
+
  render();
  start();
 }
