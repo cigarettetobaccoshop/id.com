@@ -27,6 +27,37 @@ Important: No keys are committed in this branch. Use `.env.local` for local test
 - Demo page to test signInWithOtp (magic link) and to fetch `todos` from the client.
 - Useful to verify client-side auth and RLS behavior.
 
+## New helpers (App Router / Server Components)
+
+This repo now includes a server helper that makes it easy to access Supabase from Next.js App Router server components using the official auth-helpers.
+
+- `utils/supabase-server.ts`
+  - Exports `createServerSupabase()` which internally calls `createServerComponentClient({ cookies })` from `@supabase/auth-helpers-nextjs`.
+  - Use this in server components (e.g., `app/page.tsx`) to read session-aware data on the server.
+
+Example usage in `app/page.tsx`:
+
+```tsx
+import { createServerSupabase } from '@/utils/supabase-server'
+
+export default async function Page() {
+  const supabase = createServerSupabase()
+  const { data: todos, error } = await supabase.from('todos').select()
+
+  if (error) return <p>Error loading todos</p>
+
+  return (
+    <ul>
+      {todos?.map((t) => <li key={t.id}>{t.name}</li>)}
+    </ul>
+  )
+}
+```
+
+## Middleware (auth sync)
+
+`middleware.ts` was updated to use `createMiddlewareClient` from `@supabase/auth-helpers-nextjs` which is Edge-runtime safe and handles cookie sync properly. The middleware included in this branch is a minimal example that fetches the session; customize it to add redirects or route protection as needed.
+
 ## Environment variables and Vercel scoping (recommended)
 
 - NEXT_PUBLIC_SUPABASE_URL — `https://<project-ref>.supabase.co` (Preview & Production)
@@ -38,8 +69,16 @@ Why scope service role to Production only?
 
 Add variables in Vercel:
 1. Go to Vercel → Projects → [your project] → Settings → Environment Variables.
-2. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY for Preview & Production.
-3. Add SUPABASE_SERVICE_ROLE_KEY for Production only (if you need privileged server operations).
+2. Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` for Preview & Production.
+3. Add `SUPABASE_SERVICE_ROLE_KEY` for Production only (mark it as a Secret).
+
+Vercel checklist (quick):
+- Set the following Environment Variables in Vercel for the correct scopes:
+  - `NEXT_PUBLIC_SUPABASE_URL` (Preview & Production)
+  - `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Preview & Production)
+  - `SUPABASE_SERVICE_ROLE_KEY` (Production only, as a Secret)
+- Do NOT add `SUPABASE_SERVICE_ROLE_KEY` to Preview or to the client-side (it should NOT be exposed).
+- If you need server-side auth helpers (recommended for App Router): install `@supabase/auth-helpers-nextjs` and follow their middleware docs to sync cookies and session in Preview/Production.
 
 ## Local testing
 
@@ -51,10 +90,10 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_...
 # SUPABASE_SERVICE_ROLE_KEY=service_role_...  // only if testing privileged server ops locally
 ```
 
-2. Install client library if not present:
+2. Install client library and helpers if not present:
 
 ```
-npm install @supabase/supabase-js
+npm install
 ```
 
 3. Run dev server:
