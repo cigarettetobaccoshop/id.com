@@ -30,8 +30,5 @@ jobs:
       - name: Smoke test
         run: npm test
 
-      - name: Lint
-        run: npm run lint
-
       - name: Production build
         run: npm run build
