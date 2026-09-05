@@ -345,6 +345,8 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .mp-price-old { font-size: 11px; color: #94a3b8; text-decoration: line-through; font-family: 'IBM Plex Mono', monospace; }
 .mp-price-old.sm { font-size: 9px; display: block; }
 .mp-save-badge { font-size: 9px; font-weight: 800; color: #059669; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 1px 7px; border-radius: 99px; }
+.mp-stock-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; color: #059669; margin-bottom: 10px; }
+.mp-stock-badge i { font-size: 10px; }
 .mp-price-now { font-family: 'IBM Plex Mono', monospace; font-weight: 800; font-size: 1.35rem; letter-spacing: -.02em; color: var(--color-accent); margin-bottom: 12px; }
 .mp-price-now.sm { font-size: 12px; margin-bottom: 0; display: block; color: var(--color-accent); }
 .mp-price-unit { font-size: 10px; font-weight: 500; color: #94a3b8; font-family: 'Inter', sans-serif; margin-left: 3px; }

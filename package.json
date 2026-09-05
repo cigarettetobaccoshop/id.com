@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "echo \"No tests specified\" && exit 0"
+    "test": "node scripts/smoke-test.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
     "vercel",
     "analytics",
     "distributor",
-    "cigarette"
+    "b2b"
   ],
   "author": "",
   "license": "ISC",
