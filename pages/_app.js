@@ -1,6 +1,7 @@
 import '../styles/mobile-lock.css'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 
 function CheckoutPrompt() {
   const [count, setCount] = useState(0)
@@ -16,5 +17,5 @@ function CheckoutPrompt() {
 }
 
 export default function App({ Component, pageProps }) {
-  return <><Component {...pageProps} /><CheckoutPrompt /></>
+  return <><Component {...pageProps} /><CheckoutPrompt /><Analytics /></>
 }
