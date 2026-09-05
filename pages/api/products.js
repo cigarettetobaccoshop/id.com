@@ -34,6 +34,7 @@ export default async function handler(req, res) {
     .from('R2 NUSANTARA')
     .select(SELECT_COLUMNS, { count: 'exact' })
     .eq('Published', true)
+    .eq('Status', 'active')
     .limit(limit)
 
   if (error) {
