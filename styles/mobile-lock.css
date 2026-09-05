@@ -1,0 +1,85 @@
+/* R2 NUSANTARA — Mobile Responsive Lock
+   Final UI guardrails: no horizontal overflow, safe-area support,
+   touch-safe controls, stable viewport behavior, and compact mobile density.
+*/
+html{width:100%;max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}
+body{width:100%;max-width:100%;overflow-x:hidden}
+*,*::before,*::after{min-width:0}
+img,svg,video,canvas{max-width:100%;height:auto}
+button,input,select,textarea{font:inherit;max-width:100%}
+button,a,select,input{touch-action:manipulation}
+
+@media (max-width:620px){
+  html{font-size:16px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  body{padding-bottom:env(safe-area-inset-bottom)}
+
+  /* Homepage */
+  .site-shell{width:100%;max-width:100%;overflow:hidden}
+  .topbar{height:64px!important;padding:0 14px!important;gap:10px!important}
+  .brand{gap:8px!important;min-width:0!important;max-width:calc(100% - 112px)}
+  .brand-logo{width:36px!important;height:36px!important;flex:0 0 36px}
+  .brand strong{font-size:10px!important;letter-spacing:.11em!important;white-space:nowrap}
+  .brand small{font-size:6px!important;letter-spacing:.10em!important;white-space:nowrap}
+  .portal-button{flex:0 0 auto!important;padding:9px 10px!important;font-size:7px!important;letter-spacing:.08em!important;white-space:nowrap}
+  .hero{width:100%;min-height:auto!important;grid-template-columns:1fr!important;padding:58px 16px 74px!important;gap:34px!important}
+  .hero-copy{width:100%;max-width:100%}
+  .eyebrow{font-size:8px!important;letter-spacing:.14em!important;line-height:1.5}
+  .hero h1{font-size:clamp(62px,21vw,104px)!important;line-height:.82!important;overflow-wrap:anywhere}
+  .lead{font-size:14px!important;line-height:1.6!important;margin-top:25px!important}
+  .actions{display:grid!important;grid-template-columns:1fr!important;gap:9px!important;margin-top:26px!important}
+  .button{width:100%!important;justify-content:center!important;min-height:46px!important;padding:0 14px!important}
+  .trust-line{flex-wrap:wrap!important;gap:7px!important;margin-top:28px!important;font-size:6px!important;line-height:1.5}
+  .live-panel{width:100%!important;max-width:none!important;padding:18px!important;border-radius:18px!important}
+  .metric{padding:27px 0 23px!important}
+  .metric strong{font-size:64px!important}
+  .metric-row{font-size:7px!important}
+  .signal{gap:3px!important}
+  .signal span{width:7px!important}
+  .statement{width:100%!important;padding:78px 16px 90px!important}
+  .statement h2{font-size:clamp(38px,12vw,60px)!important;line-height:1!important}
+  .statement p{font-size:13px!important}
+  .feature-grid{width:100%!important;padding:0 16px 82px!important}
+  .feature-grid article,.feature-grid article:not(:first-child){padding:24px 0!important}
+  .footer{flex-direction:column!important;gap:8px!important;padding:22px 16px 104px!important;font-size:7px!important}
+
+  /* Catalog */
+  .catalog-shell{width:100%!important;max-width:100%!important;padding:0 12px 104px!important;overflow:hidden!important}
+  .catalog-header{width:100%!important;padding:14px 0 10px!important}
+  .heading-row{width:100%!important;grid-template-columns:minmax(0,1fr) auto!important;gap:10px!important}
+  .back-link{grid-column:1/-1!important;padding-top:2px!important;font-size:8px!important}
+  .heading-row>div:nth-child(2){min-width:0!important}
+  .catalog-header h1{font-size:clamp(44px,14vw,62px)!important;line-height:.88!important;overflow-wrap:anywhere}
+  .subtitle{font-size:10px!important;line-height:1.45!important}
+  .live-badge{padding:7px 8px!important;font-size:6px!important;white-space:nowrap}
+  .tools{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important;margin-top:18px!important}
+  .search{width:100%!important;height:46px!important;padding:0 12px!important}
+  .search input{min-width:0!important;font-size:11px!important}
+  .sort{width:100%!important;min-height:42px!important;height:42px!important;justify-content:space-between!important;padding:0 12px!important}
+  .sort select{min-width:0!important;max-width:75%!important;font-size:10px!important}
+  .filters{width:100%!important;max-width:100%!important;gap:6px!important;padding:10px 0 3px!important;overflow-x:auto!important;overscroll-behavior-x:contain!important}
+  .filter{padding:8px 10px!important;font-size:7px!important}
+  .result-line{width:100%!important;margin:5px auto 10px!important;font-size:7px!important}
+  .catalog-grid{width:100%!important;grid-template-columns:1fr!important;gap:9px!important}
+  .product-card{width:100%!important;min-height:0!important;padding:16px!important;border-radius:16px!important}
+  .product-card h2{font-size:18px!important;line-height:1.15!important;overflow-wrap:anywhere}
+  .price{margin-top:20px!important;font-size:18px!important}
+  .meta-grid{gap:10px!important}
+  .meta-grid strong{font-size:8px!important}
+  .card-footer{font-size:6px!important}
+  .load-more{padding:20px 0!important}
+  .load-more button{width:100%!important;min-height:46px!important;font-size:8px!important}
+  .state{width:100%!important;margin:45px auto!important;padding:24px 16px!important}
+
+  /* Fixed mobile navigation: always inside safe area and never causes layout shift */
+  .bottom-nav{left:12px!important;right:12px!important;bottom:max(8px,env(safe-area-inset-bottom))!important;transform:none!important;width:auto!important;max-width:none!important;padding:7px!important;border-radius:17px!important}
+  .bottom-nav a{min-width:0!important;min-height:42px!important;padding:6px 2px!important;font-size:15px!important}
+  .bottom-nav small{font-size:6px!important;line-height:1!important;white-space:nowrap}
+}
+
+@media (min-width:621px){
+  .bottom-nav{display:none!important}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}

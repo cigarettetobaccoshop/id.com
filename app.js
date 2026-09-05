@@ -5,6 +5,17 @@
 (function () {
 'use strict';
 
+/* ============ 1B. SUPABASE CLIENT ============
+ Publishable key (anon) — aman dipakai di sisi client, akses dibatasi Row Level Security:
+ - products: publik cuma boleh SELECT
+ - orders & newsletter_subscribers: publik cuma boleh INSERT (tidak bisa baca punya orang lain) */
+var SUPA_URL = 'https://nwrqdcrknipnfvhogjyg.supabase.co';
+var SUPA_KEY = 'sb_publishable_mqJp3tqSL1gCjz1xdcgWGQ_mtDFRTmg';
+var supa = null;
+try {
+ if (window.supabase && window.supabase.createClient) supa = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+} catch (e) { supa = null; }
+
 /* ============ 2. SMART CONTEXT + CHATBOT ============ */
 window.R2Context = {
  init: function () {
@@ -349,6 +360,7 @@ function buildProductCardHTML(p, idx) {
  '<div class="mp-rating"><span class="mp-stars">' + renderStars(rating) + '</span><span class="mp-rating-num">' + rating.toFixed(1) + '</span></div>' +
  '<div class="mp-price-row"><span class="mp-price-old">' + formatRupiah(retail) + '</span><span class="mp-save-badge">Hemat ' + savingsPct + '%</span></div>' +
  '<div class="mp-price-now">' + formatRupiah(p.price) + '<span class="mp-price-unit">/slop grosir</span></div>' +
+ '<div class="mp-stock-badge"><i class="fa-solid fa-circle-check"></i> Ready Stock Gudang</div>' +
  buildCardActions(p) +
  '</div></div>';
 }
@@ -727,6 +739,22 @@ window.submitOrder = function () {
  if (r2.length) { m += '*🔥 KATALOG R2:*\n'; r2.forEach(function (i) { m += '• ' + i.name + ' — ' + i.qty + ' slop\n'; }); m += '\n'; }
  if (resmi.length) { m += '*🏅 KATALOG RESMI:*\n'; resmi.forEach(function (i) { m += '• ' + i.name + ' — ' + i.qty + ' slop\n'; }); m += '\n'; }
  m += '*Total Order:* ' + total + ' Slop\n*Status Ongkir:* ' + (total >= 20 ? '✅ Gratis Ongkir' : 'Reguler');
+ var subtotal = cart.reduce(function (s, i) { return s + (i.price * i.qty); }, 0);
+ if (supa) {
+ supa.from('orders').insert({
+ customer_name: g('newCustName').value.trim(),
+ customer_phone: g('newCustPhone').value.trim(),
+ address: g('newAlamat').value.trim(),
+ city: g('newKota').value.trim(),
+ province: g('newProvinsi').value.trim(),
+ postal_code: g('newKodePos').value.trim(),
+ ekspedisi: g('newEkspedisi').value,
+ payment_method: g('newMetode').value,
+ admin_number: g('newAdmin').value,
+ items: cart.map(function (i) { return { id: i.id, name: i.name, price: i.price, qty: i.qty, category: i.category }; }),
+ subtotal: subtotal
+ }).then(function () {}).catch(function () { /* diam-diam gagal, alur WhatsApp tetap lanjut normal */ });
+ }
  setTimeout(function () {
  window.open('https://wa.me/' + g('newAdmin').value + '?text=' + encodeURIComponent(m), '_blank');
  cart = []; window.__cart = cart; saveCart(); updateCartUI(); closeCheckoutModal();
@@ -811,6 +839,7 @@ window.handleNewsletterSubmit = function (form) {
  if (list.indexOf(input.value) === -1) list.push(input.value);
  localStorage.setItem('r2_newsletter_emails', JSON.stringify(list));
  } catch (e) {}
+ if (supa) supa.from('newsletter_subscribers').insert({ email: input.value }).then(function () {}).catch(function () {});
  showToast('Terima kasih! Email kamu sudah kami catat.');
  input.value = '';
 };
@@ -859,6 +888,26 @@ window.runHeaderSearch = function () {
 /* Glass Capsule Dock — indicator bergeser magnetis ke item yang di-tap */
 /* Value Proposition Slider — auto-play, pause on hover, dot nav */
 /* Info Card 2x2 -> jadi slider khusus mobile (<768px). Desktop/tablet tetap grid, tidak disentuh. */
+/* Sinkronisasi produk dari Supabase — data statis (data.js) tetap jadi fallback instan
+ kalau Supabase lambat/offline, situs tetap 100% jalan tanpa gangguan. */
+function syncProductsFromSupabase() {
+ if (!supa) return;
+ supa.from('products').select('id,name,price,category,segment,segment_name').eq('is_active', true)
+ .then(function (res) {
+ if (res.error || !res.data || !res.data.length) return;
+ var mapped = res.data.map(function (r) {
+ return { id: r.id, name: r.name, price: r.price, category: r.category, segment: r.segment, segmentName: r.segment_name };
+ });
+ allProducts.length = 0;
+ Array.prototype.push.apply(allProducts, mapped);
+ productsR2 = allProducts.filter(function (p) { return p.category === 'r2'; });
+ productsResmi = allProducts.filter(function (p) { return p.category === 'resmi'; });
+ renderProductDisplay();
+ buildFilterChips();
+ })
+ .catch(function () { /* diam-diam gagal, tetap pakai data statis yang sudah tampil */ });
+}
+
 function initInfoCardSlider() {
  var card = document.getElementById('infoCard2x2'), dotsWrap = document.querySelector('.info-slider-dots');
  if (!card || !dotsWrap) return;
@@ -963,6 +1012,7 @@ document.addEventListener('DOMContentLoaded', function () {
  initDockNav();
  initValuePropSlider();
  initInfoCardSlider();
+ syncProductsFromSupabase();
  updateWishlistUI();
  renderRecentlyViewed();
  buildFilterChips();
