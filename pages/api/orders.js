@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto'
 import { supabase } from '../../lib/supabaseClient'
 
-const COURIERS = { JNE: 25000, J&T: 22000, SiCepat: 22000, Pickup: 0 }
+const COURIERS = { JNE: 25000, 'J&T': 22000, SiCepat: 22000, Pickup: 0 }
 const PAYMENT_METHODS = new Set(['Bank Transfer', 'Escrow (Bayar Setelah Resi)'])
 const clean = (v, max = 500) => String(v ?? '').trim().slice(0, max)
 
