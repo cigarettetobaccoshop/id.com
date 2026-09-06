@@ -15,9 +15,8 @@ const PRODUCT_COLUMNS = [
   'Status',
 ]
 
-const SELECT_COLUMNS = PRODUCT_COLUMNS.map((column) =>
-  column.includes(' ') ? `"${column}"` : column
-).join(',')
+// The shared Supabase compatibility client quotes legacy identifiers containing spaces.
+const SELECT_COLUMNS = PRODUCT_COLUMNS.join(',')
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300')
