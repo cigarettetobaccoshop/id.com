@@ -1,0 +1,13 @@
+/* R2 NUSANTARA — Canva-aligned premium system v1 */
+:root{--r2-ink:#080a0d;--r2-ivory:#f4f1e8;--r2-paper:#faf9f6;--r2-gold:#c9a86a;--r2-muted:#8e96a3;--r2-line:rgba(8,10,13,.10);--r2-glass:rgba(255,255,255,.72);--r2-radius-sm:12px;--r2-radius-md:18px;--r2-radius-lg:28px;--r2-shadow:0 20px 60px rgba(8,10,13,.12)}
+html{scroll-behavior:smooth}body{background:var(--r2-paper);color:var(--r2-ink)}button,a,input,select{touch-action:manipulation}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--r2-gold);outline-offset:3px}
+.catalog-app{background:radial-gradient(circle at 92% 2%,rgba(201,168,106,.12),transparent 24%),linear-gradient(180deg,#faf9f6 0%,#f1efe9 100%)}
+.catalog-mobile-header{background:rgba(8,10,13,.94);border-bottom-color:rgba(201,168,106,.22)}
+.catalog-top h1{font-family:Georgia,'Times New Roman',serif;font-weight:400;letter-spacing:-.075em}.catalog-top h1 em{color:#756446}.eyebrow{color:#9d7d47}.eyebrow:before{background:var(--r2-gold)}
+.search-box,.filters button,.catalog-meta select,.live-dot{backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.search-box:focus-within{border-color:rgba(201,168,106,.58);box-shadow:0 16px 45px rgba(8,10,13,.08),0 0 0 3px rgba(201,168,106,.10)}
+.product-card{border-radius:20px;box-shadow:0 10px 35px rgba(8,10,13,.055)}.product-card:hover{box-shadow:0 28px 70px rgba(8,10,13,.14)}
+.card-actions .add{font-weight:900}.card-actions button:active{transform:translateY(1px)}
+.global-checkout{letter-spacing:.02em!important}.global-checkout strong{background:var(--r2-gold)!important}
+@media(max-width:700px){.catalog-top h1{font-size:clamp(48px,15vw,62px)}.catalog-grid{gap:10px}.product-card{border-radius:17px}.product-card:hover{transform:none;box-shadow:0 12px 38px rgba(8,10,13,.08)}.catalog-mobile-header{backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.product-card{transition:none!important}}
