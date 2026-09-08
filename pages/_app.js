@@ -7,10 +7,13 @@ import '../styles/r2-canva-system.css'
 import '../styles/static-reference-premium.css'
 import '../styles/visual-final.css'
 import '../styles/homepage-content-upgrade.css'
+import '../styles/homepage-experience.css'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import { Analytics } from '@vercel/analytics/react'
 import RouteIconNav from '../components/RouteIconNav'
+import HomepageExperience from '../components/HomepageExperience'
 
 function CheckoutPrompt() {
   const [count, setCount] = useState(0)
@@ -36,4 +39,8 @@ function GlobalInteractionGuard(){
   return null
 }
 
-export default function App({ Component, pageProps }) { return <><Component {...pageProps}/><RouteIconNav/><CheckoutPrompt/><GlobalInteractionGuard/><Analytics/></> }
+export default function App({ Component, pageProps }) {
+  const router=useRouter()
+  const isHome=router.pathname==='/'
+  return <><>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</><RouteIconNav/><CheckoutPrompt/><GlobalInteractionGuard/><Analytics/></>
+}
