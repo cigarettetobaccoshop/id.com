@@ -1,0 +1,62 @@
+name: R2 Live Data + Premium Sync
+on:
+  push:
+    branches: [upgrade/r2-live-data-premium]
+permissions:
+  contents: write
+jobs:
+  sync:
+    if: ${{ !contains(github.event.head_commit.message, '[r2-sync]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync live Supabase catalog and premium visual layer
+        env:
+          SUPABASE_KEY: sb_publishable_7wqbX7wUVFJZqinPyy8XLQ_SimByBEo
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request, pathlib
+          url='https://zgsbtexngystdmakqjyi.supabase.co/rest/v1/products?select=handle,title,variant_price,type,tags,published,status&published=eq.true&status=eq.active&order=title.asc'
+          key=os.environ['SUPABASE_KEY']
+          req=urllib.request.Request(url,headers={'apikey':key,'Authorization':'Bearer '+key})
+          rows=json.load(urllib.request.urlopen(req))
+          products=[]
+          for r in rows:
+            tags=(r.get('tags') or '').lower(); typ=r.get('type') or ''
+            cat='resmi' if ('resmi' in tags or typ.lower()!='r2') else 'r2'
+            seg=next((x for x in 'ABCDE' if ('segment '+x.lower()) in tags),None)
+            products.append({'id':r['handle'],'name':r['title'],'price':int(r.get('variant_price') or 0),'category':cat,'segment':seg,'segmentName':typ})
+          r2=[p for p in products if p['category']=='r2']; resmi=[p for p in products if p['category']=='resmi']
+          pathlib.Path('data.js').write_text("/* LIVE FALLBACK SNAPSHOT — generated from Supabase */\n'use strict';\nvar productsR2="+json.dumps(r2,ensure_ascii=False,separators=(',',':'))+";\nvar productsResmi="+json.dumps(resmi,ensure_ascii=False,separators=(',',':'))+";\nvar allProducts=productsR2.concat(productsResmi);\n",encoding='utf-8')
+          p=pathlib.Path('app.js'); s=p.read_text(encoding='utf-8')
+          s=s.replace("var SUPA_URL = 'https://nwrqdcrknipnfvhogjyg.supabase.co';","var SUPA_URL = 'https://zgsbtexngystdmakqjyi.supabase.co';")
+          s=s.replace("var SUPA_KEY = 'sb_publishable_mqJp3tqSL1gCjz1xdcgWGQ_mtDFRTmg';","var SUPA_KEY = 'sb_publishable_7wqbX7wUVFJZqinPyy8XLQ_SimByBEo';")
+          s=s.replace("supa.from('products').select('id,name,price,category,segment,segment_name').eq('is_active', true)","supa.from('products').select('handle,title,variant_price,type,tags,published,status').eq('published', true).eq('status', 'active')")
+          s=s.replace("return { id: r.id, name: r.name, price: r.price, category: r.category, segment: r.segment, segmentName: r.segment_name };","var tags=(r.tags||'').toLowerCase(); var type=r.type||''; var category=(tags.indexOf('resmi')!==-1 || type.toLowerCase()!=='r2')?'resmi':'r2'; var segment=['A','B','C','D','E'].find(function(x){return tags.indexOf('segment '+x.toLowerCase())!==-1;})||null; return {id:r.handle,name:r.title,price:Number(r.variant_price||0),category:category,segment:segment,segmentName:type};")
+          p.write_text(s,encoding='utf-8')
+          c=pathlib.Path('style.css'); css=c.read_text(encoding='utf-8')
+          if '/* R2 NUSANTARA 2026 — PREMIUM VISUAL OVERRIDES */' not in css:
+            css += """
+/* R2 NUSANTARA 2026 — PREMIUM VISUAL OVERRIDES */
+:root{--r2-ink:#0a0a0a;--r2-gold:#c9a84c;--r2-ivory:#fafaf8;--r2-line:rgba(10,10,10,.10)}
+html{background:var(--r2-ivory)}
+body{background:radial-gradient(1200px 520px at 85% -10%,rgba(201,168,76,.10),transparent 60%),var(--r2-ivory)!important;color:#171717;font-family:'DM Sans','Geist','Inter',system-ui,sans-serif}
+h1,h2,h3,h4,.font-serif,.section-title{font-family:'DM Serif Display','Cormorant Garamond',Georgia,serif!important}
+.section-title{color:var(--r2-ink)!important;letter-spacing:-.025em}.section-label{color:#8c6d22!important;background:rgba(201,168,76,.09)!important;border-color:rgba(201,168,76,.34)!important}
+.glass-pill{background:rgba(250,250,248,.84)!important;border-color:rgba(255,255,255,.8)!important;box-shadow:0 18px 55px -28px rgba(10,10,10,.28),inset 0 1px 0 rgba(255,255,255,.85)!important}
+.hero-bg{background:linear-gradient(180deg,rgba(250,250,248,.72),rgba(250,250,248,.96) 78%),url('assets/logo/hero-bg.jpg') center/cover no-repeat!important}.hero-card{border:1px solid rgba(201,168,76,.24)!important;box-shadow:0 35px 90px -42px rgba(10,10,10,.42)!important}
+.btn-gradient{background:linear-gradient(135deg,#111 0%,#2a2a2a 65%,#c9a84c 150%)!important;box-shadow:0 16px 32px -18px rgba(10,10,10,.55)!important}.btn-gradient:hover{background:linear-gradient(135deg,#c9a84c,#a9872d)!important}
+.btn-outline{border-color:rgba(10,10,10,.14)!important;color:#151515!important;background:rgba(255,255,255,.58)!important}.btn-outline:hover{border-color:rgba(201,168,76,.65)!important;color:#8c6d22!important;background:#fff!important}
+.mp-card,.featured-card,.testimonial-card-slide,.info-quad,.catalog-info-banner{border-color:var(--r2-line)!important;background:rgba(255,255,255,.82)!important;box-shadow:0 18px 55px -38px rgba(10,10,10,.38)}
+.mp-card:hover,.featured-card:hover,.testimonial-card-slide:hover{box-shadow:0 30px 70px -40px rgba(10,10,10,.48),0 0 0 1px rgba(201,168,76,.18)}.mp-price-now,.mp-price-now.sm{color:#111!important}.mp-stock-badge{color:#64704a!important}.catalog-tab.active,.filter-chip.bg-deep{background:#111!important}.marquee-wrap{background:rgba(255,255,255,.46)!important;border-color:rgba(10,10,10,.08)!important}.footer-bg{background:linear-gradient(135deg,#0a0a0a,#151515 58%,#211b10)!important}
+@media(max-width:767px){body{padding-bottom:76px}.mobile-bottom-nav{background:rgba(250,250,248,.88)!important;backdrop-filter:blur(22px)!important;-webkit-backdrop-filter:blur(22px)!important;border-top:1px solid rgba(10,10,10,.08)!important;box-shadow:0 -16px 40px -30px rgba(10,10,10,.55)!important}.mb-dock{border-color:rgba(201,168,76,.22)!important;background:rgba(255,255,255,.62)!important}.mb-dock-indicator{background:linear-gradient(90deg,#111,#c9a84c)!important}.mp-card{border-radius:20px!important}.mp-card-body{padding:12px!important}.mp-name{font-size:13px!important;line-height:1.25!important}.mp-price-now{font-size:15px!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+"""
+            c.write_text(css,encoding='utf-8')
+          PY
+          node --check app.js
+          git config user.name 'R2 NUSANTARA Upgrade Bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data.js app.js style.css
+          git diff --cached --quiet || git commit -m '[r2-sync] migrate live catalog and premium visual system'
+          git push
