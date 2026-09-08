@@ -1,0 +1,153 @@
+/* R2 NUSANTARA — CANVA-ALIGNED LAYOUT POLISH
+   Additive/no-regression visual layer.
+   Preserves existing routes, DOM, data, commerce logic and brand palette. */
+
+.hx-page{
+  --r2-content:min(1240px,calc(100vw - 40px));
+  --r2-section-y:clamp(56px,7vw,104px);
+  --r2-gap:clamp(16px,2vw,28px);
+  background:#FAFBFC;
+}
+
+/* Header: premium commerce hierarchy without changing the existing controls. */
+.hx-header{
+  width:100%;
+  max-width:none;
+  min-height:74px;
+  display:grid!important;
+  grid-template-columns:auto minmax(260px,520px) minmax(0,1fr) auto;
+  align-items:center;
+  gap:clamp(14px,2vw,30px)!important;
+  padding:10px max(20px,calc((100vw - 1440px)/2 + 20px))!important;
+  background:rgba(250,251,252,.94)!important;
+  border-bottom:1px solid rgba(8,10,13,.08)!important;
+  backdrop-filter:blur(18px) saturate(125%);
+  -webkit-backdrop-filter:blur(18px) saturate(125%);
+}
+.hx-brand{min-width:0;display:flex;align-items:center;gap:12px;text-decoration:none}
+.hx-logo{width:48px;height:48px;display:grid;place-items:center;flex:0 0 48px}
+.hx-logo img{display:block;width:48px;height:48px;object-fit:contain}
+.hx-brand b{display:block;white-space:nowrap;line-height:1.05;letter-spacing:.15em}
+.hx-brand small{display:block;margin-top:5px;white-space:nowrap;letter-spacing:.18em;opacity:.68}
+.hx-header nav{display:flex;align-items:center;justify-content:flex-end;gap:clamp(12px,1.5vw,24px);min-width:0}
+.hx-header nav a{white-space:nowrap;font-size:11px;letter-spacing:.08em}
+.hx-head-actions{display:flex;align-items:center;gap:10px;white-space:nowrap}
+
+/* Search: visually dominant but compact, with clear focus treatment. */
+.hx-header .hx-search{
+  width:100%;
+  min-width:0;
+  height:48px;
+  padding:0 7px 0 16px;
+  border:1px solid rgba(8,10,13,.09);
+  border-radius:999px;
+  background:#fff;
+  box-shadow:0 8px 24px rgba(8,10,13,.06);
+}
+.hx-header .hx-search input{min-width:0!important;height:46px;font-size:16px!important}
+.hx-header .hx-search button{width:36px;height:36px;border-radius:50%;border:0;background:#0A3157;color:#fff}
+.hx-header .hx-search:focus-within{border-color:rgba(30,95,168,.38);box-shadow:0 0 0 4px rgba(30,95,168,.10),0 10px 28px rgba(8,10,13,.07)}
+
+/* Hero: editorial composition, full bleed background, controlled content width. */
+.hx-hero{
+  width:100%;
+  max-width:none;
+  min-height:clamp(600px,72vw,760px);
+  margin:0!important;
+  padding:clamp(56px,7vw,92px) max(20px,calc((100vw - 1240px)/2 + 20px)) clamp(72px,9vw,112px)!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(320px,.72fr)!important;
+  align-items:center;
+  gap:clamp(28px,6vw,92px)!important;
+  overflow:hidden;
+  border-radius:0 0 28px 28px;
+}
+.hx-hero-copy{width:min(680px,100%);padding:0!important;z-index:2}
+.hx-eyebrow{font-size:clamp(10px,1vw,12px);letter-spacing:.24em;line-height:1.5}
+.hx-hero h1{font-size:clamp(52px,6.4vw,94px)!important;line-height:.93!important;letter-spacing:-.045em!important;max-width:760px!important;margin:18px 0 22px!important}
+.hx-hero h2{max-width:650px!important;font-size:clamp(20px,2vw,30px)!important;line-height:1.2!important}
+.hx-hero-copy>p{max-width:620px!important;font-size:clamp(14px,1.25vw,17px)!important;line-height:1.7!important}
+.hx-actions{display:flex!important;flex-wrap:wrap;gap:12px!important;margin-top:26px}
+.hx-primary,.hx-secondary{min-height:48px!important;padding:0 22px!important;border-radius:999px!important}
+.hx-hero-panel{align-self:center;justify-self:end;width:min(420px,100%);border-radius:26px!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.hx-hero-search{left:50%!important;right:auto!important;bottom:-28px!important;transform:translateX(-50%);width:min(900px,calc(100% - 40px))!important}
+
+/* Content rhythm: deliberate vertical cadence across remaining homepage sections. */
+.hx-section{width:min(1240px,calc(100% - 40px));margin-inline:auto;padding-block:var(--r2-section-y)!important}
+.hx-section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:clamp(22px,3vw,36px)!important}
+.hx-section-head h2{max-width:720px;line-height:1.02!important;margin-top:8px!important}
+.hx-section-head p{max-width:420px;margin:0!important}
+.hx-benefit-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--r2-gap)}
+.hx-benefit-grid article{min-width:0;border-radius:20px!important}
+.hx-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:6px}
+.hx-tabs::-webkit-scrollbar{display:none}
+.hx-tabs button{flex:0 0 auto;min-height:44px}
+.hx-tab-panel{min-height:180px;border-radius:24px!important;margin-top:12px!important}
+.hx-picks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--r2-gap)}
+.hx-picks article{min-width:0;border-radius:22px!important;overflow:hidden}
+.hx-pick-visual{min-height:230px!important}
+.hx-pick-body{padding:20px!important}
+.hx-pick-body button{min-height:46px!important;border-radius:999px!important}
+.hx-proof{width:min(1240px,calc(100% - 40px));margin-inline:auto;padding-block:var(--r2-section-y)!important}
+.hx-testimonial{border-radius:24px!important}
+.hx-faq-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px!important}
+.hx-faq-grid details{min-width:0;border-radius:16px!important}
+.hx-warehouse{width:min(1240px,calc(100% - 40px));margin:0 auto var(--r2-section-y)!important;border-radius:28px!important;overflow:hidden}
+
+/* Commerce touch states. */
+@media(hover:hover){
+  .hx-primary,.hx-secondary,.hx-cart,.hx-catalog,.hx-picks article,.hx-benefit-grid article,.hx-faq-grid details{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+  .hx-primary:hover,.hx-secondary:hover{transform:translateY(-2px)}
+  .hx-picks article:hover,.hx-benefit-grid article:hover,.hx-faq-grid details:hover{transform:translateY(-2px);box-shadow:0 18px 38px rgba(8,10,13,.08)}
+}
+
+/* Tablet. */
+@media(max-width:1023px){
+  .hx-header{grid-template-columns:auto minmax(220px,1fr) auto!important}
+  .hx-header nav{display:none!important}
+  .hx-hero{grid-template-columns:minmax(0,1fr) minmax(260px,.65fr)!important;gap:28px!important}
+  .hx-benefit-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hx-picks{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+/* Mobile: lock to viewport, retain the existing navigation and functionality. */
+@media(max-width:700px){
+  .hx-page{width:100%;max-width:100%;overflow-x:clip}
+  .hx-header{grid-template-columns:minmax(0,1fr) auto!important;min-height:68px;padding:8px 14px!important;gap:10px!important}
+  .hx-header .hx-search{grid-column:1 / -1;grid-row:2;height:46px}
+  .hx-brand{min-width:0;max-width:calc(100vw - 92px)}
+  .hx-brand b{font-size:12px;letter-spacing:.13em}
+  .hx-brand small{font-size:7px;letter-spacing:.14em}
+  .hx-logo,.hx-logo img{width:44px;height:44px}
+  .hx-head-actions{gap:6px}
+  .hx-verified,.hx-catalog{display:none!important}
+  .hx-hero{grid-template-columns:1fr!important;min-height:clamp(590px,86svh,720px)!important;padding:54px 18px 94px!important;border-radius:0 0 22px 22px}
+  .hx-hero-copy{width:100%;max-width:100%}
+  .hx-hero h1{font-size:clamp(44px,14vw,68px)!important;line-height:.94!important;margin-top:14px!important}
+  .hx-hero h2{font-size:21px!important}
+  .hx-hero-copy>p{font-size:15px!important;line-height:1.62!important}
+  .hx-actions{display:grid!important;grid-template-columns:1fr!important}
+  .hx-primary,.hx-secondary{width:100%!important}
+  .hx-hero-panel{display:none!important}
+  .hx-hero-search{display:none!important}
+  .hx-section,.hx-proof{width:calc(100% - 32px);padding-block:58px!important}
+  .hx-section-head{display:block;margin-bottom:22px!important}
+  .hx-section-head p{margin-top:10px!important}
+  .hx-benefit-grid{grid-template-columns:1fr!important;gap:10px}
+  .hx-picks{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .hx-pick-visual{min-height:180px!important}
+  .hx-pick-body{padding:14px!important}
+  .hx-faq-grid{grid-template-columns:1fr!important}
+  .hx-warehouse{width:calc(100% - 32px);margin-bottom:48px!important;border-radius:22px!important}
+}
+
+@media(max-width:390px){
+  .hx-header{padding-inline:11px!important}
+  .hx-picks{grid-template-columns:1fr}
+  .hx-hero{padding-inline:16px!important}
+  .hx-section,.hx-proof{width:calc(100% - 28px)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .hx-page *{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
