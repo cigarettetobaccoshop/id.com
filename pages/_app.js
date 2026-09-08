@@ -17,6 +17,7 @@ import { useRouter } from 'next/router'
 import { Analytics } from '@vercel/analytics/react'
 import RouteIconNav from '../components/RouteIconNav'
 import HomepageExperience from '../components/HomepageExperience'
+import BrandAssetLoader from '../components/BrandAssetLoader'
 
 function CheckoutPrompt() {
   const [count, setCount] = useState(0)
@@ -45,5 +46,5 @@ function GlobalInteractionGuard(){
 export default function App({ Component, pageProps }) {
   const router=useRouter()
   const isHome=router.pathname==='/'
-  return <><>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</><RouteIconNav/><CheckoutPrompt/><GlobalInteractionGuard/><Analytics/></>
+  return <><BrandAssetLoader/><>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</><RouteIconNav/><CheckoutPrompt/><GlobalInteractionGuard/><Analytics/></>
 }
