@@ -9,6 +9,7 @@ import '../styles/visual-final.css'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Analytics } from '@vercel/analytics/react'
+import RouteIconNav from '../components/RouteIconNav'
 
 function CheckoutPrompt() {
   const [count, setCount] = useState(0)
@@ -48,4 +49,4 @@ function GlobalInteractionGuard(){
   return null
 }
 
-export default function App({ Component, pageProps }) { return <><Component {...pageProps}/><CheckoutPrompt/><GlobalInteractionGuard/><Analytics/></> }
+export default function App({ Component, pageProps }) { return <><Component {...pageProps}/><RouteIconNav/><CheckoutPrompt/><GlobalInteractionGuard/><Analytics/></> }
