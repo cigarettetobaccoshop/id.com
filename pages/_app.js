@@ -13,10 +13,6 @@ import '../styles/visual-premium-upgrade.css'
 import '../styles/canva-light-final.css'
 import '../styles/r2-apple-minimal-final.css'
 import '../styles/r2-cross-page-theme-final.css'
-import '../styles/r2-simple-reference-downgrade.css'
-import '../styles/r2-visual-premium-production.css'
-import '../styles/r2-visual-components-final.css'
-import '../styles/r2-canva-final-migration.css'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -29,7 +25,7 @@ function CheckoutPrompt() {
   const [count, setCount] = useState(0)
   useEffect(() => { const sync=()=>{try{setCount(JSON.parse(localStorage.getItem('r2-cart')||'[]').length)}catch{setCount(0)}}; sync(); window.addEventListener('storage',sync); const timer=window.setInterval(sync,700); return()=>{window.removeEventListener('storage',sync);window.clearInterval(timer)} },[])
   if (!count) return null
-  return <Link href="/checkout" className="global-checkout"><span>🛒 {count} item{count>1?'s':''}</span><strong>Checkout →</strong><style jsx>{`.global-checkout{position:fixed;right:18px;bottom:18px;z-index:120;display:flex;align-items:center;gap:16px;background:#171717;color:#fff;text-decoration:none;border:1px solid rgba(49,91,138,.4);border-radius:999px;padding:10px 12px 10px 15px;box-shadow:0 8px 20px rgba(23,23,23,.12);font-size:10px;font-weight:800}.global-checkout strong{background:#315b8a;color:#fff;border-radius:999px;padding:9px 13px;font-size:9px}@media(max-width:700px){.global-checkout{left:18px;right:18px;bottom:87px;justify-content:space-between}}`}</style></Link>
+  return <Link href="/checkout" className="global-checkout"><span>🛒 {count} item{count>1?'s':''}</span><strong>Checkout →</strong><style jsx>{`.global-checkout{position:fixed;right:18px;bottom:18px;z-index:120;display:flex;align-items:center;gap:16px;background:#171717;color:#fff;text-decoration:none;border:1px solid rgba(31,94,255,.4);border-radius:999px;padding:10px 12px 10px 15px;box-shadow:0 12px 35px rgba(23,23,23,.18);font-size:10px;font-weight:800}.global-checkout strong{background:#1F5EFF;color:#fff;border-radius:999px;padding:9px 13px;font-size:9px}@media(max-width:700px){.global-checkout{left:18px;right:18px;bottom:87px;justify-content:space-between}}`}</style></Link>
 }
 
 function GlobalInteractionGuard(){
