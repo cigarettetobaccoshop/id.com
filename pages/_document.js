@@ -9,7 +9,7 @@ export default function Document() {
       <Head>
         <meta name="application-name" content="R2 NUSANTARA" />
         <meta name="apple-mobile-web-app-title" content="R2 NUSANTARA" />
-        <meta name="theme-color" content="#080a0d" />
+        <meta name="theme-color" content="#F7F6F2" />
         <meta property="og:locale" content="id_ID" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="R2 NUSANTARA" />
