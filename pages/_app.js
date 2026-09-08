@@ -53,3 +53,4 @@ export default function App({ Component, pageProps }) {
   const isHome=router.pathname==='/'
   return <><BrandAssetLoader/><>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</><RouteIconNav/><CheckoutPrompt/><GlobalInteractionGuard/><Analytics/></>
 }
+
