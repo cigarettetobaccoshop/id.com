@@ -6,6 +6,7 @@ import '../styles/catalog-mobile-grid.css'
 import '../styles/r2-canva-system.css'
 import '../styles/static-reference-premium.css'
 import '../styles/visual-final.css'
+import '../styles/homepage-content-upgrade.css'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Analytics } from '@vercel/analytics/react'
@@ -24,26 +25,12 @@ function GlobalInteractionGuard(){
       const cart=e.target.closest?.('a.cart-link, a[aria-label="Keranjang"]')
       if(cart && cart.getAttribute('href')!=='/checkout'){e.preventDefault();window.location.assign('/checkout');return}
       const card=e.target.closest?.('.r2-product')
-      if(card && !e.target.closest?.('.r2-card-actions') && !e.target.closest?.('a')){
-        e.preventDefault()
-        card.querySelector('.r2-card-actions button')?.click()
-        return
-      }
+      if(card && !e.target.closest?.('.r2-card-actions') && !e.target.closest?.('a')){e.preventDefault();card.querySelector('.r2-card-actions button')?.click();return}
     }
-    const onKeyDown=e=>{
-      if(e.key!=='Enter'||e.isComposing)return
-      const input=e.target.closest?.('.r2-search input')
-      if(input){
-        const value=input.value.trim()
-        if(value){e.preventDefault();window.location.assign(`/products?q=${encodeURIComponent(value)}`)}
-      }
-    }
-    document.addEventListener('click',onClick)
-    document.addEventListener('keydown',onKeyDown)
+    const onKeyDown=e=>{if(e.key!=='Enter'||e.isComposing)return;const input=e.target.closest?.('.r2-search input');if(input){const value=input.value.trim();if(value){e.preventDefault();window.location.assign(`/products?q=${encodeURIComponent(value)}`)}}}
+    document.addEventListener('click',onClick);document.addEventListener('keydown',onKeyDown)
     const hideNonFunctionalControl=()=>document.querySelectorAll('.r2-icon-btn[aria-label="Tampilan"]').forEach(el=>el.remove())
-    hideNonFunctionalControl()
-    const observer=new MutationObserver(hideNonFunctionalControl)
-    observer.observe(document.body,{childList:true,subtree:true})
+    hideNonFunctionalControl();const observer=new MutationObserver(hideNonFunctionalControl);observer.observe(document.body,{childList:true,subtree:true})
     return()=>{document.removeEventListener('click',onClick);document.removeEventListener('keydown',onKeyDown);observer.disconnect()}
   },[])
   return null
