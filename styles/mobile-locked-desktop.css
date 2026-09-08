@@ -1,0 +1,94 @@
+/* R2 NUSANTARA — COMPACT MOBILE DESKTOP CANVAS
+   Visual/layout layer only. Preserves DOM, routes, Supabase, cart, checkout and analytics. */
+
+@media (max-width: 767px){
+  :root{--r2-mobile-canvas:480px;--r2-mobile-gutter:12px;--r2-mobile-gap:10px}
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  body{min-width:320px;background:#f8f9fc}
+  #__next{width:100%;max-width:100%;overflow-x:clip}
+  .hx-page,.site-shell{width:100%;max-width:var(--r2-mobile-canvas);margin-inline:auto;overflow-x:clip;background:#f8f9fc}
+
+  /* Header: compact, centered, desktop hierarchy retained */
+  .hx-header,.topbar{width:100%!important;min-height:62px!important;padding:7px var(--r2-mobile-gutter)!important;gap:8px!important}
+  .hx-header{grid-template-columns:minmax(0,1fr) auto!important}
+  .hx-header nav{display:none!important}
+  .hx-brand{min-width:0!important;gap:8px!important;max-width:calc(100% - 72px)}
+  .hx-logo,.hx-logo img,.brand-logo{width:38px!important;height:38px!important;flex:0 0 38px}
+  .hx-brand b,.brand strong{font-size:10px!important;letter-spacing:.12em!important;white-space:nowrap}
+  .hx-brand small,.brand small{font-size:6px!important;letter-spacing:.10em!important;white-space:nowrap}
+  .hx-head-actions{gap:5px!important}
+  .hx-head-actions>*{min-width:34px}
+  .hx-verified,.hx-catalog,.portal-button{font-size:8px!important;padding:8px 9px!important}
+  .hx-header .hx-search{grid-column:1/-1;grid-row:2;height:40px!important;margin-top:2px}
+  .hx-header .hx-search input{height:38px!important;font-size:13px!important}
+
+  /* Hero: one compact visual block, balanced left/right edges */
+  .hx-hero,.hero{width:100%!important;min-height:0!important;grid-template-columns:1fr!important;padding:40px 16px 54px!important;gap:22px!important;border-radius:0 0 20px 20px}
+  .hx-hero-copy,.hero-copy{width:100%!important;max-width:100%!important}
+  .hx-eyebrow,.eyebrow{font-size:8px!important;letter-spacing:.16em!important}
+  .hx-hero h1,.hero h1{font-size:clamp(42px,13vw,62px)!important;line-height:.90!important;letter-spacing:-.045em!important;margin:12px 0 16px!important;max-width:100%!important}
+  .hx-hero h2{font-size:18px!important;line-height:1.2!important}
+  .hx-hero-copy>p,.lead{font-size:13px!important;line-height:1.55!important;max-width:420px!important}
+  .hx-actions,.actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;margin-top:20px!important}
+  .hx-primary,.hx-secondary,.button{min-height:42px!important;padding:0 12px!important;font-size:10px!important;width:100%!important}
+  .hx-hero-panel{width:100%!important;max-width:420px!important;justify-self:center!important;border-radius:18px!important}
+  .hx-hero-search{width:calc(100% - 28px)!important;bottom:-22px!important}
+
+  /* Metrics/trust: symmetrical compact columns */
+  .hx-metrics{width:100%!important;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  .hx-metrics a{padding:13px 6px!important;min-width:0!important}
+  .hx-metrics strong{font-size:14px!important}.hx-metrics span{font-size:8px!important;line-height:1.2!important}.hx-metrics small{font-size:7px!important}
+  .hero-trust,.trust-badge,.live-visitor-badge{font-size:8px!important;padding:5px 7px!important}
+
+  /* Sections: same max width and rhythm everywhere */
+  .hx-section,.hx-proof,.hx-warehouse{width:calc(100% - 24px)!important;max-width:456px!important;margin-inline:auto!important;padding-block:42px!important}
+  .hx-section-head{display:flex!important;align-items:flex-end!important;justify-content:space-between!important;gap:12px!important;margin-bottom:18px!important}
+  .hx-section-head h2{font-size:24px!important;line-height:1.03!important;margin-top:5px!important}
+  .hx-section-head p{font-size:10px!important;line-height:1.45!important;max-width:190px!important;text-align:right}
+  .hx-benefit-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+  .hx-benefit-grid article{border-radius:14px!important;padding:12px!important}
+  .hx-card-icon{width:32px!important;height:32px!important}
+
+  /* Catalog/product grid: dense but readable 2-up */
+  #produk .grid,.hx-picks{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+  #produk{padding-top:30px!important;padding-bottom:82px!important}
+  .hx-picks article,.product-card{min-width:0!important;border-radius:14px!important}
+  .hx-pick-visual,.product-card img{min-height:0!important;aspect-ratio:1/1!important;object-fit:cover!important}
+  .hx-pick-body,.product-card .p-4,.product-card .p-5{padding:10px!important}
+  .hx-pick-body h3,.product-card h3{font-size:11px!important;line-height:1.25!important}
+  .hx-pick-body>strong,.product-card .text-lg,.product-card .text-xl{font-size:13px!important}
+  .product-card .text-sm{font-size:9px!important}
+  .hx-pick-body button{min-height:38px!important;font-size:9px!important}
+  .hx-tabs{gap:6px!important;margin-inline:0!important}
+  .hx-tabs button{min-height:36px!important;padding:0 11px!important;font-size:9px!important}
+
+  /* Proof / warehouse / FAQ */
+  .hx-proof{border-radius:20px!important;padding-inline:16px!important}
+  .hx-proof h2{font-size:24px!important}
+  .hx-testimonial{border-radius:16px!important;padding:14px!important}
+  .hx-faq-grid{grid-template-columns:1fr!important;gap:7px!important}
+  .hx-faq-grid details{border-radius:12px!important}
+  .hx-warehouse{border-radius:20px!important;margin-bottom:36px!important}
+
+  /* Footer and fixed navigation never collide with content */
+  .hx-footer,footer{padding-bottom:78px!important}
+  .route-icon-nav,.mobile-bottom-nav{height:58px!important;min-height:58px!important}
+  .route-icon-nav{padding-bottom:env(safe-area-inset-bottom)!important}
+  .global-checkout{left:12px!important;right:12px!important;bottom:70px!important}
+}
+
+@media (max-width:390px){
+  .hx-actions,.actions{grid-template-columns:1fr!important}
+  .hx-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .hx-section,.hx-proof,.hx-warehouse{width:calc(100% - 20px)!important}
+  .hx-section-head{display:block!important}.hx-section-head p{text-align:left;max-width:100%;margin-top:7px!important}
+  .hx-picks,#produk .grid{gap:7px!important}
+}
+
+@media (min-width:768px){
+  .hx-page,.site-shell{max-width:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
