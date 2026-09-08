@@ -12,7 +12,11 @@ const requiredFiles = [
   'pages/_app.js',
   'lib/supabaseClient.js',
   'styles/mobile-lock.css',
-  'styles/r2-canva-system.css',
+  'styles/r2-premium.css',
+  'styles/catalog-modern.css',
+  'styles/catalog-mobile-grid.css',
+  'styles/homepage-experience.css',
+  'styles/r2-cross-page-theme-final.css',
   'next.config.js',
   'vercel.json',
 ]
@@ -29,21 +33,25 @@ const checkout = fs.readFileSync(path.join(process.cwd(), 'pages/checkout.js'), 
 const health = fs.readFileSync(path.join(process.cwd(), 'pages/api/health.js'), 'utf8')
 const app = fs.readFileSync(path.join(process.cwd(), 'pages/_app.js'), 'utf8')
 const mobile = fs.readFileSync(path.join(process.cwd(), 'styles/mobile-lock.css'), 'utf8')
-const canva = fs.readFileSync(path.join(process.cwd(), 'styles/r2-canva-system.css'), 'utf8')
+const theme = fs.readFileSync(path.join(process.cwd(), 'styles/r2-cross-page-theme-final.css'), 'utf8')
 
 for (const marker of ["getServerSideProps", "from('R2 NUSANTARA')", "eq('Published',true)"]) {
   if (!products.includes(marker)) throw new Error(`Catalog SSR marker missing: ${marker}`)
 }
 if (!products.includes("eq('Status','active')")) throw new Error('Catalog active-status marker missing')
-if (!apiProducts.includes(".limit(limit)")) throw new Error('Products API limit handling missing')
+if (!apiProducts.includes('.limit(limit)')) throw new Error('Products API limit handling missing')
 if (!apiProducts.includes("count: 'exact'")) throw new Error('Products API exact count missing')
-if (!orders.includes("PAYMENT_METHODS")) throw new Error('Order payment validation missing')
-if (!orders.includes("Variant Inventory Qty")) throw new Error('Server-side stock validation missing')
+if (!orders.includes('PAYMENT_METHODS')) throw new Error('Order payment validation missing')
+if (!orders.includes('Variant Inventory Qty')) throw new Error('Server-side stock validation missing')
 if (!checkout.includes("fetch('/api/orders'")) throw new Error('Checkout order API integration missing')
-if (!health.includes("active_products")) throw new Error('Production health catalog check missing')
-if (!app.includes("mobile-lock.css")) throw new Error('Global mobile lock is not registered')
-if (!app.includes("r2-canva-system.css")) throw new Error('Canva design system is not registered')
+if (!health.includes('active_products')) throw new Error('Production health catalog check missing')
+if (!app.includes('mobile-lock.css')) throw new Error('Global mobile lock is not registered')
+if (!app.includes('r2-cross-page-theme-final.css')) throw new Error('Canonical visual system is not registered')
 if (!mobile.includes('@media (max-width:620px)')) throw new Error('Mobile breakpoint missing')
-if (!canva.includes('--r2-gold')) throw new Error('Canva visual token system missing')
+if (!theme.includes('--r2-gold')) throw new Error('Canonical visual token system missing')
+
+const cssImports = [...app.matchAll(/import ['"]\.\.\/styles\/([^'"]+\.css)['"]/g)].map(m => m[1])
+const duplicateImports = cssImports.filter((name, index) => cssImports.indexOf(name) !== index)
+if (duplicateImports.length) throw new Error(`Duplicate global CSS import: ${duplicateImports.join(', ')}`)
 
 console.log('R2 NUSANTARA production smoke test: PASS')

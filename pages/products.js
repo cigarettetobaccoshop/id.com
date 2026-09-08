@@ -66,7 +66,7 @@ export default function ProductsPage({products,count,initialError}){
     <Head><title>Katalog — R2 NUSANTARA</title><meta name="description" content={`${count} produk live R2 Nusantara untuk mitra distribusi.`}/></Head>
     <main className="catalog-app">
       <header className="catalog-mobile-header">
-        <Link href="/" className="brand"><span className="brand-mark"><span>R2</span></span><span className="brand-copy"><strong>R2 NUSANTARA</strong><small>DISTRIBUTOR</small></span></Link>
+        <Link href="/" className="brand"><span className="brand-mark"><img src="/assets/logo/logo.png" alt="R2 NUSANTARA" width="40" height="40" /></span><span className="brand-copy"><strong>R2 NUSANTARA</strong><small>DISTRIBUTOR</small></span></Link>
         <div className="catalog-head-actions"><Link href="/checkout" className="cart-link" aria-label="Keranjang"><RouteIcon type="cart" size={21}/><b>{cart.length}</b></Link><Link href="/contact" className="user-link" aria-label="Akun"><RouteIcon type="account" size={21}/></Link></div>
       </header>
       <section className="catalog-top"><Link href="/" className="desktop-back">← R2 NUSANTARA</Link><div><span className="eyebrow">OFFICIAL DISTRIBUTOR · LIVE CATALOG</span><h1>Produk <em>R2 Nusantara</em></h1><p><strong>{count}</strong> produk aktif tersedia untuk mitra distribusi.</p></div><div className="live-dot"><i/> LIVE</div></section>
