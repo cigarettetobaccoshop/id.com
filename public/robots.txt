@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /checkout
+Sitemap: https://r2-online-shop.vercel.app/sitemap.xml
