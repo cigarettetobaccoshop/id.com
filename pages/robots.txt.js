@@ -1,1 +1,0 @@
-export default function handler(req,res){res.setHeader('Content-Type','text/plain; charset=utf-8');res.status(200).send('User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /checkout\nSitemap: https://r2-online-shop.vercel.app/sitemap.xml\n')}
