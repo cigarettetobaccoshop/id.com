@@ -3,6 +3,7 @@ import Link from 'next/link'
 import {useEffect,useMemo,useState} from 'react'
 import {useRouter} from 'next/router'
 import {supabase} from '../lib/supabaseClient'
+import {RouteIcon} from '../components/RouteIconNav'
 
 const COLUMNS='Handle,Title,Vendor,Type,Tags,Published,Option1 Name,Option1 Value,Variant SKU,Variant Price,"Variant Inventory Qty",Status'
 const PAGE_SIZE=24
@@ -66,7 +67,7 @@ export default function ProductsPage({products,count,initialError}){
     <main className="catalog-app">
       <header className="catalog-mobile-header">
         <Link href="/" className="brand"><span className="brand-mark"><span>R2</span></span><span className="brand-copy"><strong>R2 NUSANTARA</strong><small>DISTRIBUTOR</small></span></Link>
-        <div className="catalog-head-actions"><Link href="/checkout" className="cart-link" aria-label="Keranjang">□<b>{cart.length}</b></Link><Link href="/contact" className="user-link">○</Link></div>
+        <div className="catalog-head-actions"><Link href="/checkout" className="cart-link" aria-label="Keranjang"><RouteIcon type="cart" size={21}/><b>{cart.length}</b></Link><Link href="/contact" className="user-link" aria-label="Akun"><RouteIcon type="account" size={21}/></Link></div>
       </header>
       <section className="catalog-top"><Link href="/" className="desktop-back">← R2 NUSANTARA</Link><div><span className="eyebrow">OFFICIAL DISTRIBUTOR · LIVE CATALOG</span><h1>Produk <em>R2 Nusantara</em></h1><p><strong>{count}</strong> produk aktif tersedia untuk mitra distribusi.</p></div><div className="live-dot"><i/> LIVE</div></section>
       <section className="catalog-tools"><label className="search-box">⌕<input value={q} onChange={e=>reset(()=>setQ(e.target.value))} placeholder="Cari produk, kategori, atau merk..." aria-label="Cari produk"/></label><button className="filter-button" type="button" onClick={()=>document.querySelector('.filters')?.scrollIntoView({behavior:'smooth'})}>☷</button></section>
@@ -81,7 +82,6 @@ export default function ProductsPage({products,count,initialError}){
       <section className="trust-banner"><div className="trust-mark">✓</div><div><strong>Mitra Terverifikasi, Transaksi Aman</strong><p>Data katalog live dan komunikasi langsung dengan partner.</p></div><Link href="/contact">PARTNER ACCESS →</Link></section>
       <footer className="footer">© {new Date().getFullYear()} R2 NUSANTARA · WHOLESALE DISTRIBUTION PARTNER</footer>
     </main>
-    <nav className="bottom-nav"><Link href="/"><span>⌂</span>Beranda</Link><Link href="/products" className="active"><span>⊞</span>Katalog</Link><Link href="/checkout"><span className="bottom-cart">□<b>{cart.length}</b></span>Keranjang</Link><Link href="/contact"><span>○</span>Akun</Link></nav>
     {selected&&<div className="modal-backdrop" onClick={()=>setSelected(null)}><section className="quick-modal" onClick={e=>e.stopPropagation()}><button type="button" className="close" onClick={()=>setSelected(null)} aria-label="Tutup">×</button><Visual favorite={favorites.includes(keyOf(selected))} onFavorite={()=>toggleFavorite(selected)}/><span className="category">{selected.Type||selected.Vendor||'WHOLESALE'}</span><h2>{selected.Title||selected.Handle}</h2><div className="price">{money(selected['Variant Price'])}</div><p>SKU: {selected['Variant SKU']||'—'} · Stok: {stock(selected['Variant Inventory Qty'])}</p><button type="button" className="modal-add" onClick={()=>{add(selected);setSelected(null)}}>ADD TO CART →</button></section></div>}
     {toast&&<div className="toast">✓ {toast}</div>}
   </>
