@@ -17,14 +17,11 @@ function CheckoutPrompt() {
 
 function GlobalInteractionGuard(){
   useEffect(()=>{
-    const onClick=e=>{
-      const cart=e.target.closest?.('a.cart-link, a[aria-label="Keranjang"]')
-      if(cart && cart.getAttribute('href')!=='/checkout'){e.preventDefault();window.location.assign('/checkout');return}
-      const theme=e.target.closest?.('.r2-icon-btn[aria-label="Tampilan"]')
-      if(theme){e.preventDefault();theme.setAttribute('aria-label','Tampilan premium');theme.setAttribute('title','Tampilan premium');return}
-    }
-    document.addEventListener('click',onClick)
-    return()=>document.removeEventListener('click',onClick)
+    const hideNonFunctionalControl=()=>document.querySelectorAll('.r2-icon-btn[aria-label="Tampilan"]').forEach(el=>el.remove())
+    hideNonFunctionalControl()
+    const observer=new MutationObserver(hideNonFunctionalControl)
+    observer.observe(document.body,{childList:true,subtree:true})
+    return()=>observer.disconnect()
   },[])
   return null
 }
