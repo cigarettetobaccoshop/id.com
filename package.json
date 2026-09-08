@@ -26,6 +26,9 @@
     "url": "https://github.com/cigarettetobaccoshop/id.com/issues"
   },
   "homepage": "https://github.com/cigarettetobaccoshop/id.com#readme",
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/supabase-js": "^2.45.0",
