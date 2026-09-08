@@ -27,7 +27,7 @@ export default function RouteIconNav() {
     return () => { window.removeEventListener('storage', sync); window.clearInterval(timer) }
   }, [])
   const active = path => path === '/' ? router.pathname === '/' : router.pathname.startsWith(path)
-  return <nav className="route-icon-nav" aria-label="Navigasi utama">
+  return <nav className="route-icon-nav" aria-label="Navigasi utama mobile">
     {Object.entries(ICONS).map(([type, item]) => {
       const isActive = active(item.path)
       return <Link href={item.path} key={type} className={isActive ? 'is-active' : ''} aria-current={isActive ? 'page' : undefined}>
