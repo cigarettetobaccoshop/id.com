@@ -1,8 +1,6 @@
 name: Optimize & Deploy to GitHub Pages
 
-# Jalan otomatis tiap push ke main — minify HTML/CSS/JS SEBELUM di-publish,
-# source asli di repo tidak diubah (kerja di folder terpisah _site/), jadi
-# tetap gampang di-edit manual seperti biasa.
+# Jalan otomatis tiap push ke main — build di _site agar source tetap mudah diedit.
 on:
   push:
     branches: [main]
@@ -29,38 +27,90 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install minifier (html-minifier-terser, csso, terser)
+      - name: Install minifier
         run: npm install -g html-minifier-terser csso-cli terser
 
-      - name: Siapkan folder output (_site) — salin semua aset apa adanya dulu
+      - name: Siapkan folder output
         run: |
           mkdir -p _site
           rsync -av --exclude='.git' --exclude='.github' --exclude='_site' --exclude='node_modules' ./ _site/
 
+      - name: Sinkronisasi katalog live dari Supabase
+        env:
+          SUPABASE_KEY: sb_publishable_7wqbX7wUVFJZqinPyy8XLQ_SimByBEo
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request, pathlib
+          url='https://zgsbtexngystdmakqjyi.supabase.co/rest/v1/products?select=handle,title,variant_price,type,tags,published,status&published=eq.true&status=eq.active&order=title.asc'
+          key=os.environ['SUPABASE_KEY']
+          req=urllib.request.Request(url,headers={'apikey':key,'Authorization':'Bearer '+key})
+          rows=json.load(urllib.request.urlopen(req))
+          products=[]
+          for r in rows:
+            tags=(r.get('tags') or '').lower(); typ=r.get('type') or ''
+            category='resmi' if ('resmi' in tags or typ.lower()!='r2') else 'r2'
+            segment=next((x for x in 'ABCDE' if ('segment '+x.lower()) in tags),None)
+            products.append({'id':r['handle'],'name':r['title'],'price':int(r.get('variant_price') or 0),'category':category,'segment':segment,'segmentName':typ})
+          r2=[p for p in products if p['category']=='r2']; resmi=[p for p in products if p['category']=='resmi']
+          out="/* LIVE FALLBACK SNAPSHOT — generated from Supabase */\n'use strict';\nvar productsR2="+json.dumps(r2,ensure_ascii=False,separators=(',',':'))+";\nvar productsResmi="+json.dumps(resmi,ensure_ascii=False,separators=(',',':'))+";\nvar allProducts=productsR2.concat(productsResmi);\n"
+          pathlib.Path('_site/data.js').write_text(out,encoding='utf-8')
+          print('Live products:',len(products),'R2:',len(r2),'Resmi:',len(resmi))
+          PY
+
+      - name: Align static runtime with production Supabase schema
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('_site/app.js'); s=p.read_text(encoding='utf-8')
+          s=s.replace("var SUPA_URL = 'https://nwrqdcrknipnfvhogjyg.supabase.co';","var SUPA_URL = 'https://zgsbtexngystdmakqjyi.supabase.co';")
+          s=s.replace("var SUPA_KEY = 'sb_publishable_mqJp3tqSL1gCjz1xdcgWGQ_mtDFRTmg';","var SUPA_KEY = 'sb_publishable_7wqbX7wUVFJZqinPyy8XLQ_SimByBEo';")
+          s=s.replace("supa.from('products').select('id,name,price,category,segment,segment_name').eq('is_active', true)","supa.from('products').select('handle,title,variant_price,type,tags,published,status').eq('published', true).eq('status', 'active')")
+          s=s.replace("return { id: r.id, name: r.name, price: r.price, category: r.category, segment: r.segment, segmentName: r.segment_name };","var tags=(r.tags||'').toLowerCase(); var type=r.type||''; var category=(tags.indexOf('resmi')!==-1 || type.toLowerCase()!=='r2')?'resmi':'r2'; var segment=['A','B','C','D','E'].find(function(x){return tags.indexOf('segment '+x.toLowerCase())!==-1;})||null; return {id:r.handle,name:r.title,price:Number(r.variant_price||0),category:category,segment:segment,segmentName:type};")
+          p.write_text(s,encoding='utf-8')
+          PY
+          node --check _site/app.js
+
+      - name: Apply R2 NUSANTARA premium visual layer
+        run: |
+          cat >> _site/style.css <<'CSS'
+/* R2 NUSANTARA 2026 — additive premium visual layer */
+:root{--r2-ink:#0a0a0a;--r2-gold:#c9a84c;--r2-ivory:#fafaf8;--r2-line:rgba(10,10,10,.10)}
+html{background:var(--r2-ivory)}
+body{background:radial-gradient(1200px 520px at 85% -10%,rgba(201,168,76,.10),transparent 60%),var(--r2-ivory)!important;color:#171717;font-family:'DM Sans','Geist','Inter',system-ui,sans-serif}
+h1,h2,h3,h4,.font-serif,.section-title{font-family:'DM Serif Display','Cormorant Garamond',Georgia,serif!important}
+.section-title{color:var(--r2-ink)!important;letter-spacing:-.025em}.section-label{color:#8c6d22!important;background:rgba(201,168,76,.09)!important;border-color:rgba(201,168,76,.34)!important}
+.glass-pill{background:rgba(250,250,248,.84)!important;border-color:rgba(255,255,255,.8)!important;box-shadow:0 18px 55px -28px rgba(10,10,10,.28),inset 0 1px 0 rgba(255,255,255,.85)!important}
+.hero-bg{background:linear-gradient(180deg,rgba(250,250,248,.72),rgba(250,250,248,.96) 78%),url('assets/logo/hero-bg.jpg') center/cover no-repeat!important}.hero-card{border:1px solid rgba(201,168,76,.24)!important;box-shadow:0 35px 90px -42px rgba(10,10,10,.42)!important}
+.btn-gradient{background:linear-gradient(135deg,#111 0%,#2a2a2a 65%,#c9a84c 150%)!important;box-shadow:0 16px 32px -18px rgba(10,10,10,.55)!important}.btn-gradient:hover{background:linear-gradient(135deg,#c9a84c,#a9872d)!important}
+.btn-outline{border-color:rgba(10,10,10,.14)!important;color:#151515!important;background:rgba(255,255,255,.58)!important}.btn-outline:hover{border-color:rgba(201,168,76,.65)!important;color:#8c6d22!important;background:#fff!important}
+.mp-card,.featured-card,.testimonial-card-slide,.info-quad,.catalog-info-banner{border-color:var(--r2-line)!important;background:rgba(255,255,255,.82)!important;box-shadow:0 18px 55px -38px rgba(10,10,10,.38)}
+.mp-card:hover,.featured-card:hover,.testimonial-card-slide:hover{box-shadow:0 30px 70px -40px rgba(10,10,10,.48),0 0 0 1px rgba(201,168,76,.18)}.mp-price-now,.mp-price-now.sm{color:#111!important}.mp-stock-badge{color:#64704a!important}.catalog-tab.active,.filter-chip.bg-deep{background:#111!important}.marquee-wrap{background:rgba(255,255,255,.46)!important;border-color:rgba(10,10,10,.08)!important}.footer-bg{background:linear-gradient(135deg,#0a0a0a,#151515 58%,#211b10)!important}
+@media(max-width:767px){body{padding-bottom:76px}.mobile-bottom-nav{background:rgba(250,250,248,.88)!important;backdrop-filter:blur(22px)!important;-webkit-backdrop-filter:blur(22px)!important;border-top:1px solid rgba(10,10,10,.08)!important;box-shadow:0 -16px 40px -30px rgba(10,10,10,.55)!important}.mb-dock{border-color:rgba(201,168,76,.22)!important;background:rgba(255,255,255,.62)!important}.mb-dock-indicator{background:linear-gradient(90deg,#111,#c9a84c)!important}.mp-card{border-radius:20px!important}.mp-card-body{padding:12px!important}.mp-name{font-size:13px!important;line-height:1.25!important}.mp-price-now{font-size:15px!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+CSS
+
+      - name: Align live copy counts in rendered HTML
+        run: |
+          sed -i 's/230+ merek/233+ merek/g; s/230+ Merek/233+ Merek/g' _site/index.html
+
       - name: Minify HTML
         run: |
-          html-minifier-terser _site/index.html -o _site/index.html \
-            --collapse-whitespace --remove-comments --minify-css true --minify-js true \
-            --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes
+          html-minifier-terser _site/index.html -o _site/index.html --collapse-whitespace --remove-comments --minify-css true --minify-js true --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes
 
       - name: Minify CSS
         run: csso _site/style.css -o _site/style.css
 
-      - name: Minify JS (app.js & data.js)
+      - name: Minify JS
         run: |
           terser _site/app.js -o _site/app.js --compress --mangle
           terser _site/data.js -o _site/data.js --compress --mangle
 
-      - name: Laporkan penghematan ukuran
+      - name: Laporkan hasil build
         run: |
-          echo "### 📦 Hasil Minifikasi" >> $GITHUB_STEP_SUMMARY
-          for f in index.html style.css app.js data.js; do
-            before=$(wc -c < "$f")
-            after=$(wc -c < "_site/$f")
-            saved=$((before - after))
-            pct=$((saved * 100 / before))
-            echo "- **$f**: $before → $after bytes (hemat $saved bytes, $pct%)" >> $GITHUB_STEP_SUMMARY
-          done
+          echo "### R2 NUSANTARA — Live Static Build" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Supabase source: zgsbtexngystdmakqjyi" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Live catalog is generated at build time; source fallback remains untouched." >> "$GITHUB_STEP_SUMMARY"
+          for f in index.html style.css app.js data.js; do echo "- _site/$f: $(wc -c < "_site/$f") bytes" >> "$GITHUB_STEP_SUMMARY"; done
 
       - name: Upload artifact untuk Pages
         uses: actions/upload-pages-artifact@v3

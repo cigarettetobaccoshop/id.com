@@ -1,4 +1,4 @@
-import { supabase } from '../../lib/supabaseClient'
+import { supabaseServer } from '../../lib/supabaseServer'
 
 export const config = {
   api: { bodyParser: { sizeLimit: '16kb' } },
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     if (!name || name.length < 2) return res.status(400).json({ error: 'Nama wajib diisi.' })
     if (!EMAIL_RE.test(email)) return res.status(400).json({ error: 'Format email tidak valid.' })
     if (!message || message.length < 10) return res.status(400).json({ error: 'Pesan minimal 10 karakter.' })
-    const { error } = await supabase.rpc('submit_contact_message', { p_name: name, p_email: email, p_subject: subject, p_message: message })
+    const { error } = await supabaseServer.rpc('submit_contact_message', { p_name: name, p_email: email, p_subject: subject, p_message: message })
     if (error) {
       console.error('Supabase contact RPC failed:', error.message)
       return res.status(error.message === 'Duplicate submission' ? 429 : 500).json({ error: error.message === 'Duplicate submission' ? 'Pesan yang sama baru saja dikirim. Silakan tunggu sebentar.' : 'Pesan gagal dikirim. Silakan coba lagi.' })

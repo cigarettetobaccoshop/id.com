@@ -9,7 +9,7 @@ export default function Document() {
       <Head>
         <meta name="application-name" content="R2 NUSANTARA" />
         <meta name="apple-mobile-web-app-title" content="R2 NUSANTARA" />
-        <meta name="theme-color" content="#080a0d" />
+        <meta name="theme-color" content="#F7F6F2" />
         <meta property="og:locale" content="id_ID" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="R2 NUSANTARA" />
@@ -25,6 +25,7 @@ export default function Document() {
         <meta name="twitter:description" content="Portal B2B eksklusif R2 Nusantara untuk mitra distribusi terverifikasi." />
         <meta name="twitter:image" content={SOCIAL_IMAGE} />
         <link rel="canonical" href={SITE_URL} />
+        <script dangerouslySetInnerHTML={{__html:`(function(){try{document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.remove()});var m=document.createElement('meta');m.name='theme-color';m.content='#F7F6F2';document.head.appendChild(m)}catch(e){}})()`}} />
       </Head>
       <body>
         <Main />

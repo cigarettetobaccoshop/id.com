@@ -1,0 +1,124 @@
+/* R2 NUSANTARA — SHOPIFY-INSPIRED B2B COMMERCE SYSTEM
+   Original implementation inspired by modern Shopify storefront UX patterns:
+   clear hierarchy, collection-first navigation, dense product discovery,
+   conversion-focused CTAs, trust surfaces and mobile-first commerce.
+   No Shopify assets or proprietary code are copied. */
+:root{
+  --shop-ink:#102A43;
+  --shop-navy:#0F3D6E;
+  --shop-blue:#1E5FA8;
+  --shop-surface:#FFFFFF;
+  --shop-soft:#F4F7FA;
+  --shop-line:#D9E2EC;
+  --shop-muted:#627D98;
+  --shop-radius:12px;
+  --shop-ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box}
+body{background:#fff!important;color:var(--shop-ink)!important}
+/* Storefront shell */
+.hx-page{background:#fff!important}
+.hx-header{position:sticky!important;top:0!important;z-index:100!important;width:min(1440px,calc(100% - 28px))!important;margin:12px auto 0!important;border-radius:16px!important;padding:12px 18px!important}
+.hx-brand{gap:12px!important}
+.hx-logo{width:42px!important;height:42px!important;border-radius:10px!important;font-size:15px!important}
+.hx-brand b{letter-spacing:.02em!important;font-size:14px!important}
+.hx-header nav{gap:24px!important}
+.hx-header nav a{font-size:11px!important;font-weight:700!important;letter-spacing:.06em!important}
+.hx-head-actions{gap:9px!important}
+.hx-cart,.hx-catalog{min-height:40px!important;padding:0 14px!important;border-radius:8px!important;font-size:10px!important}
+/* Conversion-first hero */
+.hx-hero{width:min(1280px,calc(100% - 36px))!important;margin:28px auto 0!important;border-radius:20px!important;overflow:hidden!important;background:linear-gradient(120deg,#F4F8FC 0%,#fff 58%,#EEF5FB 100%)!important;padding:clamp(28px,5vw,72px)!important;gap:48px!important}
+.hx-hero-copy{max-width:700px!important}
+.hx-eyebrow{font-size:11px!important;font-weight:800!important;letter-spacing:.08em!important;text-transform:uppercase!important}
+.hx-hero h1{font-size:clamp(38px,6vw,76px)!important;letter-spacing:-.035em!important;margin:18px 0 8px!important}
+.hx-hero h2{font-family:Inter,system-ui,sans-serif!important;font-size:clamp(20px,3vw,32px)!important;font-weight:500!important;letter-spacing:-.02em!important}
+.hx-hero h2 em{font-style:normal!important;color:var(--shop-blue)!important}
+.hx-hero p{max-width:620px!important;font-size:15px!important;color:var(--shop-muted)!important}
+.hx-actions{gap:10px!important;margin-top:24px!important}
+.hx-primary,.hx-secondary{min-height:46px!important;border-radius:8px!important;padding:0 19px!important;font-weight:800!important;font-size:11px!important;letter-spacing:.05em!important}
+.hx-hero-panel{min-width:min(360px,100%)!important;border-radius:16px!important;padding:30px!important}
+.hx-hero-panel strong{font-size:76px!important;line-height:1!important;letter-spacing:-.06em!important}
+/* Trust / merchandising strip */
+.hx-metrics{width:min(1280px,calc(100% - 36px))!important;margin:18px auto 0!important;display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:1px!important;background:var(--shop-line)!important;border:1px solid var(--shop-line)!important;border-radius:12px!important;overflow:hidden!important}
+.hx-metrics a{border:0!important;border-radius:0!important;box-shadow:none!important;padding:22px!important}
+.hx-metrics strong{font-size:24px!important;color:var(--shop-navy)!important}
+.hx-metrics span{font-size:11px!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.06em!important}
+.hx-metrics small{color:var(--shop-muted)!important}
+/* Collection sections */
+.hx-section{width:min(1280px,calc(100% - 36px))!important;margin:76px auto!important}
+.hx-section-head{align-items:end!important;margin-bottom:24px!important}
+.hx-section-head span,.hx-proof>div>span,.hx-warehouse-copy>span{font-size:10px!important;font-weight:900!important;letter-spacing:.12em!important}
+.hx-section-head h2,.hx-proof h2,.hx-warehouse h2{font-family:Inter,system-ui,sans-serif!important;font-weight:750!important;letter-spacing:-.035em!important;font-size:clamp(28px,4vw,44px)!important}
+.hx-benefit-grid{grid-template-columns:repeat(4,1fr)!important;gap:12px!important}
+.hx-benefit-grid article{border-radius:var(--shop-radius)!important;padding:24px!important;box-shadow:none!important;min-height:210px!important}
+.hx-benefit-grid article:hover{transform:translateY(-4px)!important;box-shadow:0 18px 40px -28px rgba(15,61,110,.45)!important}
+/* Shopify-style product merchandising */
+.hx-picks{grid-template-columns:repeat(3,1fr)!important;gap:16px!important}
+.hx-picks article{border-radius:var(--shop-radius)!important;overflow:hidden!important;box-shadow:0 8px 30px -24px rgba(15,23,42,.55)!important}
+.hx-pick-visual{min-height:310px!important;background:linear-gradient(145deg,#EEF3F7,#DDE6EF)!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-direction:column!important}
+.hx-pick-visual strong{font-size:76px!important;letter-spacing:-.08em!important;color:var(--shop-navy)!important}
+.hx-pick-body{padding:20px!important}
+.hx-pick-body h3{font-size:17px!important;margin:7px 0 3px!important}
+.hx-pick-body>strong{font-size:17px!important;color:var(--shop-navy)!important}
+.hx-pick-body button{width:100%!important;min-height:44px!important;border-radius:8px!important;margin-top:15px!important;font-size:10px!important;font-weight:850!important;letter-spacing:.07em!important}
+/* Tabs / FAQ */
+.hx-tabs{border-bottom:1px solid var(--shop-line)!important;gap:24px!important}
+.hx-tabs button{border:0!important;border-radius:0!important;background:transparent!important;padding:14px 0!important;font-weight:800!important;color:var(--shop-muted)!important;border-bottom:2px solid transparent!important}
+.hx-tabs button.active{color:var(--shop-navy)!important;border-bottom-color:var(--shop-blue)!important}
+.hx-faq-grid{grid-template-columns:1fr 1fr!important;gap:10px!important}
+.hx-faq-grid details{border-radius:10px!important;box-shadow:none!important}
+/* Catalog: collection-first, clean and dense */
+.catalog-app{background:#fff!important}
+.catalog-top{width:min(1280px,calc(100% - 36px))!important;margin-inline:auto!important}
+.catalog-top h1{font-family:Inter,system-ui,sans-serif!important;font-weight:800!important;letter-spacing:-.04em!important}
+.search-box{border-radius:8px!important;min-height:46px!important}
+.filters{gap:8px!important}
+.filters button{border-radius:8px!important;min-height:38px!important;padding-inline:14px!important;font-weight:750!important}
+.catalog-grid{gap:14px!important}
+.product-card{border-radius:12px!important;box-shadow:0 7px 24px -20px rgba(15,23,42,.55)!important;overflow:hidden!important}
+.product-card:hover{transform:translateY(-4px)!important}
+.card-media,.product-visual{background:#F3F6F8!important}
+.product-body{padding:16px!important}
+.product-body h2{font-size:15px!important;font-weight:750!important;letter-spacing:-.01em!important}
+.product-body .price{font-size:16px!important;font-weight:850!important}
+.card-actions{gap:8px!important}
+.card-actions button{min-height:40px!important;border-radius:7px!important;font-weight:800!important}
+/* Checkout: one-column clarity with sticky summary */
+.checkout-shell{background:#fff!important}
+.checkout-header{border-radius:12px!important}
+.checkout-grid{align-items:start!important}
+.panel{border-radius:12px!important;box-shadow:0 8px 28px -24px rgba(15,23,42,.65)!important}
+.panel-title{border-bottom:1px solid var(--shop-line)!important}
+.submit{min-height:48px!important;border-radius:8px!important;font-weight:850!important;letter-spacing:.04em!important}
+/* Mobile app-like storefront */
+@media(max-width:900px){
+ .hx-header nav{display:none!important}
+ .hx-head-actions .hx-verified{display:none!important}
+ .hx-hero{grid-template-columns:1fr!important;margin-top:12px!important}
+ .hx-hero-panel{min-height:220px!important}
+ .hx-metrics{grid-template-columns:repeat(2,1fr)!important}
+ .hx-benefit-grid{grid-template-columns:repeat(2,1fr)!important}
+ .hx-picks{grid-template-columns:repeat(2,1fr)!important}
+ .hx-faq-grid{grid-template-columns:1fr!important}
+}
+@media(max-width:640px){
+ .hx-header{width:calc(100% - 16px)!important;margin-top:8px!important;padding:9px 10px!important;border-radius:12px!important}
+ .hx-brand small{display:none!important}
+ .hx-catalog{display:none!important}
+ .hx-hero,.hx-section,.hx-metrics{width:calc(100% - 20px)!important}
+ .hx-hero{padding:26px 20px!important;border-radius:14px!important}
+ .hx-hero h1{font-size:40px!important}
+ .hx-hero h2{font-size:20px!important}
+ .hx-actions{display:grid!important;grid-template-columns:1fr!important}
+ .hx-metrics{grid-template-columns:1fr 1fr!important}
+ .hx-metrics a{padding:17px 14px!important}
+ .hx-metrics strong{font-size:20px!important}
+ .hx-section{margin:52px auto!important}
+ .hx-section-head{display:block!important}
+ .hx-benefit-grid,.hx-picks{grid-template-columns:1fr!important}
+ .hx-pick-visual{min-height:250px!important}
+ .hx-tabs{overflow-x:auto!important;white-space:nowrap!important}
+ .hx-tabs button{flex:0 0 auto!important}
+ .hx-proof{padding:28px 18px!important}
+}
+@media(prefers-reduced-motion:reduce){.product-card,.hx-benefit-grid article,.hx-primary,.hx-pick-body button{transition:none!important}}
