@@ -52,6 +52,6 @@ export default async function handler(req, res) {
     const order = {order_number,customer_name,whatsapp,courier,payment_method,total}, wa_url = whatsappUrl(order,normalized), cloud = await sendCloudWhatsApp(order)
     const { error: updateError } = await supabase.from('orders').update({whatsapp_status:cloud.sent?'sent':'pending',whatsapp_last_sent_at:cloud.sent?new Date().toISOString():null}).eq('id',created.order_id)
     if (updateError) console.error('order WhatsApp status update error', updateError)
-    return res.status(201).json({order_number,subtotal,shipping_cost,total,status:'pending_confirmation',reservation_expires_at:created.reservation_expires_at,whatsapp_url:wa_url,whatsapp_sent:cloud.sent})
+    return res.status(201).json({order_number,subtotal,shipping_cost,total,status:'pending',reservation_expires_at:created.reservation_expires_at,whatsapp_url:wa_url,whatsapp_sent:cloud.sent})
   } catch (error) { console.error('create order error',error); return res.status(500).json({error:'Pesanan belum dapat dibuat. Silakan coba kembali.'}) }
 }
