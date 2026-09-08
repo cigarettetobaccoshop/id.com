@@ -36,4 +36,11 @@ body{background:#F7F6F2!important;color:#171717!important}
 .r2-skeleton,.hx-skeleton{background:rgba(23,23,23,.055)!important}.r2-skeleton:after,.hx-skeleton:after{background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent)!important}
 table{background:#fff!important;border-color:rgba(23,23,23,.10)!important}th{background:#F1F0EB!important;color:#171717!important}th,td{border-bottom-color:rgba(23,23,23,.08)!important}
 .global-checkout{background:#171717!important;color:#fff!important;border-color:rgba(31,94,255,.40)!important;box-shadow:0 12px 35px rgba(23,23,23,.18)!important}.global-checkout strong{background:#1F5EFF!important;color:#fff!important}
+/* Live visual assets: all decorative imagery stays below content and never blocks interaction. */
+.hx-hero{position:relative;isolation:isolate;background-image:linear-gradient(180deg,rgba(250,249,246,.90),rgba(247,246,242,.96)),url('/assets/logo/hero-bg.jpg')!important;background-size:cover;background-position:center!important}
+.hx-hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:url('/assets/logo/watermark.png') center/520px auto no-repeat;opacity:.035;mix-blend-mode:multiply}
+.hx-footer{position:relative;isolation:isolate;background-image:linear-gradient(180deg,rgba(247,246,242,.94),rgba(242,241,237,.97)),url('/assets/logo/footer-bg.jpg')!important;background-size:cover;background-position:center!important;overflow:hidden}
+.hx-footer::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:url('/assets/logo/watermark.png') center/420px auto no-repeat;opacity:.028;mix-blend-mode:multiply}
+@media(max-width:700px){.hx-hero{background-position:58% center!important}.hx-hero::after{background-size:360px auto}.hx-footer::after{background-size:300px auto}}
+@media(prefers-reduced-motion:reduce){.r2-asset-loader,.r2-asset-loader *{animation:none!important;transition:none!important}}
 @media(prefers-color-scheme:dark){html,body,#__next{background:#F7F6F2!important;color:#171717!important}.hx-page{background:linear-gradient(180deg,#FAF9F6 0%,#F7F6F2 52%,#F2F1ED 100%)!important;color:#171717!important}}
