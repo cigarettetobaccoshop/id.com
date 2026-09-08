@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { RouteIcon } from '../../components/RouteIconNav'
 
 const SITE_URL = 'https://r2nusantara-shop.vercel.app'
 const money = value => Number.isFinite(Number(value)) ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(value)) : 'Harga belum tersedia'
@@ -65,7 +66,7 @@ export default function ProductDetail({ product }) {
     <main className="catalog-app product-detail-page">
       <header className="catalog-mobile-header">
         <Link href="/products" className="brand"><span className="brand-mark"><span>R2</span></span><span className="brand-copy"><strong>R2 NUSANTARA</strong><small>DISTRIBUTOR</small></span></Link>
-        <Link href="/checkout" className="cart-link" aria-label="Keranjang">□<b>{cart.length}</b></Link>
+        <Link href="/checkout" className="cart-link" aria-label="Keranjang"><RouteIcon type="cart" size={21}/><b>{cart.length}</b></Link>
       </header>
       <section className="catalog-top"><Link href="/products" className="desktop-back">← Kembali ke katalog</Link><div><span className="eyebrow">LIVE PRODUCT DATA · WHOLESALE</span><h1>{product.Title || product.Handle}</h1><p>Informasi produk bersumber dari katalog R2 NUSANTARA yang terintegrasi.</p></div><div className="live-dot"><i/> LIVE</div></section>
       <section className="quick-modal product-detail-card" style={{ position: 'relative', maxWidth: 760, margin: '24px auto' }}>
@@ -82,7 +83,6 @@ export default function ProductDetail({ product }) {
       </section>
       <footer className="footer">© {new Date().getFullYear()} R2 NUSANTARA · WHOLESALE DISTRIBUTION PARTNER</footer>
     </main>
-    <nav className="bottom-nav"><Link href="/"><span>⌂</span>Beranda</Link><Link href="/products" className="active"><span>⊞</span>Katalog</Link><Link href="/checkout"><span>□<b>{cart.length}</b></span>Keranjang</Link><Link href="/contact"><span>○</span>Akun</Link></nav>
     {toast && <div className="toast">✓ {toast}</div>}
   </>
 }
