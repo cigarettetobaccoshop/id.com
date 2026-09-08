@@ -51,3 +51,5 @@
 @media(prefers-reduced-motion:no-preference){
   .hx-hero{background-attachment:scroll!important}
 }
+
+/* deployment trigger: hero/header background layer */
