@@ -16,6 +16,7 @@ import '../styles/r2-cross-page-theme-final.css'
 import '../styles/r2-simple-reference-downgrade.css'
 import '../styles/r2-visual-premium-production.css'
 import '../styles/r2-visual-components-final.css'
+import '../styles/r2-canva-final-migration.css'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -53,4 +54,3 @@ export default function App({ Component, pageProps }) {
   const isHome=router.pathname==='/'
   return <><BrandAssetLoader/><>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</><RouteIconNav/><CheckoutPrompt/><GlobalInteractionGuard/><Analytics/></>
 }
-
