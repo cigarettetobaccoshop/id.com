@@ -25,6 +25,7 @@ export default function Document() {
         <meta name="twitter:description" content="Portal B2B eksklusif R2 Nusantara untuk mitra distribusi terverifikasi." />
         <meta name="twitter:image" content={SOCIAL_IMAGE} />
         <link rel="canonical" href={SITE_URL} />
+        <script dangerouslySetInnerHTML={{__html:`(function(){try{document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.remove()});var m=document.createElement('meta');m.name='theme-color';m.content='#F7F6F2';document.head.appendChild(m)}catch(e){}})()`}} />
       </Head>
       <body>
         <Main />
