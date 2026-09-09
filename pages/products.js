@@ -67,7 +67,7 @@ export default function ProductsPage({products,count,initialError}){
     <main className="catalog-app">
       <header className="catalog-mobile-header">
         <Link href="/" className="brand"><span className="brand-mark"><img src="/assets/logo/logo.png" alt="R2 NUSANTARA" width="40" height="40" /></span><span className="brand-copy"><strong>R2 NUSANTARA</strong><small>DISTRIBUTOR</small></span></Link>
-        <div className="catalog-head-actions"><Link href="/checkout" className="cart-link" aria-label="Keranjang"><RouteIcon type="cart" size={21}/><b>{cart.length}</b></Link><Link href="/contact" className="user-link" aria-label="Akun"><RouteIcon type="account" size={21}/></Link></div>
+        <div className="catalog-head-actions"><Link href="/checkout" className="cart-link" aria-label="Keranjang"><RouteIcon type="cart" size={21}/><b>{cart.length}</b></Link><Link href="/auth" className="user-link" aria-label="Akun"><RouteIcon type="account" size={21}/></Link></div>
       </header>
       <section className="catalog-top"><Link href="/" className="desktop-back">← R2 NUSANTARA</Link><div><span className="eyebrow">OFFICIAL DISTRIBUTOR · LIVE CATALOG</span><h1>Produk <em>R2 Nusantara</em></h1><p><strong>{count}</strong> produk aktif tersedia untuk mitra distribusi.</p></div><div className="live-dot"><i/> LIVE</div></section>
       <section className="catalog-tools"><label className="search-box">⌕<input value={q} onChange={e=>reset(()=>setQ(e.target.value))} placeholder="Cari produk, kategori, atau merk..." aria-label="Cari produk"/></label><button className="filter-button" type="button" onClick={()=>document.querySelector('.filters')?.scrollIntoView({behavior:'smooth'})}>☷</button></section>
