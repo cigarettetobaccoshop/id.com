@@ -20,7 +20,7 @@ body{overflow-x:hidden!important;-webkit-font-smoothing:antialiased}
 .hx-header .hx-search input::placeholder{color:#94A3B8!important;font-weight:500!important}
 .hx-header .hx-search button{width:34px!important;height:34px!important;flex:0 0 34px!important;border:0!important;border-radius:999px!important;background:#111827!important;color:#fff!important;font:800 16px/1 Inter,sans-serif!important}
 .hx-header nav{display:none!important}
-.hx-hero{position:relative!important;display:block!important;width:100%!important;min-height:430px!important;height:430px!important;margin:0!important;padding:52px 22px 60px!important;box-sizing:border-box!important;overflow:visible!important;border-radius:0!important;background-image:linear-gradient(90deg,rgba(7,17,30,.96) 0%,rgba(7,17,30,.76) 62%,rgba(7,17,30,.26) 100%),linear-gradient(0deg,rgba(7,17,30,.90),rgba(7,17,30,.08) 70%),url('/assets/logo/hero-bg.jpg')!important;background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important}
+.hx-hero{position:relative!important;display:block!important;width:100%!important;min-height:430px!important;height:430px!important;margin:0!important;padding:52px 22px 60px!important;box-sizing:border-box!important;overflow:visible!important;border-radius:0!important;background-image:linear-gradient(90deg,rgba(7,17,30,.96) 0%,rgba(7,17,30,.76) 62%,rgba(7,17,30,.26) 100%),linear-gradient(0deg,rgba(7,17,30,.90),rgba(7,17,30,.08) 70%),url('/assets/logo/hero-bg.jpg')!important;background-position:54% center!important;background-size:cover!important;background-repeat:no-repeat!important}
 .hx-hero-copy{position:relative!important;z-index:3!important;width:100%!important;max-width:315px!important;padding:0!important}
 .hx-eyebrow{margin-bottom:16px!important;font:800 7px/1.4 Inter,system-ui,sans-serif!important;letter-spacing:.22em!important;color:var(--ref-gold)!important;text-transform:uppercase!important}
 .hx-blue-check{color:var(--ref-blue)!important}
@@ -63,3 +63,4 @@ body{overflow-x:hidden!important;-webkit-font-smoothing:antialiased}
 @media(min-width:449px){.hx-page{max-width:448px!important}}
 @media(max-width:390px){.hx-hero{height:420px!important;min-height:420px!important;padding-left:20px!important;padding-right:20px!important}.hx-hero h1{font-size:44px!important}.hx-header .hx-search{top:calc(100% + 362px)!important}.hx-section#benefits{padding-top:52px!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+/* Reference-matched final alignment pass. */
