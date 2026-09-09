@@ -1,5 +1,6 @@
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
+import '../style.css';
 
 export const metadata: Metadata = {
   title: 'R2 Nusantara | Distributor Rokok Grosir Premium Malang',

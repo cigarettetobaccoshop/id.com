@@ -598,3 +598,105 @@ header .w-11 { width: 36px; height: 36px; border-radius: 10px; background: #fff;
   #beranda h1 { font-size: 2.8rem; }
   #beranda .mt-8 { margin-top: 20px; }
 }
+
+/* ============= APP STATUS SURFACE ============= */
+.app-shell {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background: radial-gradient(circle at top right, rgba(217,183,109,.14), transparent 34%), var(--color-bg);
+}
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: min(100%, 760px);
+  margin: 0 auto;
+  padding: 18px 0;
+}
+.app-header h1, .status-card h1 {
+  margin: 4px 0 0;
+  color: var(--color-accent);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  letter-spacing: -.04em;
+}
+.status-kicker {
+  color: #8d6a22;
+  font: 700 10px/1.2 'IBM Plex Mono', monospace;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+.header-mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(217,183,109,.55);
+  border-radius: 50%;
+  color: var(--color-accent);
+  font: 800 12px/1 'IBM Plex Mono', monospace;
+  background: rgba(255,255,255,.7);
+  box-shadow: 0 10px 24px rgba(7,23,46,.08);
+}
+.todo-panel, .status-card {
+  width: min(100%, 760px);
+  margin: 0 auto;
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  background: rgba(255,255,255,.88);
+  box-shadow: 0 18px 50px rgba(7,23,46,.09);
+  backdrop-filter: blur(14px);
+}
+.todo-panel { padding: 8px; }
+.status-card { padding: clamp(24px, 7vw, 48px); }
+.status-card p { margin: 18px 0 0; color: #64748b; font-size: 14px; line-height: 1.65; }
+.panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px 12px;
+  color: var(--color-accent);
+  font: 700 11px/1.2 'IBM Plex Mono', monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.panel-count {
+  display: grid;
+  place-items: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 99px;
+  color: var(--color-accent);
+  background: rgba(217,183,109,.2);
+}
+.todo-list { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 58px;
+  padding: 14px 16px;
+  border: 1px solid #edf0f3;
+  border-radius: 16px;
+  color: #334155;
+  background: #fff;
+  font-size: 14px;
+  transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.todo-item:hover { border-color: rgba(217,183,109,.65); transform: translateY(-1px); box-shadow: 0 8px 18px rgba(7,23,46,.06); }
+.todo-dot { flex: 0 0 auto; width: 9px; height: 9px; border-radius: 50%; background: var(--color-gold); box-shadow: 0 0 0 5px rgba(217,183,109,.14); }
+.app-shell-error { justify-content: center; }
+@media (max-width: 639px) {
+  .app-shell { gap: 12px; padding: 16px; }
+  .app-header { padding: 12px 4px; }
+  .app-header h1, .status-card h1 { font-size: 2.35rem; }
+  .status-card { border-radius: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .todo-item { transition: none; }
+}
