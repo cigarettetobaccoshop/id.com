@@ -7,7 +7,7 @@ const ICONS = {
   home: { label: 'Beranda', path: '/', Icon: Home },
   products: { label: 'Katalog', path: '/products', Icon: Grid2X2 },
   cart: { label: 'Keranjang', path: '/checkout', Icon: ShoppingCart },
-  account: { label: 'Akun', path: '/contact', Icon: UserRound },
+  account: { label: 'Akun', path: '/auth', Icon: UserRound },
 }
 
 export function RouteIcon({ type, size = 20, strokeWidth = 1.8, className = '' }) {
