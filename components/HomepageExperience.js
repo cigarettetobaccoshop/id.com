@@ -8,7 +8,6 @@ import { ArrowRight, BadgeCheck, Boxes, CheckCircle2, ChevronRight, Grid2X2, Hom
 const COLUMNS='Handle,Title,Vendor,Type,Tags,Published,Option1 Name,Option1 Value,Variant SKU,Variant Price,"Variant Inventory Qty",Status'
 const money=v=>Number.isFinite(Number(v))?new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(v)):'Harga belum tersedia'
 
-// Open-source / CC BY 4.0 imagery from Wikimedia Commons, selected as neutral cigarette/tobacco visuals without brand packaging.
 const cigaretteThumbs=[
  'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/5_cigarettes_in_a_row.jpg/960px-5_cigarettes_in_a_row.jpg',
  'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/A_stack_of_5_cigarettes.jpg/960px-A_stack_of_5_cigarettes.jpg',
@@ -29,7 +28,6 @@ const trust=[
  [Truck,'Pengiriman Cepat','Seluruh Indonesia'],
  [ShieldCheck,'Layanan Profesional','Tim siap membantu']
 ]
-
 function Icon({icon:IconComponent,size=19,strokeWidth=1.8}){return <IconComponent size={size} strokeWidth={strokeWidth} aria-hidden="true"/>}
 function SearchBar({value,onChange,onSubmit,className=''}){return <form className={`src-search ${className}`} role="search" onSubmit={onSubmit}><Search size={18} strokeWidth={1.8} aria-hidden="true"/><input type="search" value={value} onChange={onChange} placeholder="Cari produk, kategori, merk, atau SKU..." aria-label="Cari produk, kategori, merk, atau SKU"/><button type="submit" aria-label="Cari"><ArrowRight size={18} strokeWidth={1.8}/></button></form>}
 
@@ -46,7 +44,7 @@ export default function HomepageExperience(){
  return <>
   <Head><title>R2 Nusantara | Wholesale Trading Partner</title><meta name="description" content="R2 Nusantara — distributor grosir terpercaya. Katalog live, stok ready, pengiriman seluruh Indonesia."/><meta name="theme-color" content="#111827"/></Head>
   <div className="src-shell">
-   <div className="src-trustbar">DISTRIBUTOR RESMI <b>•</b> STOK READY <b>•</b> PENGIRIMAN SELURUH INDONESIA</div>
+   <div className="src-trustbar" aria-label="Informasi layanan R2 Nusantara"><div className="src-trustbar-track"><span>DISTRIBUTOR RESMI <b>•</b> STOK READY <b>•</b> PENGIRIMAN SELURUH INDONESIA</span><span aria-hidden="true">DISTRIBUTOR RESMI <b>•</b> STOK READY <b>•</b> PENGIRIMAN SELURUH INDONESIA</span></div></div>
    <header className="src-header">
     <Link href="/" className="src-brand"><span className="src-logo"><img src="/assets/logo/logo.png" alt="R2 Nusantara"/></span><span><strong>R2 NUSANTARA <i>✓</i></strong><small>WHOLESALE TRADING PARTNER</small></span></Link>
     <nav className={menu?'open':''}><a onClick={()=>scroll('beranda')}>BERANDA</a><a onClick={()=>scroll('kategori')}>KATEGORI</a><a onClick={()=>scroll('produk')}>PRODUK</a><a href="/contact">KONTAK</a></nav>
