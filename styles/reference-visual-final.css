@@ -1,0 +1,65 @@
+/* R2 NUSANTARA — REFERENCE VISUAL OVERRIDE 2026-09-09
+   Visual-only layer. Preserves application state, API, Supabase, routing and handlers. */
+:root{--ref-ink:#111827;--ref-gold:#E5C385;--ref-blue:#1F5EFF;--ref-bg:#F8FAFC;--ref-line:#E2E8F0;--ref-muted:#64748B}
+html,body{background:#E2E8F0!important;color:var(--ref-ink)!important}
+body{overflow-x:hidden!important;-webkit-font-smoothing:antialiased}
+.hx-page{width:100%!important;max-width:448px!important;min-height:100vh!important;margin:0 auto!important;background:var(--ref-bg)!important;box-shadow:0 24px 70px rgba(15,23,42,.18)!important;overflow-x:hidden!important}
+.hx-page:before{content:'DISTRIBUTOR RESMI   •   STOK READY   •   PENGIRIMAN SELURUH INDONESIA'!important;display:flex!important;height:28px!important;align-items:center!important;justify-content:center!important;background:#111827!important;color:rgba(255,255,255,.76)!important;font:700 7px/1 Inter,system-ui,sans-serif!important;letter-spacing:.12em!important;white-space:nowrap!important;overflow:hidden!important}
+.hx-header{position:relative!important;top:auto!important;width:100%!important;margin:0!important;min-height:62px!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:8px!important;padding:8px 14px!important;border:0!important;border-bottom:1px solid rgba(226,232,240,.75)!important;border-radius:0!important;background:rgba(255,255,255,.96)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;box-shadow:none!important;z-index:80!important}
+.hx-brand{gap:8px!important;min-width:0!important;text-decoration:none!important}
+.hx-logo{width:38px!important;height:38px!important;flex-basis:38px!important;border:1px solid rgba(201,168,76,.55)!important;border-radius:10px!important;background:#fff!important;box-shadow:0 4px 12px rgba(15,23,42,.08)!important}
+.hx-logo img{width:31px!important;height:31px!important;object-fit:contain!important}
+.hx-brand b{font:900 12px/1 Inter,system-ui,sans-serif!important;letter-spacing:.105em!important;color:#111827!important;white-space:nowrap!important}
+.hx-brand small{display:block!important;margin-top:4px!important;font:800 6px/1 Inter,system-ui,sans-serif!important;letter-spacing:.18em!important;color:#94A3B8!important}
+.hx-head-actions{gap:1px!important}
+.hx-verified,.hx-catalog{display:none!important}
+.hx-cart{width:40px!important;height:40px!important;min-width:40px!important;padding:0!important;border:0!important;background:transparent!important;color:#475569!important;font-size:0!important}
+.hx-cart b{right:1px!important;top:0!important;min-width:16px!important;height:16px!important;background:var(--ref-gold)!important;color:#111827!important;border:2px solid #fff!important;font:900 7px/1 Inter,sans-serif!important}
+.hx-header .hx-search{position:absolute!important;left:14px!important;right:14px!important;top:calc(100% + 372px)!important;width:auto!important;height:50px!important;min-height:50px!important;display:flex!important;align-items:center!important;gap:6px!important;padding:0 7px 0 16px!important;border:1px solid var(--ref-line)!important;border-radius:999px!important;background:#fff!important;box-shadow:0 12px 34px rgba(17,24,39,.14)!important;opacity:1!important;pointer-events:auto!important;z-index:70!important}
+.hx-header .hx-search input{width:100%!important;height:46px!important;border:0!important;outline:0!important;background:transparent!important;color:#111827!important;font:600 11px/1 Inter,system-ui,sans-serif!important}
+.hx-header .hx-search input::placeholder{color:#94A3B8!important;font-weight:500!important}
+.hx-header .hx-search button{width:34px!important;height:34px!important;flex:0 0 34px!important;border:0!important;border-radius:999px!important;background:#111827!important;color:#fff!important;font:800 16px/1 Inter,sans-serif!important}
+.hx-header nav{display:none!important}
+.hx-hero{position:relative!important;display:block!important;width:100%!important;min-height:430px!important;height:430px!important;margin:0!important;padding:52px 22px 60px!important;box-sizing:border-box!important;overflow:visible!important;border-radius:0!important;background-image:linear-gradient(90deg,rgba(7,17,30,.96) 0%,rgba(7,17,30,.76) 62%,rgba(7,17,30,.26) 100%),linear-gradient(0deg,rgba(7,17,30,.90),rgba(7,17,30,.08) 70%),url('/assets/logo/hero-bg.jpg')!important;background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important}
+.hx-hero-copy{position:relative!important;z-index:3!important;width:100%!important;max-width:315px!important;padding:0!important}
+.hx-eyebrow{margin-bottom:16px!important;font:800 7px/1.4 Inter,system-ui,sans-serif!important;letter-spacing:.22em!important;color:var(--ref-gold)!important;text-transform:uppercase!important}
+.hx-blue-check{color:var(--ref-blue)!important}
+.hx-hero h1{margin:0!important;max-width:315px!important;font-family:'Playfair Display',Georgia,serif!important;font-size:48px!important;font-weight:500!important;line-height:.9!important;letter-spacing:-.045em!important;color:#fff!important}
+.hx-hero h1 em{color:var(--ref-gold)!important;font-style:normal!important}
+.hx-hero h2{margin:17px 0 0!important;max-width:290px!important;font:700 13px/1.35 Inter,system-ui,sans-serif!important;color:#fff!important}
+.hx-hero h2 em{color:var(--ref-gold)!important;font-style:normal!important}
+.hx-hero-copy>p{margin:14px 0 0!important;max-width:275px!important;font:400 9px/1.65 Inter,system-ui,sans-serif!important;color:rgba(255,255,255,.78)!important}
+.hx-hero-copy>p{font-size:0!important;line-height:0!important}
+.hx-hero-copy>p:after{content:'Akses katalog distributor R2 Nusantara dengan data produk terbaru, struktur harga yang jelas, dan alur pemesanan yang dirancang untuk kebutuhan bisnis jangka panjang.';display:block!important;font:400 9px/1.65 Inter,system-ui,sans-serif!important;color:rgba(255,255,255,.78)!important}
+.hx-actions{display:flex!important;gap:8px!important;margin-top:19px!important}
+.hx-primary,.hx-secondary{min-height:38px!important;height:38px!important;border-radius:999px!important;padding:0 17px!important;font:800 8px/1 Inter,system-ui,sans-serif!important;letter-spacing:.08em!important}
+.hx-primary{background:var(--ref-gold)!important;color:#111827!important;box-shadow:0 10px 22px rgba(0,0,0,.22)!important}
+.hx-secondary{background:rgba(255,255,255,.10)!important;border:1px solid rgba(255,255,255,.42)!important;color:#fff!important}
+.hx-hero-panel{display:none!important}
+.hx-metrics,.hx-system,.hx-picks,.hx-proof,.hx-faq,.hx-warehouse,.hx-footer{display:none!important}
+.hx-section#benefits{display:block!important;width:100%!important;margin:0!important;padding:54px 16px 98px!important;background:#fff!important;box-sizing:border-box!important}
+.hx-section#benefits .hx-section-head{display:none!important}
+.hx-benefit-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:22px 18px!important}
+.hx-benefit-grid article{padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+.hx-card-icon{width:36px!important;height:36px!important;margin:0 0 8px!important;border:0!important;border-radius:999px!important;background:#F1F5F9!important;color:#475569!important;box-shadow:none!important}
+.hx-benefit-grid article h3{margin:0!important;font:800 9px/1.25 Inter,system-ui,sans-serif!important;color:#1E293B!important}
+.hx-benefit-grid article>b,.hx-benefit-grid article p{font-size:0!important;line-height:0!important}
+.hx-benefit-grid article:nth-child(1) h3:after{content:'Produk Original';font:800 9px/1.25 Inter,system-ui,sans-serif!important;color:#1E293B!important}
+.hx-benefit-grid article:nth-child(1) h3{font-size:0!important}
+.hx-benefit-grid article:nth-child(1) p:after{content:'100% terjamin keaslian';display:block!important;font:600 7px/1.4 Inter,system-ui,sans-serif!important;color:#64748B!important}
+.hx-benefit-grid article:nth-child(2) h3:after{content:'Stok Selalu Ready';font:800 9px/1.25 Inter,system-ui,sans-serif!important;color:#1E293B!important}
+.hx-benefit-grid article:nth-child(2) h3{font-size:0!important}
+.hx-benefit-grid article:nth-child(2) p:after{content:'Update real-time';display:block!important;font:600 7px/1.4 Inter,system-ui,sans-serif!important;color:#64748B!important}
+.hx-benefit-grid article:nth-child(3) h3:after{content:'Pengiriman Cepat';font:800 9px/1.25 Inter,system-ui,sans-serif!important;color:#1E293B!important}
+.hx-benefit-grid article:nth-child(3) h3{font-size:0!important}
+.hx-benefit-grid article:nth-child(3) p:after{content:'Seluruh Indonesia';display:block!important;font:600 7px/1.4 Inter,system-ui,sans-serif!important;color:#64748B!important}
+.hx-benefit-grid article:nth-child(4) h3:after{content:'Layanan Profesional';font:800 9px/1.25 Inter,system-ui,sans-serif!important;color:#1E293B!important}
+.hx-benefit-grid article:nth-child(4) h3{font-size:0!important}
+.hx-benefit-grid article:nth-child(4) p:after{content:'Tim siap membantu';display:block!important;font:600 7px/1.4 Inter,system-ui,sans-serif!important;color:#64748B!important}
+.route-icon-nav{left:50%!important;transform:translateX(-50%)!important;width:100%!important;max-width:448px!important;height:70px!important;min-height:70px!important;border-radius:24px 24px 0 0!important;background:#111827!important;border-top:0!important;box-shadow:0 -12px 40px rgba(0,0,0,.12)!important}
+.route-icon-nav a{color:#94A3B8!important}
+.route-icon-nav a.is-active,.route-icon-nav a:hover{color:var(--ref-gold)!important}
+.route-icon-nav .route-icon-label{font:700 7px/1 Inter,system-ui,sans-serif!important;letter-spacing:.04em!important}
+@media(min-width:449px){.hx-page{max-width:448px!important}}
+@media(max-width:390px){.hx-hero{height:420px!important;min-height:420px!important;padding-left:20px!important;padding-right:20px!important}.hx-hero h1{font-size:44px!important}.hx-header .hx-search{top:calc(100% + 362px)!important}.hx-section#benefits{padding-top:52px!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
