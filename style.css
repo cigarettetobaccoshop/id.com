@@ -538,3 +538,63 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 @media (max-width: 767px) { .info-slider-dots { display: flex; } }
 .info-dot { width: 7px; height: 7px; border-radius: 50%; background: #cbd5e1; border: none; cursor: pointer; padding: 0; transition: all .2s; }
 .info-dot.is-active { background: var(--color-accent); width: 20px; border-radius: 4px; }
+
+/* ============= REFERENCE VISUAL SYSTEM ============= */
+:root {
+  --color-primary: #d9b76d;
+  --color-secondary: #f3d58b;
+  --color-accent: #07172e;
+  --color-gold: #d9b76d;
+  --color-bg: #f5f7f9;
+  --color-card: #ffffff;
+  --color-border: #e5e9ef;
+}
+body { background: var(--color-bg); color: #1f2937; }
+header { padding: 0; }
+header > #headerInner, header > .lg\\:hidden { max-width: none; }
+#headerInner { margin-top: 0; border-radius: 0; min-height: 68px; padding: 12px 18px; background: #fff; border: 0; border-bottom: 1px solid #edf0f3; box-shadow: 0 5px 20px rgba(7,23,46,.08); }
+header::before { content: 'DISTRIBUTOR RESMI  •  STOK READY  •  PENGIRIMAN SELURUH INDONESIA'; display: block; height: 22px; padding: 6px 16px; overflow: hidden; background: var(--color-accent); color: rgba(255,255,255,.7); font: 700 7px/10px 'IBM Plex Mono', monospace; letter-spacing: .18em; text-align: center; white-space: nowrap; }
+.logo-frame-sm { width: 34px; height: 34px; }
+.logo-frame::before { background: var(--color-gold); }
+.logo-frame::after { background: #fff; }
+.logo-orbit { display: none; }
+.logo-pulse { animation: none; }
+.nav-link { color: #64748b; }
+header .w-11 { width: 36px; height: 36px; border-radius: 10px; background: #fff; border-color: #e5e9ef; }
+.hero-bg { background: linear-gradient(180deg, rgba(7,23,46,.2) 0%, rgba(7,23,46,.86) 100%), url('assets/logo/hero-bg.jpg') center/cover no-repeat; }
+#beranda { min-height: 520px; padding-top: 150px; padding-bottom: 48px; color: #fff; }
+#beranda .max-w-7xl { min-height: 345px; align-items: end; }
+#beranda h1 { max-width: 520px; color: #fff; font-size: clamp(2.4rem, 9vw, 4.2rem); line-height: .98; letter-spacing: -.045em; }
+#beranda h1 .shine-text { color: var(--color-secondary); background: none; -webkit-text-fill-color: var(--color-secondary); }
+#beranda p { max-width: 480px; color: rgba(255,255,255,.75); }
+#beranda .live-visitor-badge, #beranda .trust-badge { background: rgba(7,23,46,.35); border-color: rgba(243,213,139,.45); color: var(--color-secondary); }
+#beranda .btn-gradient { background: var(--color-secondary); color: var(--color-accent); box-shadow: 0 10px 24px rgba(217,183,109,.25); }
+#beranda .btn-outline { color: #fff; border-color: rgba(255,255,255,.4); }
+#beranda .btn-outline:hover { border-color: var(--color-secondary); color: var(--color-secondary); }
+.header-search-bar { margin: -20px 12px 0; position: relative; z-index: 4; border-radius: 999px; padding-left: 18px; box-shadow: 0 10px 30px rgba(7,23,46,.16); }
+.header-search-go { width: 34px; height: 34px; padding: 0; border-radius: 50%; font-size: 0; background: var(--color-accent); }
+.header-search-go::after { content: '→'; font: 700 18px/1 Inter, sans-serif; }
+.live-visitor-badge, .trust-badge { backdrop-filter: none; }
+.section-label { color: #8d6a22; background: rgba(217,183,109,.14); border-color: rgba(217,183,109,.45); }
+.section-title { color: var(--color-accent); }
+.why-card, .featured-card, .mp-card, .info-card-2x2 { border-radius: 18px; box-shadow: 0 12px 30px rgba(7,23,46,.06); }
+.why-icon { width: 42px; height: 42px; border-radius: 50%; background: #f2f5f8; color: #718096; box-shadow: none; font-size: 16px; }
+.wi-emerald, .wi-silver, .wi-blue { background: #f2f5f8; color: #718096; }
+.mobile-bottom-nav { padding-bottom: calc(8px + env(safe-area-inset-bottom, 0)); }
+.mb-dock { max-width: 100%; border-radius: 18px; background: rgba(7,23,46,.98); border: 0; padding: 4px 8px; box-shadow: 0 -8px 25px rgba(7,23,46,.18); }
+.mb-dock-indicator { top: 4px; bottom: 4px; border-radius: 14px; background: rgba(217,183,109,.16); box-shadow: none; }
+.mb-nav-item { color: #94a3b8; padding: 8px 2px; }
+.mb-nav-item.is-active { color: var(--color-secondary); }
+@media (min-width: 1024px) {
+  header::before { height: 24px; }
+  #headerInner { padding-left: 36px; padding-right: 36px; }
+  #beranda { min-height: 650px; padding-top: 170px; }
+  .mobile-bottom-nav { display: none; }
+}
+@media (max-width: 639px) {
+  #headerInner { padding: 10px 14px; }
+  #beranda { min-height: 520px; padding-top: 145px; }
+  #beranda .max-w-7xl { min-height: 340px; }
+  #beranda h1 { font-size: 2.8rem; }
+  #beranda .mt-8 { margin-top: 20px; }
+}
