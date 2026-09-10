@@ -26,12 +26,14 @@ import '../styles/r2-footer-catalog-v4.css'
 import '../styles/r2-catalog-nav-consistency-v5.css'
 import '../styles/performance-responsive-v1.css'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Analytics } from '@vercel/analytics/react'
 import RouteIconNav from '../components/RouteIconNav'
-import HomepageExperience from '../components/HomepageExperience'
 import BrandAssetLoader from '../components/BrandAssetLoader'
+
+const HomepageExperience = dynamic(() => import('../components/HomepageExperience'), { ssr: true })
 
 function CheckoutPrompt() {
   const [count, setCount] = useState(0)
