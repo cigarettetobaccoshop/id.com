@@ -1,0 +1,74 @@
+/* R2 NUSANTARA — scoped performance/responsive layer
+   Visual-only: no data, routing, state, API, or business-logic changes. */
+:root{
+  --r2-vw-gutter:clamp(14px,3vw,30px);
+  --r2-vw-section:clamp(42px,6vw,80px);
+  --r2-safe-bottom:env(safe-area-inset-bottom,0px);
+}
+
+/* Prevent accidental horizontal overflow without changing document-wide scrolling. */
+.src-shell,.r2-page,.r2-catalog{max-width:100%;overflow-x:clip;}
+
+/* Keep media inside their layout boxes and avoid late intrinsic-size surprises. */
+.src-shell img,.r2-page img,.r2-catalog img{max-width:100%;}
+.src-product-image img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;}
+
+/* Fluid type: same hierarchy, fewer breakpoint jumps. */
+.src-hero h1{font-size:clamp(3.25rem,8vw,6.5rem);}
+.src-section-head h2{font-size:clamp(1.75rem,3.5vw,2.625rem);}
+.src-lead,.src-hero-copy>p{font-size:clamp(.875rem,1.15vw,1rem);}
+.r2-cataloghead h1{font-size:clamp(3rem,6vw,4.25rem);}
+
+/* Stable layout primitives for flex/grid children. */
+.src-section-head>div,.src-product,.src-product-body,.src-footer-info,.src-footer-mapbox,.r2-cataloghead>div,.r2-tools>*{min-width:0;}
+
+/* GPU-friendly interactions only. */
+.src-category-card,.src-product,.src-primary,.src-cart,.src-menu,.src-bottom-nav button,.src-bottom-nav a{
+  -webkit-tap-highlight-color:transparent;
+}
+.src-category-card,.src-product{backface-visibility:hidden;transform:translateZ(0);}
+
+/* Interactive controls: preserve visual sizing while expanding the effective touch box. */
+@media(max-width:767px){
+  .src-actions a,.src-actions button,.src-header nav a,
+  .src-footer-links a,.r2-drawer-nav a,.r2-drawer-nav button,
+  .r2-bottom a,.r2-bottom button{min-height:44px;}
+
+  .src-header{padding-left:max(14px,var(--r2-vw-gutter));padding-right:max(14px,var(--r2-vw-gutter));}
+  .src-section{padding-left:var(--r2-vw-gutter);padding-right:var(--r2-vw-gutter);}
+  .src-footer{padding-left:var(--r2-vw-gutter);padding-right:var(--r2-vw-gutter);}
+  .src-category-row{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .src-category-card{min-width:0;}
+  .src-product-body h3{overflow-wrap:anywhere;}
+  .src-bottom-nav{padding-bottom:max(7px,var(--r2-safe-bottom));}
+
+  /* Avoid iOS zoom on search fields while keeping the existing visual scale. */
+  .src-search input,.r2-search input,.r2-select{font-size:16px;}
+}
+
+@media(min-width:768px){
+  .src-section{padding-left:var(--r2-vw-gutter);padding-right:var(--r2-vw-gutter);}
+  .src-footer{padding-left:var(--r2-vw-gutter);padding-right:var(--r2-vw-gutter);}
+}
+
+/* Reserve the map footprint before its iframe becomes active. */
+.src-footer-mapframe{position:relative;aspect-ratio:16/9;overflow:hidden;}
+.src-footer-mapframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;}
+
+/* Avoid expensive blur on devices where backdrop-filter is unavailable. */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .src-header,.src-bottom-nav,.r2-bottom,.r2-mobile-drawer{background-color:rgba(7,31,67,.97)!important;}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .src-category-card,.src-product,.src-primary,.src-cart,.src-menu{transform:none!important;}
+}
+
+@media(max-width:375px){
+  .src-actions{gap:4px;}
+  .src-catalog{padding-left:10px!important;padding-right:10px!important;}
+  .src-logo-r2{flex:0 0 auto;}
+  .src-brand strong{letter-spacing:.10em;}
+  .src-category-row{gap:8px;}
+  .src-product-body{padding:10px!important;}
+}
