@@ -1,0 +1,45 @@
+/* R2 NUSANTARA — functional UI + footer correction
+   Visual-only layer. No API, Supabase, checkout or catalog data changes. */
+
+/* Header display control: keep the existing visual language, but make it actionable. */
+.r2-icon-btn[data-r2-theme-toggle]{cursor:pointer;transition:transform .2s ease,background .2s ease,border-color .2s ease,color .2s ease}
+.r2-icon-btn[data-r2-theme-toggle]:hover{transform:translateY(-1px)}
+.r2-icon-btn[data-r2-theme-toggle]:focus-visible{outline:2px solid #1f72d0;outline-offset:3px}
+
+/* Remove the detached footer artwork that was rendered independently at bottom-right. */
+.src-footer::after,.footer-bg::after{content:none!important;display:none!important;background:none!important}
+.src-footer,.footer-bg{position:relative!important;overflow:hidden!important;background-image:linear-gradient(180deg,rgba(7,29,73,.97),rgba(4,20,48,.99))!important}
+.src-footer>div,.src-footer>p,.src-footer>small,.footer-bg>div{position:relative;z-index:1}
+
+/* Footer hierarchy: compact, integrated and aligned with the current R2 blue system. */
+.src-footer a,.footer-bg a{transition:color .18s ease,opacity .18s ease,transform .18s ease}
+.src-footer a:hover,.footer-bg a:hover{opacity:.92}
+
+/* Dark mode is opt-in from the header control and persists locally. */
+html[data-r2-theme="dark"] body{background:#07152e!important;color:#e8eef9!important}
+html[data-r2-theme="dark"] .r2-page{background:#07152e!important;color:#e8eef9!important}
+html[data-r2-theme="dark"] .r2-nav{background:rgba(5,18,42,.96)!important;border-color:rgba(148,180,226,.16)!important}
+html[data-r2-theme="dark"] .r2-brand strong,html[data-r2-theme="dark"] .r2-navlinks a{color:#f4f7fb!important}
+html[data-r2-theme="dark"] .r2-brand small,html[data-r2-theme="dark"] .r2-sectionmeta,html[data-r2-theme="dark"] .r2-lead{color:#aebdd3!important}
+html[data-r2-theme="dark"] .r2-search{background:#0c2142!important;border-color:#25456f!important;color:#e8eef9!important}
+html[data-r2-theme="dark"] .r2-search input{color:#f4f7fb!important}
+html[data-r2-theme="dark"] .r2-search input::placeholder{color:#8295b1!important}
+html[data-r2-theme="dark"] .r2-section,html[data-r2-theme="dark"] .r2-product,html[data-r2-theme="dark"] .r2-benefits article,html[data-r2-theme="dark"] .r2-testimonial-grid article,html[data-r2-theme="dark"] .r2-faq-grid details{background:#0b1d39!important;border-color:#25456f!important;color:#e8eef9!important}
+html[data-r2-theme="dark"] .r2-product h3,html[data-r2-theme="dark"] .r2-benefits h3,html[data-r2-theme="dark"] .r2-testimonial-grid strong,html[data-r2-theme="dark"] .r2-faq summary{color:#f4f7fb!important}
+html[data-r2-theme="dark"] .r2-product p,html[data-r2-theme="dark"] .r2-benefits p,html[data-r2-theme="dark"] .r2-testimonial-grid p,html[data-r2-theme="dark"] .r2-faq p{color:#aebdd3!important}
+html[data-r2-theme="dark"] .r2-stat-strip{background:#0c2346!important;border-color:#25456f!important}
+html[data-r2-theme="dark"] .r2-stat-strip span{color:#9eb0ca!important}
+html[data-r2-theme="dark"] .r2-trustbanner,html[data-r2-theme="dark"] .r2-warehouse{background:#0b1d39!important;border-color:#25456f!important}
+html[data-r2-theme="dark"] .r2-mobile-menu{background:#0b1d39!important;border-color:#25456f!important}
+html[data-r2-theme="dark"] .r2-mobile-menu a{color:#f4f7fb!important}
+html[data-r2-theme="dark"] .r2-icon-btn{background:#102a50!important;border-color:#2d527e!important;color:#e8eef9!important}
+html[data-r2-theme="dark"] .r2-navcta{box-shadow:0 10px 28px rgba(0,0,0,.28)}
+
+@media(max-width:700px){
+  .src-footer,.footer-bg{padding-bottom:96px!important}
+  .r2-icon-btn[data-r2-theme-toggle]{min-width:42px;min-height:42px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .r2-icon-btn[data-r2-theme-toggle],.src-footer a,.footer-bg a{transition:none!important}
+}
