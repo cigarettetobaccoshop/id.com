@@ -32,6 +32,7 @@ import { useRouter } from 'next/router'
 import { Analytics } from '@vercel/analytics/react'
 import RouteIconNav from '../components/RouteIconNav'
 import BrandAssetLoader from '../components/BrandAssetLoader'
+import ActivityMonitoringRuntime from '../components/monitoring/ActivityMonitoringRuntime'
 
 const HomepageExperience = dynamic(() => import('../components/HomepageExperience'), { ssr: true })
 
@@ -81,5 +82,5 @@ function GlobalInteractionGuard(){
 export default function App({ Component, pageProps }) {
   const router=useRouter()
   const isHome=router.pathname==='/'
-  return <><BrandAssetLoader/><>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</><RouteIconNav/><CheckoutPrompt/><GlobalInteractionGuard/><Analytics/></>
+  return <><BrandAssetLoader/><>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</><RouteIconNav/><CheckoutPrompt/><GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>
 }
