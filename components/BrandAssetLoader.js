@@ -3,7 +3,10 @@ import { useEffect, useState } from 'react'
 export default function BrandAssetLoader(){
   const [visible,setVisible]=useState(true)
   useEffect(()=>{
-    const hide=()=>setVisible(false)
+    const hide=()=>{
+      setVisible(false)
+      window.dispatchEvent(new CustomEvent('r2:loader-complete'))
+    }
     const timer=window.setTimeout(hide,700)
     if(document.readyState==='complete') window.setTimeout(hide,180)
     else window.addEventListener('load',hide,{once:true})
