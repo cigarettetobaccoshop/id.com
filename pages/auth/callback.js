@@ -9,9 +9,14 @@ export default function AuthCallback() {
 
   useEffect(() => {
     let active = true
+    let redirectTimer
 
     const complete = async () => {
       try {
+        const errorCode = typeof router.query.error === 'string' ? router.query.error : ''
+        const errorDescription = typeof router.query.error_description === 'string' ? router.query.error_description : ''
+        if (errorCode) throw new Error(errorDescription || `OAuth error: ${errorCode}`)
+
         const code = typeof router.query.code === 'string' ? router.query.code : ''
         if (code) {
           const { error } = await supabase.auth.exchangeCodeForSession(code)
@@ -20,23 +25,26 @@ export default function AuthCallback() {
 
         const { data: { session }, error: sessionError } = await supabase.auth.getSession()
         if (sessionError) throw sessionError
-        if (!session) throw new Error('Sesi OAuth tidak ditemukan.')
+        if (!session) throw new Error('Sesi Google tidak ditemukan. Silakan ulangi login.')
 
         if (active) {
-          setMessage('Berhasil masuk. Mengalihkan…')
+          setMessage('Login Google berhasil. Mengalihkan…')
           await router.replace('/auth')
         }
       } catch (error) {
         if (active) {
           setMessage(`Autentikasi gagal: ${error?.message || 'Terjadi kesalahan.'}`)
-          setTimeout(() => router.replace('/auth'), 1600)
+          redirectTimer = setTimeout(() => router.replace('/auth'), 1800)
         }
       }
     }
 
     if (router.isReady) complete()
-    return () => { active = false }
-  }, [router.isReady, router.query.code])
+    return () => {
+      active = false
+      if (redirectTimer) clearTimeout(redirectTimer)
+    }
+  }, [router.isReady, router.query.code, router.query.error, router.query.error_description, router])
 
   return (
     <>
