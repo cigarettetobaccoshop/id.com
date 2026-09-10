@@ -8,7 +8,6 @@ import { ArrowRight, BadgeCheck, Boxes, CheckCircle2, ChevronRight, Grid2X2, Hom
 const COLUMNS='Handle,Title,Vendor,Type,Tags,Published,Option1 Name,Option1 Value,Variant SKU,Variant Price,"Variant Inventory Qty",Status'
 const money=v=>Number.isFinite(Number(v))?new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(v)):'Harga belum tersedia'
 
-// Local, production-safe visual assets. Product data still comes exclusively from Supabase.
 const cigaretteThumbs=[
  '/assets/products/r2-thumb-01.svg',
  '/assets/products/r2-thumb-02.svg',
@@ -37,19 +36,34 @@ export default function HomepageExperience(){
  useEffect(()=>{let mounted=true;supabase.from('R2 NUSANTARA').select(COLUMNS).eq('Published',true).eq('Status','active').limit(100).then(({data})=>{if(mounted)setProducts(data||[])});return()=>{mounted=false}},[])
  useEffect(()=>{const sync=()=>{try{setCart(JSON.parse(localStorage.getItem('r2-cart')||'[]').length)}catch{setCart(0)}};sync();window.addEventListener('storage',sync);const t=setInterval(sync,700);return()=>{window.removeEventListener('storage',sync);clearInterval(t)}},[])
  useEffect(()=>{if(typeof router.query.q==='string')setSearch(router.query.q)},[router.query.q])
+ useEffect(()=>{document.body.classList.toggle('r2-drawer-open',menu);return()=>document.body.classList.remove('r2-drawer-open')},[menu])
+ useEffect(()=>{const onKey=e=>{if(e.key==='Escape')setMenu(false)};window.addEventListener('keydown',onKey);return()=>window.removeEventListener('keydown',onKey)},[])
  const submitSearch=e=>{e.preventDefault();const q=search.trim();router.push(q?`/products?q=${encodeURIComponent(q)}`:'/products')}
  const add=p=>{try{const next=[...JSON.parse(localStorage.getItem('r2-cart')||'[]'),p];localStorage.setItem('r2-cart',JSON.stringify(next));setCart(next.length)}catch{}}
  const featured=useMemo(()=>products.slice(0,6),[products])
  const scroll=id=>{document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});setMenu(false)}
+ const goContact=()=>{setMenu(false);router.push('/contact')}
  return <>
   <Head><title>R2 Nusantara | Wholesale Trading Partner</title><meta name="description" content="R2 Nusantara — distributor grosir terpercaya. Katalog live, stok ready, pengiriman seluruh Indonesia."/><meta name="theme-color" content="#0B2B5C"/></Head>
   <div className="src-shell">
    <div className="src-trustbar" aria-label="Informasi layanan R2 Nusantara"><div className="src-trustbar-track"><span>DISTRIBUTOR RESMI <b>•</b> STOK READY <b>•</b> PENGIRIMAN SELURUH INDONESIA</span><span aria-hidden="true">DISTRIBUTOR RESMI <b>•</b> STOK READY <b>•</b> PENGIRIMAN SELURUH INDONESIA</span></div></div>
    <header className="src-header">
     <Link href="/" className="src-brand"><span className="src-logo"><img src="/assets/logo/logo.png" alt="R2 Nusantara"/></span><span><strong>R2 NUSANTARA <i>✓</i></strong><small>WHOLESALE TRADING PARTNER</small></span></Link>
-    <nav className={menu?'open':''}><a onClick={()=>scroll('beranda')}>BERANDA</a><a onClick={()=>scroll('kategori')}>KATEGORI</a><a onClick={()=>scroll('produk')}>PRODUK</a><a href="/contact">KONTAK</a></nav>
-    <div className="src-actions"><Link href="/checkout" className="src-cart" aria-label={`Keranjang, ${cart} item`}><Icon icon={ShoppingCart} size={21}/>{cart>0&&<b>{cart}</b>}</Link><Link href="/products" className="src-catalog">KATALOG <ArrowRight size={15}/></Link><button className="src-menu" onClick={()=>setMenu(v=>!v)} aria-label={menu?'Tutup menu':'Buka menu'}>{menu?<X size={22}/>:<Menu size={22}/>}</button></div>
+    <nav className={menu?'open':''}><a onClick={()=>scroll('beranda')}>BERANDA</a><a onClick={()=>scroll('kategori')}>KATEGORI</a><a onClick={()=>scroll('produk')}>PRODUK</a><a href="/contact" onClick={()=>setMenu(false)}>KONTAK</a></nav>
+    <div className="src-actions"><Link href="/checkout" className="src-cart" aria-label={`Keranjang, ${cart} item`}><Icon icon={ShoppingCart} size={21}/>{cart>0&&<b>{cart}</b>}</Link><Link href="/products" className="src-catalog">KATALOG <ArrowRight size={15}/></Link><button type="button" className="src-menu" onClick={()=>setMenu(v=>!v)} aria-label={menu?'Tutup menu':'Buka menu'} aria-expanded={menu} aria-controls="r2-mobile-drawer">{menu?<X size={22}/>:<Menu size={22}/>}</button></div>
    </header>
+   <div className={`r2-drawer-overlay${menu?' is-open':''}`} aria-hidden={!menu} onClick={()=>setMenu(false)} />
+   <aside id="r2-mobile-drawer" className={`r2-mobile-drawer${menu?' is-open':''}`} aria-hidden={!menu} aria-label="Menu navigasi" aria-modal={menu||undefined}>
+    <div className="r2-drawer-head"><div><span>R2 NUSANTARA</span><small>WHOLESALE TRADING PARTNER</small></div><button type="button" onClick={()=>setMenu(false)} aria-label="Tutup menu"><X size={22}/></button></div>
+    <nav className="r2-drawer-nav">
+      <button type="button" onClick={()=>scroll('beranda')}><Home size={20}/><span>Beranda</span><ChevronRight size={17}/></button>
+      <button type="button" onClick={()=>scroll('kategori')}><Grid2X2 size={20}/><span>Kategori</span><ChevronRight size={17}/></button>
+      <Link href="/products" onClick={()=>setMenu(false)}><Boxes size={20}/><span>Produk</span><ChevronRight size={17}/></Link>
+      <Link href="/checkout" onClick={()=>setMenu(false)}><ShoppingCart size={20}/><span>Keranjang</span>{cart>0&&<b>{cart}</b>}<ChevronRight size={17}/></Link>
+      <Link href="/contact" onClick={goContact}><ShieldCheck size={20}/><span>Kontak</span><ChevronRight size={17}/></Link>
+    </nav>
+    <div className="r2-drawer-foot"><span>Distributor resmi • Stok ready</span><small>Malang, Jawa Timur</small></div>
+   </aside>
    <main>
     <section id="beranda" className="src-hero">
       <div className="src-hero-bg"/>
