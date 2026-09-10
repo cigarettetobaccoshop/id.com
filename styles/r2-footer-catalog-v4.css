@@ -1,0 +1,126 @@
+/* R2 NUSANTARA — compact footer + catalog brand consistency
+   Visual-only override. Do not alter data, API, routing or business logic. */
+
+/* ---------- FOOTER: compact, translucent Hero-style treatment ---------- */
+.src-footer,
+.footer-bg{
+  position:relative!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+  min-height:0!important;
+  background:
+    linear-gradient(180deg,rgba(7,29,73,.76) 0%,rgba(7,29,73,.86) 52%,rgba(4,20,48,.92) 100%),
+    url('/assets/logo/footer-bg.jpg') center/cover no-repeat!important;
+  background-attachment:scroll!important;
+}
+.src-footer::before,
+.footer-bg::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:-1!important;
+  background:
+    radial-gradient(560px 240px at 12% 10%,rgba(73,151,255,.22),transparent 68%),
+    radial-gradient(520px 240px at 88% 90%,rgba(0,149,246,.15),transparent 70%)!important;
+  pointer-events:none!important;
+}
+/* Explicitly remove detached artwork while keeping the background asset. */
+.src-footer::after,
+.footer-bg::after{content:none!important;display:none!important;background:none!important}
+.src-footer img[src*="footer-logo"],
+.footer-bg img[src*="footer-logo"]{display:none!important}
+
+.src-footer-map{
+  max-width:1160px!important;
+  padding:28px 20px 20px!important;
+  gap:20px!important;
+  grid-template-columns:minmax(0,1.08fr) minmax(300px,.92fr)!important;
+}
+.src-footer-info{justify-content:flex-start!important}
+.src-footer-info>strong{font-size:18px!important;line-height:1.08!important}
+.src-footer-info>span{margin-top:5px!important;font-size:8px!important;letter-spacing:.15em!important}
+.src-footer-info>p{margin-top:12px!important;max-width:500px!important;font-size:11px!important;line-height:1.5!important}
+.src-footer-links{gap:7px!important;margin-top:14px!important}
+.src-footer-links a{min-height:32px!important;padding:0 10px!important;border-radius:9px!important;font-size:9px!important;background:rgba(255,255,255,.045)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
+.src-footer-links a:hover{background:rgba(255,255,255,.11)!important}
+.src-footer-mapbox{border:1px solid rgba(255,255,255,.14)!important;border-radius:14px!important;box-shadow:0 16px 36px rgba(0,0,0,.22)!important;background:rgba(255,255,255,.08)!important}
+.src-footer-mapframe{border-radius:14px!important}
+.src-footer-mapcard{left:9px!important;right:9px!important;bottom:9px!important;padding:9px!important;border-radius:11px!important;gap:8px!important}
+.src-footer-pin{width:30px!important;height:30px!important;border-radius:8px!important}
+.src-footer-mapcard strong{font-size:10px!important}
+.src-footer-mapcard p{margin-top:3px!important;font-size:8px!important;line-height:1.35!important}
+.src-footer-mapcard a{margin-top:5px!important;padding:6px 8px!important;border-radius:7px!important;font-size:8px!important}
+.src-footer-copy{max-width:1160px!important;padding:0 20px 18px!important;font-size:8px!important;color:rgba(210,226,248,.62)!important}
+
+/* ---------- CATALOG LOGO: same circular R2 identity as main header ---------- */
+.catalog-mobile-header .brand-mark,
+.catalog-mobile-header .brand .brand-mark{
+  position:relative!important;
+  display:grid!important;
+  place-items:center!important;
+  width:42px!important;
+  height:42px!important;
+  flex:0 0 42px!important;
+  border-radius:50%!important;
+  overflow:visible!important;
+  isolation:isolate!important;
+  background:conic-gradient(from 0deg,#0095F6,#1769E0,#78B9FF,#0095F6)!important;
+  box-shadow:0 5px 18px rgba(23,105,224,.18)!important;
+  animation:r2CatalogLogoIn .5s cubic-bezier(.22,1,.36,1) both!important;
+}
+.catalog-mobile-header .brand-mark::before{
+  content:""!important;
+  position:absolute!important;
+  inset:2px!important;
+  border-radius:50%!important;
+  background:#fff!important;
+  z-index:0!important;
+}
+.catalog-mobile-header .brand-mark::after{
+  content:"✓"!important;
+  position:absolute!important;
+  right:-3px!important;
+  bottom:-3px!important;
+  z-index:5!important;
+  width:17px!important;
+  height:17px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  background:#0095F6!important;
+  color:#fff!important;
+  border:2px solid #fff!important;
+  box-sizing:border-box!important;
+  font:900 9px/1 Arial,sans-serif!important;
+  box-shadow:0 3px 9px rgba(0,149,246,.32)!important;
+}
+.catalog-mobile-header .brand-mark img{
+  position:relative!important;
+  z-index:2!important;
+  width:34px!important;
+  height:34px!important;
+  border-radius:50%!important;
+  object-fit:contain!important;
+  background:#fff!important;
+  display:block!important;
+}
+.catalog-mobile-header .brand-mark{animation:r2CatalogLogoIn .5s cubic-bezier(.22,1,.36,1) both,r2CatalogLogoSpin 5s linear .5s infinite!important}
+.catalog-mobile-header .brand-mark::before{animation:r2CatalogLogoCore 5s linear .5s infinite!important}
+@keyframes r2CatalogLogoIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+@keyframes r2CatalogLogoSpin{to{transform:rotate(360deg)}}
+@keyframes r2CatalogLogoCore{to{transform:rotate(-360deg)}}
+
+@media(max-width:700px){
+  .src-footer-map{grid-template-columns:1fr!important;padding:22px 14px 16px!important;gap:14px!important}
+  .src-footer-info>p{margin-top:9px!important;font-size:10px!important;line-height:1.45!important}
+  .src-footer-links{margin-top:10px!important}
+  .src-footer-copy{padding:0 14px 16px!important}
+  .src-footer-mapframe{padding-bottom:52%!important}
+  .catalog-mobile-header .brand-mark{width:40px!important;height:40px!important;flex-basis:40px!important}
+  .catalog-mobile-header .brand-mark img{width:32px!important;height:32px!important}
+  .catalog-mobile-header .brand-mark::after{width:16px!important;height:16px!important;right:-3px!important;bottom:-3px!important;font-size:8px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .catalog-mobile-header .brand-mark,
+  .catalog-mobile-header .brand-mark::before{animation:none!important}
+}
