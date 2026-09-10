@@ -1,21 +1,42 @@
 /* R2 NUSANTARA — functional UI + footer correction
    Visual-only layer. No API, Supabase, checkout or catalog data changes. */
 
-/* Header display control: keep the existing visual language, but make it actionable. */
 .r2-icon-btn[data-r2-theme-toggle]{cursor:pointer;transition:transform .2s ease,background .2s ease,border-color .2s ease,color .2s ease}
 .r2-icon-btn[data-r2-theme-toggle]:hover{transform:translateY(-1px)}
 .r2-icon-btn[data-r2-theme-toggle]:focus-visible{outline:2px solid #1f72d0;outline-offset:3px}
 
-/* Remove the detached footer artwork that was rendered independently at bottom-right. */
-.src-footer::after,.footer-bg::after{content:none!important;display:none!important;background:none!important}
+/* Remove detached footer artwork / pseudo-image at bottom-right. */
+.src-footer::before,.src-footer::after,.footer-bg::before,.footer-bg::after{content:none!important;display:none!important;background:none!important;background-image:none!important}
 .src-footer,.footer-bg{position:relative!important;overflow:hidden!important;background-image:linear-gradient(180deg,rgba(7,29,73,.97),rgba(4,20,48,.99))!important}
+.src-footer img,.footer-bg img,.src-footer picture,.footer-bg picture{display:none!important}
 .src-footer>div,.src-footer>p,.src-footer>small,.footer-bg>div{position:relative;z-index:1}
-
-/* Footer hierarchy: compact, integrated and aligned with the current R2 blue system. */
 .src-footer a,.footer-bg a{transition:color .18s ease,opacity .18s ease,transform .18s ease}
 .src-footer a:hover,.footer-bg a:hover{opacity:.92}
 
-/* Dark mode is opt-in from the header control and persists locally. */
+/* Functional hamburger drawer — right-side mobile navigation. */
+.r2-drawer-overlay{position:fixed;inset:0;z-index:300;background:rgba(3,15,38,.46);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s ease,visibility 0s linear .28s}
+.r2-drawer-overlay.is-open{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .28s ease}
+.r2-mobile-drawer{position:fixed;top:0;right:0;bottom:0;z-index:310;width:min(86vw,360px);background:#fff;color:#10264b;box-shadow:-24px 0 70px rgba(7,29,73,.22);transform:translate3d(105%,0,0);visibility:hidden;pointer-events:none;transition:transform .34s cubic-bezier(.16,1,.3,1),visibility 0s linear .34s;display:flex;flex-direction:column;padding:18px 16px max(18px,env(safe-area-inset-bottom))}
+.r2-mobile-drawer.is-open{transform:translate3d(0,0,0);visibility:visible;pointer-events:auto;transition:transform .34s cubic-bezier(.16,1,.3,1)}
+.r2-drawer-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:6px 4px 20px;border-bottom:1px solid #e5ebf4}
+.r2-drawer-head>div{display:flex;flex-direction:column;gap:4px}
+.r2-drawer-head span{font:900 15px/1.1 Inter,system-ui,sans-serif;letter-spacing:.09em;color:#0b3f95}
+.r2-drawer-head small{font:700 8px/1.2 Inter,system-ui,sans-serif;letter-spacing:.13em;color:#7b8aa2}
+.r2-drawer-head button{width:42px;height:42px;display:grid;place-items:center;border:1px solid #dbe4f0;border-radius:14px;background:#f5f8fd;color:#0b3f95;cursor:pointer;transition:transform .2s ease,background .2s ease}
+.r2-drawer-head button:hover{transform:rotate(3deg);background:#edf4ff}
+.r2-drawer-nav{display:flex;flex-direction:column;gap:8px;padding:18px 0}
+.r2-drawer-nav a,.r2-drawer-nav button{appearance:none;width:100%;min-height:54px;display:flex;align-items:center;gap:13px;padding:0 14px;border:1px solid transparent;border-radius:16px;background:transparent;color:#18345f;text-decoration:none;font:800 13px/1 Inter,system-ui,sans-serif;letter-spacing:.02em;cursor:pointer;text-align:left;transition:background .2s ease,color .2s ease,transform .2s ease,border-color .2s ease}
+.r2-drawer-nav a:hover,.r2-drawer-nav button:hover{background:#f1f6ff;border-color:#dce9fb;color:#0b3f95;transform:translateX(-2px)}
+.r2-drawer-nav svg:first-child{color:#1f72d0;flex:0 0 auto}
+.r2-drawer-nav span{flex:1}
+.r2-drawer-nav b{min-width:22px;height:22px;padding:0 6px;display:grid;place-items:center;border-radius:999px;background:#0b3f95;color:#fff;font:800 10px/1 Inter,sans-serif}
+.r2-drawer-nav svg:last-child{color:#91a0b7;flex:0 0 auto}
+.r2-drawer-foot{margin-top:auto;padding:15px 14px;border-radius:17px;background:linear-gradient(135deg,#f2f7ff,#e9f2ff);border:1px solid #dce9fb;display:flex;flex-direction:column;gap:5px}
+.r2-drawer-foot span{font:800 10px/1.3 Inter,system-ui,sans-serif;letter-spacing:.04em;color:#0b3f95}
+.r2-drawer-foot small{font:600 10px/1.3 Inter,system-ui,sans-serif;color:#70819a}
+body.r2-drawer-open{overflow:hidden}
+.src-menu{position:relative;z-index:320}
+
 html[data-r2-theme="dark"] body{background:#07152e!important;color:#e8eef9!important}
 html[data-r2-theme="dark"] .r2-page{background:#07152e!important;color:#e8eef9!important}
 html[data-r2-theme="dark"] .r2-nav{background:rgba(5,18,42,.96)!important;border-color:rgba(148,180,226,.16)!important}
@@ -34,12 +55,23 @@ html[data-r2-theme="dark"] .r2-mobile-menu{background:#0b1d39!important;border-c
 html[data-r2-theme="dark"] .r2-mobile-menu a{color:#f4f7fb!important}
 html[data-r2-theme="dark"] .r2-icon-btn{background:#102a50!important;border-color:#2d527e!important;color:#e8eef9!important}
 html[data-r2-theme="dark"] .r2-navcta{box-shadow:0 10px 28px rgba(0,0,0,.28)}
+html[data-r2-theme="dark"] .r2-mobile-drawer{background:#0b1d39!important;color:#e8eef9!important;border-left:1px solid #25456f}
+html[data-r2-theme="dark"] .r2-drawer-head{border-color:#25456f}
+html[data-r2-theme="dark"] .r2-drawer-head span{color:#79aaf2}
+html[data-r2-theme="dark"] .r2-drawer-head small{color:#9eb0ca}
+html[data-r2-theme="dark"] .r2-drawer-head button{background:#102a50;border-color:#2d527e;color:#e8eef9}
+html[data-r2-theme="dark"] .r2-drawer-nav a,html[data-r2-theme="dark"] .r2-drawer-nav button{color:#e8eef9}
+html[data-r2-theme="dark"] .r2-drawer-nav a:hover,html[data-r2-theme="dark"] .r2-drawer-nav button:hover{background:#102a50;border-color:#2d527e;color:#fff}
+html[data-r2-theme="dark"] .r2-drawer-foot{background:#102a50;border-color:#2d527e}
+html[data-r2-theme="dark"] .r2-drawer-foot span{color:#9fc4ff}
+html[data-r2-theme="dark"] .r2-drawer-foot small{color:#aebdd3}
 
+@media(min-width:901px){.r2-mobile-drawer,.r2-drawer-overlay{display:none!important}}
 @media(max-width:700px){
   .src-footer,.footer-bg{padding-bottom:96px!important}
   .r2-icon-btn[data-r2-theme-toggle]{min-width:42px;min-height:42px}
+  .r2-mobile-drawer{width:min(88vw,360px)}
 }
-
 @media(prefers-reduced-motion:reduce){
-  .r2-icon-btn[data-r2-theme-toggle],.src-footer a,.footer-bg a{transition:none!important}
+  .r2-icon-btn[data-r2-theme-toggle],.src-footer a,.footer-bg a,.r2-mobile-drawer,.r2-drawer-overlay,.r2-drawer-nav a,.r2-drawer-nav button{transition:none!important}
 }
