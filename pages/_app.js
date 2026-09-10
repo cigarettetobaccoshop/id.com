@@ -19,6 +19,7 @@ import '../styles/reference-visual-final.css'
 import '../styles/r2-blue-reference-ui.css'
 import '../styles/r2-reference-precision.css'
 import '../styles/r2-pixel-reference-ui.css'
+import '../styles/r2-functional-polish.css'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -36,7 +37,22 @@ function CheckoutPrompt() {
 
 function GlobalInteractionGuard(){
   useEffect(()=>{
+    const root=document.documentElement
+    const saved=window.localStorage.getItem('r2-theme')
+    const applyTheme=mode=>{
+      const dark=mode==='dark'
+      root.dataset.r2Theme=dark?'dark':'light'
+      window.localStorage.setItem('r2-theme',dark?'dark':'light')
+      document.querySelectorAll('.r2-icon-btn[aria-label="Tampilan"],.r2-icon-btn[data-r2-theme-toggle]').forEach(el=>{
+        el.setAttribute('data-r2-theme-toggle','true')
+        el.setAttribute('aria-label',dark?'Mode terang':'Mode gelap')
+        el.setAttribute('title',dark?'Mode terang':'Mode gelap')
+      })
+    }
+    applyTheme(saved==='dark'?'dark':'light')
     const onClick=e=>{
+      const theme=e.target.closest?.('.r2-icon-btn[aria-label="Tampilan"],.r2-icon-btn[data-r2-theme-toggle]')
+      if(theme){e.preventDefault();applyTheme(root.dataset.r2Theme==='dark'?'light':'dark');return}
       const cart=e.target.closest?.('a.cart-link, a[aria-label="Keranjang"]')
       if(cart && cart.getAttribute('href')!=='/checkout'){e.preventDefault();window.location.assign('/checkout');return}
       const card=e.target.closest?.('.r2-product')
@@ -44,8 +60,9 @@ function GlobalInteractionGuard(){
     }
     const onKeyDown=e=>{if(e.key!=='Enter'||e.isComposing)return;const input=e.target.closest?.('.r2-search input');if(input){const value=input.value.trim();if(value){e.preventDefault();window.location.assign(`/products?q=${encodeURIComponent(value)}`)}}}
     document.addEventListener('click',onClick);document.addEventListener('keydown',onKeyDown)
-    const hideNonFunctionalControl=()=>document.querySelectorAll('.r2-icon-btn[aria-label="Tampilan"]').forEach(el=>el.remove())
-    hideNonFunctionalControl();const observer=new MutationObserver(hideNonFunctionalControl);observer.observe(document.body,{childList:true,subtree:true})
+    const refreshThemeControl=()=>applyTheme(root.dataset.r2Theme==='dark'?'dark':'light')
+    const observer=new MutationObserver(refreshThemeControl)
+    observer.observe(document.body,{childList:true,subtree:true})
     return()=>{document.removeEventListener('click',onClick);document.removeEventListener('keydown',onKeyDown);observer.disconnect()}
   },[])
   return null
