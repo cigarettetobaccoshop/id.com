@@ -1,4 +1,5 @@
 import ProductCard, { type ProductCardData } from './ProductCard'
+import styles from './ProductGrid.module.css'
 
 export interface ProductGridProps {
   products: ProductCardData[]
@@ -18,14 +19,7 @@ export default function ProductGrid({
   const wishlist = new Set(wishlistIds.map(String))
 
   return (
-    <div
-      aria-label="Katalog produk"
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(2,minmax(0,1fr))',
-        gap: '12px',
-      }}
-    >
+    <div aria-label="Katalog produk" className={styles.grid}>
       {products.map((product, index) => (
         <ProductCard
           key={product.id}
