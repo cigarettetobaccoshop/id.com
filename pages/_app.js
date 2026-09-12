@@ -42,6 +42,7 @@ import '../styles/r2-brand-visual-correction-v19.css'
 import '../styles/r2-final-apple-grade-v20.css'
 import '../styles/r2-global-theme-sync-v21.css'
 import '../styles/r2-catalog-product-interaction-v22.css'
+import '../styles/catalog-premium-final.css'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
@@ -65,39 +66,18 @@ function GlobalInteractionGuard(){
     const root=document.documentElement
     const syncThemeControl=()=>{
       const dark=root.dataset.r2Theme==='dark'
-      document.querySelectorAll('.r2-icon-btn[aria-label="Tampilan"],.r2-icon-btn[data-r2-theme-toggle]').forEach(el=>{
-        el.setAttribute('data-r2-theme-toggle','true')
-        const label=dark?'Mode terang':'Mode gelap'
-        if(el.getAttribute('aria-label')!==label)el.setAttribute('aria-label',label)
-        if(el.getAttribute('title')!==label)el.setAttribute('title',label)
-      })
+      document.querySelectorAll('.r2-icon-btn[aria-label="Tampilan"],.r2-icon-btn[data-r2-theme-toggle]').forEach(el=>{el.setAttribute('data-r2-theme-toggle','true');const label=dark?'Mode terang':'Mode gelap';if(el.getAttribute('aria-label')!==label)el.setAttribute('aria-label',label);if(el.getAttribute('title')!==label)el.setAttribute('title',label)})
     }
-    const applyTheme=mode=>{
-      const dark=mode==='dark'
-      root.dataset.r2Theme=dark?'dark':'light'
-      window.localStorage.setItem('r2-theme',dark?'dark':'light')
-      syncThemeControl()
-    }
+    const applyTheme=mode=>{const dark=mode==='dark';root.dataset.r2Theme=dark?'dark':'light';window.localStorage.setItem('r2-theme',dark?'dark':'light');syncThemeControl()}
     applyTheme(window.localStorage.getItem('r2-theme')==='dark'?'dark':'light')
-    const onClick=e=>{
-      const theme=e.target.closest?.('.r2-icon-btn[aria-label="Tampilan"],.r2-icon-btn[data-r2-theme-toggle]')
-      if(theme){e.preventDefault();applyTheme(root.dataset.r2Theme==='dark'?'light':'dark');return}
-      const cart=e.target.closest?.('a.cart-link, a[aria-label="Keranjang"]')
-      if(cart && cart.getAttribute('href')!=='/checkout'){e.preventDefault();window.location.assign('/checkout');return}
-      const card=e.target.closest?.('.r2-product')
-      if(card && !e.target.closest?.('.r2-card-actions') && !e.target.closest?.('a')){e.preventDefault();card.querySelector('.r2-card-actions button')?.click();return}
-    }
+    const onClick=e=>{const theme=e.target.closest?.('.r2-icon-btn[aria-label="Tampilan"],.r2-icon-btn[data-r2-theme-toggle]');if(theme){e.preventDefault();applyTheme(root.dataset.r2Theme==='dark'?'light':'dark');return}const cart=e.target.closest?.('a.cart-link, a[aria-label="Keranjang"]');if(cart&&cart.getAttribute('href')!=='/checkout'){e.preventDefault();window.location.assign('/checkout');return}const card=e.target.closest?.('.r2-product');if(card&&!e.target.closest?.('.r2-card-actions')&&!e.target.closest?.('a')){e.preventDefault();card.querySelector('.r2-card-actions button')?.click();return}}
     const onKeyDown=e=>{if(e.key!=='Enter'||e.isComposing)return;const input=e.target.closest?.('.r2-search input');if(input){const value=input.value.trim();if(value){e.preventDefault();window.location.assign(`/products?q=${encodeURIComponent(value)}`)}}}
-    document.addEventListener('click',onClick);document.addEventListener('keydown',onKeyDown)
-    const observer=new MutationObserver(syncThemeControl)
-    observer.observe(document.body,{childList:true,subtree:true})
-    return()=>{document.removeEventListener('click',onClick);document.removeEventListener('keydown',onKeyDown);observer.disconnect()}
+    document.addEventListener('click',onClick);document.addEventListener('keydown',onKeyDown);const observer=new MutationObserver(syncThemeControl);observer.observe(document.body,{childList:true,subtree:true});return()=>{document.removeEventListener('click',onClick);document.removeEventListener('keydown',onKeyDown);observer.disconnect()}
   },[])
   return null
 }
 
 export default function App({ Component, pageProps }) {
-  const router=useRouter()
-  const isHome=router.pathname==='/'
+  const router=useRouter();const isHome=router.pathname==='/'
   return <><BrandAssetLoader/><>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</><RouteIconNav/><CheckoutPrompt/><GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>
 }
