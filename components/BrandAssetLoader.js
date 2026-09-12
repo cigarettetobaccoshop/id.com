@@ -55,7 +55,7 @@ export default function BrandAssetLoader(){
       <span>R2 NUSANTARA</span>
       <i aria-hidden="true" />
     </div>
-    <style jsx>{` 
+    <style jsx>{`
       .r2-asset-loader{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:linear-gradient(135deg,rgba(250,249,246,.98),rgba(242,241,237,.98)),url('/assets/logo/loader-bg.jpg') center/cover no-repeat;animation:r2LoaderOut .28s ease .58s forwards;pointer-events:none}
       .r2-asset-loader-card{display:grid;justify-items:center;gap:10px;padding:28px 34px;border:1px solid rgba(23,23,23,.10);border-radius:22px;background:rgba(255,255,255,.86);box-shadow:0 22px 70px rgba(23,23,23,.12);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
       .r2-asset-loader img{width:76px;height:76px;object-fit:contain;display:block}
@@ -65,6 +65,28 @@ export default function BrandAssetLoader(){
       @keyframes r2LoaderOut{to{opacity:0;visibility:hidden}}
       @media(max-width:700px){.r2-asset-loader-card{padding:24px 28px}.r2-asset-loader img{width:68px;height:68px}}
       @media(prefers-reduced-motion:reduce){.r2-asset-loader{animation:none}.r2-asset-loader i{animation:none}}
+
+      /* Final catalog quantity/add-to-cart presentation layer. */
+      :global(.catalog-grid .product-card .card-actions.v11-actions){display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:7px!important;align-items:stretch!important}
+      :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero){display:grid!important;grid-template-columns:34px minmax(28px,1fr) 34px!important;align-items:center!important;min-width:0!important;height:44px!important;min-height:44px!important;overflow:hidden!important;border:1px solid rgba(12,43,92,.14)!important;border-radius:12px!important;background:linear-gradient(180deg,#fff,#f7faff)!important;box-shadow:0 5px 18px rgba(11,43,92,.07)!important}
+      :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control button),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero button){width:34px!important;height:42px!important;border:0!important;background:transparent!important;color:#0b2b5c!important;font:800 18px/1 system-ui,sans-serif!important;cursor:pointer!important;transition:background .18s ease,color .18s ease,transform .18s ease!important}
+      :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control button:hover:not(:disabled)),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero button:hover:not(:disabled)){background:#eaf2ff!important}
+      :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control button:active:not(:disabled)),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero button:active:not(:disabled)){transform:scale(.94)!important}
+      :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control button:disabled),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero button:disabled){opacity:.35!important;cursor:not-allowed!important}
+      :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control output),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero output){display:grid!important;place-items:center!important;min-width:28px!important;height:42px!important;border-left:1px solid rgba(12,43,92,.08)!important;border-right:1px solid rgba(12,43,92,.08)!important;color:#0b2b5c!important;font:800 13px/1 system-ui,sans-serif!important;font-variant-numeric:tabular-nums!important}
+      :global(.catalog-grid .product-card .card-actions.v11-actions .r2-cart-add){grid-column:1!important;grid-row:1!important;width:100%!important;height:44px!important;min-height:44px!important;padding:0 13px!important;border:1px solid #0b2b5c!important;border-radius:12px!important;background:linear-gradient(135deg,#0b2b5c,#164a91)!important;color:#fff!important;font:800 10px/1 system-ui,sans-serif!important;letter-spacing:.08em!important;cursor:pointer!important;box-shadow:0 8px 20px rgba(11,43,92,.18)!important;transition:transform .18s ease,box-shadow .18s ease,filter .18s ease!important}
+      :global(.catalog-grid .product-card .card-actions.v11-actions .r2-cart-add:hover){filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 11px 24px rgba(11,43,92,.22)!important}
+      :global(.catalog-grid .product-card .card-actions.v11-actions .r2-cart-add:active){transform:translateY(0) scale(.98)!important}
+      :global(.catalog-grid .product-card .card-actions.v11-actions .r2-native-add){display:none!important}
+      :global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero){grid-column:1!important;grid-row:1!important}
+      :global(.catalog-grid .product-card .card-actions.v11-actions .detail){grid-column:2!important;grid-row:1!important;min-width:42px!important;height:44px!important;border-radius:12px!important}
+      /* Header already has PRODUK navigation; remove the duplicate same-destination KATALOG button. */
+      :global(.src-header .src-catalog){display:none!important}
+      @media(max-width:700px){
+        :global(.catalog-grid .product-card .card-actions.v11-actions){grid-template-columns:minmax(0,1fr) 42px!important}
+        :global(.catalog-grid .product-card .card-actions.v11-actions .r2-cart-add){font-size:9px!important;padding-inline:9px!important}
+      }
+      @media(prefers-reduced-motion:reduce){:global(.catalog-grid .product-card .card-actions.v11-actions button){transition:none!important}}
     `}</style>
   </div>
 }
