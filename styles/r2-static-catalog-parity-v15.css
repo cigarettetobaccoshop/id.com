@@ -1,0 +1,373 @@
+/* R2 NUSANTARA — STATIC CATALOG PARITY V15
+   Design-source-of-truth layer for /products.
+   Presentation only: no API, Supabase, data, cart, checkout, auth or inventory logic.
+   This layer ports the static GitHub Pages catalog card language to the Next.js catalog.
+*/
+:root{
+  --r2-static-navy:#0f3d6e;
+  --r2-static-navy-2:#0a2a4d;
+  --r2-static-blue:#1e5fa8;
+  --r2-static-ink:#1a1a1a;
+  --r2-static-muted:#64748b;
+  --r2-static-line:#e2e6ec;
+  --r2-static-soft:#f6f8fa;
+  --r2-static-shadow:0 16px 40px -16px rgba(15,23,42,.25);
+}
+
+/* Catalog surface parity */
+.catalog-app{
+  background:linear-gradient(180deg,#fff 0%,#f6f8fa 100%)!important;
+  color:var(--r2-static-ink)!important;
+}
+.catalog-mobile-header{
+  background:rgba(255,255,255,.88)!important;
+  border:1px solid rgba(255,255,255,.58)!important;
+  box-shadow:0 4px 24px -8px rgba(15,23,42,.10)!important;
+  backdrop-filter:blur(14px)!important;
+  -webkit-backdrop-filter:blur(14px)!important;
+}
+.catalog-top h1,.catalog-top h1 em,.catalog-top,.catalog-top p,.catalog-meta,.product-body h2,.product-body .price{
+  color:var(--r2-static-navy)!important;
+}
+.catalog-top .eyebrow,.product-body .category,.live-dot,.product-body .stock i{
+  color:var(--r2-static-blue)!important;
+}
+.search-box,.catalog-meta select{
+  background:#fff!important;
+  border:1px solid var(--r2-static-line)!important;
+  box-shadow:0 10px 28px -14px rgba(15,23,42,.18)!important;
+}
+.filters button{
+  background:#fff!important;
+  color:var(--r2-static-muted)!important;
+  border:1px solid var(--r2-static-line)!important;
+}
+.filters button.active{
+  background:var(--r2-static-navy)!important;
+  color:#fff!important;
+  border-color:var(--r2-static-navy)!important;
+}
+.catalog-switch{
+  background:#f4f7fa!important;
+  border:1px solid var(--r2-static-line)!important;
+}
+.catalog-switch button.active{
+  background:#fff!important;
+  color:var(--r2-static-navy)!important;
+  border-color:#d5e0ec!important;
+  box-shadow:0 5px 14px rgba(18,63,109,.10)!important;
+}
+
+/* Exact static-reference card language */
+.catalog-grid .product-card{
+  position:relative!important;
+  display:flex!important;
+  flex-direction:column!important;
+  min-width:0!important;
+  overflow:hidden!important;
+  background:#fff!important;
+  border:1px solid #dfe5ec!important;
+  border-radius:20px!important;
+  box-shadow:0 8px 24px rgba(15,61,110,.055)!important;
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease!important;
+}
+.catalog-grid .product-card:hover{
+  transform:translateY(-2px)!important;
+  border-color:#cdd8e5!important;
+  box-shadow:0 12px 28px rgba(15,61,110,.09)!important;
+}
+.catalog-grid .product-card .card-media{
+  position:relative!important;
+  padding:12px 12px 0!important;
+  background:#fff!important;
+}
+.catalog-grid .product-card .product-visual{
+  position:relative!important;
+  min-height:0!important;
+  aspect-ratio:1/1!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-radius:16px!important;
+  background:#15171b!important;
+  background-image:radial-gradient(circle at 50% 15%,rgba(255,255,255,.055),transparent 32%),linear-gradient(145deg,#24262a 0%,#111317 55%,#08090b 100%)!important;
+}
+.catalog-grid .product-card .product-visual:after{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:4!important;
+  pointer-events:none!important;
+  border:0!important;
+  border-radius:inherit!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.025),transparent 38%,rgba(0,0,0,.08))!important;
+}
+
+/* The static reference uses a generated package illustration. The Next card keeps its
+   existing image node for data compatibility, but the parity layer renders the same
+   package treatment over it, avoiding external image dependency for the visual system. */
+.catalog-grid .product-card .pack-art.image-art{
+  position:absolute!important;
+  left:50%!important;
+  top:52%!important;
+  transform:translate(-50%,-50%) rotate(-3deg)!important;
+  z-index:3!important;
+  width:34%!important;
+  height:72%!important;
+  overflow:hidden!important;
+  border-radius:5px!important;
+  background:linear-gradient(180deg,#f5f6f7 0%,#d9dde1 100%)!important;
+  border:1px solid #9ba4ad!important;
+  box-shadow:0 16px 26px rgba(0,0,0,.34)!important;
+}
+.catalog-grid .product-card .pack-art.image-art img{display:none!important}
+.catalog-grid .product-card .pack-art.image-art:before{
+  content:"HEALTH WARNINGS"!important;
+  position:absolute!important;
+  top:7%!important;
+  left:8%!important;
+  right:8%!important;
+  height:14%!important;
+  z-index:2!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:#fff!important;
+  color:#111!important;
+  border:1px solid #222!important;
+  font-family:Arial,sans-serif!important;
+  font-size:4px!important;
+  font-weight:800!important;
+  letter-spacing:.08em!important;
+}
+.catalog-grid .product-card .pack-art.image-art:after{
+  content:"||||||||||||||||"!important;
+  position:absolute!important;
+  left:10%!important;
+  right:10%!important;
+  bottom:8%!important;
+  z-index:2!important;
+  color:#334155!important;
+  font-size:7px!important;
+  letter-spacing:2px!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  border-top:1px solid rgba(25,43,63,.18)!important;
+  padding-top:4px!important;
+}
+.catalog-grid .product-card .visual-label{
+  left:10px!important;
+  right:10px!important;
+  bottom:9px!important;
+  z-index:5!important;
+  color:rgba(255,255,255,.78)!important;
+  font-size:7px!important;
+  text-align:left!important;
+  text-transform:uppercase!important;
+  letter-spacing:.08em!important;
+}
+.catalog-grid .product-card .catalog-resmi .pack-art.image-art{
+  background:linear-gradient(180deg,#fff,#eef1f3)!important;
+}
+.catalog-grid .product-card .catalog-resmi.product-visual{
+  background-image:radial-gradient(circle at 50% 15%,rgba(255,214,112,.10),transparent 32%),linear-gradient(145deg,#26282b,#141517 58%,#090a0b)!important;
+}
+
+/* Badge / wishlist parity */
+.catalog-grid .product-card .badge{
+  position:absolute!important;
+  top:10px!important;
+  left:10px!important;
+  z-index:6!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  min-height:28px!important;
+  padding:0 11px!important;
+  border:1px solid #d9e0e8!important;
+  border-radius:999px!important;
+  background:rgba(255,255,255,.94)!important;
+  color:#294b73!important;
+  box-shadow:0 4px 12px rgba(0,0,0,.12)!important;
+  font-size:9px!important;
+  font-weight:900!important;
+  letter-spacing:.06em!important;
+}
+.catalog-grid .product-card .heart{
+  position:absolute!important;
+  top:10px!important;
+  right:10px!important;
+  z-index:7!important;
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  border-radius:50%!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1px solid #dbe2ea!important;
+  background:rgba(255,255,255,.96)!important;
+  color:#8da0b5!important;
+  box-shadow:0 4px 12px rgba(0,0,0,.10)!important;
+  font-size:20px!important;
+  line-height:1!important;
+}
+.catalog-grid .product-card .heart:hover,.catalog-grid .product-card .heart.is-favorite{
+  color:var(--r2-static-navy)!important;
+  border-color:#bcd0e5!important;
+  background:#fff!important;
+}
+
+/* Body typography / hierarchy */
+.catalog-grid .product-card .product-body{
+  padding:12px 14px 0!important;
+  background:#fff!important;
+}
+.catalog-grid .product-card .product-body .category{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:4px!important;
+  padding:5px 8px!important;
+  border:1px solid #d7e1eb!important;
+  border-radius:7px!important;
+  background:#f7fafc!important;
+  color:#48627e!important;
+  font-size:8px!important;
+  font-weight:900!important;
+  letter-spacing:.08em!important;
+  text-transform:uppercase!important;
+}
+.catalog-grid .product-card .product-body .category:before{content:"◆"!important;font-size:7px!important}
+.catalog-grid .product-card .product-body h2{
+  margin:8px 0 0!important;
+  color:var(--r2-static-navy)!important;
+  font-family:"Playfair Display",Georgia,serif!important;
+  font-size:clamp(17px,5vw,21px)!important;
+  font-weight:800!important;
+  line-height:1.08!important;
+  letter-spacing:-.02em!important;
+  min-height:2.16em!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.catalog-grid .product-card .product-body .variant{display:none!important}
+.catalog-grid .product-card .product-body .price{
+  margin-top:9px!important;
+  color:var(--r2-static-navy)!important;
+  font-size:clamp(19px,5.5vw,24px)!important;
+  font-weight:900!important;
+  letter-spacing:-.025em!important;
+  line-height:1.1!important;
+}
+.catalog-grid .product-card .product-body .price:after{
+  content:" /slop grosir"!important;
+  color:#9aa8b8!important;
+  font-size:9px!important;
+  font-weight:700!important;
+  letter-spacing:0!important;
+  margin-left:4px!important;
+}
+.catalog-grid .product-card .product-body .stock{
+  display:flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  min-height:22px!important;
+  margin-top:9px!important;
+  color:#16966b!important;
+  font-size:10px!important;
+  font-weight:800!important;
+  line-height:1.2!important;
+}
+.catalog-grid .product-card .product-body .stock i{
+  width:17px!important;
+  height:17px!important;
+  display:inline-grid!important;
+  place-items:center!important;
+  flex:0 0 17px!important;
+  border-radius:50%!important;
+  background:#1ba675!important;
+  position:relative!important;
+}
+.catalog-grid .product-card .product-body .stock i:after{content:"✓"!important;color:#fff!important;font-style:normal!important;font-size:10px!important;font-weight:900!important}
+.catalog-grid .product-card .product-body .stock strong{display:none!important}
+
+/* Static-reference action hierarchy: ADD TO CART first, quantity after add, detail icon. */
+.catalog-grid .product-card .card-actions.v11-actions{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 46px!important;
+  grid-template-rows:44px!important;
+  gap:7px!important;
+  margin:12px 14px 14px!important;
+  padding:0!important;
+}
+.catalog-grid .product-card .card-actions.v11-actions .quantity-control{
+  grid-column:1!important;
+  grid-row:1!important;
+  min-height:44px!important;
+  height:44px!important;
+  grid-template-columns:44px minmax(34px,1fr) 44px!important;
+  border:2px solid #9aa7b8!important;
+  border-radius:12px!important;
+  background:#fff!important;
+  box-shadow:none!important;
+}
+.catalog-grid .product-card .quantity-control button{
+  height:40px!important;
+  min-height:40px!important;
+  width:44px!important;
+  color:#173f69!important;
+  font-size:19px!important;
+}
+.catalog-grid .product-card .quantity-control output{
+  font-size:14px!important;
+  color:#173f69!important;
+  font-weight:900!important;
+}
+.catalog-grid .product-card .card-actions.v11-actions>button{
+  grid-row:1!important;
+  min-height:44px!important;
+  height:44px!important;
+  border:1px solid #dce3eb!important;
+  border-radius:12px!important;
+  background:#fff!important;
+  color:#6f8195!important;
+  font-size:0!important;
+  box-shadow:none!important;
+}
+.catalog-grid .product-card .card-actions.v11-actions>button:not(.add){grid-column:2!important}
+.catalog-grid .product-card .card-actions.v11-actions>button:not(.add):before{content:"◉"!important;font-size:17px!important;color:#6d8096!important}
+.catalog-grid .product-card .card-actions.v11-actions .add{
+  grid-column:1!important;
+  background:var(--r2-static-navy)!important;
+  border-color:var(--r2-static-navy)!important;
+  color:#fff!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  letter-spacing:0!important;
+  box-shadow:0 7px 16px rgba(15,61,110,.18)!important;
+}
+.catalog-grid .product-card .card-actions.v11-actions .add:before{content:"🛒 "!important}
+.catalog-grid .product-card .card-actions.v11-actions:has(.quantity-control button:first-child:disabled) .quantity-control{display:none!important}
+.catalog-grid .product-card .card-actions.v11-actions:has(.quantity-control button:first-child:disabled) .add{display:flex!important;align-items:center!important;justify-content:center!important}
+.catalog-grid .product-card .card-actions.v11-actions:has(.quantity-control button:first-child:not(:disabled)) .add{display:none!important}
+.catalog-grid .product-card .card-actions.v11-actions:has(.quantity-control button:first-child:not(:disabled)) .quantity-control{display:grid!important}
+
+/* Preserve responsive density of the static reference. */
+@media(max-width:700px){
+  .catalog-grid .product-card .card-media{padding:10px 10px 0!important}
+  .catalog-grid .product-card .product-body{padding:10px 11px 0!important}
+  .catalog-grid .product-card .product-body h2{font-size:clamp(15px,4.8vw,19px)!important}
+  .catalog-grid .product-card .card-actions.v11-actions{margin:10px 11px 11px!important;grid-template-columns:minmax(0,1fr) 42px!important;grid-template-rows:40px!important;gap:6px!important}
+  .catalog-grid .product-card .card-actions.v11-actions .quantity-control{height:40px!important;min-height:40px!important;grid-template-columns:38px minmax(30px,1fr) 38px!important}
+  .catalog-grid .product-card .quantity-control button{width:38px!important;height:38px!important;min-height:38px!important;font-size:18px!important}
+  .catalog-grid .product-card .card-actions.v11-actions>button{height:40px!important;min-height:40px!important}
+}
+@media(max-width:380px){
+  .catalog-grid .product-card .card-media{padding:8px 8px 0!important}
+  .catalog-grid .product-card .product-body{padding:9px 9px 0!important}
+  .catalog-grid .product-card .product-body h2{font-size:14px!important}
+  .catalog-grid .product-card .product-body .price{font-size:17px!important}
+  .catalog-grid .product-card .card-actions.v11-actions{margin:9px!important;grid-template-columns:minmax(0,1fr) 42px!important;gap:5px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .catalog-grid .product-card,.catalog-grid .product-card .pack-art.image-art{transition:none!important}
+}
