@@ -15,13 +15,46 @@ import '../styles/mobile-locked-desktop.css'
 import '../styles/hero-header-final.css'
 import '../styles/preview-theme-final.css'
 import '../styles/index-header-system.css'
+import '../styles/reference-visual-final.css'
+import '../styles/r2-blue-reference-ui.css'
+import '../styles/r2-reference-precision.css'
+import '../styles/r2-pixel-reference-ui.css'
+import '../styles/r2-functional-polish.css'
+import '../styles/r2-visual-upgrade-v2.css'
+import '../styles/r2-modern-visual-v3.css'
+import '../styles/r2-footer-catalog-v4.css'
+import '../styles/r2-catalog-nav-consistency-v5.css'
+import '../styles/performance-responsive-v1.css'
+import '../styles/r2-visual-consolidated-v6.css'
+import '../styles/r2-product-thumbnail-v7.css'
+import '../styles/r2-footer-visual-v8.css'
+import '../styles/r2-category-slider-v9.css'
+import '../styles/r2-live-catalog-v10.css'
+import '../styles/r2-product-card-v11.css'
+import '../styles/r2-catalog-233-v13.css'
+import '../styles/r2-product-system-v14.css'
+import '../styles/product-card-premium.css'
+import '../styles/r2-static-catalog-parity-v15.css'
+import '../styles/static-catalog-source.css'
+import '../styles/r2-elite-design-v17.css'
+import '../styles/r2-catalog-product-precision-v18.css'
+import '../styles/r2-brand-visual-correction-v19.css'
+import '../styles/r2-final-apple-grade-v20.css'
+import '../styles/r2-global-theme-sync-v21.css'
+import '../styles/r2-catalog-product-interaction-v22.css'
+import '../styles/catalog-premium-final.css'
+import '../styles/r2-home-final-v24.css'
+import '../styles/r2-home-final-v25.css'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Analytics } from '@vercel/analytics/react'
 import RouteIconNav from '../components/RouteIconNav'
-import HomepageExperience from '../components/HomepageExperience'
 import BrandAssetLoader from '../components/BrandAssetLoader'
+import ActivityMonitoringRuntime from '../components/monitoring/ActivityMonitoringRuntime'
+
+const HomepageExperience = dynamic(() => import('../components/HomepageExperience'), { ssr: true })
 
 function CheckoutPrompt() {
   const [count, setCount] = useState(0)
@@ -32,23 +65,21 @@ function CheckoutPrompt() {
 
 function GlobalInteractionGuard(){
   useEffect(()=>{
-    const onClick=e=>{
-      const cart=e.target.closest?.('a.cart-link, a[aria-label="Keranjang"]')
-      if(cart && cart.getAttribute('href')!=='/checkout'){e.preventDefault();window.location.assign('/checkout');return}
-      const card=e.target.closest?.('.r2-product')
-      if(card && !e.target.closest?.('.r2-card-actions') && !e.target.closest?.('a')){e.preventDefault();card.querySelector('.r2-card-actions button')?.click();return}
+    const root=document.documentElement
+    const syncThemeControl=()=>{
+      const dark=root.dataset.r2Theme==='dark'
+      document.querySelectorAll('.r2-icon-btn[aria-label="Tampilan"],.r2-icon-btn[data-r2-theme-toggle]').forEach(el=>{el.setAttribute('data-r2-theme-toggle','true');const label=dark?'Mode terang':'Mode gelap';if(el.getAttribute('aria-label')!==label)el.setAttribute('aria-label',label);if(el.getAttribute('title')!==label)el.setAttribute('title',label)})
     }
+    const applyTheme=mode=>{const dark=mode==='dark';root.dataset.r2Theme=dark?'dark':'light';window.localStorage.setItem('r2-theme',dark?'dark':'light');syncThemeControl()}
+    applyTheme(window.localStorage.getItem('r2-theme')==='dark'?'dark':'light')
+    const onClick=e=>{const theme=e.target.closest?.('.r2-icon-btn[aria-label="Tampilan"],.r2-icon-btn[data-r2-theme-toggle]');if(theme){e.preventDefault();applyTheme(root.dataset.r2Theme==='dark'?'light':'dark');return}const cart=e.target.closest?.('a.cart-link, a[aria-label="Keranjang"]');if(cart&&cart.getAttribute('href')!=='/checkout'){e.preventDefault();window.location.assign('/checkout');return}const card=e.target.closest?.('.r2-product');if(card&&!e.target.closest?.('.r2-card-actions')&&!e.target.closest?.('a')){e.preventDefault();card.querySelector('.r2-card-actions button')?.click();return}}
     const onKeyDown=e=>{if(e.key!=='Enter'||e.isComposing)return;const input=e.target.closest?.('.r2-search input');if(input){const value=input.value.trim();if(value){e.preventDefault();window.location.assign(`/products?q=${encodeURIComponent(value)}`)}}}
-    document.addEventListener('click',onClick);document.addEventListener('keydown',onKeyDown)
-    const hideNonFunctionalControl=()=>document.querySelectorAll('.r2-icon-btn[aria-label="Tampilan"]').forEach(el=>el.remove())
-    hideNonFunctionalControl();const observer=new MutationObserver(hideNonFunctionalControl);observer.observe(document.body,{childList:true,subtree:true})
-    return()=>{document.removeEventListener('click',onClick);document.removeEventListener('keydown',onKeyDown);observer.disconnect()}
+    document.addEventListener('click',onClick);document.addEventListener('keydown',onKeyDown);const observer=new MutationObserver(syncThemeControl);observer.observe(document.body,{childList:true,subtree:true});return()=>{document.removeEventListener('click',onClick);document.removeEventListener('keydown',onKeyDown);observer.disconnect()}
   },[])
   return null
 }
 
 export default function App({ Component, pageProps }) {
-  const router=useRouter()
-  const isHome=router.pathname==='/'
-  return <><BrandAssetLoader/><>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</><RouteIconNav/><CheckoutPrompt/><GlobalInteractionGuard/><Analytics/></>
+  const router=useRouter();const isHome=router.pathname==='/'
+  return <><BrandAssetLoader/><>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</><RouteIconNav/><CheckoutPrompt/><GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>
 }

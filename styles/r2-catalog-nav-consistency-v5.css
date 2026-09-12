@@ -1,0 +1,167 @@
+/* R2 Catalog Navigation Consistency V5
+   Visual-only override: no routing/state/data changes. */
+
+/* Catalog is an app-like surface: footer remains exclusive to Home. */
+@media (max-width: 767px){
+  .catalog-app > .footer,
+  .catalog-app > footer.footer{
+    display:none !important;
+  }
+}
+
+/* Desktop: also suppress the catalog footer so the rule is invariant across viewports. */
+.catalog-app > .footer,
+.catalog-app > footer.footer{
+  display:none !important;
+}
+
+/* Keep catalog content clear of the fixed navigation. */
+.catalog-app{
+  padding-bottom:96px !important;
+}
+
+/* Same visual language as the main-screen mobile dock. */
+.route-icon-nav{
+  position:fixed !important;
+  left:50% !important;
+  right:auto !important;
+  bottom:max(10px, env(safe-area-inset-bottom)) !important;
+  transform:translateX(-50%) !important;
+  z-index:150 !important;
+  width:min(calc(100% - 24px), 430px) !important;
+  min-height:68px !important;
+  padding:7px 8px !important;
+  display:grid !important;
+  grid-template-columns:repeat(4,1fr) !important;
+  align-items:stretch !important;
+  gap:4px !important;
+  background:rgba(255,255,255,.94) !important;
+  border:1px solid rgba(23,105,224,.14) !important;
+  border-radius:22px !important;
+  box-shadow:0 14px 38px rgba(7,29,73,.16),0 3px 12px rgba(7,29,73,.08) !important;
+  backdrop-filter:blur(18px) saturate(150%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%) !important;
+}
+
+.route-icon-nav a{
+  position:relative !important;
+  min-width:0 !important;
+  min-height:54px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:3px !important;
+  padding:6px 3px !important;
+  color:#64748b !important;
+  text-decoration:none !important;
+  border-radius:16px !important;
+  transition:color .2s ease,background-color .2s ease,transform .2s ease !important;
+}
+
+.route-icon-nav a:hover{
+  color:#1769e0 !important;
+  background:rgba(23,105,224,.06) !important;
+}
+
+.route-icon-nav a:active{
+  transform:scale(.96) !important;
+}
+
+.route-icon-nav a.is-active{
+  color:#1769e0 !important;
+  background:linear-gradient(180deg,rgba(23,105,224,.12),rgba(23,105,224,.055)) !important;
+}
+
+.route-icon-nav a.is-active::before{
+  content:"";
+  position:absolute;
+  top:4px;
+  left:50%;
+  width:18px;
+  height:3px;
+  border-radius:999px;
+  background:#1769e0;
+  transform:translateX(-50%);
+}
+
+.route-icon-nav .route-icon-wrap{
+  position:relative !important;
+  width:25px !important;
+  height:25px !important;
+  display:grid !important;
+  place-items:center !important;
+  color:inherit !important;
+}
+
+.route-icon-nav .route-icon{
+  display:block !important;
+  transition:transform .2s ease !important;
+}
+
+.route-icon-nav a.is-active .route-icon{
+  transform:translateY(-1px) !important;
+}
+
+.route-icon-nav .route-icon-label{
+  max-width:100% !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important;
+  font-size:9px !important;
+  line-height:1.15 !important;
+  font-weight:800 !important;
+  letter-spacing:.02em !important;
+}
+
+.route-icon-nav .route-icon-wrap b{
+  position:absolute !important;
+  top:-5px !important;
+  right:-7px !important;
+  min-width:16px !important;
+  height:16px !important;
+  padding:0 4px !important;
+  display:grid !important;
+  place-items:center !important;
+  border-radius:999px !important;
+  background:#1769e0 !important;
+  color:#fff !important;
+  border:2px solid #fff !important;
+  font-size:8px !important;
+  line-height:1 !important;
+  font-weight:900 !important;
+}
+
+@media (min-width:768px){
+  .route-icon-nav{
+    width:min(430px,calc(100% - 40px)) !important;
+  }
+}
+
+@media (max-width:375px){
+  .route-icon-nav{
+    width:calc(100% - 16px) !important;
+    min-height:64px !important;
+    bottom:max(7px,env(safe-area-inset-bottom)) !important;
+    border-radius:20px !important;
+  }
+  .route-icon-nav a{min-height:50px !important;border-radius:14px !important}
+  .route-icon-nav .route-icon-label{font-size:8.5px !important}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .route-icon-nav a,
+  .route-icon-nav .route-icon{transition:none !important}
+}
+
+/* Dark mode remains compatible with the existing R2 theme switch. */
+html[data-r2-theme="dark"] .route-icon-nav{
+  background:rgba(7,29,73,.94) !important;
+  border-color:rgba(126,178,255,.18) !important;
+  box-shadow:0 14px 38px rgba(0,0,0,.34) !important;
+}
+html[data-r2-theme="dark"] .route-icon-nav a{color:#b7c7df !important}
+html[data-r2-theme="dark"] .route-icon-nav a:hover,
+html[data-r2-theme="dark"] .route-icon-nav a.is-active{color:#7eb2ff !important;background:rgba(126,178,255,.1) !important}
+html[data-r2-theme="dark"] .route-icon-nav a.is-active::before{background:#7eb2ff !important}
+html[data-r2-theme="dark"] .route-icon-nav .route-icon-wrap b{border-color:#071d49 !important}

@@ -6,6 +6,8 @@ const requiredFiles = [
   'pages/products.js',
   'pages/contact.js',
   'pages/checkout.js',
+  'pages/auth.js',
+  'pages/auth/callback.js',
   'pages/api/products.js',
   'pages/api/orders.js',
   'pages/api/health.js',
@@ -30,6 +32,8 @@ const products = fs.readFileSync(path.join(process.cwd(), 'pages/products.js'), 
 const apiProducts = fs.readFileSync(path.join(process.cwd(), 'pages/api/products.js'), 'utf8')
 const orders = fs.readFileSync(path.join(process.cwd(), 'pages/api/orders.js'), 'utf8')
 const checkout = fs.readFileSync(path.join(process.cwd(), 'pages/checkout.js'), 'utf8')
+const auth = fs.readFileSync(path.join(process.cwd(), 'pages/auth.js'), 'utf8')
+const callback = fs.readFileSync(path.join(process.cwd(), 'pages/auth/callback.js'), 'utf8')
 const health = fs.readFileSync(path.join(process.cwd(), 'pages/api/health.js'), 'utf8')
 const app = fs.readFileSync(path.join(process.cwd(), 'pages/_app.js'), 'utf8')
 const mobile = fs.readFileSync(path.join(process.cwd(), 'styles/mobile-lock.css'), 'utf8')
@@ -43,7 +47,13 @@ if (!apiProducts.includes('.limit(limit)')) throw new Error('Products API limit 
 if (!apiProducts.includes("count: 'exact'")) throw new Error('Products API exact count missing')
 if (!orders.includes('PAYMENT_METHODS')) throw new Error('Order payment validation missing')
 if (!orders.includes('Variant Inventory Qty')) throw new Error('Server-side stock validation missing')
+if (!orders.includes('create_order_atomic')) throw new Error('Atomic order RPC integration missing')
 if (!checkout.includes("fetch('/api/orders'")) throw new Error('Checkout order API integration missing')
+if (!checkout.includes("localStorage.getItem('r2-cart')")) throw new Error('Guest cart persistence missing')
+if (!auth.includes('Akun bersifat opsional.')) throw new Error('Optional account messaging missing')
+if (!auth.includes('Lanjut sebagai Tamu')) throw new Error('Guest account bypass missing')
+if (!checkout.includes('Data Mitra')) throw new Error('Guest checkout form missing')
+if (!callback.includes('exchangeCodeForSession')) throw new Error('OAuth callback exchange missing')
 if (!health.includes('active_products')) throw new Error('Production health catalog check missing')
 if (!app.includes('mobile-lock.css')) throw new Error('Global mobile lock is not registered')
 if (!app.includes('r2-cross-page-theme-final.css')) throw new Error('Canonical visual system is not registered')

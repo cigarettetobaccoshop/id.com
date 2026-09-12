@@ -2,117 +2,101 @@
 
 ## Overview
 
-OAuth memungkinkan users untuk login menggunakan akun Google atau GitHub mereka tanpa perlu membuat password baru.
+R2 NUSANTARA menggunakan Supabase Auth untuk login OAuth Google dan GitHub. Client ID/Client Secret provider disimpan **di Supabase Dashboard**, bukan di frontend dan bukan di `NEXT_PUBLIC_*` environment variable.
 
-## Setup
+## Production callback
 
-### 1. Google OAuth
+Production application:
+- `https://r2nusantara-shop.vercel.app`
+- Callback: `https://r2nusantara-shop.vercel.app/auth/callback`
 
-**Di Google Cloud Console:**
-1. Buka [console.cloud.google.com](https://console.cloud.google.com)
-2. Create new project atau select existing
-3. Enable "Google+ API"
-4. Go to Credentials > Create OAuth 2.0 credentials
-5. Select "Web Application"
-6. Add Authorized redirect URIs:
-   - Development: `http://localhost:3000/auth/callback`
-   - Production: `https://id.com/auth/callback`
-7. Copy Client ID dan Client Secret
+Development callback:
+- `http://localhost:3000/auth/callback`
 
-**Di Supabase Dashboard:**
-1. Login ke [supabase.com](https://supabase.com)
-2. Select project
-3. Authentication > Providers > Google
-4. Enable provider
-5. Paste Client ID dan Client Secret
-6. Save
+Di Supabase Dashboard, tambahkan callback production dan development pada konfigurasi URL/Auth sesuai kebutuhan. Jangan gunakan `https://id.com/auth/callback` karena domain tersebut bukan domain Production aplikasi saat ini.
 
-### 2. GitHub OAuth
+## 1. Google OAuth
 
-**Di GitHub Settings:**
-1. Login ke github.com
-2. Settings > Developer settings > OAuth Apps > New OAuth App
-3. Fill form:
-   - Application name: `R2 Nusantara`
-   - Homepage URL: `https://id.com`
-   - Authorization callback URL: `https://id.com/auth/callback`
-4. Copy Client ID dan Client Secret
+### Google Cloud Console
 
-**Di Supabase Dashboard:**
-1. Authentication > Providers > GitHub
-2. Enable provider
-3. Paste Client ID dan Client Secret
-4. Save
+1. Buka Google Cloud Console.
+2. Buat atau pilih project.
+3. Configure OAuth consent screen jika belum tersedia.
+4. Buat OAuth Client ID dengan tipe **Web application**.
+5. Pada Authorized redirect URIs, gunakan **Supabase Auth callback URL** yang ditampilkan di Supabase Dashboard untuk project R2 NUSANTARA, bukan callback aplikasi `/auth/callback` secara langsung.
+6. Simpan Client ID dan Client Secret.
 
-## Usage
+### Supabase Dashboard
 
-### Sign In with Google
-```javascript
-import { signInWithGoogle } from '@/lib/supabaseOAuth'
+1. Buka project Supabase R2 NUSANTARA.
+2. Authentication → Providers → Google.
+3. Aktifkan Google.
+4. Masukkan Google Client ID dan Client Secret.
+5. Simpan.
 
-await signInWithGoogle()
+## 2. GitHub OAuth
+
+### GitHub OAuth App
+
+1. GitHub → Settings → Developer settings → OAuth Apps → New OAuth App.
+2. Application name: `R2 Nusantara`.
+3. Homepage URL: `https://r2nusantara-shop.vercel.app`.
+4. Authorization callback URL: gunakan **Supabase Auth callback URL** yang ditampilkan di Supabase Dashboard untuk project R2 NUSANTARA.
+5. Simpan Client ID dan Client Secret.
+
+### Supabase Dashboard
+
+1. Authentication → Providers → GitHub.
+2. Aktifkan GitHub.
+3. Masukkan Client ID dan Client Secret.
+4. Simpan.
+
+## 3. Environment Variables di Vercel
+
+Environment yang dibutuhkan aplikasi Production:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://zgsbtexngystdmakqjyi.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-supabase-publishable-key
+NEXT_PUBLIC_APP_URL=https://r2nusantara-shop.vercel.app
+NEXT_PUBLIC_OAUTH_REDIRECT_URL=https://r2nusantara-shop.vercel.app/auth/callback
+NEXT_PUBLIC_GOOGLE_OAUTH_ENABLED=true
+NEXT_PUBLIC_GITHUB_OAUTH_ENABLED=true
+NODE_ENV=production
 ```
 
-### Sign In with GitHub
-```javascript
-import { signInWithGitHub } from '@/lib/supabaseOAuth'
+**Penting:** Google/GitHub Client Secret tidak boleh ditempatkan pada `NEXT_PUBLIC_*` variable atau committed ke repository. Supabase menyimpan credential OAuth provider tersebut.
 
-await signInWithGitHub()
-```
+Jika project menggunakan nama environment lama `NEXT_PUBLIC_SUPABASE_ANON_KEY`, pertahankan hanya bila kode yang mengonsumsinya memang masih membutuhkan nama tersebut. Jangan menambahkan service-role key ke browser/client bundle.
 
-### Callback Handler
-Automatically handled by `/auth/callback` page
+## 4. Supabase Auth URL Configuration
 
-### Sign Out
-```javascript
-import { supabase } from '@/lib/supabaseRealtimeClient'
+Set:
+- Site URL: `https://r2nusantara-shop.vercel.app`
+- Redirect URL: `https://r2nusantara-shop.vercel.app/auth/callback`
+- Development: `http://localhost:3000/auth/callback`
 
-await supabase.auth.signOut()
-```
+Gunakan exact URL yang sesuai dengan environment. Hindari wildcard redirect URL yang tidak diperlukan.
 
-## Testing
+## 5. Testing
 
-Development:
-```bash
-npm run dev
-# Go to http://localhost:3000/auth
-# Click "Sign in with Google" atau "Sign in with GitHub"
-```
+1. Buka `/auth`.
+2. Klik **Sign in with Google**.
+3. Selesaikan login.
+4. Pastikan kembali ke `/auth` dalam keadaan authenticated.
+5. Ulangi untuk GitHub.
+6. Uji Sign Out.
+7. Uji langsung membuka `/auth/callback` tanpa code: aplikasi harus menangani sesi yang tersedia atau mengembalikan pengguna ke `/auth` dengan pesan error yang jelas.
 
-Production:
-```bash
-# Already deployed with OAuth support
-# Vercel auto-deploys
-```
+## 6. Security
 
-## Security
+- Never expose OAuth Client Secret in frontend code.
+- Never commit Client Secret ke GitHub.
+- Jangan gunakan `NEXT_PUBLIC_GOOGLE_CLIENT_SECRET` atau `NEXT_PUBLIC_GITHUB_CLIENT_SECRET`.
+- Gunakan PKCE untuk flow browser.
+- Batasi redirect URL ke domain yang memang digunakan.
+- Service-role key hanya untuk server-side code dan tidak boleh masuk ke browser bundle.
 
-✅ Do's:
-- Never expose Client Secret in frontend code
-- Always validate redirect URLs
-- Use PKCE flow (handled by Supabase)
-- Store tokens securely (handled by Supabase)
+## 7. Implementation
 
-❌ Don'ts:
-- Don't hardcode credentials
-- Don't expose Client Secret in git
-- Don't allow arbitrary redirect URLs
-
-## Troubleshooting
-
-### "Redirect URI mismatch"
-- Ensure redirect URL matches exactly in OAuth provider settings
-
-### "Invalid Client ID"
-- Check Client ID is correct
-- Verify it's copied from the right provider
-
-### Session not persisting
-- Check browser cookies are enabled
-- Check Supabase session storage
-
-## Next Steps
-- ✅ Step 2: Real-time Integration
-- ✅ Step 3: OAuth Integration
-- 📁 Step 4: Storage Setup
-- 📊 Step 5: Analytics & Optimization
+OAuth provider login tersedia melalui `lib/supabaseOAuth.js` dan callback ditangani oleh `pages/auth/callback.js`. Callback menukar authorization code menjadi session dan mengarahkan pengguna kembali ke `/auth`.

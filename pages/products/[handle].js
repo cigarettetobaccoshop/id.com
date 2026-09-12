@@ -49,7 +49,7 @@ export default function ProductDetail({ product }) {
       <meta property="og:title" content={`${product.Title || product.Handle} — R2 NUSANTARA`} />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
-      <meta property="og:image" content={`${SITE_URL}/assets/logo/preview.jpg`} />
+      <meta property="og:image" content={`${SITE_URL}/assets/ui/r2-detail-pack.svg`} />
       <meta property="og:image:alt" content={`R2 NUSANTARA — ${product.Title || product.Handle}`} />
       <meta name="twitter:card" content="summary_large_image" />
       <link rel="canonical" href={url} />
@@ -60,17 +60,21 @@ export default function ProductDetail({ product }) {
         sku: product['Variant SKU'] || product.Handle,
         category: product.Type || 'Wholesale',
         brand: { '@type': 'Brand', name: product.Vendor || 'R2 NUSANTARA' },
+        image: [`${SITE_URL}/assets/ui/r2-detail-pack.svg`],
         offers: { '@type': 'Offer', url, priceCurrency: 'IDR', price: Number(product['Variant Price'] || 0), availability: stock(product['Variant Inventory Qty']) > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' },
       }) }} />
     </Head>
     <main className="catalog-app product-detail-page">
       <header className="catalog-mobile-header">
-        <Link href="/products" className="brand"><span className="brand-mark"><span>R2</span></span><span className="brand-copy"><strong>R2 NUSANTARA</strong><small>DISTRIBUTOR</small></span></Link>
+        <Link href="/products" className="brand"><span className="brand-mark"><img src="/assets/logo/logo.png" alt="R2 NUSANTARA" width="40" height="40" /></span><span className="brand-copy"><strong>R2 NUSANTARA</strong><small>DISTRIBUTOR</small></span></Link>
         <Link href="/checkout" className="cart-link" aria-label="Keranjang"><RouteIcon type="cart" size={21}/><b>{cart.length}</b></Link>
       </header>
       <section className="catalog-top"><Link href="/products" className="desktop-back">← Kembali ke katalog</Link><div><span className="eyebrow">LIVE PRODUCT DATA · WHOLESALE</span><h1>{product.Title || product.Handle}</h1><p>Informasi produk bersumber dari katalog R2 NUSANTARA yang terintegrasi.</p></div><div className="live-dot"><i/> LIVE</div></section>
-      <section className="quick-modal product-detail-card" style={{ position: 'relative', maxWidth: 760, margin: '24px auto' }}>
-        <div className="product-visual tone-0"><span className="badge">{stock(product['Variant Inventory Qty']) > 0 ? 'READY STOCK' : 'OUT OF STOCK'}</span><div className="pack-art"><span>R2</span><small>WHOLESALE</small><i>01</i></div></div>
+      <section className="quick-modal product-detail-card">
+        <div className="product-visual tone-0">
+          <span className="badge">{stock(product['Variant Inventory Qty']) > 0 ? 'READY STOCK' : 'OUT OF STOCK'}</span>
+          <img className="r2-detail-image" src="/assets/ui/r2-detail-pack.svg" alt="R2 NUSANTARA — produk" width="720" height="720" loading="eager" decoding="async" />
+        </div>
         <span className="category">{product.Type || product.Vendor || 'WHOLESALE'}</span>
         <h2>{product.Title || product.Handle}</h2>
         {product['Option1 Value'] && <p className="variant">{product['Option1 Name'] || 'VARIANT'} · {product['Option1 Value']}</p>}

@@ -1,0 +1,168 @@
+/* R2 NUSANTARA — Brand Visual Correction v19
+   VISUAL-ONLY: fixes duplicated hero imagery and standardizes brand geometry.
+   No data, API, Supabase, cart, checkout, routing or business logic changes. */
+
+/* =========================================================
+   1) HERO — ONE transparent background layer only
+   ========================================================= */
+.src-hero{
+  isolation:isolate!important;
+  position:relative!important;
+  overflow:hidden!important;
+  background:#f7fbff!important;
+  background-image:none!important;
+}
+.src-hero-bg{
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  pointer-events:none!important;
+  background-image:
+    linear-gradient(90deg,rgba(255,255,255,.96) 0%,rgba(247,251,255,.84) 50%,rgba(238,246,255,.58) 100%),
+    url('/assets/logo/hero-bg.jpg')!important;
+  background-size:cover!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+  opacity:1!important;
+  mix-blend-mode:normal!important;
+}
+.src-hero-bg:before,
+.src-hero-bg:after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+}
+.src-hero-copy{
+  position:relative!important;
+  z-index:2!important;
+}
+
+/* Remove legacy hero background duplicates from older cascade layers. */
+.src-hero::before,
+.src-hero::after{
+  background-image:none!important;
+  background:none!important;
+  content:none!important;
+}
+
+/* =========================================================
+   2) HEADER LOGO — perfect round badge + blue verification
+   ========================================================= */
+.src-brand{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  min-width:0!important;
+}
+.src-logo-r2{
+  position:relative!important;
+  flex:0 0 44px!important;
+  width:44px!important;
+  height:44px!important;
+  aspect-ratio:1/1!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  overflow:visible!important;
+  background:#fff!important;
+  border:1px solid #dbe7f4!important;
+  box-shadow:0 8px 22px rgba(11,43,92,.12)!important;
+}
+.src-logo-r2::before{
+  content:""!important;
+  position:absolute!important;
+  inset:2px!important;
+  border-radius:50%!important;
+  border:3px solid #eef5fc!important;
+  pointer-events:none!important;
+}
+.src-logo-r2 img{
+  position:relative!important;
+  z-index:1!important;
+  display:block!important;
+  width:30px!important;
+  height:30px!important;
+  aspect-ratio:1/1!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  border-radius:50%!important;
+}
+.src-logo-check{
+  position:absolute!important;
+  right:-2px!important;
+  bottom:-1px!important;
+  z-index:4!important;
+  width:18px!important;
+  height:18px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  background:#1769e0!important;
+  color:#fff!important;
+  border:3px solid #fff!important;
+  box-shadow:0 4px 10px rgba(23,105,224,.26)!important;
+}
+.src-logo-check svg{
+  width:10px!important;
+  height:10px!important;
+  stroke:#fff!important;
+}
+.src-brand>span:last-child{
+  min-width:0!important;
+}
+.src-brand>span:last-child strong{
+  display:flex!important;
+  align-items:center!important;
+  gap:5px!important;
+}
+.src-brand>span:last-child strong i{
+  display:none!important;
+}
+
+/* =========================================================
+   3) FOOTER — visible, intentional brand lockup
+   ========================================================= */
+.src-footer::after{
+  content:""!important;
+  position:absolute!important;
+  right:24px!important;
+  bottom:20px!important;
+  z-index:1!important;
+  width:104px!important;
+  height:104px!important;
+  border-radius:50%!important;
+  background:
+    linear-gradient(rgba(7,31,67,.58),rgba(7,31,67,.58)),
+    url('/assets/footer-logo.png') center/contain no-repeat!important;
+  opacity:.96!important;
+  border:1px solid rgba(255,255,255,.20)!important;
+  box-shadow:0 14px 40px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.12)!important;
+  pointer-events:none!important;
+}
+.src-footer-info{
+  padding-right:132px!important;
+}
+.src-footer-info::before{
+  content:""!important;
+  display:block!important;
+  width:58px!important;
+  height:58px!important;
+  margin:0 0 14px!important;
+  border-radius:50%!important;
+  background:#fff url('/assets/footer-logo.png') center/contain no-repeat!important;
+  border:1px solid rgba(255,255,255,.32)!important;
+  box-shadow:0 10px 26px rgba(0,0,0,.18)!important;
+}
+
+@media(max-width:767px){
+  .src-logo-r2{flex-basis:40px!important;width:40px!important;height:40px!important}
+  .src-logo-r2 img{width:27px!important;height:27px!important}
+  .src-logo-check{width:17px!important;height:17px!important;right:-2px!important;bottom:-1px!important;border-width:3px!important}
+  .src-footer::after{right:14px!important;bottom:18px!important;width:78px!important;height:78px!important}
+  .src-footer-info{padding-right:96px!important}
+  .src-footer-info::before{width:50px!important;height:50px!important;margin-bottom:12px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .src-logo-r2,.src-logo-check,.src-footer::after{transition:none!important}
+}
