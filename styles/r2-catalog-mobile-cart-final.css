@@ -7,12 +7,18 @@
 .premium-catalog .quantity-control button{border:0!important;border-radius:0!important;background:#f2f6ff!important;color:#123b86!important;font-size:19px!important;font-weight:900!important;min-height:40px!important;padding:0!important;line-height:1!important;cursor:pointer;transition:background .16s ease,transform .16s ease}
 .premium-catalog .quantity-control button:hover{background:#e7efff!important;color:#1556d9!important}
 .premium-catalog .quantity-control button:active{transform:scale(.94)}
+.premium-catalog .quantity-control button:disabled{opacity:.45!important;cursor:not-allowed!important}
 .premium-catalog .quantity-control output{display:grid;place-items:center;min-width:30px;color:#071d49;font-size:15px;font-weight:900;font-variant-numeric:tabular-nums;background:#fff}
 .premium-catalog .static-add{position:relative;min-height:40px!important;border:0!important;border-radius:12px!important;background:linear-gradient(135deg,#0b2b5c,#1f5eff)!important;color:#fff!important;font-size:11px!important;font-weight:900!important;letter-spacing:.045em!important;padding:0 12px!important;box-shadow:0 9px 20px rgba(31,94,255,.20)!important;white-space:nowrap}
 .premium-catalog .static-add:not(:disabled):hover{transform:translateY(-1px);box-shadow:0 12px 24px rgba(31,94,255,.25)!important}
 .premium-catalog .static-add:disabled{opacity:.48;cursor:not-allowed;box-shadow:none!important}
 .premium-catalog .detail{min-height:40px!important;border-radius:12px!important;font-size:10px!important;font-weight:850!important}
-/* When the item already has quantity, keep the quantity stepper dominant and the secondary action clear. */
+/* Zero-state fallback: when legacy markup renders only Add To Cart, keep the mobile card visually consistent with [-] 0 [+] + Add To Cart. */
+.premium-catalog .card-actions:not(:has(.quantity-control)){grid-template-columns:minmax(0,1fr) minmax(86px,.72fr)}
+.premium-catalog .card-actions:not(:has(.quantity-control)) .static-add{display:grid!important;grid-template-columns:26px minmax(22px,1fr) 26px auto;align-items:center;gap:0;padding:0 7px!important}
+.premium-catalog .card-actions:not(:has(.quantity-control)) .static-add::before{content:'−';display:grid;place-items:center;height:28px;border-radius:7px;background:rgba(255,255,255,.14);font-size:16px;line-height:1}
+.premium-catalog .card-actions:not(:has(.quantity-control)) .static-add::after{content:'+';display:grid;place-items:center;height:28px;border-radius:7px;background:rgba(255,255,255,.14);font-size:16px;line-height:1}
+/* Keep the real numeric state centered when the control exists. */
 .premium-catalog .card-actions.v11-actions:has(.quantity-control){grid-template-columns:minmax(0,1fr) minmax(86px,.72fr)}
 .premium-catalog .card-actions.v11-actions:has(.quantity-control) .detail{background:#fff!important;color:#163b76!important;border:1px solid rgba(7,29,73,.11)!important}
 
@@ -33,6 +39,8 @@
   .premium-catalog .quantity-control button{min-height:38px!important;font-size:18px!important}
   .premium-catalog .quantity-control output{font-size:14px!important}
   .premium-catalog .static-add{min-height:38px!important;border-radius:10px!important;font-size:9px!important;padding:0 7px!important}
+  .premium-catalog .card-actions:not(:has(.quantity-control)) .static-add{grid-template-columns:22px minmax(18px,1fr) 22px auto!important;font-size:8px!important;letter-spacing:.025em!important;padding:0 4px!important}
+  .premium-catalog .card-actions:not(:has(.quantity-control)) .static-add::before,.premium-catalog .card-actions:not(:has(.quantity-control)) .static-add::after{height:27px;font-size:15px}
   .premium-catalog .detail{min-height:34px!important;font-size:8px!important}
 }
 
@@ -47,6 +55,8 @@
   .premium-catalog .quantity-control button{min-height:36px!important;font-size:17px!important}
   .premium-catalog .quantity-control output{font-size:13px!important}
   .premium-catalog .static-add{min-height:36px!important;font-size:8px!important;padding:0 5px!important}
+  .premium-catalog .card-actions:not(:has(.quantity-control)) .static-add{grid-template-columns:20px minmax(16px,1fr) 20px auto!important;font-size:7px!important;padding:0 3px!important}
+  .premium-catalog .card-actions:not(:has(.quantity-control)) .static-add::before,.premium-catalog .card-actions:not(:has(.quantity-control)) .static-add::after{height:25px;font-size:14px}
   .premium-catalog .detail{min-height:32px!important}
 }
 
