@@ -1,0 +1,210 @@
+/* R2 NUSANTARA — Global Theme Sync v21
+   VISUAL-ONLY hardening layer. No data/API/Supabase/auth/cart/checkout logic changes. */
+
+/* =========================================================
+   FOOTER — remove ALL logo artwork, including legacy pseudo-elements
+   ========================================================= */
+.src-footer::before,
+.src-footer::after,
+.src-footer-info::before,
+.footer-bg::before,
+.footer-bg::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+.src-footer-info{padding-right:0!important}
+
+/* =========================================================
+   SHARED R2 DESIGN TOKENS
+   ========================================================= */
+:root{
+  --r2-ui-bg:#f6f8fb;
+  --r2-ui-surface:#ffffff;
+  --r2-ui-surface-2:#f9fbfe;
+  --r2-ui-ink:#0b1d41;
+  --r2-ui-muted:#66768d;
+  --r2-ui-line:#dce5ef;
+  --r2-ui-blue:#1769e0;
+  --r2-ui-navy:#071a45;
+  --r2-ui-radius:18px;
+  --r2-ui-shadow:0 16px 42px rgba(10,38,78,.075);
+}
+
+html,body{background:var(--r2-ui-bg)}
+body{color:var(--r2-ui-ink)}
+
+/* =========================================================
+   CATALOG — same visual language as home / checkout / account
+   ========================================================= */
+.catalog-app{
+  min-height:100vh!important;
+  background:linear-gradient(180deg,#f9fbfd 0%,#f3f6fa 100%)!important;
+  color:var(--r2-ui-ink)!important;
+}
+.catalog-mobile-header{
+  background:rgba(255,255,255,.92)!important;
+  border-bottom:1px solid rgba(11,29,65,.08)!important;
+  box-shadow:0 8px 28px rgba(10,38,78,.06)!important;
+  backdrop-filter:blur(20px) saturate(150%)!important;
+}
+.catalog-mobile-header .brand-mark{
+  width:42px!important;height:42px!important;aspect-ratio:1/1!important;
+  border-radius:50%!important;background:#fff!important;
+  border:1px solid #d8e4f1!important;box-shadow:0 7px 20px rgba(10,38,78,.08)!important;
+}
+.catalog-mobile-header .brand-mark img{width:32px!important;height:32px!important;object-fit:contain!important}
+.catalog-head-actions a{border-radius:50%!important;background:#fff!important;color:var(--r2-ui-navy)!important}
+.catalog-top h1,.catalog-top h1 em{letter-spacing:-.055em!important}
+.search-box,.catalog-meta select,.filters button,.catalog-switch,.catalog-switch button.active{
+  border-color:var(--r2-ui-line)!important;
+}
+.search-box,.catalog-meta select,.filters button{background:var(--r2-ui-surface)!important;color:var(--r2-ui-ink)!important}
+.catalog-grid .product-card{
+  border-color:var(--r2-ui-line)!important;
+  border-radius:22px!important;
+  box-shadow:var(--r2-ui-shadow)!important;
+}
+.catalog-grid .product-card:hover{box-shadow:0 24px 58px rgba(10,38,78,.12)!important}
+
+/* =========================================================
+   CHECKOUT / CART — harmonize inline checkout theme with catalog
+   ========================================================= */
+.checkout-shell{
+  min-height:100vh!important;
+  background:linear-gradient(180deg,#f9fbfd 0%,#f3f6fa 100%)!important;
+  color:var(--r2-ui-ink)!important;
+}
+.checkout-header{background:var(--r2-ui-navy)!important}
+.checkout-layout{max-width:1180px!important}
+.checkout-shell .panel{
+  border-color:var(--r2-ui-line)!important;
+  border-radius:20px!important;
+  box-shadow:var(--r2-ui-shadow)!important;
+  background:rgba(255,255,255,.96)!important;
+}
+.checkout-shell .panel-title>span{border-radius:50%!important;background:#edf5ff!important;color:var(--r2-ui-blue)!important}
+.checkout-shell .fields input,
+.checkout-shell .fields textarea,
+.checkout-shell .notes textarea{
+  border-color:#d8e2ed!important;border-radius:11px!important;background:#fff!important;color:var(--r2-ui-ink)!important;
+}
+.checkout-shell .options label{border-color:#dce5ef!important;border-radius:13px!important;background:#fff!important}
+.checkout-shell .options label.selected{border-color:#9fc2ee!important;background:#f5f9ff!important}
+.checkout-shell .submit{background:var(--r2-ui-navy)!important;border-radius:13px!important}
+.checkout-shell .submit:hover{background:var(--r2-ui-blue)!important}
+.checkout-shell .summary{top:18px!important}
+.checkout-shell .mini-art{border-radius:12px!important;background:linear-gradient(145deg,#071a45,#1769e0)!important}
+
+/* Success / empty cart states */
+.checkout-shell .success-card{
+  border:1px solid var(--r2-ui-line)!important;border-radius:24px!important;
+  box-shadow:var(--r2-ui-shadow)!important;background:rgba(255,255,255,.97)!important;
+}
+
+/* =========================================================
+   ACCOUNT — same premium system; preserve OAuth/auth behavior
+   ========================================================= */
+.account-page{
+  background:linear-gradient(180deg,#f9fbfd 0%,#eef3f9 100%)!important;
+  color:var(--r2-ui-ink)!important;
+}
+.account-brand .brand-mark{
+  width:42px!important;height:42px!important;aspect-ratio:1/1!important;
+  border-radius:50%!important;background:#fff!important;
+  border:1px solid #d8e4f1!important;color:var(--r2-ui-navy)!important;
+}
+.account-brand .verified{
+  width:20px!important;height:20px!important;border-radius:50%!important;
+  background:var(--r2-ui-blue)!important;color:#fff!important;
+}
+.account-card{
+  border-color:var(--r2-ui-line)!important;border-radius:24px!important;
+  box-shadow:var(--r2-ui-shadow)!important;background:rgba(255,255,255,.96)!important;
+}
+.account-card .google-button,.account-card .guest,.account-card .login-panel,.account-card .profile{
+  border-color:var(--r2-ui-line)!important;border-radius:13px!important;
+}
+.account-card .google-button:hover{border-color:#a8c5e6!important;box-shadow:0 12px 26px rgba(10,38,78,.10)!important}
+.account-links a:hover{color:var(--r2-ui-blue)!important}
+
+/* =========================================================
+   DARK THEME — synchronize all three surfaces when existing toggle is dark
+   ========================================================= */
+html[data-r2-theme="dark"] body,
+html[data-r2-theme="dark"] .catalog-app,
+html[data-r2-theme="dark"] .checkout-shell,
+html[data-r2-theme="dark"] .account-page{
+  background:linear-gradient(180deg,#071426 0%,#0b1b30 100%)!important;
+  color:#edf4ff!important;
+}
+html[data-r2-theme="dark"] .catalog-mobile-header{
+  background:rgba(7,20,38,.90)!important;border-color:rgba(181,208,239,.14)!important;color:#edf4ff!important;
+}
+html[data-r2-theme="dark"] .catalog-mobile-header .brand,
+html[data-r2-theme="dark"] .catalog-top h1,
+html[data-r2-theme="dark"] .catalog-top p strong,
+html[data-r2-theme="dark"] .catalog-grid .product-card .product-body h2{
+  color:#f4f8ff!important;
+}
+html[data-r2-theme="dark"] .catalog-mobile-header .brand-copy small,
+html[data-r2-theme="dark"] .catalog-top p,
+html[data-r2-theme="dark"] .catalog-meta>span,
+html[data-r2-theme="dark"] .catalog-meta label>span,
+html[data-r2-theme="dark"] .catalog-grid .product-card .product-body .tagline,
+html[data-r2-theme="dark"] .catalog-grid .product-card .product-body .stock{color:#aabbd0!important}
+html[data-r2-theme="dark"] .catalog-head-actions a,
+html[data-r2-theme="dark"] .search-box,
+html[data-r2-theme="dark"] .catalog-meta select,
+html[data-r2-theme="dark"] .filters button,
+html[data-r2-theme="dark"] .catalog-switch,
+html[data-r2-theme="dark"] .catalog-switch button.active,
+html[data-r2-theme="dark"] .catalog-grid .product-card{
+  background:#10233d!important;border-color:#294564!important;color:#edf4ff!important;
+}
+html[data-r2-theme="dark"] .catalog-grid .product-card .product-body .category{background:#142b48!important;border-color:#315170!important;color:#b9d1ec!important}
+html[data-r2-theme="dark"] .checkout-shell .panel,
+html[data-r2-theme="dark"] .account-card,
+html[data-r2-theme="dark"] .account-card .login-panel,
+html[data-r2-theme="dark"] .account-card .profile,
+html[data-r2-theme="dark"] .account-card .google-button,
+html[data-r2-theme="dark"] .account-card .guest{
+  background:#10233d!important;border-color:#294564!important;color:#edf4ff!important;
+}
+html[data-r2-theme="dark"] .checkout-shell .panel-title h2,
+html[data-r2-theme="dark"] .checkout-shell .summary-head h2,
+html[data-r2-theme="dark"] .account-card h1,
+html[data-r2-theme="dark"] .account-card .panel-copy strong,
+html[data-r2-theme="dark"] .account-card .profile-copy strong{color:#f4f8ff!important}
+html[data-r2-theme="dark"] .checkout-shell .panel-title p,
+html[data-r2-theme="dark"] .checkout-shell .legal,
+html[data-r2-theme="dark"] .account-card .lead,
+html[data-r2-theme="dark"] .account-card .panel-copy span,
+html[data-r2-theme="dark"] .account-card .profile-copy span{color:#aabbd0!important}
+html[data-r2-theme="dark"] .checkout-shell .fields input,
+html[data-r2-theme="dark"] .checkout-shell .fields textarea,
+html[data-r2-theme="dark"] .checkout-shell .notes textarea{background:#0b1b30!important;color:#edf4ff!important;border-color:#315170!important}
+html[data-r2-theme="dark"] .checkout-shell .options label{background:#0e2037!important;border-color:#294564!important;color:#edf4ff!important}
+html[data-r2-theme="dark"] .checkout-shell .options label.selected{background:#142b48!important;border-color:#4b7eb8!important}
+html[data-r2-theme="dark"] .account-links a{color:#aabbd0!important}
+
+/* =========================================================
+   Mobile precision
+   ========================================================= */
+@media(max-width:767px){
+  .catalog-top{padding-top:28px!important}
+  .catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;padding:14px!important}
+  .catalog-grid .product-card{border-radius:17px!important}
+  .catalog-grid .product-card .card-media{padding:7px 7px 0!important}
+  .catalog-grid .product-card .product-body{padding:10px 10px 0!important}
+  .catalog-grid .product-card .product-body h2{font-size:14px!important}
+  .catalog-grid .product-card .card-actions.v11-actions{margin:10px!important;grid-template-columns:minmax(0,1fr) 42px!important}
+  .checkout-layout{grid-template-columns:1fr!important;padding:0 13px!important}
+  .checkout-shell .summary{position:static!important}
+  .account-page{padding:18px 13px 82px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:0.01ms!important;animation-duration:0.01ms!important;animation-iteration-count:1!important}
+}
