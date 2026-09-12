@@ -97,6 +97,20 @@ export default function BrandAssetLoader(){
         :global(.catalog-grid .product-card .card-actions.v11-actions .detail){height:20px!important;min-height:20px!important;font-size:6.5px!important}
       }
       @media(prefers-reduced-motion:reduce){:global(.catalog-grid .product-card .card-actions.v11-actions button){transition:none!important}}
+
+      /* Precision anti-overlap pass: reserve a real vertical action zone inside each card. */
+      @media(max-width:700px){
+        :global(.catalog-grid .product-card){display:flex!important;flex-direction:column!important;justify-content:flex-start!important;overflow:hidden!important;height:220px!important;min-height:220px!important;aspect-ratio:auto!important}
+        :global(.catalog-grid .product-card .card-media){position:relative!important;z-index:1!important;flex:0 0 auto!important}
+        :global(.catalog-grid .product-card .product-body){position:relative!important;z-index:1!important;flex:1 1 auto!important;min-height:64px!important;overflow:hidden!important}
+        :global(.catalog-grid .product-card .card-actions.v11-actions){position:relative!important;z-index:5!important;flex:0 0 60px!important;align-self:stretch!important;margin-top:auto!important;transform:translateY(-1px)!important}
+        :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-cart-add){position:relative!important;z-index:6!important}
+      }
+      @media(max-width:360px){
+        :global(.catalog-grid .product-card){height:204px!important;min-height:204px!important}
+        :global(.catalog-grid .product-card .product-body){min-height:60px!important}
+        :global(.catalog-grid .product-card .card-actions.v11-actions){flex-basis:55px!important;transform:translateY(-1px)!important}
+      }
     `}</style>
   </div>
 }
