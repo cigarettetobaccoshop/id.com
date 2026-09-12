@@ -25,17 +25,13 @@ const OFFICIAL_NAMES=new Set([
 
 const catalogOf=p=>p?.category==='resmi'||OFFICIAL_NAMES.has(normalizeName(p?.Title||p?.Handle))?'resmi':'r2'
 
-/*
- * Presentation-only product artwork.
- * The static reference uses a square product-image area. This equivalent local
- * artwork keeps that geometry without introducing external brand packaging.
- */
+/* Presentation-only product artwork. */
 const Visual=({i=0,favorite=false,onFavorite,title='',inventory=0,catalog='r2',product})=>{
  const ready=inventory>0
  const rawTitle=String(title||product?.Title||product?.Handle||'R2 NUSANTARA').trim()
  const words=rawTitle.split(/\s+/).filter(Boolean)
  const brand=(words.slice(0,Math.min(2,words.length)).join(' ')||'R2 NUSANTARA').slice(0,26)
- const variant=String(product?.['Option1 Value']||product?.Type||catalog==='resmi'?'RESMI':'GROSIR').trim()
+ const variant=String(product?.['Option1 Value']||product?.Type||(catalog==='resmi'?'RESMI':'GROSIR')).trim()
  return <div className={`product-visual tone-${i%4} ${catalog==='resmi'?'catalog-resmi':'catalog-r2'}`}>
   <span className="badge">{ready?'READY STOCK':'STOK HABIS'}</span>
   <button type="button" className={`heart ${favorite?'is-favorite':''}`} aria-label={favorite?'Hapus dari favorit':'Favorit'} aria-pressed={favorite} onClick={e=>{e.stopPropagation();onFavorite?.()}}>{favorite?'♥':'♡'}</button>
