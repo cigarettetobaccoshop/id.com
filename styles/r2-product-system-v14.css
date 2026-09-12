@@ -1,0 +1,265 @@
+/* R2 NUSANTARA — CATALOG / PRODUCT SYSTEM V14
+   Presentation-only layer. No API, data, state, cart, checkout or inventory logic changes.
+   Product photography is not present in the repository's catalog assets, so the existing
+   generated visual is retained as a deliberate, consistent fallback rather than inventing images.
+*/
+
+:root{
+  --r2-navy:#123f6d;
+  --r2-navy-strong:#0c3158;
+  --r2-ink:#172b43;
+  --r2-muted:#66778b;
+  --r2-line:#dfe6ee;
+  --r2-soft:#f5f8fb;
+  --r2-green:#168d67;
+  --r2-blue-soft:#edf5ff;
+  --r2-radius:18px;
+}
+
+/* Catalog switch: make the two datasets visually explicit without changing their binding. */
+.catalog-switch{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  padding:7px!important;
+  border:1px solid var(--r2-line)!important;
+  border-radius:16px!important;
+  background:#f4f7fa!important;
+  box-shadow:0 5px 18px rgba(18,63,109,.05)!important;
+}
+.catalog-switch button{
+  min-height:46px!important;
+  border:1px solid transparent!important;
+  border-radius:12px!important;
+  background:transparent!important;
+  color:#65768a!important;
+  font-size:12px!important;
+  font-weight:850!important;
+  letter-spacing:.01em!important;
+  transition:background .18s ease,color .18s ease,box-shadow .18s ease,border-color .18s ease,transform .18s ease!important;
+}
+.catalog-switch button.active{
+  background:#fff!important;
+  color:var(--r2-navy)!important;
+  border-color:#d5e0ec!important;
+  box-shadow:0 5px 14px rgba(18,63,109,.10)!important;
+}
+.catalog-switch button.resmi.active{color:#8a5a08!important}
+.catalog-switch button:focus-visible,
+.filters button:focus-visible,
+.catalog-tools button:focus-visible,
+.product-card button:focus-visible,
+.product-card:focus-visible,
+.catalog-meta select:focus-visible{
+  outline:3px solid rgba(25,96,168,.24)!important;
+  outline-offset:2px!important;
+}
+.catalog-switch .count{
+  display:inline-flex!important;
+  min-width:30px!important;
+  min-height:24px!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0 7px!important;
+  margin-left:5px!important;
+  border-radius:999px!important;
+  background:#edf2f7!important;
+  color:#6c7c8f!important;
+  font-size:10px!important;
+  font-weight:900!important;
+}
+.catalog-switch button.active .count{background:#eaf3ff!important;color:var(--r2-navy)!important}
+.catalog-switch button.resmi.active .count{background:#fff4dc!important;color:#8a5a08!important}
+
+/* Product grid: stable cards with no artificial height forcing. */
+.catalog-grid{
+  align-items:stretch!important;
+}
+.catalog-grid .product-card{
+  min-width:0!important;
+  contain:layout paint!important;
+}
+
+/* Premium, minimal thumbnail treatment. */
+.catalog-grid .product-card .card-media{
+  padding:10px 10px 0!important;
+}
+.catalog-grid .product-card .product-visual{
+  aspect-ratio:1/1!important;
+  min-height:0!important;
+  border-radius:15px!important;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(255,255,255,.08),transparent 30%),
+    linear-gradient(145deg,#242930 0%,#14181d 58%,#090b0e 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+.catalog-grid .product-card .product-visual:before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px)!important;
+  background-size:22px 22px!important;
+  mask-image:linear-gradient(to bottom,black,transparent 82%)!important;
+}
+.catalog-grid .product-card .pack-art{
+  z-index:3!important;
+  width:36%!important;
+  height:70%!important;
+  border-radius:6px!important;
+  background:
+    linear-gradient(160deg,rgba(255,255,255,.98),rgba(220,225,230,.98))!important;
+  border:1px solid #aab3bd!important;
+  box-shadow:0 17px 30px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.08)!important;
+}
+.catalog-grid .product-card .pack-art:after{
+  content:"CATALOGUE"!important;
+  position:absolute!important;
+  left:9%!important;
+  right:9%!important;
+  bottom:8%!important;
+  padding:4px 2px!important;
+  border-top:1px solid rgba(25,43,63,.18)!important;
+  color:#51657b!important;
+  font-size:4px!important;
+  font-weight:900!important;
+  letter-spacing:.18em!important;
+  text-align:center!important;
+}
+.catalog-grid .product-card .catalog-resmi .pack-art,
+.catalog-grid .product-card .product-visual.catalog-resmi .pack-art{
+  background:linear-gradient(160deg,#fff,#eef1f3)!important;
+}
+.catalog-grid .product-card .product-visual.catalog-resmi{
+  background:
+    radial-gradient(circle at 50% 20%,rgba(255,214,112,.10),transparent 32%),
+    linear-gradient(145deg,#26282b,#141517 58%,#090a0b)!important;
+}
+.catalog-grid .product-card .pack-art span{
+  color:#173b63!important;
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-size:clamp(24px,8vw,42px)!important;
+  font-weight:900!important;
+  letter-spacing:-.04em!important;
+}
+.catalog-grid .product-card .catalog-resmi .pack-art span{color:#6e4b0c!important}
+
+/* READY STOCK is a state, not a badge. Only exceptions remain visible as badges. */
+.catalog-grid .product-card:has(.stock strong:not(:empty)) .badge{display:none!important}
+.catalog-grid .product-card .badge{
+  min-height:28px!important;
+  padding:0 10px!important;
+  border-radius:999px!important;
+  font-size:9px!important;
+  font-weight:900!important;
+  letter-spacing:.055em!important;
+}
+.catalog-grid .product-card:has(.stock strong:empty) .badge{
+  background:#fff3f0!important;
+  border-color:#f1c9c1!important;
+  color:#a23f2e!important;
+}
+
+/* Card hierarchy and readability. */
+.catalog-grid .product-card .product-body{
+  padding:11px 12px 0!important;
+}
+.catalog-grid .product-card .product-body .category{
+  max-width:100%!important;
+  min-height:25px!important;
+  padding:4px 7px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  border-radius:7px!important;
+  font-size:8px!important;
+  line-height:1.2!important;
+}
+.catalog-grid .product-card .product-body h2{
+  min-height:2.18em!important;
+  margin:8px 0 0!important;
+  font-size:clamp(15px,4.7vw,20px)!important;
+  line-height:1.09!important;
+  overflow-wrap:anywhere!important;
+}
+.catalog-grid .product-card .product-body .price{
+  margin-top:8px!important;
+  font-size:clamp(18px,5.2vw,23px)!important;
+  line-height:1.12!important;
+}
+.catalog-grid .product-card .product-body .price:after{
+  font-size:9px!important;
+}
+.catalog-grid .product-card .product-body .stock{
+  min-height:22px!important;
+  margin-top:8px!important;
+  font-size:10px!important;
+}
+
+/* All interactive card controls are >=44px tap targets on mobile. */
+.catalog-grid .product-card .heart{
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  top:8px!important;
+  right:8px!important;
+}
+.catalog-grid .product-card .card-actions.v11-actions{
+  grid-template-columns:minmax(0,1fr) 44px!important;
+  grid-template-rows:44px!important;
+  min-height:44px!important;
+  margin:10px 12px 12px!important;
+  gap:7px!important;
+}
+.catalog-grid .product-card .card-actions.v11-actions>button,
+.catalog-grid .product-card .card-actions.v11-actions .quantity-control{
+  min-height:44px!important;
+  height:44px!important;
+}
+.catalog-grid .product-card .card-actions.v11-actions .quantity-control{
+  grid-template-columns:44px minmax(34px,1fr) 44px!important;
+}
+.catalog-grid .product-card .quantity-control button{
+  width:44px!important;
+  min-width:44px!important;
+  height:42px!important;
+  min-height:42px!important;
+}
+.catalog-grid .product-card .card-actions.v11-actions>button:not(.add):before{
+  content:"⌕"!important;
+  font-size:20px!important;
+  font-weight:800!important;
+}
+.catalog-grid .product-card .card-actions.v11-actions .add{
+  min-height:44px!important;
+  font-size:11px!important;
+}
+
+/* Give the visual fallback a clear distinction between the two catalogs. */
+.catalog-grid .product-card .catalog-resmi .visual-label{color:#f5d38b!important}
+.catalog-grid .product-card .catalog-r2 .visual-label{color:rgba(255,255,255,.78)!important}
+
+/* Prevent visual overflow at narrow Android widths. */
+@media(max-width:700px){
+  .catalog-switch{gap:6px!important;padding:6px!important}
+  .catalog-switch button{min-height:46px!important;font-size:11px!important}
+  .catalog-grid .product-card .product-body{padding:10px 10px 0!important}
+  .catalog-grid .product-card .product-body h2{font-size:clamp(14px,4.6vw,18px)!important}
+  .catalog-grid .product-card .product-body .price{font-size:clamp(17px,5.2vw,21px)!important}
+  .catalog-grid .product-card .card-actions.v11-actions{margin:10px 10px 10px!important;grid-template-columns:minmax(0,1fr) 44px!important;gap:6px!important}
+}
+@media(max-width:380px){
+  .catalog-grid .product-card .card-media{padding:8px 8px 0!important}
+  .catalog-grid .product-card .product-body{padding:9px 9px 0!important}
+  .catalog-grid .product-card .product-body h2{font-size:14px!important}
+  .catalog-grid .product-card .product-body .price{font-size:17px!important}
+  .catalog-grid .product-card .card-actions.v11-actions{margin:9px 9px 9px!important;grid-template-columns:minmax(0,1fr) 44px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .catalog-switch button,.catalog-grid .product-card{transition:none!important}
+}
