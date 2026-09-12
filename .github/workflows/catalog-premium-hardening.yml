@@ -1,0 +1,148 @@
+name: Catalog Premium Hardening
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  harden-catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply presentation-only catalog hardening
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          app = Path('app.js')
+          text = app.read_text(encoding='utf-8')
+
+          old = '''function isNewProduct(id) { var n = parseInt(id.replace(/\\D/g, ''), 10); return n % 11 === 0; }
+          function getRibbonBadge(p) {
+           if (isNewProduct(p.id)) return { cls: 'new', label: '<i class="fa-solid fa-bolt"></i> BARU' };
+           if (p.category === 'resmi') {
+           if (p.segment === 'A' || p.segment === 'D') return { cls: 'vip', label: '<i class="fa-solid fa-crown"></i> VIP' };
+           if (p.segment === 'B') return { cls: 'hit', label: '<i class="fa-solid fa-fire"></i> TERLARIS' };
+           return null;
+           }
+           var tier = getR2Tier(p.price);
+           if (tier === 'premium') return { cls: 'vip', label: '<i class="fa-solid fa-crown"></i> VIP' };
+           if (tier === 'populer') return { cls: 'hit', label: '<i class="fa-solid fa-fire"></i> TERLARIS' };
+           return null;
+          }'''
+
+          new = '''function curatedVip(p) {
+           var cfg = window.R2CuratedBadges || {};
+           var list = Array.isArray(cfg.vip) ? cfg.vip : [];
+           var id = String(p && p.id || '').toLowerCase();
+           var name = String(p && p.name || '').toLowerCase();
+           return list.some(function (v) { var x = String(v || '').toLowerCase(); return x && (x === id || x === name); });
+          }
+          function isNewProduct(p) {
+           var raw = p && (p.created_at || p.createdAt || p.published_at || p.publishedAt);
+           if (!raw) return false;
+           var date = new Date(raw);
+           if (isNaN(date.getTime())) return false;
+           var days = Number((window.R2CuratedBadges || {}).newProductDays) || 14;
+           var age = Date.now() - date.getTime();
+           return age >= 0 && age <= days * 86400000;
+          }
+          function getRibbonBadge(p) {
+           if (curatedVip(p)) return { cls: 'vip', label: '<i class="fa-solid fa-crown"></i> VIP' };
+           if (isNewProduct(p)) return { cls: 'new', label: '<i class="fa-solid fa-sparkles"></i> BARU' };
+           return null;
+          }
+          function getStockStatusHTML(p) {
+           var n = Number(p && (p.stock ?? p.inventory ?? p.inventory_qty ?? p['Variant Inventory Qty']));
+           if (!Number.isFinite(n)) return '<div class="mp-stock-badge mp-stock-unknown"><i class="fa-solid fa-circle-info"></i> Status stok mengikuti data</div>';
+           if (n <= 0) return '<div class="mp-stock-badge mp-stock-out"><i class="fa-solid fa-circle-xmark"></i> Stok habis</div>';
+           return '<div class="mp-stock-badge"><i class="fa-solid fa-circle-check"></i> Tersedia · ' + n + '</div>';
+          }'''
+
+          if old in text:
+              text = text.replace(old, new)
+          else:
+              # Idempotent fallback: replace the whole legacy badge block by function boundaries.
+              pattern = r"function isNewProduct\(id\)\s*\{.*?\n\}\nfunction getRibbonBadge\(p\)\s*\{.*?\n\}\n"
+              text, n = re.subn(pattern, new + "\n", text, count=1, flags=re.S)
+              if n != 1:
+                  raise SystemExit('Legacy badge block not found; aborting to avoid unsafe edit.')
+
+          text = text.replace(" var retail = retailPrice(p.price);\n var savingsPct = Math.max(1, Math.round((1 - p.price / retail) * 100));\n", "")
+          text = text.replace(" '<div class=\"mp-price-row\"><span class=\"mp-price-old\">' + formatRupiah(retail) + '</span><span class=\"mp-save-badge\">Hemat ' + savingsPct + '%</span></div>' +\n", "")
+          text = text.replace(" '<div class=\"mp-stock-badge\"><i class=\"fa-solid fa-circle-check\"></i> Ready Stock Gudang</div>' +\n", " '" + "' + getStockStatusHTML(p) + '" + "' +\n")
+
+          marker = "/* CATALOG PREMIUM HARDENING — presentation-only */"
+          if marker not in text:
+              text += "\n\n" + marker + "\n"
+              text += "// No database/API/business logic changes are made here.\n"
+          app.write_text(text, encoding='utf-8')
+
+          css = Path('style.css')
+          c = css.read_text(encoding='utf-8')
+          css_marker = '/* R2 CATALOG PREMIUM 233 — VISUAL ONLY */'
+          if css_marker not in c:
+              c += r'''
+
+/* R2 CATALOG PREMIUM 233 — VISUAL ONLY */
+.mp-card{position:relative;min-width:0;border-radius:18px!important;border:1px solid rgba(10,30,60,.09)!important;background:#fff!important;overflow:hidden;box-shadow:0 12px 34px -24px rgba(7,29,73,.38);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.mp-card:hover{transform:translateY(-3px);box-shadow:0 22px 48px -28px rgba(7,29,73,.34);border-color:rgba(11,94,215,.16)!important}
+.mp-card-media{position:relative;aspect-ratio:1/1!important;min-height:0!important;overflow:hidden;background:#0a0d12!important}
+.mp-card-img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important}
+.mp-card-img svg{display:block;width:100%;height:100%;object-fit:cover}
+.mp-card-img:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.04),transparent 38%,rgba(0,0,0,.13))}
+.mp-wish-btn{position:absolute!important;z-index:8!important;top:10px!important;right:10px!important;width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;border-radius:50%!important;border:1px solid rgba(15,35,60,.09)!important;background:rgba(255,255,255,.96)!important;color:#1c3654!important;display:grid!important;place-items:center!important;box-shadow:0 8px 20px rgba(0,0,0,.16)!important;backdrop-filter:blur(8px);font-size:15px!important}
+.mp-wish-btn.is-active{color:#c5303e!important;background:#fff7f8!important;border-color:#ffd3d8!important}
+.mp-ribbon,.mp-badge,.mp-card .badge{z-index:8!important}
+.mp-card-body{padding:13px 14px 14px!important;display:flex;flex-direction:column;min-width:0;gap:0}
+.mp-card-toprow{margin-bottom:7px!important;min-height:24px}
+.mp-cat{font-size:9px!important;font-weight:800!important;letter-spacing:.08em!important;text-transform:uppercase!important;color:#71839a!important;margin:0 0 4px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mp-name{font-size:15px!important;line-height:1.25!important;font-weight:850!important;color:#10264b!important;margin:0!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mp-rating{display:flex!important;align-items:center!important;gap:6px!important;margin:8px 0 9px!important}
+.mp-stars{display:inline-flex!important;gap:2px!important;color:#e0ad35!important;font-size:10px!important}
+.mp-rating-num{font-size:11px!important;font-weight:850!important;color:#263d58!important}
+.mp-price-row{display:none!important}
+.mp-price-now{display:flex!important;align-items:baseline!important;gap:5px!important;font-size:19px!important;line-height:1.15!important;font-weight:900!important;color:#0a1729!important;margin:0 0 9px!important;letter-spacing:-.02em}
+.mp-price-unit{font-size:9px!important;font-weight:650!important;color:#7c8b9d!important;letter-spacing:0!important}
+.mp-stock-badge{display:flex!important;align-items:center!important;gap:5px!important;font-size:10px!important;font-weight:750!important;color:#15803d!important;margin:0 0 12px!important;min-height:16px}
+.mp-stock-badge i{font-size:10px!important}.mp-stock-out{color:#b42318!important}.mp-stock-unknown{color:#64748b!important}
+.mp-actions{display:flex!important;gap:8px!important;margin-top:auto!important;align-items:stretch!important}
+.mp-add-btn{flex:1!important;min-height:44px!important;padding:0 12px!important;border-radius:11px!important;background:#071d49!important;color:#fff!important;font-size:12px!important;font-weight:850!important;border:0!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;box-shadow:0 10px 20px -14px rgba(7,29,73,.6)!important}
+.mp-add-btn:hover{background:#0b5ed7!important}
+.mp-stepper{flex:1!important;min-height:44px!important;border:1px solid rgba(7,29,73,.12)!important;border-radius:11px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;overflow:hidden!important;background:#f7f9fc!important}
+.mp-step-btn{width:44px!important;height:44px!important;border:0!important;background:transparent!important;color:#10264b!important;font-size:18px!important;font-weight:850!important;display:grid!important;place-items:center!important;cursor:pointer!important}
+.mp-step-btn-gold{background:#071d49!important;color:#fff!important}.mp-step-val{min-width:28px;text-align:center;font-size:13px;font-weight:850;color:#10264b}
+.mp-quick-btn{width:44px!important;height:44px!important;min-width:44px!important;border-radius:11px!important;border:1px solid rgba(7,29,73,.11)!important;background:#fff!important;color:#29445f!important;display:grid!important;place-items:center!important;font-size:13px!important}
+.mp-quick-btn:hover{border-color:#0b5ed7!important;color:#0b5ed7!important;background:#f6faff!important}
+@media(max-width:620px){.mp-card{border-radius:14px!important}.mp-card-body{padding:10px 10px 11px!important}.mp-name{font-size:12px!important}.mp-price-now{font-size:15px!important}.mp-price-unit{font-size:8px!important}.mp-rating{margin:6px 0 7px!important}.mp-stock-badge{font-size:9px!important;margin-bottom:9px!important}.mp-actions{gap:6px!important}.mp-add-btn{font-size:10px!important;min-height:42px!important}.mp-quick-btn,.mp-stepper,.mp-step-btn{height:42px!important;min-height:42px!important}.mp-quick-btn{width:42px!important;min-width:42px!important}.mp-wish-btn{top:7px!important;right:7px!important}}
+@media(min-width:621px) and (max-width:1024px){.mp-card-body{padding:12px!important}.mp-name{font-size:14px!important}}
+@media(prefers-reduced-motion:reduce){.mp-card{transition:none!important}}
+'''
+              css.write_text(c, encoding='utf-8')
+
+      - name: Verify catalog hardening
+        run: |
+          grep -q 'CATALOG PREMIUM HARDENING' app.js
+          grep -q 'R2 CATALOG PREMIUM 233' style.css
+          node --check app.js
+
+      - name: Commit presentation-only changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app.js style.css
+          if git diff --cached --quiet; then
+            echo 'No catalog hardening changes required.'
+            exit 0
+          fi
+          git commit -m 'feat(catalog): premium responsive product cards'
+          git push
