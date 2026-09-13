@@ -1,0 +1,191 @@
+/* R2 NUSANTARA — Mobile-first catalog touch refinement v26
+   Visual-only hardening: no data/API/cart/checkout changes. */
+
+/* Stable product-card action zone: never overlap artwork or card frame. */
+.catalog-app .catalog-bento .card-actions{
+  position:relative!important;
+  z-index:12!important;
+  display:flex!important;
+  align-items:stretch!important;
+  gap:6px!important;
+  min-width:0!important;
+  min-height:48px!important;
+  margin-top:auto!important;
+  padding:7px 8px 8px!important;
+  box-sizing:border-box!important;
+}
+
+/* Quantity control gets a deliberate touch-safe footprint. */
+.catalog-app .catalog-bento .quantity-control{
+  flex:1 1 auto!important;
+  min-width:0!important;
+  min-height:46px!important;
+  height:46px!important;
+  display:grid!important;
+  grid-template-columns:44px minmax(28px,1fr) 44px!important;
+  align-items:stretch!important;
+  justify-content:stretch!important;
+  overflow:hidden!important;
+  border:1px solid rgba(7,29,73,.14)!important;
+  border-radius:9px!important;
+  background:#f7f9fc!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.85)!important;
+  box-sizing:border-box!important;
+}
+
+.catalog-app .catalog-bento .quantity-control button{
+  width:44px!important;
+  min-width:44px!important;
+  height:46px!important;
+  min-height:46px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#10264b!important;
+  display:grid!important;
+  place-items:center!important;
+  cursor:pointer!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+  box-sizing:border-box!important;
+}
+
+.catalog-app .catalog-bento .quantity-control button:first-child{border-right:1px solid rgba(7,29,73,.08)!important}
+.catalog-app .catalog-bento .quantity-control button:last-child{border-left:1px solid rgba(7,29,73,.08)!important}
+.catalog-app .catalog-bento .quantity-control button:hover{background:rgba(23,105,224,.07)!important}
+.catalog-app .catalog-bento .quantity-control button:active{background:rgba(23,105,224,.13)!important;transform:none!important}
+.catalog-app .catalog-bento .quantity-control button:focus-visible{
+  position:relative!important;
+  z-index:2!important;
+  outline:2px solid #1769e0!important;
+  outline-offset:-3px!important;
+}
+.catalog-app .catalog-bento .quantity-control button svg{width:17px!important;height:17px!important;stroke-width:2.5!important}
+.catalog-app .catalog-bento .quantity-control output{
+  min-width:28px!important;
+  height:46px!important;
+  display:grid!important;
+  place-items:center!important;
+  text-align:center!important;
+  font-size:13px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  font-variant-numeric:tabular-nums!important;
+  color:#10264b!important;
+  box-sizing:border-box!important;
+}
+
+/* Detail/add controls use the same touch-safe height. */
+.catalog-app .catalog-bento .card-actions>.detail,
+.catalog-app .catalog-bento .card-actions>.static-add{
+  min-height:46px!important;
+  height:46px!important;
+  border-radius:9px!important;
+  box-sizing:border-box!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+.catalog-app .catalog-bento .card-actions>.detail{min-width:58px!important}
+
+/* Ready-stock status: compact professional dot at the upper-right, clear of heart control. */
+.catalog-app .catalog-bento .visual-badges{
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  width:100%!important;
+  max-width:none!important;
+  height:100%!important;
+  display:block!important;
+  pointer-events:none!important;
+}
+.catalog-app .catalog-bento .visual-badges .badge:first-child{
+  position:absolute!important;
+  top:8px!important;
+  right:48px!important;
+  width:12px!important;
+  height:12px!important;
+  min-width:12px!important;
+  max-width:12px!important;
+  min-height:12px!important;
+  margin:0!important;
+  padding:0!important;
+  border-radius:50%!important;
+  font-size:0!important;
+  line-height:0!important;
+  letter-spacing:0!important;
+  overflow:visible!important;
+  border:2px solid rgba(255,255,255,.96)!important;
+  background:#16a34a!important;
+  box-shadow:0 2px 7px rgba(10,30,60,.22),0 0 0 1px rgba(22,163,74,.18)!important;
+}
+.catalog-app .catalog-bento .visual-badges .badge:first-child.badge-out{
+  background:#dc2626!important;
+  box-shadow:0 2px 7px rgba(10,30,60,.22),0 0 0 1px rgba(220,38,38,.18)!important;
+}
+.catalog-app .catalog-bento .visual-badges .badge:first-child::after{
+  content:""!important;
+  position:absolute!important;
+  inset:2px!important;
+  border-radius:50%!important;
+  background:currentColor!important;
+  opacity:.95!important;
+}
+.catalog-app .catalog-bento .visual-badges .badge:first-child:not(.badge-out){color:#16a34a!important}
+.catalog-app .catalog-bento .visual-badges .badge:first-child.badge-out{color:#dc2626!important}
+
+/* Keep discount/secondary badges at upper-left and away from the stock dot. */
+.catalog-app .catalog-bento .visual-badges .badge:not(:first-child){
+  position:relative!important;
+  z-index:1!important;
+  display:inline-flex!important;
+  margin:6px 0 0 6px!important;
+}
+.catalog-app .catalog-bento .heart{z-index:14!important}
+
+@media(max-width:639px){
+  .catalog-app .catalog-bento .card-actions{
+    min-height:52px!important;
+    padding:7px 7px 8px!important;
+    gap:5px!important;
+  }
+  .catalog-app .catalog-bento .quantity-control{
+    min-height:48px!important;
+    height:48px!important;
+    grid-template-columns:44px minmax(26px,1fr) 44px!important;
+  }
+  .catalog-app .catalog-bento .quantity-control button{
+    width:44px!important;
+    min-width:44px!important;
+    height:48px!important;
+    min-height:48px!important;
+  }
+  .catalog-app .catalog-bento .quantity-control button svg{width:18px!important;height:18px!important}
+  .catalog-app .catalog-bento .quantity-control output{height:48px!important;min-width:26px!important;font-size:13px!important}
+  .catalog-app .catalog-bento .card-actions>.detail,
+  .catalog-app .catalog-bento .card-actions>.static-add{
+    min-height:48px!important;
+    height:48px!important;
+    border-radius:9px!important;
+  }
+  .catalog-app .catalog-bento .visual-badges .badge:first-child{
+    top:7px!important;
+    right:45px!important;
+    width:11px!important;
+    height:11px!important;
+    min-width:11px!important;
+    max-width:11px!important;
+    min-height:11px!important;
+  }
+  .catalog-app .catalog-bento .visual-badges .badge:not(:first-child){margin:5px 0 0 5px!important}
+}
+
+@media(max-width:380px){
+  .catalog-app .catalog-bento .quantity-control{grid-template-columns:42px minmax(24px,1fr) 42px!important}
+  .catalog-app .catalog-bento .quantity-control button{width:42px!important;min-width:42px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .catalog-app .catalog-bento .quantity-control button{transition:none!important}
+}
