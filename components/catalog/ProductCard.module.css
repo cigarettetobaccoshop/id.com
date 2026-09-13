@@ -205,88 +205,111 @@
 }
 
 .actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
   gap: 8px;
   margin-top: auto;
+  min-width: 0;
 }
 
 .quantityControl {
-  display: flex;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 40px minmax(36px, 1fr) 40px;
   align-items: center;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
   overflow: hidden;
-  background: white;
+  background: #f8fafc;
 }
 
 .qtyBtn {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border: none;
   background: white;
-  color: #6b7280;
+  color: #163f68;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
   font-size: 14px;
+  touch-action: manipulation;
+}
+
+.qtyBtn:hover,
+.qtyBtn:focus-visible {
+  background: #e8f0f7;
+  color: #0b3156;
 }
 
 .qtyBtn:active {
-  background: #f3f4f6;
-  color: #001a4d;
+  background: #dbe7f0;
 }
 
 .qtyDisplay {
-  width: 40px;
+  min-width: 0;
   text-align: center;
-  font-size: 14px;
-  font-weight: 600;
-  color: #1f2937;
-  border-left: 1px solid #e5e7eb;
-  border-right: 1px solid #e5e7eb;
+  font-size: 15px;
+  line-height: 40px;
+  font-weight: 700;
+  color: #163f68;
+  border-left: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
 }
 
 .cartBtn {
-  flex: 1;
-  padding: 8px 12px;
-  background: #001a4d;
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 10px;
+  background: #163f68;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  touch-action: manipulation;
+}
+
+.cartBtn:hover,
+.cartBtn:focus-visible {
+  background: #0b3156;
 }
 
 .cartBtn:active {
-  background: #000d26;
+  background: #082846;
   transform: scale(0.98);
 }
 
 .viewBtn {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  min-height: 40px;
   background: white;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  color: #6b7280;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  color: #64748b;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  touch-action: manipulation;
 }
 
-.viewBtn:active {
-  background: #f3f4f6;
-  color: #001a4d;
+.viewBtn:hover,
+.viewBtn:focus-visible {
+  background: #f1f5f9;
+  color: #163f68;
 }
 
 /* Responsive */

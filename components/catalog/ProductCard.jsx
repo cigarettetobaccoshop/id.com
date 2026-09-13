@@ -80,20 +80,22 @@ export default function ProductCard({ product, onAddToCart, onQuickView }) {
         </div>
 
         {/* Actions */}
-        <div className={styles.actions}>
+        <div className={styles.actions} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) auto', gridTemplateRows: 'auto auto', gap: 8, minWidth: 0 }}>
           {/* Quantity Control - Hidden by default, shown on demand */}
-          <div className={styles.quantityControl}>
+          <div className={styles.quantityControl} style={{ display: 'grid', gridTemplateColumns: '40px minmax(36px, 1fr) 40px', width: '100%', minHeight: 40, boxSizing: 'border-box' }}>
             <button
               onClick={() => handleQuantityChange(-1)}
               className={styles.qtyBtn}
+              style={{ width: 40, height: 40, minWidth: 40, flexShrink: 0 }}
               aria-label="Decrease quantity"
             >
               <Minus size={16} />
             </button>
-            <output className={styles.qtyDisplay}>{quantity}</output>
+            <output className={styles.qtyDisplay} style={{ minWidth: 0, textAlign: 'center', lineHeight: '40px' }}>{quantity}</output>
             <button
               onClick={() => handleQuantityChange(1)}
               className={styles.qtyBtn}
+              style={{ width: 40, height: 40, minWidth: 40, flexShrink: 0 }}
               aria-label="Increase quantity"
             >
               <Plus size={16} />
