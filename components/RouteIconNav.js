@@ -27,6 +27,7 @@ export default function RouteIconNav() {
     return () => { window.removeEventListener('storage', sync); window.clearInterval(timer) }
   }, [])
   const active = path => path === '/' ? router.pathname === '/' : router.pathname.startsWith(path)
+  if (router.pathname === '/katalog') return null
   return <nav className="route-icon-nav" aria-label="Navigasi utama mobile">
     {Object.entries(ICONS).map(([type, item]) => {
       const isActive = active(item.path)

@@ -89,5 +89,5 @@ function GlobalInteractionGuard(){
 
 export default function App({ Component, pageProps }) {
   const router=useRouter();const isHome=router.pathname==='/'
-  return <><BrandAssetLoader/><>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</><RouteIconNav/><CheckoutPrompt/><GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>
+  return <>{!isHome&&router.pathname!=='/katalog'&&<BrandAssetLoader/>}<>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</><RouteIconNav/><CheckoutPrompt/><GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>
 }
