@@ -1,0 +1,43 @@
+/* R2 NUSANTARA — Stable Visual Baseline v32
+ * Controlled visual-only layer.
+ * Baseline: production READY v26 + elite blue visual system.
+ * No data, API, Supabase, checkout or routing logic.
+ */
+:root{
+  --r2-v32-ink:#071b3a;
+  --r2-v32-navy:#0b2b5c;
+  --r2-v32-blue:#1769e0;
+  --r2-v32-cyan:#54b9ff;
+  --r2-v32-paper:#f7f9fc;
+  --r2-v32-line:#dfe7f2;
+  --r2-v32-radius:18px;
+  --r2-v32-ease:cubic-bezier(.16,1,.3,1)
+}
+html{background:var(--r2-v32-paper)}
+body{color:var(--r2-v32-ink)}
+/* Homepage: retain existing structure, reinforce the proven blue visual language. */
+.src-shell{color:var(--r2-v32-ink)!important;background:linear-gradient(180deg,#fff 0%,#f7f9fc 58%,#eef4fb 100%)!important}
+.src-header{background:rgba(255,255,255,.9)!important;border-bottom:1px solid rgba(11,43,92,.09)!important;box-shadow:0 10px 36px rgba(7,29,73,.07)!important;backdrop-filter:blur(20px) saturate(145%)!important;-webkit-backdrop-filter:blur(20px) saturate(145%)!important}
+.src-brand strong{color:var(--r2-v32-ink)!important}
+.src-brand strong i{color:var(--r2-v32-blue)!important}
+.src-hero{background:#fff!important;border-bottom:1px solid #e4ebf4!important}
+.src-hero-bg{background:radial-gradient(circle at 82% 34%,rgba(84,185,255,.18),transparent 28%),radial-gradient(circle at 70% 75%,rgba(23,105,224,.09),transparent 30%),linear-gradient(115deg,#fff 0%,#f5f9ff 58%,#edf5ff 100%)!important}
+.src-hero h1{color:var(--r2-v32-ink)!important}
+.src-type-em em{color:var(--r2-v32-blue)!important}
+.src-primary{background:linear-gradient(135deg,var(--r2-v32-navy),var(--r2-v32-blue))!important;box-shadow:0 16px 35px rgba(11,43,92,.2)!important;transition:.3s var(--r2-v32-ease)!important}
+.src-primary:hover{transform:translateY(-2px)!important;box-shadow:0 20px 42px rgba(23,105,224,.25)!important}
+.src-search{border-color:#d8e4f2!important;box-shadow:0 18px 50px rgba(7,29,73,.11)!important}
+.src-section-head h2{color:var(--r2-v32-ink)!important}
+.src-category-card,.src-product{border-color:#e1e9f3!important;box-shadow:0 10px 35px rgba(7,29,73,.05)!important;transition:.35s var(--r2-v32-ease)!important}
+.src-category-card:hover,.src-product:hover{border-color:#b7d7fb!important;box-shadow:0 24px 50px rgba(7,29,73,.11)!important;transform:translateY(-4px)!important}
+.src-product-body h3,.src-product-body>strong{color:var(--r2-v32-ink)!important}
+.src-product-body>strong{color:var(--r2-v32-blue)!important}
+/* Catalog: preserve the existing 233-product engine and action controls. */
+.premium-catalog{background:linear-gradient(180deg,#fff 0%,#f7f9fc 65%,#eef4fb 100%)!important;color:var(--r2-v32-ink)!important}
+.premium-catalog .catalog-shell{background:transparent!important}
+.premium-catalog .catalog-top,.premium-catalog .catalog-tools,.premium-catalog .catalog-meta{border-color:#e1e9f3!important}
+.premium-catalog .product-card{border-color:#e1e9f3!important;box-shadow:0 10px 30px rgba(7,29,73,.055)!important;transition:transform .28s var(--r2-v32-ease),box-shadow .28s var(--r2-v32-ease),border-color .28s ease!important}
+.premium-catalog .product-card:hover{transform:translateY(-3px)!important;border-color:#b7d7fb!important;box-shadow:0 20px 45px rgba(7,29,73,.11)!important}
+.premium-catalog .catalog-grid .product-card .r2-cart-add{background:linear-gradient(135deg,var(--r2-v32-navy),#164a91)!important}
+.premium-catalog .catalog-grid .product-card .quantity-control,.premium-catalog .catalog-grid .product-card .r2-quantity-zero{border-color:rgba(11,43,92,.14)!important}
+@media(prefers-reduced-motion:reduce){.src-primary,.src-category-card,.src-product,.premium-catalog .product-card{transition:none!important}}
