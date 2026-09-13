@@ -17,6 +17,7 @@ const PRODUCT_COLUMNS = [
 
 // The shared Supabase compatibility client quotes legacy identifiers containing spaces.
 const SELECT_COLUMNS = PRODUCT_COLUMNS.join(',')
+const MAX_CATALOG_ROWS = 250
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300')
@@ -26,8 +27,12 @@ export default async function handler(req, res) {
     return res.status(405).json({ data: [], count: 0, error: 'Method Not Allowed' })
   }
 
+  // The production catalog currently contains 233 active rows. Keep the explicit
+  // ceiling above that total so the API never silently truncates the catalog at 100.
   const rawLimit = Number.parseInt(req.query.limit, 10)
-  const limit = Number.isFinite(rawLimit) ? Math.min(Math.max(rawLimit, 1), 250) : 100
+  const limit = Number.isFinite(rawLimit)
+    ? Math.min(Math.max(rawLimit, 1), MAX_CATALOG_ROWS)
+    : MAX_CATALOG_ROWS
 
   const { data, count, error } = await supabase
     .from('R2 NUSANTARA')
