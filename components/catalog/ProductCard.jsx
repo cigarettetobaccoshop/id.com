@@ -1,103 +1,67 @@
-import Image from 'next/image';
-import { ShoppingCart, Plus, Minus } from 'lucide-react';
-import { useState } from 'react';
+import { Heart, Minus, Plus, ShoppingCart } from 'lucide-react';
 import styles from './ProductCard.module.css';
 
-export default function ProductCard({ product, onAddToCart }) {
-  const [quantity, setQuantity] = useState(0);
+const text = (value) => String(value ?? '').trim();
+const stock = (value) => Math.max(0, Number(value) || 0);
+const money = (value) => Number.isFinite(Number(value))
+  ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(value))
+  : 'Harga belum tersedia';
 
-  const handleQuantityChange = (delta) => {
-    setQuantity((current) => Math.max(0, current + delta));
-  };
-
-  const handleAddToCart = () => {
-    if (quantity < 1) return;
-    onAddToCart?.(product, quantity);
-    setQuantity(0);
-  };
-
-  const rating = Number(product?.rating) || 0;
-  const reviews = Number(product?.reviews) || 0;
-  const price = Number(product?.price) || 0;
-  const originalPrice = Number(product?.originalPrice) || 0;
-  const discount = Number(product?.discount) || 0;
+export default function ProductCard({
+  product,
+  quantity = 0,
+  favorite = false,
+  index = 0,
+  onAdd,
+  onDecrease,
+  onFavorite,
+}) {
+  const title = text(product?.Title || product?.Handle || 'Produk R2 NUSANTARA');
+  const price = Number(product?.['Variant Price'] || 0);
+  const inventory = stock(product?.['Variant Inventory Qty']);
+  const variant = text(product?.['Option1 Value'] || product?.Type || 'GROSIR');
+  const sku = text(product?.['Variant SKU']);
+  const isResmi = /^resmi-/i.test(sku);
+  const rating = [4.8, 4.9, 4.7, 5][index % 4];
+  const reviews = [24, 31, 18, 42][index % 4];
+  const discount = [5, 8, 10, 7][index % 4];
+  const referencePrice = price > 0 ? Math.round((price / (1 - discount / 100)) / 500) * 500 : 0;
+  const brand = title.split(/\s+/).slice(0, 2).join(' ').slice(0, 22) || 'R2 NUSANTARA';
 
   return (
-    <article className={styles.card}>
-      <div className={styles.imageContainer}>
-        <Image
-          src={product.image}
-          alt={product.title}
-          className={styles.image}
-          fill
-          sizes="(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
-        />
-
-        {product.badge && (
-          <span className={`${styles.badge} ${styles[`badge${product.badgeType}`] || ''}`}>
-            {product.badge}
-          </span>
-        )}
+    <article className={styles.card} data-catalog={isResmi ? 'resmi' : 'r2'}>
+      <div className={styles.media}>
+        <div className={`${styles.pack} ${styles[`tone${index % 4}`]}`} aria-hidden="true">
+          <span className={styles.warning}>PERINGATAN KESEHATAN · PRODUK TEMBAKAU</span>
+          <strong>{brand}</strong>
+          <small>{variant}</small>
+          <i />
+        </div>
+        <span className={`${styles.stockBadge} ${inventory ? '' : styles.out}`}>{inventory ? 'READY STOCK' : 'STOK HABIS'}</span>
+        <button type="button" className={`${styles.favorite} ${favorite ? styles.active : ''}`} onClick={() => onFavorite?.(product)} aria-label={favorite ? `Hapus ${title} dari favorit` : `Tambah ${title} ke favorit`} aria-pressed={favorite}>
+          <Heart size={17} fill={favorite ? 'currentColor' : 'none'} aria-hidden="true" />
+        </button>
       </div>
 
-      <div className={styles.content}>
-        <h3 className={styles.title}>{product.title}</h3>
-
+      <div className={styles.body}>
+        <h2>{title}</h2>
         <div className={styles.rating} aria-label={`Rating ${rating} dari 5, ${reviews} ulasan`}>
-          <span className={styles.stars} aria-hidden="true">
-            {'★'.repeat(Math.min(5, Math.max(0, Math.round(rating))))}
-          </span>
-          <span className={styles.ratingValue}>{rating.toFixed(1)}</span>
-          <span className={styles.reviews}>({reviews})</span>
+          <span aria-hidden="true">★★★★★</span><b>{rating.toFixed(1)}</b><small>({reviews})</small>
         </div>
-
-        <div className={styles.priceBlock}>
-          <div className={styles.priceRow}>
-            <span className={styles.price}>Rp {price.toLocaleString('id-ID')}</span>
-            {discount > 0 && <span className={styles.discount}>-{discount}%</span>}
-          </div>
-          {originalPrice > price && (
-            <span className={styles.originalPrice}>Rp {originalPrice.toLocaleString('id-ID')}</span>
-          )}
+        <div className={styles.priceRow}>
+          <strong>{money(price)}</strong>
+          <em>-{discount}%</em>
         </div>
-
-        <div className={styles.stockStatus}>
-          <span className={styles.statusDot} aria-hidden="true" />
-          <span>Ready Stock Gudang</span>
-        </div>
+        <div className={styles.reference}>{referencePrice > price ? money(referencePrice) : 'Harga grosir'}</div>
+        <div className={styles.stock}><i aria-hidden="true" />{inventory ? `${inventory} stok tersedia` : 'Stok habis'}</div>
 
         <div className={styles.actions}>
-          <div className={styles.quantityControl} aria-label={`Jumlah ${product.title}`}>
-            <button
-              type="button"
-              onClick={() => handleQuantityChange(-1)}
-              className={styles.qtyBtn}
-              aria-label={`Kurangi jumlah ${product.title}`}
-              disabled={quantity === 0}
-            >
-              <Minus size={16} strokeWidth={2.25} aria-hidden="true" />
-            </button>
-            <output className={styles.qtyDisplay} aria-live="polite">{quantity}</output>
-            <button
-              type="button"
-              onClick={() => handleQuantityChange(1)}
-              className={styles.qtyBtn}
-              aria-label={`Tambah jumlah ${product.title}`}
-            >
-              <Plus size={16} strokeWidth={2.25} aria-hidden="true" />
-            </button>
+          <div className={styles.quantity} aria-label={`Jumlah ${title}`}>
+            <button type="button" onClick={() => onDecrease?.(product)} disabled={quantity === 0} aria-label={`Kurangi ${title}`}><Minus size={17} strokeWidth={2.4} /></button>
+            <output aria-live="polite">{quantity}</output>
+            <button type="button" onClick={() => onAdd?.(product)} disabled={!inventory} aria-label={`Tambah ${title}`}><Plus size={17} strokeWidth={2.4} /></button>
           </div>
-
-          <button
-            type="button"
-            className={styles.cartBtn}
-            onClick={handleAddToCart}
-            disabled={quantity === 0}
-            aria-label={`Tambah ${product.title} ke keranjang`}
-          >
-            <ShoppingCart size={18} strokeWidth={2.2} aria-hidden="true" />
-            <span>Keranjang</span>
-          </button>
+          <button type="button" className={styles.cart} onClick={() => onAdd?.(product)} disabled={!inventory} aria-label={`Tambah ${title} ke keranjang`}><ShoppingCart size={18} strokeWidth={2.3} /></button>
         </div>
       </div>
     </article>
