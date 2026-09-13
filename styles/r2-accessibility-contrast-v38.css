@@ -1,0 +1,70 @@
+:root{
+  --r2-a11y-text:#4f6278;
+  --r2-a11y-muted:#596b80;
+  --r2-a11y-placeholder:#5f7085;
+  --r2-a11y-blue:#1769e0;
+  --r2-a11y-focus:#0b4fa3;
+}
+
+/* WCAG 2.2 AA contrast hardening. Visual hierarchy/brand colors are preserved. */
+.r2-catalog-clean{
+  --muted:var(--r2-a11y-text);
+}
+.r2-catalog-clean .r2-clean-brand small,
+.r2-catalog-clean .r2-clean-intro p,
+.r2-catalog-clean .r2-clean-breadcrumb,
+.r2-catalog-clean .r2-clean-breadcrumb a,
+.r2-catalog-clean .r2-clean-meta,
+.r2-catalog-clean .r2-clean-meta label,
+.r2-catalog-clean .r2-clean-category-row button,
+.r2-catalog-clean .r2-clean-search>label,
+.r2-catalog-clean .r2-clean-empty span,
+.r2-catalog-clean .r2-clean-search input::placeholder{
+  color:var(--r2-a11y-text);
+}
+.r2-catalog-clean .r2-clean-search input{
+  color:#172b45;
+}
+.r2-catalog-clean .r2-clean-search input::placeholder{
+  opacity:1;
+}
+.r2-catalog-clean .r2-clean-breadcrumb b,
+.r2-catalog-clean .r2-clean-intro p strong,
+.r2-catalog-clean .r2-clean-meta>span b,
+.r2-catalog-clean .r2-filter-group>span,
+.r2-catalog-clean .r2-select-label,
+.r2-catalog-clean .r2-clean-filter-head,
+.r2-catalog-clean .r2-check{
+  color:#344a64;
+}
+.r2-catalog-clean .r2-clean-intro span,
+.r2-catalog-clean .r2-clean-switch button.active,
+.r2-catalog-clean .r2-filter-group button.active,
+.r2-catalog-clean .r2-clean-icon,
+.r2-catalog-clean .r2-clean-search>button,
+.r2-catalog-clean .r2-view button.active{
+  color:var(--r2-a11y-focus);
+}
+.r2-catalog-clean .r2-clean-category-row button.active,
+.r2-catalog-clean .r2-load-more,
+.r2-catalog-clean .r2-clean-empty button{
+  background:#1769e0;
+  color:#fff;
+}
+.r2-catalog-clean .r2-clean-search input:focus-visible,
+.r2-catalog-clean button:focus-visible,
+.r2-catalog-clean a:focus-visible,
+.r2-catalog-clean select:focus-visible{
+  outline:3px solid #0b4fa3;
+  outline-offset:2px;
+}
+
+/* Shared page muted text: only strengthens low-contrast gray; no layout/runtime changes. */
+.account-shell .brand-copy span{color:var(--r2-a11y-text)!important}
+
+/* Placeholder text must remain distinguishable from white/light surfaces. */
+input::placeholder,textarea::placeholder{color:var(--r2-a11y-placeholder)!important;opacity:1}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important}
+}
