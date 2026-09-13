@@ -1,0 +1,85 @@
+/* R2 NUSANTARA — Final Audit-Grade Catalog Polish v28
+   Presentation-only layer. Preserves catalog engine, data, APIs, cart,
+   favorites, checkout, routing and Supabase integration.
+*/
+.catalog-app.premium-catalog{--r2-navy:#111827;--r2-blue:#1d5fe9;--r2-gold:#e5c385;--r2-ink:#172033;--r2-muted:#667085;--r2-line:#e5e9f0}
+.catalog-app.premium-catalog .catalog-shell{padding-bottom:118px}
+.catalog-app.premium-catalog .catalog-top{padding-top:28px;padding-bottom:24px}
+.catalog-app.premium-catalog .catalog-top h1{font-weight:800}
+.catalog-app.premium-catalog .catalog-tools{margin-bottom:14px}
+.catalog-app.premium-catalog .catalog-switch{margin-bottom:20px}
+.catalog-app.premium-catalog .catalog-meta{min-height:54px}
+.catalog-app.premium-catalog .catalog-bento{align-items:stretch}
+.catalog-app.premium-catalog .catalog-bento .product-card{display:flex;flex-direction:column;min-height:100%;border-radius:18px!important}
+.catalog-app.premium-catalog .catalog-bento .product-visual{min-height:190px;display:block}
+.catalog-app.premium-catalog .catalog-bento .product-card>div:not(.product-visual){min-width:0}
+.catalog-app.premium-catalog .catalog-bento .pack-art{inset:30px 18px 10px!important}
+.catalog-app.premium-catalog .catalog-bento .product-card button{touch-action:manipulation}
+.catalog-app.premium-catalog .route-icon-nav{box-shadow:0 -10px 30px rgba(15,23,42,.10)}
+
+@media (max-width:900px){
+ .catalog-app.premium-catalog .catalog-shell{width:min(760px,calc(100% - 22px));padding-top:10px}
+ .catalog-app.premium-catalog .catalog-content{grid-template-columns:1fr;gap:0}
+ .catalog-app.premium-catalog .catalog-filters{display:none}
+ .catalog-app.premium-catalog .catalog-top{grid-template-columns:1fr auto;gap:12px;align-items:start;padding:20px 0 18px}
+ .catalog-app.premium-catalog .desktop-back{display:none}
+ .catalog-app.premium-catalog .catalog-top h1{font-size:clamp(25px,7vw,38px);line-height:1.04}
+ .catalog-app.premium-catalog .catalog-top p{font-size:11px;line-height:1.5;max-width:520px}
+ .catalog-app.premium-catalog .catalog-tools{grid-template-columns:1fr auto}
+ .catalog-app.premium-catalog .filter-button{min-width:48px;width:48px;padding:0}
+ .catalog-app.premium-catalog .catalog-bento{gap:10px!important}
+}
+
+@media (max-width:560px){
+ .catalog-app.premium-catalog .catalog-mobile-header{min-height:62px;padding:8px 12px}
+ .catalog-app.premium-catalog .brand-mark{width:38px;height:38px;border-radius:12px}
+ .catalog-app.premium-catalog .brand-mark img{width:30px;height:30px}
+ .catalog-app.premium-catalog .brand-copy strong{font-size:11px}
+ .catalog-app.premium-catalog .brand-copy small{font-size:7px;letter-spacing:.14em}
+ .catalog-app.premium-catalog .cart-link,.catalog-app.premium-catalog .user-link{width:40px;height:40px}
+ .catalog-app.premium-catalog .catalog-shell{width:calc(100% - 20px);padding-top:7px}
+ .catalog-app.premium-catalog .catalog-breadcrumb{margin:1px 0 12px;font-size:8px}
+ .catalog-app.premium-catalog .catalog-top{padding:10px 0 16px;grid-template-columns:minmax(0,1fr) auto}
+ .catalog-app.premium-catalog .catalog-top .eyebrow{font-size:8px;letter-spacing:.13em}
+ .catalog-app.premium-catalog .catalog-top h1{margin:6px 0 5px;font-size:26px;letter-spacing:-.04em}
+ .catalog-app.premium-catalog .catalog-top p{font-size:10px}
+ .catalog-app.premium-catalog .live-dot{padding:7px 9px;font-size:8px;white-space:nowrap}
+ .catalog-app.premium-catalog .catalog-tools{gap:7px;margin-bottom:10px}
+ .catalog-app.premium-catalog .search-box{height:46px;border-radius:13px;padding:0 12px}
+ .catalog-app.premium-catalog .search-box input{font-size:11px}
+ .catalog-app.premium-catalog .search-suggestions{top:51px}
+ .catalog-app.premium-catalog .catalog-switch{gap:5px;margin-bottom:13px;padding:4px;border-radius:13px}
+ .catalog-app.premium-catalog .catalog-switch button{min-height:39px;border-radius:9px;font-size:9px}
+ .catalog-app.premium-catalog .catalog-switch .count{min-width:21px;height:18px;font-size:8px}
+ .catalog-app.premium-catalog .filters-inline{padding-bottom:7px}
+ .catalog-app.premium-catalog .filters-inline button{font-size:8px;padding:6px 3px}
+ .catalog-app.premium-catalog .catalog-meta{margin-bottom:9px;padding:8px 0;min-height:45px}
+ .catalog-app.premium-catalog .catalog-meta>div:first-child{font-size:9px}
+ .catalog-app.premium-catalog .catalog-meta-actions{gap:5px}
+ .catalog-app.premium-catalog .catalog-meta-actions label span{display:none}
+ .catalog-app.premium-catalog .catalog-meta-actions select{height:29px;font-size:8px;max-width:108px}
+ .catalog-app.premium-catalog .view-toggle button{width:27px;height:25px}
+ .catalog-app.premium-catalog .catalog-bento{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+ .catalog-app.premium-catalog .catalog-bento .product-card{border-radius:15px!important}
+ .catalog-app.premium-catalog .catalog-bento .product-visual{min-height:106px!important;height:106px}
+ .catalog-app.premium-catalog .catalog-bento .pack-art{inset:12px 12px 6px!important}
+ .catalog-app.premium-catalog .catalog-bento .pack-shell{width:min(78px,58%);height:84px}
+ .catalog-app.premium-catalog .catalog-bento .product-card:hover{transform:none}
+ .catalog-app.premium-catalog .catalog-bento .product-card:hover .pack-art{transform:none!important}
+ .catalog-app.premium-catalog .catalog-bento .product-card{box-shadow:0 5px 18px rgba(15,23,42,.055)!important}
+ .catalog-app.premium-catalog .catalog-bento .product-card [class*="title"],.catalog-app.premium-catalog .catalog-bento .product-card h2,.catalog-app.premium-catalog .catalog-bento .product-card h3{font-size:11px!important;line-height:1.28!important}
+ .catalog-app.premium-catalog .catalog-bento .product-card [class*="price"]{font-size:12px!important}
+ .catalog-app.premium-catalog .catalog-bento .product-card [class*="meta"]{font-size:8px!important;line-height:1.25!important}
+}
+
+@media (max-width:360px){
+ .catalog-app.premium-catalog .catalog-bento{gap:8px!important}
+ .catalog-app.premium-catalog .catalog-bento .product-visual{min-height:94px!important;height:94px}
+ .catalog-app.premium-catalog .catalog-bento .pack-art{inset:10px 8px 4px!important}
+ .catalog-app.premium-catalog .catalog-bento .pack-shell{width:68px;height:76px}
+ .catalog-app.premium-catalog .catalog-bento .product-card h2,.catalog-app.premium-catalog .catalog-bento .product-card h3{font-size:10.5px!important}
+}
+
+@media (prefers-reduced-motion:reduce){
+ .catalog-app.premium-catalog *,.catalog-app.premium-catalog *::before,.catalog-app.premium-catalog *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
