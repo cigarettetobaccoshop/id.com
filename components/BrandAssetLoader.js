@@ -30,10 +30,19 @@ export default function BrandAssetLoader(){
           zero.className='r2-quantity-zero'
           zero.setAttribute('aria-label','Jumlah produk')
           zero.innerHTML='<button type="button" class="r2-qty-minus" aria-label="Kurangi jumlah" disabled>−</button><output aria-live="polite">0</output><button type="button" class="r2-qty-plus" aria-label="Tambah jumlah">+</button>'
-          Object.assign(zero.style,{display:'grid',gridTemplateColumns:'minmax(40px,1fr) minmax(28px,auto) minmax(40px,1fr)',width:'100%',minWidth:'0',height:'40px',minHeight:'40px',alignItems:'center',gap:'3px'})
-          zero.querySelectorAll('button').forEach(button=>Object.assign(button.style,{width:'100%',height:'36px',minHeight:'36px',display:'grid',placeItems:'center',fontSize:'18px',padding:'0'}))
-          Object.assign(zero.querySelector('output').style,{minWidth:'28px',height:'36px',display:'grid',placeItems:'center',fontSize:'13px'})
-          zero.querySelector('.r2-qty-plus')?.addEventListener('click',e=>{e.stopPropagation();triggerAdd()})
+          zero.style.cssText=''
+          zero.querySelectorAll('button').forEach(button=>{button.style.cssText='';button.addEventListener('pointerdown',e=>e.stopPropagation())})
+          zero.querySelector('output').style.cssText=''
+          let displayedQuantity=0
+          const syncQuantity=()=>{
+            const output=zero.querySelector('output')
+            const minus=zero.querySelector('.r2-qty-minus')
+            if(output) output.textContent=String(displayedQuantity)
+            if(minus) minus.disabled=displayedQuantity===0
+          }
+          zero.querySelector('.r2-qty-plus')?.addEventListener('click',e=>{e.stopPropagation();triggerAdd();displayedQuantity+=1;syncQuantity()})
+          zero.querySelector('.r2-qty-minus')?.addEventListener('click',e=>{e.stopPropagation();if(displayedQuantity===0)return;const nativeMinus=actions.querySelector('.quantity-control button[aria-label="Kurangi jumlah"]');if(nativeMinus&&!nativeMinus.disabled)nativeMinus.click();displayedQuantity=Math.max(0,displayedQuantity-1);syncQuantity()})
+          syncQuantity()
           actions.insertBefore(zero,nativeAdd)
         }
         const add=document.createElement('button')
