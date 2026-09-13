@@ -30,7 +30,19 @@ export default function BrandAssetLoader(){
           zero.className='r2-quantity-zero'
           zero.setAttribute('aria-label','Jumlah produk')
           zero.innerHTML='<button type="button" class="r2-qty-minus" aria-label="Kurangi jumlah" disabled>−</button><output aria-live="polite">0</output><button type="button" class="r2-qty-plus" aria-label="Tambah jumlah">+</button>'
-          zero.querySelector('.r2-qty-plus')?.addEventListener('click',e=>{e.stopPropagation();triggerAdd()})
+          zero.style.cssText=''
+          zero.querySelectorAll('button').forEach(button=>{button.style.cssText='';button.addEventListener('pointerdown',e=>e.stopPropagation())})
+          zero.querySelector('output').style.cssText=''
+          let displayedQuantity=0
+          const syncQuantity=()=>{
+            const output=zero.querySelector('output')
+            const minus=zero.querySelector('.r2-qty-minus')
+            if(output) output.textContent=String(displayedQuantity)
+            if(minus) minus.disabled=displayedQuantity===0
+          }
+          zero.querySelector('.r2-qty-plus')?.addEventListener('click',e=>{e.stopPropagation();triggerAdd();displayedQuantity+=1;syncQuantity()})
+          zero.querySelector('.r2-qty-minus')?.addEventListener('click',e=>{e.stopPropagation();if(displayedQuantity===0)return;const nativeMinus=actions.querySelector('.quantity-control button[aria-label="Kurangi jumlah"]');if(nativeMinus&&!nativeMinus.disabled)nativeMinus.click();displayedQuantity=Math.max(0,displayedQuantity-1);syncQuantity()})
+          syncQuantity()
           actions.insertBefore(zero,nativeAdd)
         }
         const add=document.createElement('button')
@@ -82,17 +94,17 @@ export default function BrandAssetLoader(){
       :global(.src-header .src-catalog){display:none!important}
       @media(max-width:700px){
         :global(.catalog-grid .product-card .card-actions.v11-actions){grid-template-columns:minmax(0,1fr) minmax(0,1.08fr)!important;grid-template-rows:34px 22px!important;gap:4px!important;padding:5px!important}
-        :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero){height:34px!important;min-height:34px!important;border-radius:8px!important;grid-template-columns:clamp(22px,7vw,28px) minmax(18px,1fr) clamp(22px,7vw,28px)!important}
-        :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control button),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero button){width:auto!important;height:32px!important;min-height:32px!important;font-size:16px!important}
-        :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control output),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero output){height:32px!important;min-width:18px!important;font-size:12px!important}
+        :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero){height:40px!important;min-height:40px!important;width:100%!important;display:grid!important;border-radius:10px!important;grid-template-columns:30px minmax(24px,1fr) 30px!important}
+        :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control button),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero button){width:100%!important;height:36px!important;min-height:36px!important;display:grid!important;place-items:center!important;font-size:17px!important}
+        :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control output),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero output){height:36px!important;min-width:24px!important;font-size:12px!important}
         :global(.catalog-grid .product-card .card-actions.v11-actions .r2-cart-add){height:34px!important;min-height:34px!important;border-radius:8px!important;font-size:7.5px!important;padding-inline:5px!important;letter-spacing:.025em!important}
         :global(.catalog-grid .product-card .card-actions.v11-actions .detail){height:22px!important;min-height:22px!important;border-radius:7px!important;font-size:7px!important}
       }
       @media(max-width:360px){
         :global(.catalog-grid .product-card .card-actions.v11-actions){grid-template-columns:minmax(0,1fr) minmax(0,1.08fr)!important;grid-template-rows:32px 20px!important;gap:3px!important;padding:4px!important}
-        :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero){height:32px!important;min-height:32px!important;grid-template-columns:21px minmax(15px,1fr) 21px!important}
-        :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control button),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero button){height:30px!important;min-height:30px!important;font-size:15px!important}
-        :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control output),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero output){height:30px!important;font-size:11px!important}
+        :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero){height:38px!important;min-height:38px!important;width:100%!important;display:grid!important;grid-template-columns:29px minmax(24px,1fr) 29px!important}
+        :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control button),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero button){width:100%!important;height:34px!important;min-height:34px!important;display:grid!important;place-items:center!important;font-size:17px!important}
+        :global(.catalog-grid .product-card .card-actions.v11-actions .quantity-control output),:global(.catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero output){height:34px!important;min-width:24px!important;font-size:12px!important}
         :global(.catalog-grid .product-card .card-actions.v11-actions .r2-cart-add){height:32px!important;min-height:32px!important;font-size:7px!important}
         :global(.catalog-grid .product-card .card-actions.v11-actions .detail){height:20px!important;min-height:20px!important;font-size:6.5px!important}
       }
@@ -129,9 +141,9 @@ export default function BrandAssetLoader(){
         :global(.premium-catalog .catalog-grid .product-card .price){font-size:11px!important;line-height:1!important;margin:4px 0 0!important;font-weight:950!important;white-space:nowrap!important}
         :global(.premium-catalog .catalog-grid .product-card .stock){font-size:5.5px!important;line-height:1!important;margin:3px 0 0!important;white-space:nowrap!important;overflow:hidden!important}
         :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions){height:58px!important;min-height:58px!important;flex:0 0 58px!important;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr)!important;grid-template-rows:32px 20px!important;gap:3px!important;padding:3px 4px 3px!important;margin:0!important;transform:none!important;position:relative!important;z-index:8!important;border-top:1px solid rgba(7,29,73,.08)!important;background:linear-gradient(180deg,#f7faff,#fff)!important}
-        :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .quantity-control),:global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero){grid-column:1!important;grid-row:1!important;width:100%!important;height:32px!important;min-height:32px!important;grid-template-columns:21px minmax(15px,1fr) 21px!important;border-radius:8px!important;z-index:10!important}
-        :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .quantity-control button),:global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero button){width:auto!important;height:30px!important;min-height:30px!important;font-size:15px!important}
-        :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .quantity-control output),:global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero output){height:30px!important;min-width:15px!important;font-size:11px!important}
+        :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .quantity-control),:global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero){grid-column:1!important;grid-row:1!important;width:100%!important;height:38px!important;min-height:38px!important;display:grid!important;grid-template-columns:29px minmax(24px,1fr) 29px!important;border-radius:9px!important;z-index:10!important}
+        :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .quantity-control button),:global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero button){width:100%!important;height:34px!important;min-height:34px!important;display:grid!important;place-items:center!important;font-size:17px!important}
+        :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .quantity-control output),:global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero output){height:34px!important;min-width:24px!important;font-size:12px!important}
         :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .r2-cart-add){grid-column:2!important;grid-row:1!important;height:32px!important;min-height:32px!important;border-radius:8px!important;font-size:7px!important;letter-spacing:.025em!important;padding:0 4px!important;z-index:10!important}
         :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .detail){grid-column:1 / -1!important;grid-row:2!important;height:20px!important;min-height:20px!important;border-radius:7px!important;font-size:6.3px!important;padding:0 4px!important}
         :global(.premium-catalog .catalog-grid .product-card .product-body .category),:global(.premium-catalog .catalog-grid .product-card .product-body .variant),:global(.premium-catalog .catalog-grid .product-card .product-body .tagline){position:relative!important;z-index:2!important}
@@ -143,8 +155,10 @@ export default function BrandAssetLoader(){
         :global(.premium-catalog .catalog-grid .product-card .product-body){padding:3px 6px 2px!important}
         :global(.premium-catalog .catalog-grid .product-card .product-body h2){font-size:8.7px!important;min-height:20px!important;max-height:20px!important}
         :global(.premium-catalog .catalog-grid .product-card .price){font-size:10px!important}
-        :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions){height:56px!important;min-height:56px!important;flex-basis:56px!important;grid-template-rows:31px 19px!important}
-        :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .quantity-control),:global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero){height:31px!important;min-height:31px!important}
+        :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions){height:88px!important;min-height:88px!important;flex-basis:88px!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:38px 31px 19px!important;gap:3px!important}
+        :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .quantity-control),:global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero){height:38px!important;min-height:38px!important;width:100%!important;display:grid!important;grid-template-columns:29px minmax(24px,1fr) 29px!important} 
+        :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .quantity-control button),:global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero button){width:100%!important;height:34px!important;min-height:34px!important;display:grid!important;place-items:center!important;font-size:17px!important}
+        :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .quantity-control output),:global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .r2-quantity-zero output){height:34px!important;min-width:24px!important;font-size:12px!important}
         :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .r2-cart-add){height:31px!important;min-height:31px!important;font-size:6.7px!important}
         :global(.premium-catalog .catalog-grid .product-card .card-actions.v11-actions .detail){height:19px!important;min-height:19px!important;font-size:6px!important}
       }
