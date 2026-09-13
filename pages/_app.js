@@ -36,7 +36,7 @@ import '../styles/r2-product-system-v14.css'
 import '../styles/product-card-premium.css'
 import '../styles/r2-static-catalog-parity-v15.css'
 import '../styles/static-catalog-source.css'
-import '../styles/r2-elite-design-v17.css
+import '../styles/r2-elite-design-v17.css'
 import '../styles/r2-catalog-product-precision-v18.css'
 import '../styles/r2-brand-visual-correction-v19.css'
 import '../styles/r2-final-apple-grade-v20.css'
