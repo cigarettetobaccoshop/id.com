@@ -4,11 +4,11 @@ import { useState } from 'react';
 import styles from './ProductCard.module.css';
 
 export default function ProductCard({ product, onAddToCart, onQuickView }) {
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   const handleQuantityChange = (delta) => {
-    const newQty = Math.max(1, quantity + delta);
+    const newQty = Math.max(0, quantity + delta);
     setQuantity(newQty);
   };
 
@@ -16,7 +16,7 @@ export default function ProductCard({ product, onAddToCart, onQuickView }) {
     if (onAddToCart) {
       onAddToCart(product, quantity);
     }
-    setQuantity(1);
+    setQuantity(0);
   };
 
   return (
@@ -80,41 +80,24 @@ export default function ProductCard({ product, onAddToCart, onQuickView }) {
         </div>
 
         {/* Actions */}
-        <div className={styles.actions} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) auto', gridTemplateRows: 'auto auto', gap: 8, minWidth: 0 }}>
-          {/* Quantity Control - Hidden by default, shown on demand */}
-          <div className={styles.quantityControl} style={{ display: 'grid', gridTemplateColumns: '40px minmax(36px, 1fr) 40px', width: '100%', minHeight: 40, boxSizing: 'border-box' }}>
-            <button
-              onClick={() => handleQuantityChange(-1)}
-              className={styles.qtyBtn}
-              style={{ width: 40, height: 40, minWidth: 40, flexShrink: 0 }}
-              aria-label="Decrease quantity"
-            >
-              <Minus size={16} />
+        <div className={styles.actions}>
+          <div className={styles.quantityControl} aria-label={`Quantity for ${product.title}`}>
+            <button onClick={() => handleQuantityChange(-1)} className={styles.qtyBtn} aria-label="Decrease quantity" disabled={quantity === 0}>
+              <Minus size={16} aria-hidden="true" />
             </button>
-            <output className={styles.qtyDisplay} style={{ minWidth: 0, textAlign: 'center', lineHeight: '40px' }}>{quantity}</output>
-            <button
-              onClick={() => handleQuantityChange(1)}
-              className={styles.qtyBtn}
-              style={{ width: 40, height: 40, minWidth: 40, flexShrink: 0 }}
-              aria-label="Increase quantity"
-            >
-              <Plus size={16} />
+            <output className={styles.qtyDisplay}>{quantity}</output>
+            <button onClick={() => handleQuantityChange(1)} className={styles.qtyBtn} aria-label="Increase quantity">
+              <Plus size={16} aria-hidden="true" />
             </button>
           </div>
 
-          {/* Add to Cart Button */}
           <button className={styles.cartBtn} onClick={handleAddToCart} aria-label="Add to cart">
-            <ShoppingCart size={18} />
+            <ShoppingCart size={18} aria-hidden="true" />
             <span>Keranjang</span>
           </button>
 
-          {/* Quick View Icon */}
-          <button
-            className={styles.viewBtn}
-            onClick={() => onQuickView?.(product)}
-            aria-label="Quick view modal"
-          >
-            <Eye size={18} />
+          <button className={styles.viewBtn} onClick={() => onQuickView?.(product)} aria-label="Quick view modal">
+            <Eye size={18} aria-hidden="true" />
           </button>
         </div>
       </div>
