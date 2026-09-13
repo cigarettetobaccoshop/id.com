@@ -1,106 +1,105 @@
 import Image from 'next/image';
-import { Heart, Eye, ShoppingCart, Plus, Minus } from 'lucide-react';
+import { ShoppingCart, Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
 import styles from './ProductCard.module.css';
 
-export default function ProductCard({ product, onAddToCart, onQuickView }) {
+export default function ProductCard({ product, onAddToCart }) {
   const [quantity, setQuantity] = useState(0);
-  const [isWishlisted, setIsWishlisted] = useState(false);
 
   const handleQuantityChange = (delta) => {
-    const newQty = Math.max(0, quantity + delta);
-    setQuantity(newQty);
+    setQuantity((current) => Math.max(0, current + delta));
   };
 
   const handleAddToCart = () => {
-    if (onAddToCart) {
-      onAddToCart(product, quantity);
-    }
+    if (quantity < 1) return;
+    onAddToCart?.(product, quantity);
     setQuantity(0);
   };
 
+  const rating = Number(product?.rating) || 0;
+  const reviews = Number(product?.reviews) || 0;
+  const price = Number(product?.price) || 0;
+  const originalPrice = Number(product?.originalPrice) || 0;
+  const discount = Number(product?.discount) || 0;
+
   return (
-    <div className={styles.card}>
-      {/* Image Container */}
+    <article className={styles.card}>
       <div className={styles.imageContainer}>
-        <Image src={product.image} alt={product.title} className={styles.image} fill sizes="(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw" />
+        <Image
+          src={product.image}
+          alt={product.title}
+          className={styles.image}
+          fill
+          sizes="(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
+        />
 
-        {/* Badge */}
         {product.badge && (
-          <div className={`${styles.badge} ${styles[`badge${product.badgeType}`]}`}>
+          <span className={`${styles.badge} ${styles[`badge${product.badgeType}`] || ''}`}>
             {product.badge}
-          </div>
+          </span>
         )}
-
-        {/* Heart Icon */}
-        <button
-          className={`${styles.heartIcon} ${isWishlisted ? styles.wishlisted : ''}`}
-          onClick={() => setIsWishlisted(!isWishlisted)}
-          aria-label="Add to wishlist"
-        >
-          <Heart size={20} fill={isWishlisted ? 'currentColor' : 'none'} />
-        </button>
-
-        {/* Overlay Info */}
-        <div className={styles.overlay}>
-          <button
-            className={styles.quickViewBtn}
-            onClick={() => onQuickView?.(product)}
-            aria-label="Quick view"
-          >
-            <Eye size={18} />
-          </button>
-        </div>
       </div>
 
-      {/* Content */}
       <div className={styles.content}>
         <h3 className={styles.title}>{product.title}</h3>
 
-        {/* Rating */}
-        <div className={styles.rating}>
-          <span className={styles.stars}>{'★'.repeat(Math.floor(product.rating))}</span>
-          <span className={styles.ratingValue}>{product.rating}</span>
-          <span className={styles.reviews}>({product.reviews})</span>
+        <div className={styles.rating} aria-label={`Rating ${rating} dari 5, ${reviews} ulasan`}>
+          <span className={styles.stars} aria-hidden="true">
+            {'★'.repeat(Math.min(5, Math.max(0, Math.round(rating))))}
+          </span>
+          <span className={styles.ratingValue}>{rating.toFixed(1)}</span>
+          <span className={styles.reviews}>({reviews})</span>
         </div>
 
-        {/* Price */}
-        <div className={styles.priceContainer}>
-          {product.originalPrice && (
-            <span className={styles.originalPrice}>Rp {product.originalPrice.toLocaleString('id-ID')}</span>
+        <div className={styles.priceBlock}>
+          <div className={styles.priceRow}>
+            <span className={styles.price}>Rp {price.toLocaleString('id-ID')}</span>
+            {discount > 0 && <span className={styles.discount}>-{discount}%</span>}
+          </div>
+          {originalPrice > price && (
+            <span className={styles.originalPrice}>Rp {originalPrice.toLocaleString('id-ID')}</span>
           )}
-          <span className={styles.price}>Rp {product.price.toLocaleString('id-ID')}</span>
-          {product.discount && <span className={styles.discount}>Hemat {product.discount}%</span>}
         </div>
 
-        {/* Stock Status */}
         <div className={styles.stockStatus}>
-          <span className={styles.statusIcon}>✓</span>
-          <span className={styles.statusText}>Ready Stock Gudang</span>
+          <span className={styles.statusDot} aria-hidden="true" />
+          <span>Ready Stock Gudang</span>
         </div>
 
-        {/* Actions */}
         <div className={styles.actions}>
-          <div className={styles.quantityControl} aria-label={`Quantity for ${product.title}`}>
-            <button onClick={() => handleQuantityChange(-1)} className={styles.qtyBtn} aria-label="Decrease quantity" disabled={quantity === 0}>
-              <Minus size={16} aria-hidden="true" />
+          <div className={styles.quantityControl} aria-label={`Jumlah ${product.title}`}>
+            <button
+              type="button"
+              onClick={() => handleQuantityChange(-1)}
+              className={styles.qtyBtn}
+              aria-label={`Kurangi jumlah ${product.title}`}
+              disabled={quantity === 0}
+            >
+              <Minus size={16} strokeWidth={2.25} aria-hidden="true" />
             </button>
-            <output className={styles.qtyDisplay}>{quantity}</output>
-            <button onClick={() => handleQuantityChange(1)} className={styles.qtyBtn} aria-label="Increase quantity">
-              <Plus size={16} aria-hidden="true" />
+            <output className={styles.qtyDisplay} aria-live="polite">{quantity}</output>
+            <button
+              type="button"
+              onClick={() => handleQuantityChange(1)}
+              className={styles.qtyBtn}
+              aria-label={`Tambah jumlah ${product.title}`}
+            >
+              <Plus size={16} strokeWidth={2.25} aria-hidden="true" />
             </button>
           </div>
 
-          <button className={styles.cartBtn} onClick={handleAddToCart} aria-label="Add to cart">
-            <ShoppingCart size={18} aria-hidden="true" />
+          <button
+            type="button"
+            className={styles.cartBtn}
+            onClick={handleAddToCart}
+            disabled={quantity === 0}
+            aria-label={`Tambah ${product.title} ke keranjang`}
+          >
+            <ShoppingCart size={18} strokeWidth={2.2} aria-hidden="true" />
             <span>Keranjang</span>
-          </button>
-
-          <button className={styles.viewBtn} onClick={() => onQuickView?.(product)} aria-label="Quick view modal">
-            <Eye size={18} aria-hidden="true" />
           </button>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
