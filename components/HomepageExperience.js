@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { ArrowRight, BadgeCheck, Boxes, CheckCircle2, ChevronRight, Grid2X2, Home, Menu, PackageCheck, Search, ShieldCheck, ShoppingCart, Truck, X, MapPin } from 'lucide-react'
 
