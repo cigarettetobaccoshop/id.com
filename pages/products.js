@@ -1,43 +1,123 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import {useEffect,useMemo,useState} from 'react'
-import {useRouter} from 'next/router'
-import {Search,SlidersHorizontal,LayoutGrid,List,Heart,Eye,ShoppingCart,Plus,Minus,X,ArrowRight,PackageCheck,BadgeCheck} from 'lucide-react'
-import {supabase} from '../lib/supabaseClient'
-import {RouteIcon} from '../components/RouteIconNav'
-import BentoGrid from '../components/BentoGrid'
+import Head from 'next/head';
+import Link from 'next/link';
+import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
+import { BadgeCheck, LayoutGrid, List, PackageCheck, Search, SlidersHorizontal, X } from 'lucide-react';
+import { supabase } from '../lib/supabaseClient';
+import { RouteIcon } from '../components/RouteIconNav';
+import ProductCard from '../components/catalog/ProductCard';
 
-const COLUMNS='Handle,Title,Vendor,Type,Tags,Published,Option1 Name,Option1 Value,Variant SKU,Variant Price,"Variant Inventory Qty",Status'
-const PAGE_SIZE=24
-const money=v=>Number.isFinite(Number(v))?new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(v)):'Harga belum tersedia'
-const stock=v=>Math.max(0,Number(v)||0)
-const keyOf=p=>p?.['Variant SKU']||p?.Handle||p?.Title||''
-const text=v=>String(v??'').trim()
-const isResmi=p=>/^resmi-/i.test(text(p?.['Variant SKU']))
-const bentoSpan=(index,total)=>{if(total<6)return'standard';if(index===0)return'hero';if(index>=1&&index<=3)return'featured';if(index%7===0)return'wide';return'standard'}
-const discountRate=i=>[5,8,10,7][i%4]
-const discountedReference=(price,rate)=>price>0?Math.round(price/(1-rate/100)/500)*500:0
+const COLUMNS = 'Handle,Title,Vendor,Type,Tags,Published,Option1 Name,Option1 Value,Variant SKU,Variant Price,"Variant Inventory Qty",Status';
+const PAGE_SIZE = 24;
+const text = (value) => String(value ?? '').trim();
+const stock = (value) => Math.max(0, Number(value) || 0);
+const keyOf = (product) => product?.['Variant SKU'] || product?.Handle || product?.Title || '';
+const isResmi = (product) => /^resmi-/i.test(text(product?.['Variant SKU']));
 
-function Artwork({i=0,p,favorite,onFavorite}){const inventory=stock(p?.['Variant Inventory Qty']),title=text(p?.Title||p?.Handle||'R2 NUSANTARA'),catalog=isResmi(p)?'resmi':'r2',words=title.split(/\s+/),brand=(words.slice(0,2).join(' ')||'R2 NUSANTARA').slice(0,24),variant=text(p?.['Option1 Value']||p?.Type||'GROSIR'),tags=`${p?.Tags||''} ${p?.Type||''}`,vip=/vip|premium/i.test(tags),baru=/baru|new/i.test(tags),rate=discountRate(i);return <div className={`product-visual tone-${i%4} ${catalog==='resmi'?'catalog-resmi':'catalog-r2'}`}><div className="visual-badges"><span className={`badge ${inventory?'':'badge-out'}`}>{inventory?'READY STOCK':'STOK HABIS'}</span><span className="badge badge-discount">-{rate}%</span>{vip&&<span className="badge badge-vip">VIP</span>}{baru&&<span className="badge badge-new">BARU</span>}</div><button type="button" className={`heart ${favorite?'is-favorite':''}`} aria-label={favorite?'Hapus dari favorit':'Tambahkan ke favorit'} aria-pressed={favorite} onClick={e=>{e.stopPropagation();onFavorite()}}>{favorite?<Heart fill="currentColor" aria-hidden="true"/>:<Heart aria-hidden="true"/>}</button><div className="pack-art" aria-hidden="true"><span className="watermark">{brand}</span><div className="pack-shell"><div className="pack-warning">PERINGATAN KESEHATAN · PRODUK TEMBAKAU</div><div className="pack-brand">{brand}</div><div className="pack-variant">{variant||'GROSIR'}</div><div className="pack-barcode"/></div></div><strong className="visual-label">{title}</strong></div>}
-function SkeletonGrid({view}){return <BentoGrid className={view==='list'?'is-list':''}>{Array.from({length:8},(_,i)=><article className="product-card skeleton-card" key={i}><div className="skeleton-media"/><div className="skeleton-lines"><span/><span/><span/></div></article>)}</BentoGrid>}
-export async function getServerSideProps({res,query}){res.setHeader('Cache-Control','public, s-maxage=10, stale-while-revalidate=59');const {data,count,error}=await supabase.from('R2 NUSANTARA').select(COLUMNS,{count:'exact'}).eq('Published',true).eq('Status','active').limit(250);const initialCatalog=query?.catalog==='resmi'?'resmi':'r2';return{props:{products:error?[]:data||[],count:count||0,initialError:Boolean(error),initialCatalog}}}
+export async function getServerSideProps({ res, query }) {
+  res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
+  const { data, count, error } = await supabase
+    .from('R2 NUSANTARA')
+    .select(COLUMNS, { count: 'exact' })
+    .eq('Published', true)
+    .eq('Status', 'active')
+    .limit(250);
+  return { props: { products: error ? [] : data || [], count: count || 0, initialError: Boolean(error), initialCatalog: query?.catalog === 'resmi' ? 'resmi' : 'r2' } };
+}
 
-export default function ProductsPage({products,count,initialError,initialCatalog}){
- const router=useRouter();const [q,setQ]=useState(''),[catalog,setCatalog]=useState(initialCatalog||'r2'),[cat,setCat]=useState('ALL'),[sort,setSort]=useState('default'),[visible,setVisible]=useState(PAGE_SIZE),[cart,setCart]=useState([]),[selected,setSelected]=useState(null),[toast,setToast]=useState(''),[favorites,setFavorites]=useState([]),[view,setView]=useState('grid'),[filtersOpen,setFiltersOpen]=useState(false),[minPrice,setMinPrice]=useState(''),[maxPrice,setMaxPrice]=useState(''),[stockOnly,setStockOnly]=useState(false),[brand,setBrand]=useState('ALL'),[variant,setVariant]=useState('ALL'),[loading,setLoading]=useState(true)
- useEffect(()=>{setQ(typeof router.query.q==='string'?router.query.q:'');if(router.isReady&&(router.query.catalog==='r2'||router.query.catalog==='resmi')){setCatalog(router.query.catalog);setCat('ALL');setVisible(PAGE_SIZE)}},[router.isReady,router.query.q,router.query.catalog])
- useEffect(()=>{try{setCart(JSON.parse(localStorage.getItem('r2-cart')||'[]'));setFavorites(JSON.parse(localStorage.getItem('r2-favorites')||'[]'))}catch{setCart([]);setFavorites([])}const t=setTimeout(()=>setLoading(false),160);return()=>clearTimeout(t)},[])
- useEffect(()=>{if(!selected)return;const onKey=e=>{if(e.key==='Escape')setSelected(null)};document.addEventListener('keydown',onKey);const previous=document.body.style.overflow;document.body.style.overflow='hidden';return()=>{document.removeEventListener('keydown',onKey);document.body.style.overflow=previous}},[selected])
- const catalogProducts=useMemo(()=>products.filter(p=>(isResmi(p)?'resmi':'r2')===catalog),[products,catalog]);const r2Count=useMemo(()=>products.filter(p=>!isResmi(p)).length,[products]),resmiCount=products.length-r2Count
- const cats=useMemo(()=>['ALL','KRETEK','FILTER','MILD','PREMIUM','INTERNATIONAL'].filter(x=>x==='ALL'||catalogProducts.some(p=>`${p.Type||''} ${p.Tags||''}`.toUpperCase().includes(x))),[catalogProducts])
- const brands=useMemo(()=>['ALL',...Array.from(new Set(catalogProducts.map(p=>text(p.Vendor)).filter(Boolean))).sort((a,b)=>a.localeCompare(b,'id'))],[catalogProducts])
- const variants=useMemo(()=>['ALL',...Array.from(new Set(catalogProducts.map(p=>text(p['Option1 Value'])).filter(Boolean))).sort((a,b)=>a.localeCompare(b,'id'))],[catalogProducts])
- const suggestions=useMemo(()=>{const s=q.trim().toLowerCase();return s?catalogProducts.filter(p=>`${p.Title||''} ${p.Vendor||''} ${p.Type||''} ${p.Tags||''}`.toLowerCase().includes(s)).slice(0,6):[]},[catalogProducts,q])
- const filtered=useMemo(()=>{const s=q.trim().toLowerCase(),lo=minPrice===''?null:Number(minPrice),hi=maxPrice===''?null:Number(maxPrice);const rows=catalogProducts.filter(p=>{const hay=[p.Title,p.Handle,p['Variant SKU'],p.Tags,p.Type,p.Vendor].filter(Boolean).join(' ').toLowerCase(),source=`${p.Type||''} ${p.Tags||''}`.toUpperCase(),price=Number(p['Variant Price']||0),okPrice=(lo===null||price>=lo)&&(hi===null||price<=hi),okStock=!stockOnly||stock(p['Variant Inventory Qty'])>0,okBrand=brand==='ALL'||text(p.Vendor)===brand,okVariant=variant==='ALL'||text(p['Option1 Value'])===variant;return(!s||hay.includes(s))&&(cat==='ALL'||source.includes(cat))&&okPrice&&okStock&&okBrand&&okVariant});return rows.sort((a,b)=>sort==='price-asc'?Number(a['Variant Price']||0)-Number(b['Variant Price']||0):sort==='price-desc'?Number(b['Variant Price']||0)-Number(a['Variant Price']||0):sort==='name'?text(a.Title).localeCompare(text(b.Title),'id'):sort==='stock'?stock(b['Variant Inventory Qty'])-stock(a['Variant Inventory Qty']):0)},[catalogProducts,q,cat,sort,minPrice,maxPrice,stockOnly,brand,variant])
- const shown=filtered.slice(0,visible),catalogLabel=catalog==='r2'?'Katalog R2 Nusantara':'Katalog Resmi',reset=f=>{setVisible(PAGE_SIZE);f()},selectCatalog=next=>{setCatalog(next);setCat('ALL');setVisible(PAGE_SIZE);const query={...router.query,catalog:next};router.replace({pathname:'/products',query},undefined,{shallow:true,scroll:false})}
- const quantity=p=>cart.reduce((n,x)=>n+(keyOf(x)===keyOf(p)?1:0),0)
- const add=p=>{const next=[...cart,p];setCart(next);localStorage.setItem('r2-cart',JSON.stringify(next));setToast(`${p.Title||'Produk'} ditambahkan`);setTimeout(()=>setToast(''),2000)}
- const decrease=p=>{const idx=cart.findIndex(x=>keyOf(x)===keyOf(p));if(idx<0)return;const next=cart.slice(0,idx).concat(cart.slice(idx+1));setCart(next);localStorage.setItem('r2-cart',JSON.stringify(next))}
- const toggleFavorite=p=>{const id=keyOf(p),next=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];setFavorites(next);localStorage.setItem('r2-favorites',JSON.stringify(next))}
- const clear=()=>{setCat('ALL');setMinPrice('');setMaxPrice('');setStockOnly(false);setBrand('ALL');setVariant('ALL');setQ('');setVisible(PAGE_SIZE)}
- return <><Head><title>{`${catalogLabel} — R2 NUSANTARA`}</title><meta name="description" content={`${catalog==='r2'?r2Count:resmiCount} produk live ${catalogLabel}, katalog wholesale dengan stok aktif.`}/></Head><main className="catalog-app premium-catalog"><header className="catalog-mobile-header"><Link href="/" className="brand"><span className="brand-mark"><img src="/assets/logo/logo.png" alt="R2 NUSANTARA" width="40" height="40"/></span><span className="brand-copy"><strong>R2 NUSANTARA</strong><small>Cigarette Tobacco Shop</small></span></Link><div className="catalog-head-actions"><Link href="/checkout" className="cart-link" aria-label="Keranjang"><RouteIcon type="cart" size={21}/><b>{cart.length}</b></Link><Link href="/auth" className="user-link" aria-label="Akun"><RouteIcon type="account" size={21}/></Link></div></header><div className="catalog-shell"><nav className="catalog-breadcrumb" aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">›</span><Link href="/products">Katalog</Link><span aria-hidden="true">›</span><strong>{catalog==='r2'?'R2 Nusantara':'Resmi'}</strong></nav><section className="catalog-top"><Link href="/" className="desktop-back">← R2 NUSANTARA</Link><div><span className="eyebrow">OFFICIAL DISTRIBUTOR · LIVE CATALOG</span><h1>Produk <em>{catalogLabel.replace('Katalog ','')}</em></h1><p><strong>{catalog==='r2'?r2Count:resmiCount}</strong> produk aktif pada katalog ini · <strong>{count}</strong> total live.</p></div><div className="live-dot"><i/> LIVE</div></section><section className="catalog-tools"><div className="search-wrap"><label className="search-box"><Search size={18} aria-hidden="true"/><input value={q} onChange={e=>reset(()=>setQ(e.target.value))} placeholder="Cari produk, kategori, atau merk..." aria-label="Cari produk" autoComplete="off"/></label>{suggestions.length>0&&<div className="search-suggestions" role="listbox">{suggestions.map(p=><button type="button" key={keyOf(p)} onClick={()=>{setQ(p.Title||p.Handle);setVisible(PAGE_SIZE)}}><span>{p.Title||p.Handle}</span><small>{p.Vendor||p.Type||'Produk'}</small></button>)}</div>}</div><button className="filter-button" type="button" onClick={()=>setFiltersOpen(v=>!v)} aria-expanded={filtersOpen} aria-controls="catalog-filter-panel"><SlidersHorizontal size={17} aria-hidden="true"/><span>Filter</span></button></section><nav className="catalog-switch" aria-label="Pilih katalog"><button type="button" className={catalog==='r2'?'active':''} onClick={()=>selectCatalog('r2')}><PackageCheck size={17} aria-hidden="true"/><span>Katalog R2</span><span className="count">{r2Count}</span></button><button type="button" className={`resmi ${catalog==='resmi'?'active':''}`} onClick={()=>selectCatalog('resmi')}><BadgeCheck size={17} aria-hidden="true"/><span>Katalog Resmi</span><span className="count">{resmiCount}</span></button></nav><div className="catalog-content"><aside id="catalog-filter-panel" className={`catalog-filters ${filtersOpen?'is-open':''}`} aria-label="Filter katalog"><div className="filter-head"><strong>Filter Produk</strong><button type="button" onClick={()=>setFiltersOpen(false)} aria-label="Tutup filter"><X size={18}/></button></div><div className="filter-group"><span>Kategori</span><div className="filter-options">{cats.map(x=><button type="button" key={x} className={cat===x?'active':''} onClick={()=>reset(()=>setCat(x))}>{x==='ALL'?'Semua':x}</button>)}</div></div><div className="filter-group"><span>Rentang harga</span><div className="price-fields"><input inputMode="numeric" value={minPrice} onChange={e=>reset(()=>setMinPrice(e.target.value.replace(/\D/g,'')))} placeholder="Min" aria-label="Harga minimum"/><span aria-hidden="true">—</span><input inputMode="numeric" value={maxPrice} onChange={e=>reset(()=>setMaxPrice(e.target.value.replace(/\D/g,'')))} placeholder="Max" aria-label="Harga maksimum"/></div></div><div className="filter-group"><label className="check-row"><input type="checkbox" checked={stockOnly} onChange={e=>reset(()=>setStockOnly(e.target.checked))}/><span>Ready stock saja</span></label></div><div className="filter-group"><label>Brand / Vendor<select value={brand} onChange={e=>reset(()=>setBrand(e.target.value))}>{brands.map(x=><option key={x} value={x}>{x==='ALL'?'Semua brand':x}</option>)}</select></label></div><div className="filter-group"><label>Variant<select value={variant} onChange={e=>reset(()=>setVariant(e.target.value))}>{variants.map(x=><option key={x} value={x}>{x==='ALL'?'Semua variant':x}</option>)}</select></label></div><button type="button" className="clear-filters" onClick={clear}>Reset semua filter</button></aside>{filtersOpen&&<button className="filter-scrim" aria-label="Tutup filter" onClick={()=>setFiltersOpen(false)}/>}<section className="catalog-results"><section className="filters-inline">{cats.map(x=><button type="button" key={x} className={cat===x?'active':''} onClick={()=>reset(()=>setCat(x))}>{x==='ALL'?'SEMUA':x}</button>)}</section><section className="catalog-meta"><div><strong>{filtered.length}</strong> produk ditemukan <span>· {catalogLabel}</span></div><div className="catalog-meta-actions"><label><span>URUTKAN</span><select value={sort} onChange={e=>reset(()=>setSort(e.target.value))}><option value="default">Rekomendasi</option><option value="name">Nama A-Z</option><option value="price-asc">Harga Terendah</option><option value="price-desc">Harga Tertinggi</option><option value="stock">Stok Terbanyak</option></select></label><div className="view-toggle" aria-label="Tampilan katalog"><button type="button" className={view==='grid'?'active':''} onClick={()=>setView('grid')} aria-label="Tampilan grid" aria-pressed={view==='grid'}><LayoutGrid size={17} aria-hidden="true"/></button><button type="button" className={view==='list'?'active':''} onClick={()=>setView('list')} aria-label="Tampilan list" aria-pressed={view==='list'}><List size={18} aria-hidden="true"/></button></div></div></section>{loading?<SkeletonGrid view={view}/>:initialError?<section className="catalog-empty"><strong>Katalog belum tersedia.</strong><span>Periksa koneksi data dan coba kembali.</span><button type="button" onClick={()=>router.reload()}>Coba lagi</button></section>:shown.length===0?<section className="catalog-empty"><div className="empty-icon"><Search size={28} aria-hidden="true"/></div><strong>Produk tidak ditemukan.</strong><span>Ubah kata kunci atau filter untuk melihat produk lainnya.</span><button type="button" onClick={clear}>Hapus semua filter</button></section>:<BentoGrid className={view==='list'?'is-list':''}>{shown.map((p,i)=>{const id=keyOf(p),qty=quantity(p),favorite=favorites.includes(id),inventory=stock(p['Variant Inventory Qty']),price=Number(p['Variant Price']||0),rate=discountRate(i),reference=discountedReference(price,rate),span=bentoSpan(i,shown.length);return <article className={`product-card bento-card bento-card--${span}`} key={id||i} tabIndex={0} onClick={()=>setSelected(p)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setSelected(p)}}}><div className="card-media"><Artwork i={i} p={p} favorite={favorite} onFavorite={()=>toggleFavorite(p)}/><div className="quick-actions"><button type="button" aria-label={`Lihat cepat ${p.Title||p.Handle}`} onClick={e=>{e.stopPropagation();setSelected(p)}}><Eye size={16} aria-hidden="true"/><span>Quick view</span></button></div></div><div className="product-body"><span className="category">{catalog==='r2'?'R2 KATALOG · NUSANTARA':'KATALOG RESMI · BRAND NASIONAL/INTERNASIONAL'}</span><h2>{p.Title||p.Handle}</h2>{p['Option1 Value']&&<small className="variant">{p['Option1 Name']||'VARIANT'} · {p['Option1 Value']}</small>}<p className="tagline">{p.Type||p.Tags||'Produk wholesale R2 Nusantara'}</p><div className="price-row">{reference>price&&<span className="price-old">{money(reference)}</span>}<div className="price">{money(price)}</div><span className="price-discount">-{rate}%</span></div><span className={`stock ${inventory?'':'out'}`}><i/>{inventory?'Ready Stock Gudang':'Stok tidak tersedia'} {inventory>0&&<strong>{inventory}</strong>}</span></div><div className="card-actions v11-actions" onClick={e=>e.stopPropagation()}>{qty>0?<div className="quantity-control" aria-label={`Jumlah ${p.Title||p.Handle}`}><button type="button" aria-label="Kurangi jumlah" onClick={()=>decrease(p)}><Minus size={16} aria-hidden="true"/></button><output aria-live="polite">{qty}</output><button type="button" aria-label="Tambah jumlah" onClick={()=>add(p)}><Plus size={16} aria-hidden="true"/></button></div>:<button type="button" className="static-add" disabled={!inventory} onClick={()=>add(p)}><ShoppingCart size={15} aria-hidden="true"/><span>Keranjang</span></button>}<button type="button" className="detail" onClick={()=>setSelected(p)}><Eye size={14} aria-hidden="true"/><span>Mata</span></button></div></article>})}</BentoGrid>}{shown.length<filtered.length&&<div className="load-more"><button type="button" onClick={()=>setVisible(n=>Math.min(n+PAGE_SIZE,filtered.length))}>MUAT LEBIH BANYAK <span>· {filtered.length-shown.length} tersisa</span></button></div>}<section className="trust-banner"><div className="trust-mark">✓</div><div><strong>Partner Wholesale Resmi</strong><p>Katalog live terhubung ke inventory aktif. Data transaksi, keranjang, dan checkout tetap mengikuti alur yang sudah ada.</p></div><Link href="/contact">KONTAK ADMIN →</Link></section></section></div><footer className="footer">© {new Date().getFullYear()} R2 NUSANTARA · WHOLESALE DISTRIBUTION</footer></div></main>{selected&&<div className="modal-backdrop" onClick={()=>setSelected(null)}><section className="quick-modal" role="dialog" aria-modal="true" aria-label={`Detail ${selected.Title||selected.Handle}`} onClick={e=>e.stopPropagation()}><button type="button" className="close" onClick={()=>setSelected(null)} aria-label="Tutup"><X size={19}/></button><Artwork p={selected} favorite={favorites.includes(keyOf(selected))} onFavorite={()=>toggleFavorite(selected)}/><span className="category">{isResmi(selected)?'KATALOG RESMI':'R2 KATALOG · NUSANTARA'}</span><h2>{selected.Title||selected.Handle}</h2><div className="price">{money(selected['Variant Price'])}</div><p>SKU: {selected['Variant SKU']||'—'} · Stok: {stock(selected['Variant Inventory Qty'])} · Jumlah di keranjang: {quantity(selected)}</p><button type="button" className="modal-add" disabled={!stock(selected['Variant Inventory Qty'])} onClick={()=>{add(selected);setSelected(null)}}><ShoppingCart size={16} aria-hidden="true"/> ADD TO CART <ArrowRight size={14} aria-hidden="true"/></button></section></div>}{toast&&<div className="toast" role="status">✓ {toast}</div>}</>
+function SkeletonGrid() {
+  return <div className="r2-clean-grid">{Array.from({ length: 8 }, (_, i) => <article className="r2-clean-skeleton" key={i}><div /><span /><span /><span /></article>)}</div>;
+}
+
+export default function ProductsPage({ products, count, initialError, initialCatalog }) {
+  const router = useRouter();
+  const [q, setQ] = useState('');
+  const [catalog, setCatalog] = useState(initialCatalog || 'r2');
+  const [cat, setCat] = useState('ALL');
+  const [sort, setSort] = useState('default');
+  const [visible, setVisible] = useState(PAGE_SIZE);
+  const [cart, setCart] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [view, setView] = useState('grid');
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+  const [stockOnly, setStockOnly] = useState(false);
+  const [brand, setBrand] = useState('ALL');
+  const [variant, setVariant] = useState('ALL');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setQ(typeof router.query.q === 'string' ? router.query.q : '');
+    if (router.isReady && (router.query.catalog === 'r2' || router.query.catalog === 'resmi')) {
+      setCatalog(router.query.catalog); setCat('ALL'); setVisible(PAGE_SIZE);
+    }
+  }, [router.isReady, router.query.q, router.query.catalog]);
+
+  useEffect(() => {
+    try {
+      setCart(JSON.parse(localStorage.getItem('r2-cart') || '[]'));
+      setFavorites(JSON.parse(localStorage.getItem('r2-favorites') || '[]'));
+    } catch { setCart([]); setFavorites([]); }
+    const timer = setTimeout(() => setLoading(false), 160);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const catalogProducts = useMemo(() => products.filter((p) => (isResmi(p) ? 'resmi' : 'r2') === catalog), [products, catalog]);
+  const r2Count = useMemo(() => products.filter((p) => !isResmi(p)).length, [products]);
+  const resmiCount = products.length - r2Count;
+  const cats = useMemo(() => ['ALL', 'KRETEK', 'FILTER', 'MILD', 'PREMIUM', 'INTERNATIONAL'].filter((x) => x === 'ALL' || catalogProducts.some((p) => `${p.Type || ''} ${p.Tags || ''}`.toUpperCase().includes(x))), [catalogProducts]);
+  const brands = useMemo(() => ['ALL', ...Array.from(new Set(catalogProducts.map((p) => text(p.Vendor)).filter(Boolean))).sort((a, b) => a.localeCompare(b, 'id'))], [catalogProducts]);
+  const variants = useMemo(() => ['ALL', ...Array.from(new Set(catalogProducts.map((p) => text(p['Option1 Value'])).filter(Boolean))).sort((a, b) => a.localeCompare(b, 'id'))], [catalogProducts]);
+  const suggestions = useMemo(() => { const search = q.trim().toLowerCase(); return search ? catalogProducts.filter((p) => `${p.Title || ''} ${p.Vendor || ''} ${p.Type || ''} ${p.Tags || ''}`.toLowerCase().includes(search)).slice(0, 6) : []; }, [catalogProducts, q]);
+  const filtered = useMemo(() => {
+    const search = q.trim().toLowerCase(); const lo = minPrice === '' ? null : Number(minPrice); const hi = maxPrice === '' ? null : Number(maxPrice);
+    const rows = catalogProducts.filter((p) => {
+      const hay = [p.Title, p.Handle, p['Variant SKU'], p.Tags, p.Type, p.Vendor].filter(Boolean).join(' ').toLowerCase();
+      const source = `${p.Type || ''} ${p.Tags || ''}`.toUpperCase(); const price = Number(p['Variant Price'] || 0);
+      return (!search || hay.includes(search)) && (cat === 'ALL' || source.includes(cat)) && (lo === null || price >= lo) && (hi === null || price <= hi) && (!stockOnly || stock(p['Variant Inventory Qty']) > 0) && (brand === 'ALL' || text(p.Vendor) === brand) && (variant === 'ALL' || text(p['Option1 Value']) === variant);
+    });
+    return rows.sort((a, b) => sort === 'price-asc' ? Number(a['Variant Price'] || 0) - Number(b['Variant Price'] || 0) : sort === 'price-desc' ? Number(b['Variant Price'] || 0) - Number(a['Variant Price'] || 0) : sort === 'name' ? text(a.Title).localeCompare(text(b.Title), 'id') : sort === 'stock' ? stock(b['Variant Inventory Qty']) - stock(a['Variant Inventory Qty']) : 0);
+  }, [catalogProducts, q, cat, sort, minPrice, maxPrice, stockOnly, brand, variant]);
+
+  const shown = filtered.slice(0, visible);
+  const catalogLabel = catalog === 'r2' ? 'Katalog R2 Nusantara' : 'Katalog Resmi';
+  const quantity = (product) => cart.reduce((total, item) => total + (keyOf(item) === keyOf(product) ? 1 : 0), 0);
+  const add = (product) => { const next = [...cart, product]; setCart(next); localStorage.setItem('r2-cart', JSON.stringify(next)); };
+  const decrease = (product) => { const index = cart.findIndex((item) => keyOf(item) === keyOf(product)); if (index < 0) return; const next = cart.slice(0, index).concat(cart.slice(index + 1)); setCart(next); localStorage.setItem('r2-cart', JSON.stringify(next)); };
+  const toggleFavorite = (product) => { const id = keyOf(product); const next = favorites.includes(id) ? favorites.filter((item) => item !== id) : [...favorites, id]; setFavorites(next); localStorage.setItem('r2-favorites', JSON.stringify(next)); };
+  const reset = (fn) => { setVisible(PAGE_SIZE); fn(); };
+  const clear = () => { setCat('ALL'); setMinPrice(''); setMaxPrice(''); setStockOnly(false); setBrand('ALL'); setVariant('ALL'); setQ(''); setVisible(PAGE_SIZE); };
+  const selectCatalog = (next) => { setCatalog(next); setCat('ALL'); setVisible(PAGE_SIZE); router.replace({ pathname: '/products', query: { ...router.query, catalog: next } }, undefined, { shallow: true, scroll: false }); };
+
+  return <>
+    <Head><title>{catalogLabel} — R2 NUSANTARA</title><meta name="description" content={`${catalog === 'r2' ? r2Count : resmiCount} produk live ${catalogLabel}, katalog wholesale dengan stok aktif.`} /></Head>
+    <main className="r2-catalog-clean">
+      <header className="r2-clean-header"><Link href="/" className="r2-clean-brand"><img src="/assets/logo/logo.png" alt="R2 NUSANTARA" width="40" height="40" /><span><strong>R2 NUSANTARA</strong><small>Cigarette Tobacco Shop</small></span></Link><div className="r2-clean-head-actions"><Link href="/checkout" aria-label="Keranjang" className="r2-clean-icon"><RouteIcon type="cart" size={21} /><b>{cart.length}</b></Link><Link href="/auth" aria-label="Akun" className="r2-clean-icon"><RouteIcon type="account" size={21} /></Link></div></header>
+      <div className="r2-clean-shell">
+        <div className="r2-clean-breadcrumb"><Link href="/">Home</Link><span>›</span><strong>Katalog</strong><span>›</span><b>{catalog === 'r2' ? 'R2 Nusantara' : 'Resmi'}</b></div>
+        <section className="r2-clean-intro"><div><span>OFFICIAL DISTRIBUTOR · LIVE CATALOG</span><h1>Produk <em>{catalog === 'r2' ? 'R2 Nusantara' : 'Resmi'}</em></h1><p><strong>{catalog === 'r2' ? r2Count : resmiCount}</strong> produk aktif · <strong>{count}</strong> total live</p></div><i><b />LIVE</i></section>
+        <section className="r2-clean-search"><label><Search size={18} /><input value={q} onChange={(e) => reset(() => setQ(e.target.value))} placeholder="Cari produk, kategori, atau merk..." aria-label="Cari produk" autoComplete="off" /></label><button type="button" onClick={() => setFiltersOpen((open) => !open)} aria-expanded={filtersOpen}><SlidersHorizontal size={17} />Filter</button>{suggestions.length > 0 && <div className="r2-clean-suggestions">{suggestions.map((p) => <button type="button" key={keyOf(p)} onClick={() => { setQ(p.Title || p.Handle); setVisible(PAGE_SIZE); }}><b>{p.Title || p.Handle}</b><small>{p.Vendor || p.Type || 'Produk'}</small></button>)}</div>}</section>
+        <nav className="r2-clean-switch" aria-label="Pilih katalog"><button type="button" className={catalog === 'r2' ? 'active' : ''} onClick={() => selectCatalog('r2')}><PackageCheck size={17} />Katalog R2 <b>{r2Count}</b></button><button type="button" className={catalog === 'resmi' ? 'active' : ''} onClick={() => selectCatalog('resmi')}><BadgeCheck size={17} />Katalog Resmi <b>{resmiCount}</b></button></nav>
+        <div className="r2-clean-layout">
+          {filtersOpen && <button className="r2-clean-scrim" type="button" aria-label="Tutup filter" onClick={() => setFiltersOpen(false)} />}
+          <aside className={`r2-clean-filters ${filtersOpen ? 'open' : ''}`}>
+            <div className="r2-clean-filter-head"><strong>Filter Produk</strong><button type="button" onClick={() => setFiltersOpen(false)} aria-label="Tutup filter"><X size={18} /></button></div>
+            <div className="r2-filter-group"><span>Kategori</span><div>{cats.map((item) => <button type="button" key={item} className={cat === item ? 'active' : ''} onClick={() => reset(() => setCat(item))}>{item === 'ALL' ? 'Semua' : item}</button>)}</div></div>
+            <div className="r2-filter-group"><span>Rentang harga</span><div className="r2-price-fields"><input inputMode="numeric" value={minPrice} onChange={(e) => reset(() => setMinPrice(e.target.value.replace(/\D/g, '')))} placeholder="Min" /><span>—</span><input inputMode="numeric" value={maxPrice} onChange={(e) => reset(() => setMaxPrice(e.target.value.replace(/\D/g, '')))} placeholder="Max" /></div></div>
+            <label className="r2-check"><input type="checkbox" checked={stockOnly} onChange={(e) => reset(() => setStockOnly(e.target.checked))} /><span>Ready stock saja</span></label>
+            <label className="r2-select-label">Brand / Vendor<select value={brand} onChange={(e) => reset(() => setBrand(e.target.value))}>{brands.map((item) => <option key={item} value={item}>{item === 'ALL' ? 'Semua brand' : item}</option>)}</select></label>
+            <label className="r2-select-label">Variant<select value={variant} onChange={(e) => reset(() => setVariant(e.target.value))}>{variants.map((item) => <option key={item} value={item}>{item === 'ALL' ? 'Semua variant' : item}</option>)}</select></label>
+            <button type="button" className="r2-clear" onClick={clear}>Reset semua filter</button>
+          </aside>
+          <section className="r2-clean-results">
+            <div className="r2-clean-category-row">{cats.map((item) => <button type="button" key={item} className={cat === item ? 'active' : ''} onClick={() => reset(() => setCat(item))}>{item === 'ALL' ? 'SEMUA' : item}</button>)}</div>
+            <div className="r2-clean-meta"><span><b>{filtered.length}</b> produk ditemukan · {catalogLabel}</span><div><label>URUTKAN<select value={sort} onChange={(e) => reset(() => setSort(e.target.value))}><option value="default">Rekomendasi</option><option value="name">Nama A-Z</option><option value="price-asc">Harga Terendah</option><option value="price-desc">Harga Tertinggi</option><option value="stock">Stok Terbanyak</option></select></label><div className="r2-view"><button type="button" className={view === 'grid' ? 'active' : ''} onClick={() => setView('grid')} aria-label="Grid"><LayoutGrid size={17} /></button><button type="button" className={view === 'list' ? 'active' : ''} onClick={() => setView('list')} aria-label="List"><List size={18} /></button></div></div></div>
+            {loading ? <SkeletonGrid /> : initialError ? <div className="r2-clean-empty"><strong>Katalog belum tersedia.</strong><span>Periksa koneksi data dan coba kembali.</span></div> : filtered.length === 0 ? <div className="r2-clean-empty"><strong>Produk tidak ditemukan.</strong><span>Coba ubah pencarian atau reset filter.</span><button type="button" onClick={clear}>Reset filter</button></div> : <div className={`r2-clean-grid ${view === 'list' ? 'list' : ''}`}>{shown.map((product, index) => <ProductCard key={keyOf(product)} product={product} index={index} quantity={quantity(product)} favorite={favorites.includes(keyOf(product))} onAdd={add} onDecrease={decrease} onFavorite={toggleFavorite} />)}</div>}
+            {!loading && shown.length < filtered.length && <button type="button" className="r2-load-more" onClick={() => setVisible((current) => current + PAGE_SIZE)}>Tampilkan {Math.min(PAGE_SIZE, filtered.length - shown.length)} produk berikutnya</button>}
+          </section>
+        </div>
+      </div>
+    </main>
+  </>;
 }
