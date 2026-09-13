@@ -4,21 +4,13 @@ import BottomNav from './BottomNav';
 import { mockProducts, bottomNavItems } from './mockData';
 import styles from './CatalogPage.module.css';
 
-export default function CatalogPage({ initialProducts = mockProducts, onAddToCart, onProductSelect }) {
+export default function CatalogPage({ initialProducts = mockProducts, onAddToCart }) {
   const [products] = useState(initialProducts);
   const [cartBadge, setCartBadge] = useState(0);
 
   const handleAddToCart = (product, quantity) => {
     setCartBadge((prev) => prev + quantity);
-    if (onAddToCart) {
-      onAddToCart(product, quantity);
-    }
-  };
-
-  const handleProductSelect = (product) => {
-    if (onProductSelect) {
-      onProductSelect(product);
-    }
+    onAddToCart?.(product, quantity);
   };
 
   const navItemsWithBadge = bottomNavItems.map((item) =>
@@ -27,33 +19,27 @@ export default function CatalogPage({ initialProducts = mockProducts, onAddToCar
 
   return (
     <div className={styles.container}>
-      {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <h1 className={styles.title}>Katalog R2 Nusantara</h1>
+          <p className={styles.eyebrow}>R2 NUSANTARA</p>
+          <h1 className={styles.title}>Katalog Produk</h1>
+          <p className={styles.subtitle}>Produk pilihan dengan stok gudang yang siap dipesan.</p>
         </div>
       </header>
 
-      {/* Main Content */}
       <main className={styles.main}>
-        {/* Products Grid */}
         <div className={styles.grid}>
           {products.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
               onAddToCart={handleAddToCart}
-              onQuickView={handleProductSelect}
             />
           ))}
         </div>
       </main>
 
-      {/* Bottom Navigation */}
       <BottomNav items={navItemsWithBadge} cartBadge={cartBadge} />
-
-      {/* Safe Area for Bottom Nav */}
-      <div className={styles.navSpacer} />
     </div>
   );
 }
