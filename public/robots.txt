@@ -2,4 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /checkout
+Disallow: /auth/callback
+
 Sitemap: https://r2nusantara-shop.vercel.app/sitemap.xml
