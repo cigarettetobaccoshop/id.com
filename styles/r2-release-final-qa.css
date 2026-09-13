@@ -6,3 +6,14 @@
 .r2-contact-form{display:grid;gap:18px}.r2-contact-form label{display:grid;gap:8px;color:#21344f;font-size:13px;font-weight:750}.r2-contact-form input,.r2-contact-form textarea{width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid rgba(11,43,92,.14);border-radius:14px;background:#fff;color:#0b2b5c;outline:none;font:inherit;box-shadow:0 4px 14px rgba(11,43,92,.04);transition:border-color .18s ease,box-shadow .18s ease}.r2-contact-form textarea{resize:vertical;min-height:140px}.r2-contact-form input:focus,.r2-contact-form textarea:focus{border-color:#1f5eff;box-shadow:0 0 0 4px rgba(31,94,255,.10)}.r2-contact-form button{padding:14px 18px;border:0;border-radius:14px;background:linear-gradient(135deg,#0b2b5c,#164a91);color:#fff;font-weight:850;cursor:pointer;box-shadow:0 10px 24px rgba(11,43,92,.18)}.r2-contact-form button:disabled{opacity:.58;cursor:not-allowed}.r2-contact-status{margin:0;font-size:14px}.r2-contact-status.success{color:#138a52}.r2-contact-status.error{color:#c24141}
 @media(max-width:700px){.r2-contact-page{padding:20px 12px 100px}.r2-contact-card{border-radius:22px;padding:24px 18px}.r2-contact-card h1{font-size:42px}.r2-contact-form{gap:15px}}
 @media(prefers-reduced-motion:reduce){.r2-contact-form input,.r2-contact-form textarea,.r2-contact-form button{transition:none}}
+
+/* Catalog data-truth guard: database fields remain the sole source of product identity.
+   The previous visual artwork derived a synthetic brand label from the first two words
+   of Title. Hide those decorative derivatives so no generated label can contradict DB.
+   The exact database Title remains the authoritative visible product name below the art. */
+.catalog-app.premium-catalog .product-visual .watermark,
+.catalog-app.premium-catalog .product-visual .pack-brand,
+.catalog-app.premium-catalog .product-visual .pack-variant{display:none!important}
+.catalog-app.premium-catalog .product-visual .visual-label{display:block!important;max-width:100%;overflow-wrap:anywhere;word-break:normal;text-overflow:clip;white-space:normal;font-weight:850;line-height:1.25;letter-spacing:-.01em}
+.catalog-app.premium-catalog .product-card .product-visual + *{min-width:0}
+@media(max-width:639px){.catalog-app.premium-catalog .product-visual .visual-label{font-size:11px;line-height:1.28}}
