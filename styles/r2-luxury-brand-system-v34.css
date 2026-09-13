@@ -1,0 +1,195 @@
+/* R2 NUSANTARA — Luxury Brand System v34
+   Presentation-only layer. No data, API, checkout, routing or catalog logic changes. */
+:root{
+  --r2-navy:#071a36;
+  --r2-navy-2:#0b2b5c;
+  --r2-blue:#1f5eff;
+  --r2-ig-blue:#0095f6;
+  --r2-ice:#eaf3ff;
+  --r2-gold:#d6b36a;
+  --r2-white:#fff;
+  --r2-ink:#0b1730;
+  --r2-muted:#71809a;
+  --r2-line:rgba(11,43,92,.10);
+}
+
+/* ---------- Brand mark: perfect circle + restrained animated frame ---------- */
+.src-logo-r2{
+  width:48px!important;height:48px!important;flex:0 0 48px!important;
+  position:relative!important;display:grid!important;place-items:center!important;
+  border-radius:50%!important;aspect-ratio:1/1!important;isolation:isolate!important;
+  background:linear-gradient(#fff,#f8fbff)!important;
+  border:1px solid rgba(255,255,255,.95)!important;
+  box-shadow:0 9px 28px rgba(7,26,54,.16),0 0 0 1px rgba(31,94,255,.08)!important;
+}
+.src-logo-r2::before{
+  content:"";position:absolute;inset:-2px;border-radius:50%;padding:2px;
+  background:conic-gradient(from 0deg,#0095F6,#1769E0,#8ccaff,#d6b36a,#0095F6);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  animation:r2LuxuryOrbit 5.8s linear infinite;z-index:-1;
+}
+.src-logo-r2::after{
+  content:"";position:absolute;inset:-7px;border-radius:50%;
+  border:1px solid rgba(31,94,255,.13);box-shadow:0 0 0 4px rgba(255,255,255,.52);
+  animation:r2LuxuryHalo 3.6s ease-in-out infinite;pointer-events:none;
+}
+.src-logo-r2 img{
+  display:block!important;width:38px!important;height:38px!important;
+  aspect-ratio:1/1!important;border-radius:50%!important;object-fit:cover!important;
+  background:#fff!important;position:relative!important;z-index:2!important;
+}
+.src-logo-check{
+  position:absolute!important;right:-3px!important;bottom:-2px!important;
+  width:18px!important;height:18px!important;border-radius:50%!important;
+  display:grid!important;place-items:center!important;z-index:5!important;
+  color:#fff!important;background:#0095F6!important;
+  border:2px solid #fff!important;box-shadow:0 3px 9px rgba(0,149,246,.35)!important;
+}
+.src-logo-check svg{display:block!important;stroke:#fff!important}
+@keyframes r2LuxuryOrbit{to{transform:rotate(360deg)}}
+@keyframes r2LuxuryHalo{0%,100%{opacity:.45;transform:scale(.985)}50%{opacity:1;transform:scale(1.025)}}
+
+/* ---------- Wordmark: R2 Nusantara + Instagram-like verification + aesthetic descriptor ---------- */
+.src-brand>span:last-child{display:grid!important;gap:3px!important;align-content:center!important}
+.src-brand strong{
+  display:inline-flex!important;align-items:center!important;gap:5px!important;
+  color:var(--r2-navy)!important;font-family:Inter,system-ui,sans-serif!important;
+  font-size:13px!important;font-weight:850!important;letter-spacing:.045em!important;
+  line-height:1!important;white-space:nowrap!important;
+}
+.src-brand strong i{
+  display:inline-grid!important;place-items:center!important;width:14px!important;height:14px!important;
+  border-radius:50%!important;color:#fff!important;background:#0095F6!important;
+  font-style:normal!important;font-size:9px!important;font-weight:900!important;
+  box-shadow:0 1px 5px rgba(0,149,246,.3)!important;
+}
+.src-brand small{
+  font-family:"Playfair Display",Georgia,serif!important;
+  font-size:7.5px!important;font-weight:700!important;letter-spacing:.20em!important;
+  text-transform:uppercase!important;color:#77849a!important;line-height:1.1!important;
+}
+/* Existing product-specific subtitle is intentionally visually normalized to the requested brand descriptor. */
+.src-brand small{font-size:0!important;letter-spacing:0!important}
+.src-brand small::after{
+  content:"Cigarette Tobacco Shop";font-family:"Playfair Display",Georgia,serif!important;
+  font-size:8px!important;font-style:italic!important;font-weight:700!important;
+  letter-spacing:.12em!important;color:#7a879b!important;white-space:nowrap!important;
+}
+
+/* ---------- Hero: premium deep-navy glass field ---------- */
+.src-hero{
+  min-height:clamp(560px,76vh,760px)!important;display:flex!important;align-items:center!important;
+  position:relative!important;isolation:isolate!important;overflow:hidden!important;
+  background:#071a36!important;
+}
+.src-hero::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(70% 80% at 78% 30%,rgba(31,94,255,.26),transparent 62%),
+    radial-gradient(50% 65% at 8% 82%,rgba(0,149,246,.18),transparent 66%),
+    linear-gradient(120deg,rgba(4,15,32,.97),rgba(7,26,54,.88) 52%,rgba(7,26,54,.68));
+}
+.src-hero::after{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.34;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:46px 46px;
+  mask-image:linear-gradient(to bottom,black,transparent 88%);
+}
+.src-hero-bg{
+  opacity:.22!important;mix-blend-mode:screen!important;filter:saturate(.8) contrast(1.05)!important;
+  background-position:center!important;
+}
+.src-hero-copy{position:relative!important;z-index:3!important;color:#fff!important}
+.src-eyebrow{
+  border-color:rgba(148,197,255,.25)!important;background:rgba(255,255,255,.075)!important;
+  color:#c9dcf7!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 12px 35px rgba(0,0,0,.12)!important;
+  backdrop-filter:blur(14px)!important;-webkit-backdrop-filter:blur(14px)!important;
+}
+.src-hero-copy h1{color:#fff!important;text-shadow:0 12px 40px rgba(0,0,0,.26)!important}
+.src-hero-copy .src-type-em em{
+  color:#9ecbff!important;font-style:normal!important;
+  background:linear-gradient(90deg,#fff,#9ecbff,#5f9cff,#fff);background-size:240% auto;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:r2HeroShine 5s linear infinite;
+}
+.src-hero-copy>p{color:rgba(232,240,251,.78)!important;max-width:620px!important}
+.src-primary{
+  background:linear-gradient(135deg,#2b70ff,#0b4fc7)!important;
+  border:1px solid rgba(154,202,255,.25)!important;
+  box-shadow:0 15px 38px rgba(8,66,173,.30),inset 0 1px 0 rgba(255,255,255,.22)!important;
+}
+.src-primary:hover{transform:translateY(-2px)!important;filter:brightness(1.06)!important}
+.src-floating-search .src-search{
+  border:1px solid rgba(117,166,230,.24)!important;background:rgba(8,27,56,.84)!important;
+  color:#fff!important;box-shadow:0 18px 45px rgba(2,15,34,.28)!important;
+  backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;
+}
+.src-floating-search .src-search input{color:#fff!important}.src-floating-search .src-search input::placeholder{color:#8ea2bf!important}
+@keyframes r2HeroShine{to{background-position:240% center}}
+
+/* ---------- Global surface rhythm ---------- */
+.src-section,.src-trust,.src-wholesale{background:#fff!important}
+.src-section-head label,.src-wholesale label{color:#1f5eff!important;letter-spacing:.18em!important}
+.src-section-head h2,.src-wholesale h2{color:var(--r2-navy)!important;letter-spacing:-.025em!important}
+.src-category-card,.src-trust-grid article{
+  border-color:var(--r2-line)!important;box-shadow:0 10px 32px rgba(7,26,54,.055)!important;
+  transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s,border-color .35s!important;
+}
+.src-category-card:hover,.src-trust-grid article:hover{transform:translateY(-4px)!important;box-shadow:0 18px 42px rgba(7,26,54,.10)!important;border-color:rgba(31,94,255,.22)!important}
+
+/* ---------- Footer: same navy system, cleaner information hierarchy ---------- */
+.src-footer{
+  background:linear-gradient(145deg,#06162e 0%,#081f42 55%,#0b2b5c 100%)!important;
+  color:#eaf3ff!important;border-top:1px solid rgba(148,197,255,.14)!important;
+}
+.src-footer::before{opacity:.28!important}
+.src-footer-info strong{color:#fff!important;letter-spacing:.10em!important}
+.src-footer-info>span{color:#9ecbff!important;letter-spacing:.14em!important;font-family:"Playfair Display",Georgia,serif!important}
+.src-footer-info p,.src-footer-copy{color:#91a4bf!important}
+.src-footer-links a{color:#c7d5e8!important;transition:color .2s ease,transform .2s ease!important}
+.src-footer-links a:hover{color:#fff!important;transform:translateY(-1px)!important}
+.src-footer-mapframe{border-color:rgba(255,255,255,.12)!important;box-shadow:0 18px 55px rgba(0,0,0,.25)!important}
+.src-footer-mapcard{background:rgba(255,255,255,.075)!important;border-color:rgba(255,255,255,.13)!important;backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important}
+.src-footer-mapcard strong{color:#fff!important}.src-footer-mapcard p{color:#aabbd0!important}.src-footer-mapcard a{color:#83b7ff!important}
+.src-footer-pin{background:#1f5eff!important;color:#fff!important;box-shadow:0 8px 20px rgba(31,94,255,.3)!important}
+
+/* ---------- Loader: premium brand reveal ---------- */
+.r2-asset-loader{
+  background:
+    radial-gradient(60% 55% at 50% 35%,rgba(31,94,255,.22),transparent 70%),
+    linear-gradient(145deg,#06162e,#071a36 55%,#0b2b5c)!important;
+}
+.r2-asset-loader-card{
+  position:relative!important;min-width:220px!important;padding:30px 36px!important;
+  border:1px solid rgba(145,193,255,.20)!important;border-radius:28px!important;
+  background:rgba(255,255,255,.065)!important;box-shadow:0 30px 90px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.12)!important;
+  backdrop-filter:blur(24px)!important;-webkit-backdrop-filter:blur(24px)!important;
+}
+.r2-asset-loader-card img{
+  width:78px!important;height:78px!important;border-radius:50%!important;object-fit:cover!important;
+  background:#fff!important;border:3px solid rgba(255,255,255,.92)!important;
+  box-shadow:0 0 0 2px rgba(0,149,246,.8),0 0 28px rgba(0,149,246,.28)!important;
+  animation:r2LoaderLogo 2.2s ease-in-out infinite!important;
+}
+.r2-asset-loader-card span{color:#fff!important;font-size:11px!important;letter-spacing:.26em!important}
+.r2-asset-loader-card::after{content:"Cigarette Tobacco Shop";font-family:"Playfair Display",Georgia,serif;font-style:italic;font-size:9px;letter-spacing:.16em;color:#9fb2ca;margin-top:-5px}
+.r2-asset-loader i{background:linear-gradient(90deg,#0095f6,#7bbcff,#d6b36a)!important;width:58px!important;height:2px!important}
+@keyframes r2LoaderLogo{0%,100%{transform:scale(.98);filter:drop-shadow(0 0 0 rgba(0,149,246,0))}50%{transform:scale(1.035);filter:drop-shadow(0 0 16px rgba(0,149,246,.30))}}
+
+/* ---------- Mobile precision ---------- */
+@media(max-width:700px){
+  .src-logo-r2{width:42px!important;height:42px!important;flex-basis:42px!important}
+  .src-logo-r2 img{width:33px!important;height:33px!important}
+  .src-logo-check{width:16px!important;height:16px!important;right:-3px!important;bottom:-2px!important}
+  .src-brand strong{font-size:11px!important;letter-spacing:.035em!important}
+  .src-brand small::after{font-size:7px!important;letter-spacing:.09em!important}
+  .src-hero{min-height:610px!important;padding-top:98px!important}
+  .src-hero::after{background-size:34px 34px}
+  .src-hero-copy h1{font-size:clamp(2.35rem,12vw,3.35rem)!important;line-height:1.01!important}
+  .src-hero-copy>p{font-size:13px!important;line-height:1.7!important}
+  .src-footer{padding-bottom:78px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .src-logo-r2::before,.src-logo-r2::after,.src-hero-copy .src-type-em em,.r2-asset-loader-card img{animation:none!important}
+}
