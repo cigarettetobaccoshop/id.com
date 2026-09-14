@@ -75,10 +75,7 @@ function CheckoutPrompt() {
 function GlobalInteractionGuard(){
   useEffect(()=>{
     const root=document.documentElement
-    const syncThemeControl=()=>{
-      const dark=root.dataset.r2Theme==='dark'
-      document.querySelectorAll('.r2-icon-btn[aria-label="Tampilan"],.r2-icon-btn[data-r2-theme-toggle]').forEach(el=>{el.setAttribute('data-r2-theme-toggle','true');const label=dark?'Mode terang':'Mode gelap';if(el.getAttribute('aria-label')!==label)el.setAttribute('aria-label',label);if(el.getAttribute('title')!==label)el.setAttribute('title',label)})
-    }
+    const syncThemeControl=()=>{const dark=root.dataset.r2Theme==='dark';document.querySelectorAll('.r2-icon-btn[aria-label="Tampilan"],.r2-icon-btn[data-r2-theme-toggle]').forEach(el=>{el.setAttribute('data-r2-theme-toggle','true');const label=dark?'Mode terang':'Mode gelap';if(el.getAttribute('aria-label')!==label)el.setAttribute('aria-label',label);if(el.getAttribute('title')!==label)el.setAttribute('title',label)})}
     const applyTheme=mode=>{const dark=mode==='dark';root.dataset.r2Theme=dark?'dark':'light';window.localStorage.setItem('r2-theme',dark?'dark':'light');syncThemeControl()}
     applyTheme(window.localStorage.getItem('r2-theme')==='dark'?'dark':'light')
     const onClick=e=>{const theme=e.target.closest?.('.r2-icon-btn[aria-label="Tampilan"],.r2-icon-btn[data-r2-theme-toggle]');if(theme){e.preventDefault();applyTheme(root.dataset.r2Theme==='dark'?'light':'dark');return}const cart=e.target.closest?.('a.cart-link, a[aria-label="Keranjang"]');if(cart&&cart.getAttribute('href')!=='/checkout'){e.preventDefault();window.location.assign('/checkout');return}const card=e.target.closest?.('.r2-product');if(card&&!e.target.closest?.('.r2-card-actions')&&!e.target.closest?.('a')){e.preventDefault();card.querySelector('.r2-card-actions button')?.click();return}}
@@ -90,7 +87,8 @@ function GlobalInteractionGuard(){
 
 export default function App({ Component, pageProps }) {
   const router=useRouter();const isHome=router.pathname==='/'
+  const isAdminChrome=router.pathname==='/login'||router.pathname.startsWith('/admin')
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
-  return <>{!isHome&&router.pathname!=='/katalog'&&<BrandAssetLoader/>}<>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</>{mounted&&<><RouteIconNav/><CheckoutPrompt/><GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>}</>
+  return <>{!isHome&&router.pathname!=='/katalog'&&<BrandAssetLoader/>}<>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</>{mounted&&<><!isAdminChrome&&<RouteIconNav/><!isAdminChrome&&<CheckoutPrompt/><GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>}</>
 }
