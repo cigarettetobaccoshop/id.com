@@ -10,10 +10,10 @@ const ICONS = {
   account: { label: 'Akun', path: '/auth', Icon: UserRound },
 }
 
-export function RouteIcon({ type, size = 19, strokeWidth = 1.8, className = '' }) {
+export function RouteIcon({ type, size = 21, strokeWidth = 2, className = '', active = false }) {
   const item = ICONS[type] || ICONS.home
   const Icon = item.Icon
-  return <Icon className={`route-icon route-icon-${type} ${className}`} width={size} height={size} strokeWidth={strokeWidth} aria-hidden="true" focusable="false" />
+  return <Icon className={`route-icon route-icon-${type} ${className}`} width={size} height={size} strokeWidth={strokeWidth} fill={active ? 'currentColor' : 'none'} aria-hidden="true" focusable="false" />
 }
 
 export default function RouteIconNav() {
@@ -32,7 +32,7 @@ export default function RouteIconNav() {
     {Object.entries(ICONS).map(([type, item]) => {
       const isActive = active(item.path)
       return <Link href={item.path} key={type} className={isActive ? 'is-active' : ''} aria-current={isActive ? 'page' : undefined}>
-        <span className="route-icon-wrap"><RouteIcon type={type} size={19} />{type === 'cart' && count > 0 && <b>{count > 99 ? '99+' : count}</b>}</span>
+        <span className="route-icon-wrap"><RouteIcon type={type} size={21} active={isActive} />{type === 'cart' && count > 0 && <b>{count > 99 ? '99+' : count}</b>}</span>
         <span className="route-icon-label">{item.label}</span>
       </Link>
     })}
