@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const { status, from, to, limit = '30' } = req.query
       const max = Math.min(Math.max(Number.parseInt(limit, 10) || 30, 1), 100)
-      let query = db.from('orders').select('id,order_number,customer_name,whatsapp,address,city,postal_code,courier,payment_method,items,subtotal,shipping_cost,total,status,payment_status,fulfillment_status,created_at,updated_at,reservation_expires_at').order('created_at',{ascending:false}).limit(max)
+      let query = db.from('orders').select('id,order_number,customer_name,whatsapp,address,city,postal_code,courier,payment_method,items,subtotal,shipping_cost,total,status,payment_status,fulfillment_status,created_at,reservation_expires_at').order('created_at',{ascending:false}).limit(max)
       if (typeof status === 'string' && STATUS.has(status)) query = query.eq('status', status)
       if (typeof from === 'string' && from) query = query.gte('created_at', from)
       if (typeof to === 'string' && to) query = query.lte('created_at', to)
@@ -52,7 +52,9 @@ export default async function handler(req, res) {
     if (!current) return res.status(404).json({ error: 'Order tidak ditemukan.' })
     if (current.status === status) return res.status(200).json({ order: current, unchanged: true })
 
-    const { data: updated, error: updateError } = await db.from('orders').update({ status, updated_at: new Date().toISOString(), fulfillment_status: status }).eq('id',id).select('id,order_number,status,updated_at').single()
+    // Keep the existing production schema intact: orders has no updated_at column.
+    // fulfillment_status is synchronized with the admin-visible order status.
+    const { data: updated, error: updateError } = await db.from('orders').update({ status, fulfillment_status: status }).eq('id',id).select('id,order_number,status,fulfillment_status').single()
     if (updateError) throw updateError
     const { error: auditError } = await db.from('audit_log').insert({ user_id: user.id, event_type: 'order_status_updated', metadata: { order_id:id, order_number:current.order_number, from:current.status, to:status } })
     if (auditError) console.error('audit log insert failed:', auditError.message)
