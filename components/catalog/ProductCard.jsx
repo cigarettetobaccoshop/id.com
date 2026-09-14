@@ -22,11 +22,7 @@ export default function ProductCard({
   const variant = text(product?.['Option1 Value'] || product?.Type || 'GROSIR');
   const sku = text(product?.['Variant SKU']);
   const isResmi = /^resmi-/i.test(sku);
-  const rating = [4.8, 4.9, 4.7, 5][index % 4];
-  const reviews = [24, 31, 18, 42][index % 4];
-  const discount = [5, 8, 10, 7][index % 4];
-  const referencePrice = price > 0 ? Math.round((price / (1 - discount / 100)) / 500) * 500 : 0;
-  const brand = title.split(/\s+/).slice(0, 2).join(' ').slice(0, 22) || 'R2 NUSANTARA';
+  const brand = text(product?.Vendor || product?.Type || 'R2 NUSANTARA');
 
   return (
     <article className={styles.card} data-catalog={isResmi ? 'resmi' : 'r2'}>
@@ -45,14 +41,13 @@ export default function ProductCard({
 
       <div className={styles.body}>
         <h2>{title}</h2>
-        <div className={styles.rating} aria-label={`Rating ${rating} dari 5, ${reviews} ulasan`}>
-          <span aria-hidden="true">★★★★★</span><b>{rating.toFixed(1)}</b><small>({reviews})</small>
+        <div className={styles.rating} aria-label={`Variant ${variant}`}>
+          <span aria-hidden="true">VARIANT</span><b>{variant}</b>{sku && <small>SKU {sku}</small>}
         </div>
         <div className={styles.priceRow}>
           <strong>{money(price)}</strong>
-          <em>-{discount}%</em>
         </div>
-        <div className={styles.reference}>{referencePrice > price ? money(referencePrice) : 'Harga grosir'}</div>
+        <div className={styles.reference}>Harga grosir</div>
         <div className={styles.stock}><i aria-hidden="true" />{inventory ? `${inventory} stok tersedia` : 'Stok habis'}</div>
 
         <div className={styles.actions}>

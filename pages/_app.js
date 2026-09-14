@@ -67,7 +67,7 @@ import BrandAssetLoader from '../components/BrandAssetLoader'
 import ActivityMonitoringRuntime from '../components/monitoring/ActivityMonitoringRuntime'
 import HomeHeader from '../components/homepage/HomeHeader'
 
-const HomepageExperience = dynamic(() => import('../components/HomepageExperience'), { ssr: true })
+const HomepageExperience = dynamic(() => import('../components/HomepageExperience'), { ssr: false })
 
 function CheckoutPrompt() {
   const [count, setCount] = useState(0)

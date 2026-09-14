@@ -28,6 +28,7 @@ export default function HomeHeader() {
 
   return (
     <>
+      <a className="r2-skip-link" href="#main-content">Lewati ke konten utama</a>
       <header className="r2-home-header">
         <div className="r2-home-header__inner">
           <Link href="/" className="r2-home-header__brand" aria-label="R2 NUSANTARA">
@@ -83,7 +84,7 @@ export default function HomeHeader() {
 
       <style jsx global>{`
         .r2-home-header{position:sticky;top:0;z-index:110;width:100%;background:rgba(255,255,255,.88)!important;border-bottom:1px solid rgba(11,63,149,.10)!important;backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);box-shadow:0 8px 30px rgba(7,29,73,.07)}
-        .r2-home-header__inner{width:min(1240px,calc(100% - 32px));min-height:74px;margin:0 auto;display:flex;align-items:center;gap:24px}
+        .r2-home-header__inner{width:min(1280px,calc(100% - 28px));min-height:66px;margin:0 auto;display:flex;align-items:center;gap:18px}
         .r2-home-header__brand{display:flex;align-items:center;gap:10px;min-width:250px;position:relative}
         .r2-home-header__logo-shell{position:relative;width:48px;height:48px;display:grid;place-items:center;flex:0 0 48px}
         .r2-home-header__logo-ring{position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(from 0deg,#0a66c2,#5eb6ff,#d8b36c,#0a66c2);animation:r2LogoOrbit 5.5s linear infinite;filter:drop-shadow(0 0 8px rgba(31,119,229,.25))}
@@ -134,7 +135,7 @@ export default function HomeHeader() {
         @media (max-width:1024px){.r2-home-header__inner{min-height:68px}.r2-home-header__nav{gap:0}.r2-home-header__nav a{padding:9px 8px;font-size:9px}.r2-home-header__brand{min-width:220px}.r2-hp-final-footer-grid{grid-template-columns:1.3fr 1fr 1fr!important}}
         @media (max-width:767px){
           .r2-home-header{position:sticky}
-          .r2-home-header__inner{width:calc(100% - 20px);min-height:62px;gap:8px}
+          .r2-home-header__inner{width:calc(100% - 16px);min-height:58px;gap:7px}
           .r2-home-header__brand{min-width:0;flex:1;gap:8px}
           .r2-home-header__logo-shell{width:40px;height:40px;flex-basis:40px}
           .r2-home-header__logo-core{width:36px;height:36px}

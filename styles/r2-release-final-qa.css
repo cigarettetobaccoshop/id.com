@@ -17,3 +17,8 @@
 .catalog-app.premium-catalog .product-visual .visual-label{display:block!important;max-width:100%;overflow-wrap:anywhere;word-break:normal;text-overflow:clip;white-space:normal;font-weight:850;line-height:1.25;letter-spacing:-.01em}
 .catalog-app.premium-catalog .product-card .product-visual + *{min-width:0}
 @media(max-width:639px){.catalog-app.premium-catalog .product-visual .visual-label{font-size:11px;line-height:1.28}}
+
+.r2-skip-link{position:fixed;top:8px;left:8px;z-index:9999;transform:translateY(-160%);padding:10px 14px;border-radius:10px;background:#071a45;color:#fff;font-size:13px;font-weight:800;line-height:1;box-shadow:0 8px 24px rgba(7,26,69,.22);transition:transform .18s ease}.r2-skip-link:focus{transform:translateY(0);outline:3px solid #8fc2ff;outline-offset:2px}
+.r2-home-header a:focus-visible,.r2-home-header button:focus-visible,.r2-hp-final a:focus-visible,.r2-hp-final button:focus-visible,.r2-hp-final input:focus-visible,.r2-catalog-clean a:focus-visible,.r2-catalog-clean button:focus-visible,.r2-catalog-clean input:focus-visible,.r2-catalog-clean select:focus-visible{outline:3px solid #2878e8;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.r2-skip-link{transition:none}}
+@media(max-width:639px){.r2-clean-filters{overscroll-behavior:contain}.r2-clean-scrim{touch-action:none}}
