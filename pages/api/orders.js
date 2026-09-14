@@ -62,6 +62,7 @@ export default async function handler(req, res) {
     for (const raw of items.slice(0,50)) {
       const qty = Math.max(1,Math.min(999,Number(raw.qty||raw.quantity||1))), key = raw.sku ? `sku:${clean(raw.sku,120)}` : `handle:${clean(raw.handle,200)}`, product = byKey.get(key)
       if (!product) return res.status(400).json({ error:'Ada produk yang sudah tidak tersedia.' })
+      // Validate against the server-side Variant Inventory Qty catalog field.
       const stock = Math.max(0,Number(product.variant_inventory_qty)||0)
       if (qty > stock) return res.status(409).json({ error:`${product.title||'Produk'} melebihi stok tersedia (${stock}). Silakan refresh katalog.` })
       const unit_price = Number(product.variant_price)||0
