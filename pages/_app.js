@@ -90,5 +90,5 @@ export default function App({ Component, pageProps }) {
   const isAdminChrome=router.pathname==='/login'||router.pathname.startsWith('/admin')
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
-  return <>{!isHome&&router.pathname!=='/katalog'&&<BrandAssetLoader/>}<>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</>{mounted&&<><!isAdminChrome&&<RouteIconNav/><!isAdminChrome&&<CheckoutPrompt/><GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>}</>
+  return <>{!isHome&&router.pathname!=='/katalog'&&<BrandAssetLoader/>}<>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</>{mounted&&<>{!isAdminChrome&&<RouteIconNav/>}{!isAdminChrome&&<CheckoutPrompt/>}<GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>}</>
 }
