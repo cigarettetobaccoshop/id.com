@@ -7,7 +7,10 @@ import { supabase } from '../lib/supabaseClient';
 import { RouteIcon } from '../components/RouteIconNav';
 import ProductCard from '../components/catalog/ProductCard';
 
-const COLUMNS = 'Handle,Title,Vendor,Type,Tags,Published,Option1 Name,Option1 Value,Variant SKU,Variant Price,"Variant Inventory Qty",Status';
+// public.products is the single production source of truth. Aliases keep the
+// existing storefront component contract unchanged while removing the legacy
+// table dependency from the live catalog page.
+const COLUMNS = 'Handle:handle,Title:title,Vendor:vendor,Type:type,Tags:tags,Published:published,Option1 Name:option1_name,Option1 Value:option1_value,Variant SKU:variant_sku,Variant Price:variant_price,"Variant Inventory Qty":variant_inventory_qty,Status:status';
 const PAGE_SIZE = 24;
 const text = (value) => String(value ?? '').trim();
 const stock = (value) => Math.max(0, Number(value) || 0);
@@ -17,10 +20,10 @@ const isResmi = (product) => /^resmi-/i.test(text(product?.['Variant SKU']));
 export async function getServerSideProps({ res, query }) {
   res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
   const { data, count, error } = await supabase
-    .from('R2 NUSANTARA')
+    .from('products')
     .select(COLUMNS, { count: 'exact' })
-    .eq('Published', true)
-    .eq('Status', 'active')
+    .eq('published', true)
+    .eq('status', 'active')
     .limit(250);
   return { props: { products: error ? [] : data || [], count: count || 0, initialError: Boolean(error), initialCatalog: query?.catalog === 'resmi' ? 'resmi' : 'r2' } };
 }
