@@ -28,6 +28,7 @@ export default function HomeHeader() {
 
   return (
     <>
+      <a className="r2-skip-link" href="#main-content">Lewati ke konten utama</a>
       <header className="r2-home-header">
         <div className="r2-home-header__inner">
           <Link href="/" className="r2-home-header__brand" aria-label="R2 NUSANTARA">
