@@ -1,11 +1,23 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { supabase } from '../../lib/supabaseClient'
+import { getAdminSupabase } from '../../lib/supabaseAdminBrowser'
 
+const ADMIN_UUID = '76a6d92e-6de1-45e3-a5d0-90d7905c0d52'
 const STATUSES = ['pending','confirmed','processing','shipped','completed','cancelled']
 const LABELS = { pending:'Pending', confirmed:'Confirmed', processing:'Processing', shipped:'Shipped', completed:'Completed', cancelled:'Cancelled' }
 const money = (v) => new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(v)||0)
+
+async function verifyAdminSession(session) {
+  if (!session?.access_token) return false
+  const response = await fetch('/api/admin/session', {
+    headers: { Authorization: `Bearer ${session.access_token}` },
+    cache: 'no-store',
+  })
+  if (!response.ok) return false
+  const body = await response.json().catch(() => ({}))
+  return body.user?.id === ADMIN_UUID
+}
 
 export default function AdminDashboard() {
   const router = useRouter()
@@ -22,7 +34,7 @@ export default function AdminDashboard() {
     setLoading(true); setError('')
     try {
       const qs = filter !== 'all' ? `?status=${encodeURIComponent(filter)}` : ''
-      const response = await fetch(`/api/admin/orders${qs}`, { headers:{ Authorization:`Bearer ${currentSession.access_token}` } })
+      const response = await fetch(`/api/admin/orders${qs}`, { headers:{ Authorization:`Bearer ${currentSession.access_token}` }, cache:'no-store' })
       const body = await response.json()
       if (!response.ok) throw new Error(body.error || 'Gagal memuat dashboard')
       setOrders(body.orders || []); setStats(body.stats || null)
@@ -32,13 +44,24 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     let active = true
-    supabase.auth.getSession().then(({ data }) => {
+    const client = getAdminSupabase()
+    if (!client) return undefined
+
+    client.auth.getSession().then(async ({ data }) => {
       if (!active) return
       if (!data.session) return router.replace('/login?next=/admin/dashboard')
-      if (data.session.user?.id !== '76a6d92e-6de1-45e3-a5d0-90d7905c0d52') { supabase.auth.signOut(); return router.replace('/') }
-      setSession(data.session)
+      const verified = data.session.user?.id === ADMIN_UUID && await verifyAdminSession(data.session)
+      if (!verified) {
+        await client.auth.signOut()
+        if (active) router.replace('/')
+        return
+      }
+      if (active) setSession(data.session)
+    }).catch(() => active && router.replace('/login?next=/admin/dashboard'))
+
+    const { data: listener } = client.auth.onAuthStateChange((_event, next) => {
+      if (active) setSession(next)
     })
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, next) => { if (active) setSession(next) })
     return () => { active = false; listener.subscription.unsubscribe() }
   }, [router])
 
@@ -48,7 +71,7 @@ export default function AdminDashboard() {
     if (!session) return
     setBusy(orderId); setError('')
     try {
-      const response = await fetch('/api/admin/orders',{method:'PATCH',headers:{'Content-Type':'application/json',Authorization:`Bearer ${session.access_token}`},body:JSON.stringify({id:orderId,status})})
+      const response = await fetch('/api/admin/orders',{method:'PATCH',headers:{'Content-Type':'application/json',Authorization:`Bearer ${session.access_token}`},body:JSON.stringify({id:orderId,status}),cache:'no-store'})
       const body = await response.json()
       if (!response.ok) throw new Error(body.error || 'Status gagal diperbarui')
       await load(session)
@@ -56,7 +79,11 @@ export default function AdminDashboard() {
     finally { setBusy('') }
   }
 
-  async function logout() { await supabase.auth.signOut(); router.replace('/') }
+  async function logout() {
+    const client = getAdminSupabase()
+    await client?.auth.signOut()
+    window.location.replace('/')
+  }
 
   return (
     <>
