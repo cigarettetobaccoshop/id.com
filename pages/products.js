@@ -7,15 +7,28 @@ import { supabase } from '../lib/supabaseClient';
 import { RouteIcon } from '../components/RouteIconNav';
 import ProductCard from '../components/catalog/ProductCard';
 
-// public.products is the single production source of truth. Aliases keep the
-// existing storefront component contract unchanged while removing the legacy
-// table dependency from the live catalog page.
-const COLUMNS = 'Handle:handle,Title:title,Vendor:vendor,Type:type,Tags:tags,Published:published,Option1 Name:option1_name,Option1 Value:option1_value,Variant SKU:variant_sku,Variant Price:variant_price,"Variant Inventory Qty":variant_inventory_qty,Status:status';
+// public.products is the single production source of truth. The mapper keeps
+// the existing storefront component contract unchanged.
+const COLUMNS = 'handle,title,vendor,type,tags,published,option1_name,option1_value,variant_sku,variant_price,variant_inventory_qty,status';
 const PAGE_SIZE = 24;
 const text = (value) => String(value ?? '').trim();
 const stock = (value) => Math.max(0, Number(value) || 0);
 const keyOf = (product) => product?.['Variant SKU'] || product?.Handle || product?.Title || '';
 const isResmi = (product) => /^resmi-/i.test(text(product?.['Variant SKU']));
+const mapProduct = (p) => ({
+  Handle: p.handle,
+  Title: p.title,
+  Vendor: p.vendor,
+  Type: p.type,
+  Tags: p.tags,
+  Published: p.published,
+  'Option1 Name': p.option1_name,
+  'Option1 Value': p.option1_value,
+  'Variant SKU': p.variant_sku,
+  'Variant Price': p.variant_price,
+  'Variant Inventory Qty': p.variant_inventory_qty,
+  Status: p.status,
+});
 
 export async function getServerSideProps({ res, query }) {
   res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
@@ -25,11 +38,12 @@ export async function getServerSideProps({ res, query }) {
     .eq('published', true)
     .eq('status', 'active')
     .limit(250);
-  return { props: { products: error ? [] : data || [], count: count || 0, initialError: Boolean(error), initialCatalog: query?.catalog === 'resmi' ? 'resmi' : 'r2' } };
+  const products = error ? [] : (data || []).map(mapProduct);
+  return { props: { products, count: count || 0, initialError: Boolean(error), initialCatalog: query?.catalog === 'resmi' ? 'resmi' : 'r2' } };
 }
 
 function SkeletonGrid() {
-  return <div className="r2-clean-grid">{Array.from({ length: 8 }, (_, i) => <article className="r2-clean-skeleton" key={i}><div /><span /><span /><span /></article>)}</div>;
+  return <div className="r2-clean-grid">{Array.from({ length: 8 }, (_, i) => <article className="r2-clean-skeleton" key={i}><div /><span /><span /><span /></article>)} </div>;
 }
 
 export default function ProductsPage({ products, count, initialError, initialCatalog }) {
