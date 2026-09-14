@@ -1,22 +1,5 @@
 import { supabase } from '../../lib/supabaseClient'
 
-const PRODUCT_COLUMNS = [
-  'Handle',
-  'Title',
-  'Vendor',
-  'Type',
-  'Tags',
-  'Published',
-  'Option1 Name',
-  'Option1 Value',
-  'Variant SKU',
-  'Variant Price',
-  'Variant Inventory Qty',
-  'Status',
-]
-
-// The shared Supabase compatibility client quotes legacy identifiers containing spaces.
-const SELECT_COLUMNS = PRODUCT_COLUMNS.join(',')
 const MAX_CATALOG_ROWS = 250
 
 export default async function handler(req, res) {
@@ -27,18 +10,16 @@ export default async function handler(req, res) {
     return res.status(405).json({ data: [], count: 0, error: 'Method Not Allowed' })
   }
 
-  // The production catalog currently contains 233 active rows. Keep the explicit
-  // ceiling above that total so the API never silently truncates the catalog at 100.
   const rawLimit = Number.parseInt(req.query.limit, 10)
   const limit = Number.isFinite(rawLimit)
     ? Math.min(Math.max(rawLimit, 1), MAX_CATALOG_ROWS)
     : MAX_CATALOG_ROWS
 
   const { data, count, error } = await supabase
-    .from('R2 NUSANTARA')
-    .select(SELECT_COLUMNS, { count: 'exact' })
-    .eq('Published', true)
-    .eq('Status', 'active')
+    .from('products')
+    .select('handle,title,body_html,vendor,type,tags,published,option1_name,option1_value,variant_sku,variant_price,variant_inventory_qty,status,catalog', { count: 'exact' })
+    .eq('published', true)
+    .eq('status', 'active')
     .limit(limit)
 
   if (error) {
@@ -46,8 +27,22 @@ export default async function handler(req, res) {
     return res.status(500).json({ data: [], count: 0, error: 'Failed to load products' })
   }
 
-  return res.status(200).json({
-    data: data || [],
-    count: count || 0,
-  })
+  const normalized = (data || []).map((p) => ({
+    Handle: p.handle,
+    Title: p.title,
+    'Body (HTML)': p.body_html,
+    Vendor: p.vendor,
+    Type: p.type,
+    Tags: p.tags,
+    Published: p.published,
+    'Option1 Name': p.option1_name,
+    'Option1 Value': p.option1_value,
+    'Variant SKU': p.variant_sku,
+    'Variant Price': p.variant_price,
+    'Variant Inventory Qty': p.variant_inventory_qty,
+    Status: p.status,
+    Catalog: p.catalog,
+  }))
+
+  return res.status(200).json({ data: normalized, count: count || 0 })
 }
