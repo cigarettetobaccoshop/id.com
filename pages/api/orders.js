@@ -26,6 +26,14 @@ async function sendCloudWhatsApp(order) {
   } catch { return { sent:false } }
 }
 
+async function getAuthenticatedUser(req) {
+  const header = req.headers.authorization || ''
+  const token = header.startsWith('Bearer ') ? header.slice(7) : ''
+  if (!token) return null
+  const { data: { user } } = await supabase.auth.getUser(token)
+  return user || null
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
   try {
@@ -35,20 +43,38 @@ export default async function handler(req, res) {
     if (!customer_name || !whatsapp || !address || !courier || !payment_method) return res.status(400).json({ error: 'Nama, WhatsApp, alamat, kurir, dan pembayaran wajib diisi.' })
     if (!(courier in COURIERS)) return res.status(400).json({ error: 'Kurir tidak valid.' })
     if (!PAYMENT_METHODS.has(payment_method)) return res.status(400).json({ error: 'Metode pembayaran tidak valid.' })
-    const { data: catalog, error: catalogError } = await supabase.from('R2 NUSANTARA').select('Handle,Title,Vendor,Type,"Variant SKU","Variant Price","Variant Inventory Qty",Published,Status').eq('Published', true).eq('Status', 'active').limit(250)
+
+    const { data: catalog, error: catalogError } = await supabase
+      .from('products')
+      .select('handle,title,vendor,type,variant_sku,variant_price,variant_inventory_qty,published,status')
+      .eq('published', true)
+      .eq('status', 'active')
+      .limit(250)
     if (catalogError) throw catalogError
-    const byKey = new Map(); for (const p of catalog || []) { if (p['Variant SKU']) byKey.set(`sku:${p['Variant SKU']}`, p); if (p.Handle) byKey.set(`handle:${p.Handle}`, p) }
+
+    const byKey = new Map()
+    for (const p of catalog || []) {
+      if (p.variant_sku) byKey.set(`sku:${p.variant_sku}`, p)
+      if (p.handle) byKey.set(`handle:${p.handle}`, p)
+    }
+
     const normalized = []; let subtotal = 0
     for (const raw of items.slice(0,50)) {
       const qty = Math.max(1,Math.min(999,Number(raw.qty||raw.quantity||1))), key = raw.sku ? `sku:${clean(raw.sku,120)}` : `handle:${clean(raw.handle,200)}`, product = byKey.get(key)
       if (!product) return res.status(400).json({ error:'Ada produk yang sudah tidak tersedia.' })
-      const stock = Math.max(0,Number(product['Variant Inventory Qty'])||0); if (qty > stock) return res.status(409).json({ error:`${product.Title||'Produk'} melebihi stok tersedia (${stock}). Silakan refresh katalog.` })
-      const unit_price = Number(product['Variant Price'])||0; if (unit_price <= 0) return res.status(400).json({error:'Harga produk tidak valid.'})
-      subtotal += unit_price*qty; normalized.push({sku:product['Variant SKU']||null,handle:product.Handle||null,title:product.Title||product.Handle,qty,unit_price})
+      const stock = Math.max(0,Number(product.variant_inventory_qty)||0)
+      if (qty > stock) return res.status(409).json({ error:`${product.title||'Produk'} melebihi stok tersedia (${stock}). Silakan refresh katalog.` })
+      const unit_price = Number(product.variant_price)||0
+      if (unit_price <= 0) return res.status(400).json({error:'Harga produk tidak valid.'})
+      subtotal += unit_price*qty
+      normalized.push({sku:product.variant_sku||null,handle:product.handle||null,title:product.title||product.handle,qty,unit_price})
     }
+
     const shipping_cost = COURIERS[courier], total = subtotal + shipping_cost, order_number = `R2-${new Date().toISOString().slice(0,10).replaceAll('-','')}-${randomUUID().slice(0,8).toUpperCase()}`
-    const { data: created, error: rpcError } = await supabase.rpc('create_order_atomic',{p_order_number:order_number,p_customer_name:customer_name,p_whatsapp:whatsapp,p_email:email,p_address:address,p_city:city,p_postal_code:postal_code,p_courier:courier,p_payment_method:payment_method,p_notes:notes,p_items:normalized,p_subtotal:subtotal,p_shipping_cost:shipping_cost,p_total:total,p_reservation_minutes:30})
+    const user = await getAuthenticatedUser(req)
+    const { data: created, error: rpcError } = await supabase.rpc('create_order_atomic',{p_order_number:order_number,p_customer_name:customer_name,p_whatsapp:whatsapp,p_email:email,p_address:address,p_city:city,p_postal_code:postal_code,p_courier:courier,p_payment_method:payment_method,p_notes:notes,p_items:normalized,p_subtotal:subtotal,p_shipping_cost:shipping_cost,p_total:total,p_reservation_minutes:30,p_user_id:user?.id || null})
     if (rpcError) { if (String(rpcError.message||'').includes('INSUFFICIENT_STOCK')) return res.status(409).json({error:'Stok baru saja berubah. Silakan kembali ke katalog dan coba lagi.'}); throw rpcError }
+
     const order = {order_number,customer_name,whatsapp,courier,payment_method,total}, wa_url = whatsappUrl(order,normalized), cloud = await sendCloudWhatsApp(order)
     const { error: updateError } = await supabase.from('orders').update({whatsapp_status:cloud.sent?'sent':'pending',whatsapp_last_sent_at:cloud.sent?new Date().toISOString():null}).eq('id',created.order_id)
     if (updateError) console.error('order WhatsApp status update error', updateError)
