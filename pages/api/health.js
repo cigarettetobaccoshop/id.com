@@ -8,10 +8,10 @@ export default async function handler(req, res) {
 
   try {
     const { count, error } = await supabase
-      .from('R2 NUSANTARA')
-      .select('Handle', { count: 'exact', head: true })
-      .eq('Published', true)
-      .eq('Status', 'active')
+      .from('products')
+      .select('handle', { count: 'exact', head: true })
+      .eq('published', true)
+      .eq('status', 'active')
 
     if (error) throw error
 
