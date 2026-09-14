@@ -11,7 +11,7 @@
   position: sticky;
   top: 0;
   z-index: 20;
-  padding: 14px 14px 13px;
+  padding: 10px 14px 9px;
   border-bottom: 1px solid rgba(216, 225, 235, 0.9);
   background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 4px 18px rgba(15, 23, 42, 0.045);
@@ -52,7 +52,7 @@
 .main {
   width: min(100%, 430px);
   margin: 0 auto;
-  padding: 12px 10px calc(94px + env(safe-area-inset-bottom, 0px));
+  padding: 10px 10px calc(86px + env(safe-area-inset-bottom, 0px));
 }
 
 .grid {
