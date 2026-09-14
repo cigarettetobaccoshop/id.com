@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { Menu, ShoppingBag, X, ArrowRight, LayoutGrid, MapPin, MessageCircle, ShieldCheck } from 'lucide-react'
+import { Menu, ShoppingBag, X, ArrowRight, LayoutGrid, MapPin, MessageCircle, BadgeCheck } from 'lucide-react'
 
 export default function HomeHeader() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -30,12 +30,19 @@ export default function HomeHeader() {
     <header className="r2-home-header">
       <div className="r2-home-header__inner">
         <Link href="/" className="r2-home-header__brand" aria-label="R2 NUSANTARA">
-          <span className="r2-home-header__mark">R2</span>
+          <span className="r2-home-header__logo-shell" aria-hidden="true">
+            <span className="r2-home-header__logo-ring" />
+            <span className="r2-home-header__logo-core">
+              <img src="/assets/logo/logo.png" alt="" width="44" height="44" />
+            </span>
+          </span>
           <span className="r2-home-header__wordmark">
             <strong>R2 NUSANTARA</strong>
             <small>GUDANG DISTRIBUTOR R2 & RESMI</small>
           </span>
-          <span className="r2-home-header__verified" title="Distributor resmi"><ShieldCheck size={13}/></span>
+          <span className="r2-home-header__verified" title="Distributor resmi terverifikasi" aria-label="Distributor resmi terverifikasi">
+            <BadgeCheck size={16} strokeWidth={2.4} />
+          </span>
         </Link>
 
         <nav className="r2-home-header__nav" aria-label="Navigasi utama">
