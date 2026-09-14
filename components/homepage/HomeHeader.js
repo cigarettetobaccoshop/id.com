@@ -27,57 +27,145 @@ export default function HomeHeader() {
   const close = () => setMenuOpen(false)
 
   return (
-    <header className="r2-home-header">
-      <div className="r2-home-header__inner">
-        <Link href="/" className="r2-home-header__brand" aria-label="R2 NUSANTARA">
-          <span className="r2-home-header__logo-shell" aria-hidden="true">
-            <span className="r2-home-header__logo-ring" />
-            <span className="r2-home-header__logo-core">
-              <img src="/assets/logo/logo.png" alt="" width="44" height="44" />
+    <>
+      <header className="r2-home-header">
+        <div className="r2-home-header__inner">
+          <Link href="/" className="r2-home-header__brand" aria-label="R2 NUSANTARA">
+            <span className="r2-home-header__logo-shell" aria-hidden="true">
+              <span className="r2-home-header__logo-ring" />
+              <span className="r2-home-header__logo-core">
+                <img src="/assets/logo/logo.png" alt="" width="44" height="44" />
+              </span>
             </span>
-          </span>
-          <span className="r2-home-header__wordmark">
-            <strong>R2 NUSANTARA</strong>
-            <small>GUDANG DISTRIBUTOR R2 & RESMI</small>
-          </span>
-          <span className="r2-home-header__verified" title="Distributor resmi terverifikasi" aria-label="Distributor resmi terverifikasi">
-            <BadgeCheck size={16} strokeWidth={2.4} />
-          </span>
-        </Link>
-
-        <nav className="r2-home-header__nav" aria-label="Navigasi utama">
-          <Link className="is-active" href="/">Beranda</Link>
-          <Link href="/products"><LayoutGrid size={15}/> Katalog</Link>
-          <a href="#distributor">Distributor</a>
-          <a href="#faq">FAQ</a>
-          <Link href="/lokasi"><MapPin size={15}/> Lokasi</Link>
-          <Link href="/contact"><MessageCircle size={15}/> Kontak</Link>
-        </nav>
-
-        <div className="r2-home-header__actions">
-          <Link href="/checkout" className="r2-home-header__cart" aria-label={`Keranjang${cartCount ? `, ${cartCount} item` : ''}`}>
-            <ShoppingBag size={18}/>
-            {cartCount > 0 && <b>{cartCount > 99 ? '99+' : cartCount}</b>}
+            <span className="r2-home-header__wordmark">
+              <strong>R2 NUSANTARA</strong>
+              <small>GUDANG DISTRIBUTOR R2 & RESMI</small>
+            </span>
+            <span className="r2-home-header__verified" title="Distributor resmi terverifikasi" aria-label="Distributor resmi terverifikasi">
+              <BadgeCheck size={16} strokeWidth={2.4} />
+            </span>
           </Link>
-          <Link href="/login" className="r2-home-header__admin">Admin <ArrowRight size={14}/></Link>
-          <button type="button" className="r2-home-header__menu" onClick={() => setMenuOpen(v => !v)} aria-label={menuOpen ? 'Tutup menu' : 'Buka menu'}>
-            {menuOpen ? <X size={20}/> : <Menu size={20}/>} 
-          </button>
-        </div>
-      </div>
 
-      {menuOpen && (
-        <div className="r2-home-header__mobile-panel">
-          <Link href="/" onClick={close}>Beranda</Link>
-          <Link href="/products" onClick={close}>Katalog Produk</Link>
-          <a href="#keunggulan" onClick={close}>Keunggulan</a>
-          <a href="#distributor" onClick={close}>Distributor</a>
-          <a href="#faq" onClick={close}>FAQ</a>
-          <Link href="/lokasi" onClick={close}>Lokasi Gudang</Link>
-          <Link href="/contact" onClick={close}>Kontak</Link>
-          <Link href="/login" className="is-admin" onClick={close}>Login Admin <ArrowRight size={14}/></Link>
+          <nav className="r2-home-header__nav" aria-label="Navigasi utama">
+            <Link className="is-active" href="/">Beranda</Link>
+            <Link href="/products"><LayoutGrid size={15}/> Katalog</Link>
+            <a href="#distributor">Distributor</a>
+            <a href="#faq">FAQ</a>
+            <Link href="/lokasi"><MapPin size={15}/> Lokasi</Link>
+            <Link href="/contact"><MessageCircle size={15}/> Kontak</Link>
+          </nav>
+
+          <div className="r2-home-header__actions">
+            <Link href="/checkout" className="r2-home-header__cart" aria-label={`Keranjang${cartCount ? `, ${cartCount} item` : ''}`}>
+              <ShoppingBag size={18}/>
+              {cartCount > 0 && <b>{cartCount > 99 ? '99+' : cartCount}</b>}
+            </Link>
+            <Link href="/login" className="r2-home-header__admin">Admin <ArrowRight size={14}/></Link>
+            <button type="button" className="r2-home-header__menu" onClick={() => setMenuOpen(v => !v)} aria-label={menuOpen ? 'Tutup menu' : 'Buka menu'}>
+              {menuOpen ? <X size={20}/> : <Menu size={20}/>} 
+            </button>
+          </div>
         </div>
-      )}
-    </header>
+
+        {menuOpen && (
+          <div className="r2-home-header__mobile-panel">
+            <Link href="/" onClick={close}>Beranda</Link>
+            <Link href="/products" onClick={close}>Katalog Produk</Link>
+            <a href="#keunggulan" onClick={close}>Keunggulan</a>
+            <a href="#distributor" onClick={close}>Distributor</a>
+            <a href="#faq" onClick={close}>FAQ</a>
+            <Link href="/lokasi" onClick={close}>Lokasi Gudang</Link>
+            <Link href="/contact" onClick={close}>Kontak</Link>
+            <Link href="/login" className="is-admin" onClick={close}>Login Admin <ArrowRight size={14}/></Link>
+          </div>
+        )}
+      </header>
+
+      <style jsx global>{`
+        .r2-home-header{position:sticky;top:0;z-index:110;width:100%;background:rgba(255,255,255,.88)!important;border-bottom:1px solid rgba(11,63,149,.10)!important;backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);box-shadow:0 8px 30px rgba(7,29,73,.07)}
+        .r2-home-header__inner{width:min(1240px,calc(100% - 32px));min-height:74px;margin:0 auto;display:flex;align-items:center;gap:24px}
+        .r2-home-header__brand{display:flex;align-items:center;gap:10px;min-width:250px;position:relative}
+        .r2-home-header__logo-shell{position:relative;width:48px;height:48px;display:grid;place-items:center;flex:0 0 48px}
+        .r2-home-header__logo-ring{position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(from 0deg,#0a66c2,#5eb6ff,#d8b36c,#0a66c2);animation:r2LogoOrbit 5.5s linear infinite;filter:drop-shadow(0 0 8px rgba(31,119,229,.25))}
+        .r2-home-header__logo-ring:after{content:"";position:absolute;inset:3px;border-radius:50%;background:#fff}
+        .r2-home-header__logo-core{position:relative;z-index:1;width:44px;height:44px;border-radius:50%;overflow:hidden;background:#0b3f95;border:1px solid rgba(255,255,255,.82);box-shadow:0 6px 16px rgba(7,29,73,.18)}
+        .r2-home-header__logo-core img{display:block;width:100%;height:100%;object-fit:cover}
+        .r2-home-header__wordmark{display:flex;flex-direction:column;line-height:1.05;min-width:0}
+        .r2-home-header__wordmark strong{font-size:13px;letter-spacing:.12em;font-weight:900;color:#0a1d36;white-space:nowrap}
+        .r2-home-header__wordmark small{margin-top:5px;font-size:7px;letter-spacing:.14em;font-weight:800;color:#73839a;white-space:nowrap}
+        .r2-home-header__verified{display:grid;place-items:center;color:#0a66c2;filter:drop-shadow(0 2px 4px rgba(10,102,194,.18));margin-left:-4px}
+        .r2-home-header__nav{display:flex;align-items:center;justify-content:center;gap:4px;flex:1}
+        .r2-home-header__nav a{display:inline-flex;align-items:center;gap:6px;position:relative;padding:10px 11px;border-radius:10px;color:#5d6e84;font-size:10px;font-weight:850;letter-spacing:.01em;transition:color .2s ease,background .2s ease,transform .2s ease}
+        .r2-home-header__nav a:hover{color:#0a1d36;background:#f3f7fc;transform:translateY(-1px)}
+        .r2-home-header__nav a.is-active{color:#0b3f95;background:#eef5ff}
+        .r2-home-header__nav a.is-active:after{content:"";position:absolute;left:12px;right:12px;bottom:4px;height:2px;border-radius:999px;background:linear-gradient(90deg,#1f78e8,#d8b36c)}
+        .r2-home-header__actions{display:flex;align-items:center;gap:8px}
+        .r2-home-header__cart{position:relative;width:40px;height:40px;display:grid;place-items:center;border:1px solid #dbe5f0;border-radius:12px;color:#17395f;background:#fff;transition:.2s ease}
+        .r2-home-header__cart:hover{transform:translateY(-2px);border-color:#9dc3ef;box-shadow:0 8px 18px rgba(11,63,149,.12)}
+        .r2-home-header__cart b{position:absolute;right:-5px;top:-6px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;display:grid;place-items:center;background:#0a66c2;color:#fff;border:2px solid #fff;font-size:7px;font-weight:900}
+        .r2-home-header__admin{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 14px;border-radius:12px;background:#0b3f95;color:#fff!important;font-size:9px;font-weight:900;letter-spacing:.04em;box-shadow:0 8px 18px rgba(11,63,149,.18);transition:.2s ease}
+        .r2-home-header__admin:hover{transform:translateY(-2px);background:#0a66c2}
+        .r2-home-header__menu{display:none;width:40px;height:40px;border:1px solid #dbe5f0;border-radius:12px;background:#fff;color:#0a1d36;place-items:center}
+        .r2-home-header__mobile-panel{display:none}
+        @keyframes r2LogoOrbit{to{transform:rotate(360deg)}}
+
+        .r2-hp-final-section{padding-top:clamp(64px,8vw,104px)!important;padding-bottom:clamp(64px,8vw,104px)!important}
+        .r2-hp-final-stats{min-height:100px!important;padding:20px clamp(20px,4vw,48px)!important}
+        .r2-hp-final-head{gap:28px!important;margin-bottom:30px!important}
+        .r2-hp-final-benefits{gap:14px!important}
+        .r2-hp-final-benefits article{padding:24px!important;border-radius:18px!important}
+        .r2-hp-final-categories{gap:16px!important}
+        .r2-hp-final-category{border-radius:20px!important;overflow:hidden!important}
+        .r2-hp-final-products{gap:16px!important}
+        .r2-hp-final-products article{border-radius:18px!important}
+        .r2-hp-final-distributor{margin-top:0!important;margin-bottom:0!important;padding:clamp(58px,8vw,100px) clamp(20px,5vw,60px)!important}
+        .r2-hp-final-faq{gap:10px!important}
+        .r2-hp-final-location{padding-top:clamp(58px,7vw,92px)!important;padding-bottom:clamp(58px,7vw,92px)!important}
+        .r2-hp-final-footer{padding-top:clamp(52px,7vw,78px)!important}
+        .r2-hp-final-footer-grid{grid-template-columns:minmax(0,1.5fr) repeat(2,minmax(150px,1fr))!important;gap:42px!important;align-items:start!important}
+        .r2-hp-final-brand{display:flex!important;align-items:center!important;gap:12px!important}
+        .r2-hp-final-brand>span{width:46px!important;height:46px!important;flex:0 0 46px!important;border-radius:50%!important;overflow:hidden!important;font-size:0!important;background:#0b3f95 url('/assets/logo/logo.png') center/cover no-repeat!important;border:2px solid rgba(216,179,108,.72)!important;box-shadow:0 0 0 4px rgba(216,179,108,.08),0 10px 24px rgba(0,0,0,.18)!important}
+        .r2-hp-final-brand strong{display:flex!important;flex-direction:column!important;gap:4px!important}
+        .r2-hp-final-brand strong small{font-size:7px!important;letter-spacing:.13em!important;opacity:.65!important}
+        .r2-hp-final-footer-grid>b,.r2-hp-final-footer-grid>div>b{letter-spacing:.13em!important}
+        .r2-hp-final-footer-bottom{gap:18px!important;padding-top:24px!important;margin-top:34px!important}
+        .r2-hp-final-footer a,.r2-hp-final-footer button{transition:color .2s ease,transform .2s ease,opacity .2s ease}
+        .r2-hp-final-footer a:hover{transform:translateX(2px)}
+        @media (max-width:1024px){.r2-home-header__inner{min-height:68px}.r2-home-header__nav{gap:0}.r2-home-header__nav a{padding:9px 8px;font-size:9px}.r2-home-header__brand{min-width:220px}.r2-hp-final-footer-grid{grid-template-columns:1.3fr 1fr 1fr!important}}
+        @media (max-width:767px){
+          .r2-home-header{position:sticky}
+          .r2-home-header__inner{width:calc(100% - 20px);min-height:62px;gap:8px}
+          .r2-home-header__brand{min-width:0;flex:1;gap:8px}
+          .r2-home-header__logo-shell{width:40px;height:40px;flex-basis:40px}
+          .r2-home-header__logo-core{width:36px;height:36px}
+          .r2-home-header__logo-ring{inset:-2px}
+          .r2-home-header__wordmark strong{font-size:10px;letter-spacing:.09em}
+          .r2-home-header__wordmark small{font-size:5.5px;letter-spacing:.09em;margin-top:3px}
+          .r2-home-header__verified{margin-left:-3px}.r2-home-header__verified svg{width:14px;height:14px}
+          .r2-home-header__nav{display:none}
+          .r2-home-header__cart{width:36px;height:36px;border-radius:11px}
+          .r2-home-header__admin{display:none}
+          .r2-home-header__menu{display:grid;width:36px;height:36px;border-radius:11px}
+          .r2-home-header__mobile-panel{display:flex;flex-direction:column;gap:4px;width:calc(100% - 20px);margin:0 10px 10px;padding:10px;border:1px solid #dfe7f0;border-radius:18px;background:rgba(255,255,255,.97);box-shadow:0 20px 45px rgba(7,29,73,.14);backdrop-filter:blur(18px)}
+          .r2-home-header__mobile-panel a{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border-radius:12px;color:#17395f;font-size:11px;font-weight:850}
+          .r2-home-header__mobile-panel a:hover{background:#eef5ff}
+          .r2-home-header__mobile-panel .is-admin{background:#0b3f95;color:#fff!important}
+          .r2-hp-final-section{padding-top:56px!important;padding-bottom:56px!important}
+          .r2-hp-final-head{margin-bottom:22px!important;gap:14px!important}
+          .r2-hp-final-benefits article{padding:18px!important}
+          .r2-hp-final-distributor{padding:56px 18px!important}
+          .r2-hp-final-footer-grid{grid-template-columns:1fr!important;gap:28px!important}
+          .r2-hp-final-footer-bottom{flex-direction:column!important;align-items:flex-start!important;gap:9px!important}
+        }
+        @media (max-width:380px){
+          .r2-home-header__inner{width:calc(100% - 14px)}
+          .r2-home-header__wordmark small{display:none}
+          .r2-home-header__verified{display:none}
+          .r2-hp-final-section{padding-top:48px!important;padding-bottom:48px!important}
+          .r2-hp-final-footer{padding-left:16px!important;padding-right:16px!important}
+        }
+        @media (prefers-reduced-motion:reduce){.r2-home-header__logo-ring{animation:none!important}.r2-home-header__nav a,.r2-home-header__cart,.r2-home-header__admin,.r2-hp-final-footer a{transition:none!important}.r2-hp-final [data-r2-reveal]{opacity:1!important;transform:none!important;transition:none!important}}
+      `}</style>
+    </>
   )
 }
