@@ -54,6 +54,7 @@ import '../styles/r2-home-type-refinement-v35.css'
 import '../styles/r2-hero-luxury-typography-v36.css'
 import '../styles/r2-catalog-clean-v37.css'
 import '../styles/r2-accessibility-contrast-v38.css'
+import '../styles/homepage-international-polish-v40.css'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
@@ -62,6 +63,7 @@ import { Analytics } from '@vercel/analytics/react'
 import RouteIconNav from '../components/RouteIconNav'
 import BrandAssetLoader from '../components/BrandAssetLoader'
 import ActivityMonitoringRuntime from '../components/monitoring/ActivityMonitoringRuntime'
+import HomeHeader from '../components/homepage/HomeHeader'
 
 const HomepageExperience = dynamic(() => import('../components/HomepageExperience'), { ssr: true })
 
@@ -90,5 +92,5 @@ export default function App({ Component, pageProps }) {
   const isAdminChrome=router.pathname==='/login'||router.pathname.startsWith('/admin')
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
-  return <>{!isHome&&router.pathname!=='/katalog'&&<BrandAssetLoader/>}<>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</>{mounted&&<>{!isAdminChrome&&<RouteIconNav/>}{!isAdminChrome&&<CheckoutPrompt/>}<GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>}</>
+  return <>{isHome&&<HomeHeader/>}{!isHome&&router.pathname!=='/katalog'&&<BrandAssetLoader/>}<>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</>{mounted&&<>{!isAdminChrome&&<RouteIconNav/>}{!isAdminChrome&&<CheckoutPrompt/>}<GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>}</>
 }
