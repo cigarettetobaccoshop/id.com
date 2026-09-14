@@ -5,10 +5,10 @@ const esc = value => String(value || '').replace(/&/g, '&amp;').replace(/</g, '&
 
 export async function getServerSideProps({ res }) {
   const { data, error } = await supabase
-    .from('R2 NUSANTARA')
-    .select('Handle,Published,Status')
-    .eq('Published', true)
-    .eq('Status', 'active')
+    .from('products')
+    .select('handle,published,status')
+    .eq('published', true)
+    .eq('status', 'active')
     .limit(1000)
 
   const products = error ? [] : (data || [])
@@ -16,7 +16,7 @@ export async function getServerSideProps({ res }) {
     `${SITE_URL}/`,
     `${SITE_URL}/products`,
     `${SITE_URL}/contact`,
-    ...products.filter(p => p.Handle).map(p => `${SITE_URL}/products/${encodeURIComponent(p.Handle)}`),
+    ...products.filter(p => p.handle).map(p => `${SITE_URL}/products/${encodeURIComponent(p.handle)}`),
   ]
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(url => `  <url><loc>${esc(url)}</loc></url>`).join('\n')}\n</urlset>`
