@@ -1,0 +1,146 @@
+import { useEffect, useMemo, useState } from 'react'
+import { createPortal } from 'react-dom'
+
+const RAW = 'https://raw.githubusercontent.com/cigarettetobaccoshop/id.com/main/assets/ekspedisi/'
+const partners = [
+  { name: 'JNE Express', file: 'jne-express.png', note: 'Pengiriman reguler & nasional' },
+  { name: 'J&T Express', file: 'j%26t-express.png', note: 'Jaringan pengiriman antarkota' },
+  { name: 'SiCepat Ekspres', file: 'sicepat-ekspres.png', note: 'Layanan ekspres & distribusi' },
+  { name: 'Indah Cargo', file: 'indah-cargo.png', note: 'Solusi kiriman volume & cargo' }
+]
+
+export default function CourierPartners() {
+  const [slot, setSlot] = useState(null)
+  const [index, setIndex] = useState(0)
+  const [visible, setVisible] = useState(1)
+  const [paused, setPaused] = useState(false)
+
+  useEffect(() => {
+    const mount = () => {
+      const footer = document.querySelector('.r2-hp-final-footer')
+      if (!footer?.parentNode) return false
+      const existing = document.querySelector('[data-r2-courier-slot="true"]')
+      if (existing) {
+        setSlot(existing)
+        return true
+      }
+      const target = document.createElement('div')
+      target.className = 'r2-home-courier-slot'
+      target.dataset.r2CourierSlot = 'true'
+      footer.parentNode.insertBefore(target, footer)
+      setSlot(target)
+      return true
+    }
+
+    if (mount()) return undefined
+    const observer = new MutationObserver(() => {
+      if (mount()) observer.disconnect()
+    })
+    observer.observe(document.body, { childList: true, subtree: true })
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const sync = () => setVisible(window.innerWidth >= 900 ? 2 : 1)
+    sync()
+    window.addEventListener('resize', sync)
+    return () => window.removeEventListener('resize', sync)
+  }, [])
+
+  const maxIndex = useMemo(() => Math.max(0, partners.length - visible), [visible])
+
+  useEffect(() => {
+    setIndex(current => Math.min(current, maxIndex))
+  }, [maxIndex])
+
+  useEffect(() => {
+    if (paused) return undefined
+    const timer = window.setInterval(() => {
+      setIndex(current => current >= maxIndex ? 0 : current + 1)
+    }, 4200)
+    return () => window.clearInterval(timer)
+  }, [maxIndex, paused])
+
+  if (!slot) return null
+
+  const previous = () => setIndex(current => current <= 0 ? maxIndex : current - 1)
+  const next = () => setIndex(current => current >= maxIndex ? 0 : current + 1)
+
+  const content = (
+    <section className="r2-home-courier" aria-labelledby="r2-home-courier-title" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+      <div className="r2-home-courier__head">
+        <div>
+          <span className="r2-home-courier__eyebrow">LOGISTICS NETWORK · 01</span>
+          <h2 id="r2-home-courier-title">Mitra Ekspedisi <em>R2 NUSANTARA.</em></h2>
+          <p>Partner pengiriman yang mendukung distribusi dari gudang Malang menuju berbagai wilayah Indonesia.</p>
+        </div>
+        <div className="r2-home-courier__controls" aria-label="Kontrol slider mitra ekspedisi">
+          <button type="button" onClick={previous} aria-label="Mitra ekspedisi sebelumnya">←</button>
+          <button type="button" onClick={next} aria-label="Mitra ekspedisi berikutnya">→</button>
+        </div>
+      </div>
+
+      <div className="r2-home-courier__viewport" role="region" aria-roledescription="carousel" aria-label="Mitra ekspedisi" tabIndex="0" onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}>
+        <div className="r2-home-courier__track" style={{ transform: `translateX(-${index * (100 / visible)}%)` }}>
+          {partners.map((partner, i) => (
+            <article className="r2-home-courier__card" key={partner.name} aria-label={`${partner.name}, slide ${i + 1} dari ${partners.length}`}>
+              <div className="r2-home-courier__frame">
+                <div className="r2-home-courier__frame-glow" />
+                <img src={`${RAW}${partner.file}`} alt={`Logo ${partner.name}`} width="180" height="64" loading="lazy" />
+              </div>
+              <div className="r2-home-courier__copy">
+                <div><span>OFFICIAL PARTNER</span><strong>{partner.name}</strong></div>
+                <small>{partner.note}</small>
+              </div>
+              <i aria-hidden="true">↗</i>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div className="r2-home-courier__bottom">
+        <div className="r2-home-courier__dots" aria-label="Posisi slide">
+          {partners.map((partner, i) => <button key={partner.name} type="button" className={i >= index && i < index + visible ? 'is-active' : ''} onClick={() => setIndex(Math.min(i, maxIndex))} aria-label={`Tampilkan ${partner.name}`} />)}
+        </div>
+        <span>{paused ? 'SLIDER DIJEDA' : 'AUTO SLIDE · 4.2s'}</span>
+      </div>
+
+      <style jsx global>{`
+        .r2-home-courier-slot{width:100%;min-width:0;background:#f5f8fc}
+        .r2-home-courier{width:min(1180px,calc(100% - 48px));margin:0 auto;padding:clamp(58px,7vw,88px) 0;background:#f5f8fc;color:#0a1d36}
+        .r2-home-courier__head{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin-bottom:28px}
+        .r2-home-courier__eyebrow{display:block;margin-bottom:10px;color:#176ed4;font-size:8px;font-weight:950;letter-spacing:.2em}
+        .r2-home-courier h2{margin:0;font-size:clamp(28px,4vw,44px);line-height:1;letter-spacing:-.045em;font-weight:900;color:#071b35}
+        .r2-home-courier h2 em{font-style:normal;color:#0a66c2}
+        .r2-home-courier__head p{max-width:620px;margin:13px 0 0;color:#687b92;font-size:11px;line-height:1.7}
+        .r2-home-courier__controls{display:flex;gap:7px;flex:0 0 auto}
+        .r2-home-courier__controls button{width:42px;height:42px;border:1px solid #d9e4ef;border-radius:13px;background:#fff;color:#0b3f95;font-size:18px;font-weight:800;box-shadow:0 8px 20px rgba(7,29,73,.07);cursor:pointer;transition:.2s ease}
+        .r2-home-courier__controls button:hover{transform:translateY(-2px);border-color:#91b9e6;background:#eef5ff;box-shadow:0 12px 24px rgba(7,63,149,.12)}
+        .r2-home-courier__viewport{overflow:hidden;border-radius:26px;outline:none}
+        .r2-home-courier__viewport:focus-visible{box-shadow:0 0 0 3px rgba(31,120,232,.2)}
+        .r2-home-courier__track{display:flex;width:100%;transition:transform .65s cubic-bezier(.22,.75,.22,1);will-change:transform}
+        .r2-home-courier__card{position:relative;box-sizing:border-box;flex:0 0 calc(100% / 2);padding:9px;min-width:0}
+        .r2-home-courier__card:before{content:"";position:absolute;inset:9px;border-radius:22px;background:linear-gradient(135deg,rgba(255,255,255,.98),rgba(238,245,253,.92));border:1px solid #dce7f1;box-shadow:0 18px 45px rgba(10,42,82,.08)}
+        .r2-home-courier__frame{position:relative;z-index:1;height:142px;margin:0 0 0;display:grid;place-items:center;border-radius:19px;background:linear-gradient(145deg,#fff,#edf4fb);border:1px solid rgba(255,255,255,.9);overflow:hidden}
+        .r2-home-courier__frame-glow{position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(31,120,232,.13),transparent 68%);filter:blur(4px)}
+        .r2-home-courier__frame img{position:relative;z-index:1;display:block;width:min(72%,210px);height:auto;max-height:72px;object-fit:contain;filter:drop-shadow(0 8px 12px rgba(7,29,73,.08))}
+        .r2-home-courier__copy{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 15px 16px}
+        .r2-home-courier__copy div{display:grid;gap:5px;min-width:0}
+        .r2-home-courier__copy span{font-size:6px;letter-spacing:.18em;font-weight:950;color:#7290ae}
+        .r2-home-courier__copy strong{font-size:13px;line-height:1.1;color:#0a2a50}
+        .r2-home-courier__copy small{font-size:8px;color:#71849a;line-height:1.35;text-align:right}
+        .r2-home-courier__card>i{position:absolute;z-index:3;right:20px;top:20px;width:25px;height:25px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.9);border:1px solid #dbe6f1;color:#176ed4;font-size:11px;font-style:normal;box-shadow:0 5px 12px rgba(7,29,73,.08)}
+        .r2-home-courier__bottom{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:16px;padding:0 10px}
+        .r2-home-courier__dots{display:flex;align-items:center;gap:6px}
+        .r2-home-courier__dots button{width:7px;height:7px;padding:0;border:0;border-radius:999px;background:#c8d6e5;cursor:pointer;transition:.25s ease}
+        .r2-home-courier__dots button.is-active{width:22px;background:#176ed4}
+        .r2-home-courier__bottom>span{font-size:7px;font-weight:900;letter-spacing:.15em;color:#8aa0b7}
+        @media(max-width:899px){.r2-home-courier{width:min(720px,calc(100% - 32px));padding:52px 0}.r2-home-courier__card{flex-basis:100%}.r2-home-courier__frame{height:150px}.r2-home-courier__head{align-items:flex-start}.r2-home-courier__head p{max-width:520px}}
+        @media(max-width:620px){.r2-home-courier{width:calc(100% - 24px);padding:48px 0}.r2-home-courier__head{gap:16px;margin-bottom:20px}.r2-home-courier__head p{font-size:10px;line-height:1.6}.r2-home-courier h2{font-size:29px}.r2-home-courier__controls button{width:38px;height:38px;border-radius:11px}.r2-home-courier__viewport{border-radius:22px}.r2-home-courier__card{padding:7px}.r2-home-courier__card:before{inset:7px;border-radius:19px}.r2-home-courier__frame{height:145px;border-radius:17px}.r2-home-courier__copy{padding:13px 13px 14px}.r2-home-courier__copy strong{font-size:12px}.r2-home-courier__copy small{font-size:7px}.r2-home-courier__bottom{padding:0 7px}.r2-home-courier__bottom>span{font-size:6px}}
+        @media(prefers-reduced-motion:reduce){.r2-home-courier__track{transition:none}.r2-home-courier__controls button,.r2-home-courier__dots button{transition:none}}
+      `}</style>
+    </section>
+  )
+
+  return createPortal(content, slot)
+}
