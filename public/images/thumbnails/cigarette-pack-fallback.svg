@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 760" role="img" aria-labelledby="title desc">
+  <title id="title">Cigarette pack thumbnail fallback</title>
+  <desc id="desc">Professional neutral cigarette pack illustration used only when an exact product thumbnail cannot be resolved.</desc>
+  <defs>
+    <linearGradient id="pack" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#173b66"/>
+      <stop offset="1" stop-color="#081b33"/>
+    </linearGradient>
+    <linearGradient id="foil" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f4f6f8"/>
+      <stop offset=".5" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d9dee5"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="22" stdDeviation="18" flood-opacity=".24"/>
+    </filter>
+  </defs>
+  <rect width="600" height="760" rx="54" fill="#f4f7fb"/>
+  <g filter="url(#shadow)" transform="translate(125 72)">
+    <path d="M32 34h286l32 34v548H32z" fill="url(#pack)"/>
+    <path d="M32 34h286l-32 34H32z" fill="#224d7d" opacity=".75"/>
+    <rect x="58" y="104" width="234" height="252" rx="12" fill="#f8fafc"/>
+    <path d="M77 124h196v212H77z" fill="url(#foil)"/>
+    <path d="M95 146h160" stroke="#173b66" stroke-width="8" opacity=".28"/>
+    <circle cx="175" cy="230" r="55" fill="none" stroke="#173b66" stroke-width="8" opacity=".82"/>
+    <path d="M145 255c20-32 20-66 0-98M205 255c-20-32-20-66 0-98" fill="none" stroke="#173b66" stroke-width="6" stroke-linecap="round" opacity=".75"/>
+    <text x="175" y="304" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="700" fill="#173b66">CIGARETTE</text>
+    <text x="175" y="394" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="18" letter-spacing="3" fill="#ffffff">R2 NUSANTARA</text>
+    <text x="175" y="430" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="12" letter-spacing="2" fill="#bcd0e5">PRODUCT THUMBNAIL</text>
+    <rect x="80" y="472" width="190" height="2" fill="#6f8cab" opacity=".55"/>
+    <text x="175" y="526" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#d8e4ef">NEUTRAL CIGARETTE PACK VISUAL</text>
+    <path d="M128 570h128v14H128z" fill="#f2c46d" opacity=".9"/>
+    <path d="M144 584h96v7h-96z" fill="#ffffff" opacity=".5"/>
+  </g>
+</svg>
