@@ -3,9 +3,21 @@ import { getThumbnailCache, setThumbnailCache } from './cache';
 import { scrapeImage } from './scraper';
 
 const PLACEHOLDER = '/favicon.ico';
+const OPENVERSE_ENDPOINT = 'https://api.openverse.org/v1/images/';
+const WIKIMEDIA_ENDPOINT = 'https://commons.wikimedia.org/w/api.php';
 
 function keyOf(product: ThumbnailProduct): string {
   return `${product.sku ?? ''}:${product.name.trim().toLowerCase()}`;
+}
+
+function isImageUrl(value: unknown): value is string {
+  return typeof value === 'string' && /^https?:\/\//i.test(value);
+}
+
+function titleScore(title: string, productName: string): number {
+  const productTokens = productName.toLowerCase().split(/[^a-z0-9]+/).filter((token) => token.length >= 3);
+  const candidate = title.toLowerCase();
+  return productTokens.reduce((score, token) => score + (candidate.includes(token) ? 1 : 0), 0);
 }
 
 export async function findThumbnail(product: ThumbnailProduct): Promise<ThumbnailResult> {
@@ -21,6 +33,12 @@ export async function findThumbnail(product: ThumbnailProduct): Promise<Thumbnai
     }
   }
 
+  const openLicenseUrl = await openLicenseFallback(product.name);
+  if (openLicenseUrl) {
+    setThumbnailCache(key, openLicenseUrl);
+    return { success: true, url: openLicenseUrl, source: 'google', product: product.name, cached: false };
+  }
+
   const googleUrl = await googleFallback(product.name);
   if (googleUrl) {
     setThumbnailCache(key, googleUrl);
@@ -28,6 +46,90 @@ export async function findThumbnail(product: ThumbnailProduct): Promise<Thumbnai
   }
 
   return { success: true, url: PLACEHOLDER, source: 'placeholder', product: product.name, cached: false };
+}
+
+async function openLicenseFallback(query: string): Promise<string | null> {
+  const exact = await searchOpenverse(query);
+  if (exact) return exact;
+
+  const tobaccoQuery = `${query} cigarette tobacco pack`;
+  const related = await searchOpenverse(tobaccoQuery);
+  if (related) return related;
+
+  return searchWikimedia(`${query} cigarette pack`);
+}
+
+async function searchOpenverse(query: string): Promise<string | null> {
+  try {
+    const endpoint = `${OPENVERSE_ENDPOINT}?q=${encodeURIComponent(query)}&page_size=5`;
+    const response = await fetch(endpoint, {
+      headers: { accept: 'application/json' },
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!response.ok) return null;
+    const data: unknown = await response.json();
+    if (!data || typeof data !== 'object') return null;
+    const results = (data as { results?: unknown }).results;
+    if (!Array.isArray(results)) return null;
+
+    const candidates = results
+      .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === 'object'))
+      .map((item) => ({
+        url: isImageUrl(item.thumbnail) ? item.thumbnail : isImageUrl(item.url) ? item.url : null,
+        title: typeof item.title === 'string' ? item.title : '',
+        score: typeof item.title === 'string' ? titleScore(item.title, query) : 0,
+      }))
+      .filter((item) => item.url)
+      .sort((a, b) => b.score - a.score);
+
+    return candidates[0]?.url ?? null;
+  } catch {
+    return null;
+  }
+}
+
+async function searchWikimedia(query: string): Promise<string | null> {
+  try {
+    const params = new URLSearchParams({
+      action: 'query',
+      generator: 'search',
+      gsrsearch: query,
+      gsrnamespace: '6',
+      gsrlimit: '5',
+      prop: 'imageinfo',
+      iiprop: 'url',
+      iiurlwidth: '600',
+      format: 'json',
+      origin: '*',
+    });
+    const response = await fetch(`${WIKIMEDIA_ENDPOINT}?${params.toString()}`, {
+      headers: { accept: 'application/json' },
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!response.ok) return null;
+    const data: unknown = await response.json();
+    if (!data || typeof data !== 'object') return null;
+    const queryData = (data as { query?: unknown }).query;
+    if (!queryData || typeof queryData !== 'object') return null;
+    const pages = (queryData as { pages?: unknown }).pages;
+    if (!pages || typeof pages !== 'object') return null;
+
+    const candidates = Object.values(pages as Record<string, unknown>)
+      .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === 'object'))
+      .map((item) => {
+        const imageinfo = Array.isArray(item.imageinfo) ? item.imageinfo[0] : null;
+        const info = imageinfo && typeof imageinfo === 'object' ? imageinfo as Record<string, unknown> : null;
+        return {
+          title: typeof item.title === 'string' ? item.title : '',
+          url: info && isImageUrl(info.thumburl) ? info.thumburl : info && isImageUrl(info.url) ? info.url : null,
+        };
+      })
+      .filter((item) => item.url);
+
+    return candidates[0]?.url ?? null;
+  } catch {
+    return null;
+  }
 }
 
 async function googleFallback(query: string): Promise<string | null> {
@@ -43,7 +145,7 @@ async function googleFallback(query: string): Promise<string | null> {
     const items = (data as { items?: unknown }).items;
     if (!Array.isArray(items) || !items[0] || typeof items[0] !== 'object') return null;
     const link = (items[0] as { link?: unknown }).link;
-    return typeof link === 'string' ? link : null;
+    return isImageUrl(link) ? link : null;
   } catch {
     return null;
   }
