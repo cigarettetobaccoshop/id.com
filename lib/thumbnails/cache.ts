@@ -1,7 +1,10 @@
+import type { ThumbnailMatch, ThumbnailSource } from './types';
+
 interface CacheEntry {
   url: string;
-  source: 'astro' | 'openverse' | 'wikimedia' | 'google' | 'cigarette-fallback';
+  source: ThumbnailSource;
   confidence: number;
+  match: ThumbnailMatch;
   expiresAt: number;
 }
 
