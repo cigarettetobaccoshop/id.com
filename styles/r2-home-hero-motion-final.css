@@ -86,3 +86,7 @@
   .r2-hp-final-hero .r2-hp-final-actions,
   .r2-hp-final-hero .r2-hp-final-proof{animation:none!important;opacity:1;transform:none;filter:none;max-width:100%;border-right:0}
 }
+
+/* Footer copyright cleanup: keep one concise legal line only. */
+.r2-hp-final-footer-bottom span + span{display:none!important}
+.r2-hp-final-footer-bottom{justify-content:flex-start}
