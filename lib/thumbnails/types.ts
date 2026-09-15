@@ -1,4 +1,4 @@
-export type ThumbnailSource = 'astro' | 'google' | 'placeholder';
+export type ThumbnailSource = 'astro' | 'openverse' | 'wikimedia' | 'google' | 'placeholder';
 
 export interface ThumbnailProduct {
   name: string;
