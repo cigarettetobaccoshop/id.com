@@ -44,3 +44,34 @@
 }
 @media(min-width:768px){.r2-hp-final-footer-grid>div:nth-child(2),.r2-hp-final-footer-grid>div:nth-child(3){min-width:0}}
 @media(prefers-reduced-motion:reduce){.r2-hp-final .r2-hp-final-copy::before{animation:none!important}}
+
+/* FOOTER v43 — shipping reach + newsletter presentation, homepage scope only. */
+.r2-hp-final-footer-grid>div:nth-child(2)>b{font-size:0!important;letter-spacing:.14em!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>b::before{content:"JANGKAUAN PENGIRIMAN";font-size:10px!important;color:#e1bd78!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a{height:44px!important;min-width:116px!important;padding:0 14px!important;margin:0!important;border:1px solid rgba(143,180,221,.24)!important;border-radius:12px!important;background:rgba(255,255,255,.045)!important;color:#dce9f8!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;font-size:0!important;font-weight:800!important;letter-spacing:.02em!important;transition:transform .25s ease,border-color .25s ease,background .25s ease!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(1)::before{content:"Jawa";font-size:12px!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(2)::before{content:"Sumatera";font-size:12px!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(3)::before{content:"Kalimantan";font-size:12px!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(4)::before{content:"Sulawesi";font-size:12px!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(5)::before{content:"Bali & Nusra";font-size:12px!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:hover{transform:translateY(-2px)!important;border-color:rgba(91,157,231,.55)!important;background:rgba(58,122,199,.12)!important}
+.r2-hp-final-footer-grid>div:nth-child(2){display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px 12px!important;align-content:start!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>b{grid-column:1/-1!important;margin-bottom:2px!important}
+.r2-hp-final-footer-grid>div:nth-child(2)::after{content:"Indonesia Timur";height:44px;min-width:116px;padding:0 14px;border:1px solid rgba(143,180,221,.24);border-radius:12px;background:rgba(255,255,255,.045);color:#dce9f8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;font-weight:800;grid-column:1/-1;justify-self:start;box-sizing:border-box}
+.r2-hp-final-footer-grid>div:nth-child(3){padding:0!important;gap:0!important;position:relative!important}
+.r2-hp-final-footer-grid>div:nth-child(3)>b{font-size:0!important;margin:0 0 14px!important}
+.r2-hp-final-footer-grid>div:nth-child(3)>b::before{content:"NEWSLETTER";font-size:10px!important;color:#e1bd78!important;letter-spacing:.14em!important}
+.r2-hp-final-footer-grid>div:nth-child(3)>span{display:none!important}
+.r2-hp-final-footer-grid>div:nth-child(3)::after{content:"Info Stok & Promo\A\AUpdate harga terbaru langsung ke email Anda.\A\Aemail@toko.com                         ➤";white-space:pre-wrap;display:block;min-height:178px;padding:22px 20px;border:1px solid rgba(143,180,221,.25);border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025));box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 18px 45px rgba(0,0,0,.12);color:#fff;font-size:13px;line-height:1.65;letter-spacing:0;box-sizing:border-box;overflow:hidden}
+.r2-hp-final-footer-grid>div:nth-child(3)::before{content:"";position:absolute;left:20px;right:20px;bottom:20px;height:52px;border:1px solid rgba(143,180,221,.28);border-radius:13px;background:rgba(255,255,255,.035);box-shadow:inset 0 1px 0 rgba(255,255,255,.035);pointer-events:none}
+.r2-hp-final-footer-grid>div:nth-child(3)::after{padding-bottom:78px}
+.r2-hp-final-footer-grid>div:nth-child(3)::marker{display:none}
+@media(max-width:767px){
+ .r2-hp-final-footer-grid>div:nth-child(2)>a{min-width:0!important}
+ .r2-hp-final-footer-grid>div:nth-child(2)::after{justify-self:stretch!important;grid-column:1/-1!important}
+ .r2-hp-final-footer-grid>div:nth-child(3)::after{min-height:190px!important}
+}
+@media(max-width:380px){
+ .r2-hp-final-footer-grid>div:nth-child(2){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .r2-hp-final-footer-grid>div:nth-child(2)>a,.r2-hp-final-footer-grid>div:nth-child(2)::after{min-width:0!important;width:100%!important}
+}
