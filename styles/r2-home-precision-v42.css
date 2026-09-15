@@ -25,7 +25,7 @@
 .r2-hp-final-footer-bottom{border-top:1px solid rgba(216,227,239,.28)!important;min-height:56px!important;font-size:12px!important;line-height:1.5!important}
 .r2-hp-final-footer-grid>div:nth-child(2),.r2-hp-final-footer-grid>div:nth-child(3){display:flex!important;flex-direction:column!important;gap:10px!important}
 .r2-hp-final-footer-grid>div:nth-child(2)>b,.r2-hp-final-footer-grid>div:nth-child(3)>b{margin-bottom:5px!important}
-.r2-hp-final-footer-grid>div:nth-child(2) a,.r2-hp-final-footer-grid>div:nth-child(3) span{font-size:12px!important;line-height:1.55!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a,.r2-hp-final-footer-grid>div:nth-child(3)>span{font-size:12px!important;line-height:1.55!important}
 .route-icon-nav{z-index:125!important}
 @media(max-width:767px){
   .r2-hp-final .r2-hp-final-copy::before{width:50px;height:50px;background-size:40px 40px,100% 100%,100% 100%;margin-bottom:14px}
@@ -74,4 +74,31 @@
 @media(max-width:380px){
  .r2-hp-final-footer-grid>div:nth-child(2){grid-template-columns:repeat(2,minmax(0,1fr))!important}
  .r2-hp-final-footer-grid>div:nth-child(2)>a,.r2-hp-final-footer-grid>div:nth-child(2)::after{min-width:0!important;width:100%!important}
+}
+
+/* FOOTER v44 — final shipping taxonomy + premium social presence. */
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(1)::before{content:"Sumatra"!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(2)::before{content:"Jawa"!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(3)::before{content:"Kalimantan"!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(4)::before{content:"Sulawesi"!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(5)::before{content:"Bali"!important}
+.r2-hp-final-footer-grid>div:nth-child(2)::after{content:"Nusa Tenggara"!important;grid-column:auto;justify-self:stretch!important;min-width:0!important}
+.r2-hp-final-footer-grid>div:nth-child(2){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.r2-hp-final-footer-grid>div:nth-child(3)>b::before{content:"SOCIAL MEDIA"!important}
+.r2-hp-final-footer-grid>div:nth-child(3)>span{display:flex!important;align-items:center!important;gap:12px!important;height:58px!important;margin:0 0 10px!important;padding:0 15px!important;border:1px solid rgba(143,180,221,.2)!important;border-radius:15px!important;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 12px 28px rgba(0,0,0,.1)!important;color:#dce9f8!important;font-size:0!important;font-weight:850!important;letter-spacing:.01em!important;position:relative!important;overflow:hidden!important}
+.r2-hp-final-footer-grid>div:nth-child(3)>span::before{content:"f";width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;border-radius:10px;background:linear-gradient(145deg,#1877f2,#0d5dcc);color:#fff;font:900 20px/1 Arial,sans-serif;box-shadow:0 8px 18px rgba(24,119,242,.28)!important}
+.r2-hp-final-footer-grid>div:nth-child(3)>span::after{content:"Facebook";font-size:11px!important;letter-spacing:.02em!important;color:#dce9f8!important}
+.r2-hp-final-footer-grid>div:nth-child(3)>span:nth-of-type(2)::before{content:"WA";background:linear-gradient(145deg,#25d366,#128c7e);font-size:10px!important;letter-spacing:-.04em;box-shadow:0 8px 18px rgba(37,211,102,.22)!important}
+.r2-hp-final-footer-grid>div:nth-child(3)>span:nth-of-type(2)::after{content:"WhatsApp Business"!important}
+.r2-hp-final-footer-grid>div:nth-child(3)>span:nth-of-type(n+3){display:none!important}
+.r2-hp-final-footer-grid>div:nth-child(3)::before{display:none!important}
+.r2-hp-final-footer-grid>div:nth-child(3)::after{display:none!important}
+@media(max-width:767px){
+ .r2-hp-final-footer-grid>div:nth-child(2){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .r2-hp-final-footer-grid>div:nth-child(2)::after{grid-column:auto!important}
+ .r2-hp-final-footer-grid>div:nth-child(3)>span{height:54px!important}
+}
+@media(max-width:380px){
+ .r2-hp-final-footer-grid>div:nth-child(2){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .r2-hp-final-footer-grid>div:nth-child(2)>a,.r2-hp-final-footer-grid>div:nth-child(2)::after{width:100%!important}
 }
