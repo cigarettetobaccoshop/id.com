@@ -1,0 +1,48 @@
+/* R2 NUSANTARA — final homepage visual QA v45
+   Presentation-only layer. No API, database, checkout, auth, or deployment configuration changes. */
+
+/* Removed homepage showcases: keep catalog and product data intact, but remove these blocks from the visual composition. */
+.r2-hp-final > .r2-hp-final-section:has(.r2-hp-final-categories),
+.r2-hp-final > .r2-hp-final-section:has(.r2-hp-final-products){
+  display:none!important;
+}
+
+/* Final visual rhythm after showcase removal. */
+.r2-hp-final > .r2-hp-final-distributor{
+  margin-top:clamp(28px,4vw,48px)!important;
+}
+.r2-hp-final-section:has(.r2-hp-final-benefits){
+  border-top:1px solid rgba(180,199,222,.42)!important;
+}
+.r2-hp-final-section:has(.r2-hp-final-faq){
+  border-top:1px solid rgba(180,199,222,.42)!important;
+}
+
+/* Footer taxonomy: exactly six requested shipping regions. */
+.r2-hp-final-footer-grid>div:nth-child(2)>b{font-size:0!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>b::before{content:"JANGKAUAN PENGIRIMAN";font-size:10px!important;letter-spacing:.14em!important;color:#e1bd78!important}
+.r2-hp-final-footer-grid>div:nth-child(2){display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px 12px!important;align-content:start!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a{min-width:0!important;height:44px!important;margin:0!important;padding:0 12px!important;display:flex!important;align-items:center!important;justify-content:center!important;border:1px solid rgba(143,180,221,.24)!important;border-radius:12px!important;background:rgba(255,255,255,.045)!important;color:#dce9f8!important;font-size:0!important;font-weight:800!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(1)::before{content:"Sumatra";font-size:12px!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(2)::before{content:"Jawa";font-size:12px!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(3)::before{content:"Kalimantan";font-size:12px!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(4)::before{content:"Sulawesi";font-size:12px!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(5)::before{content:"Bali";font-size:12px!important}
+.r2-hp-final-footer-grid>div:nth-child(2)::after{content:"Nusa Tenggara";height:44px;min-width:0;padding:0 12px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(143,180,221,.24);border-radius:12px;background:rgba(255,255,255,.045);color:#dce9f8;font-size:12px;font-weight:800;box-sizing:border-box}
+
+/* Social cards: visual + keyboard affordance; existing interaction URLs remain unchanged. */
+.r2-hp-final-footer-grid>div:nth-child(3)>b{font-size:0!important}
+.r2-hp-final-footer-grid>div:nth-child(3)>b::before{content:"SOCIAL MEDIA";font-size:10px!important;letter-spacing:.14em!important;color:#e1bd78!important}
+.r2-hp-final-footer-grid>div:nth-child(3)>span{cursor:pointer!important;outline:none!important}
+.r2-hp-final-footer-grid>div:nth-child(3)>span:focus-visible{border-color:rgba(91,157,231,.8)!important;box-shadow:0 0 0 3px rgba(40,120,232,.18),0 12px 28px rgba(0,0,0,.1)!important}
+
+/* Clean, predictable motion and touch behavior. */
+.r2-hp-final a,.r2-hp-final button,.r2-hp-final [role="link"]{-webkit-tap-highlight-color:transparent}
+.r2-hp-final img{max-width:100%;height:auto}
+@media(prefers-reduced-motion:reduce){
+  .r2-hp-final [data-r2-reveal]{opacity:1!important;transform:none!important;transition:none!important}
+  .r2-hp-final .r2-hp-final-copy::before{animation:none!important}
+}
+@media(max-width:767px){
+  .r2-hp-final-footer-grid>div:nth-child(2)>a,.r2-hp-final-footer-grid>div:nth-child(2)::after{min-width:0!important;width:100%!important}
+}
