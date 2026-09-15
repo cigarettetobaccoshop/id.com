@@ -15,7 +15,8 @@ export default function ActivityMonitoringRuntime() {
       document.querySelectorAll('.r2-hp-final > .r2-hp-final-section').forEach((section) => {
         if (section.querySelector('.r2-hp-final-categories, .r2-hp-final-products')) {
           section.setAttribute('data-r2-home-pruned', 'true')
-          section.style.display = 'none'
+          section.style.setProperty('display', 'none', 'important')
+          section.setAttribute('aria-hidden', 'true')
         }
       })
     }
