@@ -28,7 +28,7 @@ export default function ProductCard({
   return (
     <article className={styles.card} data-catalog={isResmi ? 'resmi' : 'r2'}>
       <div className={styles.media}>
-        <div className={`${styles.productVisual} ${styles[`tone${index % 4]}`}>
+        <div className={`${styles.productVisual} ${styles[`tone${index % 4}`]}`}>
           <ProductThumbnail name={title} sourceUrl={sourceUrl || undefined} size={190} className={styles.thumbnail} />
         </div>
         <span className={`${styles.stockBadge} ${inventory ? '' : styles.out}`}>{inventory ? 'READY STOCK' : 'STOK HABIS'}</span>
