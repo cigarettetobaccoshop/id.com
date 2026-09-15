@@ -29,3 +29,5 @@ export default function ActivityMonitoringRuntime() {
 
   return <CourierPartners />
 }
+
+// Production redeploy marker: preserve homepage visual-pruning logic without changing runtime behavior.
