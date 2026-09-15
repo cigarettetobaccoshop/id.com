@@ -16,32 +16,42 @@ export default function HeroInstantSearch() {
 
   useEffect(() => {
     setMounted(true)
-    let active = true
-    fetch('/api/products?limit=250', { headers: { Accept: 'application/json' }, cache: 'no-store' })
+    if (router.pathname !== '/') {
+      setLoading(false)
+      return undefined
+    }
+
+    const controller = new AbortController()
+    fetch('/api/products?limit=250', {
+      headers: { Accept: 'application/json' },
+      cache: 'no-store',
+      signal: controller.signal,
+    })
       .then((response) => {
         if (!response.ok) throw new Error('catalog')
         return response.json()
       })
       .then((payload) => {
-        if (active) setProducts(Array.isArray(payload?.data) ? payload.data : [])
+        setProducts(Array.isArray(payload?.data) ? payload.data : [])
       })
-      .catch(() => {
-        if (active) setProducts([])
+      .catch((error) => {
+        if (error?.name !== 'AbortError') setProducts([])
       })
       .finally(() => {
-        if (active) setLoading(false)
+        if (!controller.signal.aborted) setLoading(false)
       })
-    return () => { active = false }
-  }, [])
+
+    return () => controller.abort()
+  }, [router.pathname])
 
   useEffect(() => {
-    if (!mounted) return undefined
+    if (!mounted || router.pathname !== '/') return undefined
     const locate = () => setTarget(document.querySelector('.r2-hp-final-copy'))
     locate()
     const observer = new MutationObserver(locate)
     observer.observe(document.body, { childList: true, subtree: true })
     return () => observer.disconnect()
-  }, [mounted])
+  }, [mounted, router.pathname])
 
   const suggestions = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -57,7 +67,7 @@ export default function HeroInstantSearch() {
     return router.push({ pathname: '/products', query: { q } })
   }
 
-  if (!mounted || !target) return null
+  if (!mounted || router.pathname !== '/' || !target) return null
 
   return createPortal(
     <>
