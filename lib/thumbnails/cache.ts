@@ -4,7 +4,7 @@ interface CacheEntry {
   url: string;
   source: ThumbnailSource;
   confidence: number;
-  match: ThumbnailMatch;
+  match?: ThumbnailMatch;
   expiresAt: number;
 }
 
