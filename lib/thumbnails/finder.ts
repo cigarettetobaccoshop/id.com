@@ -1,5 +1,6 @@
 import type { ThumbnailProduct, ThumbnailResult } from './types';
 import { getThumbnailCache, setThumbnailCache } from './cache';
+import { scrapeImage } from './scraper';
 
 const PLACEHOLDER = '/favicon.ico';
 
@@ -13,7 +14,7 @@ export async function findThumbnail(product: ThumbnailProduct): Promise<Thumbnai
   if (cached) return { success: true, url: cached, source: 'astro', product: product.name, cached: true };
 
   if (product.sourceUrl) {
-    const url = await extractImage(product.sourceUrl);
+    const url = await scrapeImage(product.sourceUrl);
     if (url) {
       setThumbnailCache(key, url);
       return { success: true, url, source: 'astro', product: product.name, cached: false };
@@ -27,20 +28,6 @@ export async function findThumbnail(product: ThumbnailProduct): Promise<Thumbnai
   }
 
   return { success: true, url: PLACEHOLDER, source: 'placeholder', product: product.name, cached: false };
-}
-
-async function extractImage(sourceUrl: string): Promise<string | null> {
-  try {
-    const parsed = new URL(sourceUrl);
-    if (!['http:', 'https:'].includes(parsed.protocol)) return null;
-    const response = await fetch(sourceUrl, { headers: { 'user-agent': 'R2-Nusantara-Thumbnail/1.0' }, signal: AbortSignal.timeout(15000) });
-    if (!response.ok) return null;
-    const html = await response.text();
-    const matches = html.match(/<meta[^>]+(?:property|name)=["'](?:og:image|twitter:image)["'][^>]+content=["']([^"']+)["']/i);
-    return matches?.[1] ? new URL(matches[1], parsed.origin).toString() : null;
-  } catch {
-    return null;
-  }
 }
 
 async function googleFallback(query: string): Promise<string | null> {
