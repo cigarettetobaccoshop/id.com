@@ -1,4 +1,4 @@
-export type ThumbnailSource = 'astro' | 'openverse' | 'wikimedia' | 'google' | 'placeholder';
+export type ThumbnailSource = 'astro' | 'openverse' | 'wikimedia' | 'google' | 'cigarette-fallback';
 
 export interface ThumbnailProduct {
   name: string;
@@ -12,6 +12,7 @@ export interface ThumbnailResult {
   source: ThumbnailSource;
   product: string;
   cached: boolean;
+  confidence?: number;
 }
 
 export interface ThumbnailError {
