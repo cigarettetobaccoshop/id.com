@@ -6,6 +6,8 @@ const PLACEHOLDER = '/favicon.ico';
 const OPENVERSE_ENDPOINT = 'https://api.openverse.org/v1/images/';
 const WIKIMEDIA_ENDPOINT = 'https://commons.wikimedia.org/w/api.php';
 
+type OpenLicenseMatch = { url: string; source: 'openverse' | 'wikimedia' };
+
 function keyOf(product: ThumbnailProduct): string {
   return `${product.sku ?? ''}:${product.name.trim().toLowerCase()}`;
 }
@@ -23,7 +25,7 @@ function titleScore(title: string, productName: string): number {
 export async function findThumbnail(product: ThumbnailProduct): Promise<ThumbnailResult> {
   const key = keyOf(product);
   const cached = getThumbnailCache(key);
-  if (cached) return { success: true, url: cached, source: 'astro', product: product.name, cached: true };
+  if (cached) return { success: true, url: cached, source: 'openverse', product: product.name, cached: true };
 
   if (product.sourceUrl) {
     const url = await scrapeImage(product.sourceUrl);
@@ -33,10 +35,10 @@ export async function findThumbnail(product: ThumbnailProduct): Promise<Thumbnai
     }
   }
 
-  const openLicenseUrl = await openLicenseFallback(product.name);
-  if (openLicenseUrl) {
-    setThumbnailCache(key, openLicenseUrl);
-    return { success: true, url: openLicenseUrl, source: 'google', product: product.name, cached: false };
+  const openLicenseMatch = await openLicenseFallback(product.name);
+  if (openLicenseMatch) {
+    setThumbnailCache(key, openLicenseMatch.url);
+    return { success: true, url: openLicenseMatch.url, source: openLicenseMatch.source, product: product.name, cached: false };
   }
 
   const googleUrl = await googleFallback(product.name);
@@ -48,18 +50,17 @@ export async function findThumbnail(product: ThumbnailProduct): Promise<Thumbnai
   return { success: true, url: PLACEHOLDER, source: 'placeholder', product: product.name, cached: false };
 }
 
-async function openLicenseFallback(query: string): Promise<string | null> {
+async function openLicenseFallback(query: string): Promise<OpenLicenseMatch | null> {
   const exact = await searchOpenverse(query);
   if (exact) return exact;
 
-  const tobaccoQuery = `${query} cigarette tobacco pack`;
-  const related = await searchOpenverse(tobaccoQuery);
+  const related = await searchOpenverse(`${query} cigarette tobacco pack`);
   if (related) return related;
 
   return searchWikimedia(`${query} cigarette pack`);
 }
 
-async function searchOpenverse(query: string): Promise<string | null> {
+async function searchOpenverse(query: string): Promise<OpenLicenseMatch | null> {
   try {
     const endpoint = `${OPENVERSE_ENDPOINT}?q=${encodeURIComponent(query)}&page_size=5`;
     const response = await fetch(endpoint, {
@@ -82,13 +83,14 @@ async function searchOpenverse(query: string): Promise<string | null> {
       .filter((item) => item.url)
       .sort((a, b) => b.score - a.score);
 
-    return candidates[0]?.url ?? null;
+    const url = candidates[0]?.url;
+    return url ? { url, source: 'openverse' } : null;
   } catch {
     return null;
   }
 }
 
-async function searchWikimedia(query: string): Promise<string | null> {
+async function searchWikimedia(query: string): Promise<OpenLicenseMatch | null> {
   try {
     const params = new URLSearchParams({
       action: 'query',
@@ -119,14 +121,15 @@ async function searchWikimedia(query: string): Promise<string | null> {
       .map((item) => {
         const imageinfo = Array.isArray(item.imageinfo) ? item.imageinfo[0] : null;
         const info = imageinfo && typeof imageinfo === 'object' ? imageinfo as Record<string, unknown> : null;
-        return {
-          title: typeof item.title === 'string' ? item.title : '',
-          url: info && isImageUrl(info.thumburl) ? info.thumburl : info && isImageUrl(info.url) ? info.url : null,
-        };
+        return info && isImageUrl(info.thumburl)
+          ? info.thumburl
+          : info && isImageUrl(info.url)
+            ? info.url
+            : null;
       })
-      .filter((item) => item.url);
+      .filter((url): url is string => Boolean(url));
 
-    return candidates[0]?.url ?? null;
+    return candidates[0] ? { url: candidates[0], source: 'wikimedia' } : null;
   } catch {
     return null;
   }
