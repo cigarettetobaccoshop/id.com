@@ -1,29 +1,23 @@
-const CACHE_NAME = 'r2-nusantara-v5-hero-navy';
-const urlsToCache = [
-  '/id.com/',
-  '/id.com/index.html',
-  '/id.com/style.css',
-  '/id.com/app.js',
-  '/id.com/data.js',
-  '/id.com/manifest.json'
-];
-
+/*
+ * R2 NUSANTARA — retired legacy service worker.
+ *
+ * The active production app is Next.js on Vercel. This worker is intentionally
+ * kept as a one-time cleanup layer so browsers that installed the old static
+ * site can release stale caches and stop serving legacy assets.
+ */
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache)).catch(function(){})
-  );
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
-    ))
+    caches.keys()
+      .then(keys => Promise.all(keys.map(key => caches.delete(key))))
+      .then(() => self.clients.claim())
+      .then(() => self.registration.unregister())
   );
 });
 
 self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
-  );
+  event.respondWith(fetch(event.request));
 });
