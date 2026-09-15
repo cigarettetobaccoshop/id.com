@@ -9,7 +9,12 @@ const USER_AGENTS = [
   'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Safari/604.1',
 ];
 
-export async function scrapeImage(sourceUrl: string): Promise<string | null> {
+export interface ScrapedImageCandidate {
+  url: string;
+  text: string;
+}
+
+export async function scrapeImage(sourceUrl: string): Promise<ScrapedImageCandidate | null> {
   const url = new URL(sourceUrl);
   if (!['http:', 'https:'].includes(url.protocol)) return null;
   assertDomainRateLimit(url.hostname);
@@ -23,8 +28,13 @@ export async function scrapeImage(sourceUrl: string): Promise<string | null> {
       });
       if (!response.ok) throw new Error(`HTTP_${response.status}`);
       const html = await response.text();
-      const match = html.match(/<meta[^>]+(?:property|name)=["'](?:og:image|twitter:image)["'][^>]+content=["']([^"']+)["']/i);
-      return match?.[1] ? new URL(match[1], url.origin).toString() : null;
+      const imageMatch = html.match(/<meta[^>]+(?:property|name)=["'](?:og:image|twitter:image)["'][^>]+content=["']([^"']+)["']/i);
+      if (!imageMatch?.[1]) return null;
+
+      const title = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] ?? '';
+      const description = html.match(/<meta[^>]+(?:name|property)=["'](?:description|og:description)["'][^>]+content=["']([^"']+)["']/i)?.[1] ?? '';
+      const text = `${title} ${description}`.replace(/\s+/g, ' ').trim();
+      return { url: new URL(imageMatch[1], url.origin).toString(), text };
     } catch (error: unknown) {
       thumbnailLog(attempt === 2 ? 'warn' : 'info', { event: 'scrape_retry', domain: url.hostname, code: error instanceof Error ? error.message : 'UNKNOWN' });
       if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, 250 * 2 ** attempt));
