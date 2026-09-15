@@ -1,4 +1,5 @@
 import { Heart, Minus, Plus, ShoppingCart } from 'lucide-react';
+import ProductThumbnail from '../thumbnails/ProductThumbnail';
 import styles from './ProductCard.module.css';
 
 const text = (value) => String(value ?? '').trim();
@@ -22,16 +23,13 @@ export default function ProductCard({
   const variant = text(product?.['Option1 Value'] || product?.Type || 'GROSIR');
   const sku = text(product?.['Variant SKU']);
   const isResmi = /^resmi-/i.test(sku);
-  const brand = text(product?.Vendor || product?.Type || 'R2 NUSANTARA');
+  const sourceUrl = text(product?.thumbnail_url || product?.image_url || product?.source_url);
 
   return (
     <article className={styles.card} data-catalog={isResmi ? 'resmi' : 'r2'}>
       <div className={styles.media}>
-        <div className={`${styles.pack} ${styles[`tone${index % 4}`]}`} aria-hidden="true">
-          <span className={styles.warning}>PERINGATAN KESEHATAN · PRODUK TEMBAKAU</span>
-          <strong>{brand}</strong>
-          <small>{variant}</small>
-          <i />
+        <div className={`${styles.productVisual} ${styles[`tone${index % 4]}`}>
+          <ProductThumbnail name={title} sourceUrl={sourceUrl || undefined} size={190} className={styles.thumbnail} />
         </div>
         <span className={`${styles.stockBadge} ${inventory ? '' : styles.out}`}>{inventory ? 'READY STOCK' : 'STOK HABIS'}</span>
         <button type="button" className={`${styles.favorite} ${favorite ? styles.active : ''}`} onClick={() => onFavorite?.(product)} aria-label={favorite ? `Hapus ${title} dari favorit` : `Tambah ${title} ke favorit`} aria-pressed={favorite}>
