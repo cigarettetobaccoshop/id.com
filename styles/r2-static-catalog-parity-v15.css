@@ -70,6 +70,7 @@
   border-radius:20px!important;
   box-shadow:0 8px 24px rgba(15,61,110,.055)!important;
   transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease!important;
+  contain:layout paint!important;
 }
 .catalog-grid .product-card:hover{
   transform:translateY(-2px)!important;
@@ -100,6 +101,20 @@
   border:0!important;
   border-radius:inherit!important;
   background:linear-gradient(180deg,rgba(255,255,255,.025),transparent 38%,rgba(0,0,0,.08))!important;
+}
+
+/* Product-system compatibility retained from V14. */
+.catalog-grid .product-card .product-visual:before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px)!important;
+  background-size:22px 22px!important;
+  mask-image:linear-gradient(to bottom,black,transparent 82%)!important;
 }
 
 /* The static reference uses a generated package illustration. The Next card keeps its
@@ -154,6 +169,22 @@
   border-top:1px solid rgba(25,43,63,.18)!important;
   padding-top:4px!important;
 }
+
+/* Non-image generated pack treatment from V14 remains active for cards without image-art. */
+.catalog-grid .product-card .pack-art:not(.image-art){
+  z-index:3!important;
+  width:36%!important;
+  height:70%!important;
+  border-radius:6px!important;
+  background:linear-gradient(160deg,rgba(255,255,255,.98),rgba(220,225,230,.98))!important;
+  border:1px solid #aab3bd!important;
+  box-shadow:0 17px 30px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.08)!important;
+}
+.catalog-grid .product-card .catalog-resmi .pack-art:not(.image-art),
+.catalog-grid .product-card .product-visual.catalog-resmi .pack-art:not(.image-art){
+  background:linear-gradient(160deg,#fff,#eef1f3)!important;
+}
+
 .catalog-grid .product-card .visual-label{
   left:10px!important;
   right:10px!important;
@@ -191,6 +222,12 @@
   font-weight:900!important;
   letter-spacing:.06em!important;
 }
+.catalog-grid .product-card:has(.stock strong:empty) .badge{
+  background:#fff3f0!important;
+  border-color:#f1c9c1!important;
+  color:#a23f2e!important;
+}
+.catalog-grid .product-card:has(.stock strong:not(:empty)) .badge{display:none!important}
 .catalog-grid .product-card .heart{
   position:absolute!important;
   top:10px!important;
@@ -350,6 +387,17 @@
 .catalog-grid .product-card .card-actions.v11-actions:has(.quantity-control button:first-child:disabled) .add{display:flex!important;align-items:center!important;justify-content:center!important}
 .catalog-grid .product-card .card-actions.v11-actions:has(.quantity-control button:first-child:not(:disabled)) .add{display:none!important}
 .catalog-grid .product-card .card-actions.v11-actions:has(.quantity-control button:first-child:not(:disabled)) .quantity-control{display:grid!important}
+
+/* Product-system accessibility carry-forward from V14. */
+.catalog-switch button:focus-visible,
+.filters button:focus-visible,
+.catalog-tools button:focus-visible,
+.product-card button:focus-visible,
+.product-card:focus-visible,
+.catalog-meta select:focus-visible{
+  outline:3px solid rgba(25,96,168,.24)!important;
+  outline-offset:2px!important;
+}
 
 /* Preserve responsive density of the static reference. */
 @media(max-width:700px){
