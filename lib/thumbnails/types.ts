@@ -1,4 +1,5 @@
 export type ThumbnailSource = 'astro' | 'openverse' | 'wikimedia' | 'google' | 'cigarette-fallback';
+export type ThumbnailMatch = 'exact' | 'brand' | 'category' | 'fallback';
 
 export interface ThumbnailProduct {
   name: string;
@@ -13,6 +14,7 @@ export interface ThumbnailResult {
   product: string;
   cached: boolean;
   confidence?: number;
+  match?: ThumbnailMatch;
 }
 
 export interface ThumbnailError {
