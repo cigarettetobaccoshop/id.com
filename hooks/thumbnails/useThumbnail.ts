@@ -5,6 +5,7 @@ interface CachedThumbnail { url: string; source: string; expiresAt: number }
 
 const CACHE_PREFIX = 'r2-thumbnail:';
 const CACHE_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+const SAFE_FALLBACK = '/images/thumbnails/cigarette-pack-fallback.svg';
 
 function cacheKey(name: string, sourceUrl?: string): string {
   return `${CACHE_PREFIX}${name.trim().toLowerCase()}|${sourceUrl ?? ''}`;
@@ -37,7 +38,7 @@ function writeCache(name: string, sourceUrl: string | undefined, value: CachedTh
 }
 
 export function useThumbnail(name: string, sourceUrl?: string): ThumbnailState {
-  const [state, setState] = useState<ThumbnailState>({ url: '/favicon.ico', loading: Boolean(name), source: 'placeholder' });
+  const [state, setState] = useState<ThumbnailState>({ url: SAFE_FALLBACK, loading: Boolean(name), source: 'cigarette-fallback' });
 
   useEffect(() => {
     if (!name.trim()) return;
@@ -59,12 +60,12 @@ export function useThumbnail(name: string, sourceUrl?: string): ThumbnailState {
         if (!response.ok || !data || typeof data !== 'object') throw new Error('THUMBNAIL_REQUEST_FAILED');
         const result = data as { url?: unknown; source?: unknown };
         if (!active || typeof result.url !== 'string') return;
-        const source = typeof result.source === 'string' ? result.source : 'placeholder';
+        const source = typeof result.source === 'string' ? result.source : 'cigarette-fallback';
         setState({ url: result.url, loading: false, source });
         writeCache(name, sourceUrl, { url: result.url, source, expiresAt: Date.now() + CACHE_TTL_MS });
       })
       .catch(() => {
-        if (active) setState({ url: '/favicon.ico', loading: false, source: 'placeholder' });
+        if (active) setState({ url: SAFE_FALLBACK, loading: false, source: 'cigarette-fallback' });
       });
 
     return () => { active = false; };
