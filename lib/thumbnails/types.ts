@@ -7,7 +7,7 @@ export interface ThumbnailProduct {
 }
 
 export interface ThumbnailResult {
-  success: boolean;
+  success: true;
   url: string;
   source: ThumbnailSource;
   product: string;
@@ -21,4 +21,4 @@ export interface ThumbnailError {
   hint: string;
 }
 
-export interface ThumbnailResolveResponse extends ThumbnailResult, Partial<ThumbnailError> {}
+export type ThumbnailResolveResponse = ThumbnailResult | ThumbnailError;
