@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 const MAP_SRC = 'https://maps.google.com/maps?q=Malang%2C%20Jawa%20Timur%2C%20Indonesia&z=12&output=embed&hl=id'
+const GOOGLE_MAPS_LINK = 'https://maps.app.goo.gl/2Ga3N9ov1Zpyiqq59'
 
 export default function DeferredWarehouseMap() {
   const [ready, setReady] = useState(false)
@@ -47,7 +48,7 @@ export default function DeferredWarehouseMap() {
           <span aria-hidden="true">◷</span>
           <strong>Senin—Sabtu <b>08.00—17.00 WIB</b></strong>
         </div>
-        <a className="r2-hp-final-footer-location-link" href="https://maps.google.com/?q=Malang%2C%20Jawa%20Timur%2C%20Indonesia" target="_blank" rel="noreferrer">
+        <a className="r2-hp-final-footer-location-link" href={GOOGLE_MAPS_LINK} target="_blank" rel="noreferrer">
           BUKA GOOGLE MAPS ↗
         </a>
       </div>
@@ -79,7 +80,7 @@ export default function DeferredWarehouseMap() {
           )}
           <a
             className="r2-hp-final-footer-map-open"
-            href="https://maps.google.com/?q=Malang%2C%20Jawa%20Timur%2C%20Indonesia"
+            href={GOOGLE_MAPS_LINK}
             target="_blank"
             rel="noreferrer"
           >
