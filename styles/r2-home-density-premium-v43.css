@@ -1,0 +1,80 @@
+/* R2 NUSANTARA — homepage density & premium composition v43
+   Presentation-only layer. No data, API, navigation, checkout, or integration changes. */
+
+.r2-hp-final{background:#f5f8fc!important}
+.r2-hp-final-hero{min-height:clamp(500px,64vh,680px)!important;padding:clamp(48px,6vw,78px) clamp(18px,4vw,48px)!important}
+.r2-hp-final-section{padding-top:clamp(42px,5vw,68px)!important;padding-bottom:clamp(42px,5vw,68px)!important}
+.r2-hp-final-stats{min-height:82px!important;padding:14px clamp(16px,3vw,36px)!important}
+.r2-hp-final-stats>div{gap:0!important}
+.r2-hp-final-head{gap:14px!important;margin-bottom:18px!important}
+.r2-hp-final-head h2{margin:0!important}
+.r2-hp-final-head p{margin:0!important;max-width:720px!important}
+.r2-hp-final-benefits{gap:10px!important}
+.r2-hp-final-benefits article{padding:18px!important;border-radius:16px!important;min-height:0!important;box-shadow:0 8px 24px rgba(7,29,73,.07)!important}
+.r2-hp-final-benefits article p{margin-top:7px!important}
+.r2-hp-final-categories{gap:10px!important}
+.r2-hp-final-category{border-radius:16px!important;box-shadow:0 8px 22px rgba(7,29,73,.07)!important}
+.r2-hp-final-category>div{padding:12px!important;gap:6px!important}
+.r2-hp-final-products{gap:10px!important}
+.r2-hp-final-products article{border-radius:16px!important;box-shadow:0 8px 24px rgba(7,29,73,.07)!important}
+.r2-hp-final-products article>*{min-width:0}
+.r2-hp-final-distributor{margin:42px auto!important;padding:38px clamp(20px,4vw,48px)!important;border-radius:24px!important;box-shadow:0 22px 55px rgba(7,26,53,.18)!important}
+.r2-hp-final-faq{gap:7px!important}
+.r2-hp-final-faq>article,.r2-hp-final-faq>details{border-radius:13px!important}
+.r2-hp-final-location{padding-top:42px!important;padding-bottom:42px!important;gap:24px!important}
+.r2-hp-final-map-wrap,.r2-hp-final-map-placeholder{min-height:280px!important}
+.r2-hp-final-footer{padding-top:44px!important}
+.r2-hp-final-footer-grid{gap:26px!important;row-gap:24px!important}
+.r2-hp-final-footer-bottom{margin-top:24px!important;padding-top:18px!important;min-height:48px!important}
+
+/* Give adjacent content visual continuity instead of large white gaps. */
+.r2-hp-final-section:nth-of-type(odd){background:linear-gradient(180deg,#f8fbff 0%,#f3f7fc 100%)!important}
+.r2-hp-final-section:nth-of-type(even){background:#f5f8fc!important}
+.r2-hp-final-benefits article,.r2-hp-final-category,.r2-hp-final-products article,.r2-hp-final-faq>article,.r2-hp-final-faq>details{border:1px solid rgba(180,199,222,.55)!important;background:rgba(255,255,255,.92)!important}
+
+/* Compact section labels create a more information-dense enterprise rhythm. */
+.r2-hp-final-head small,.r2-hp-final-head .eyebrow{letter-spacing:.16em!important;margin-bottom:3px!important}
+.r2-hp-final-head h2{font-size:clamp(22px,3vw,34px)!important;line-height:1.08!important}
+.r2-hp-final-head p{font-size:12px!important;line-height:1.55!important;color:#66788e!important}
+
+/* Hero remains dominant, but the content stack is tighter. */
+.r2-hp-final-hero .r2-hp-final-copy{max-width:650px!important}
+.r2-hp-final-hero .r2-hp-final-copy p{max-width:600px!important;line-height:1.55!important}
+.r2-hp-final-hero .r2-hp-final-actions{gap:9px!important;margin-top:18px!important}
+
+/* Courier insertion is treated as an integrated commerce module, not an isolated white block. */
+.r2-courier-partners{margin:0 auto!important;padding:36px clamp(16px,4vw,48px)!important;background:linear-gradient(180deg,#eef4fb 0%,#f7faff 100%)!important;border-top:1px solid #dbe6f2!important;border-bottom:1px solid #dbe6f2!important}
+.r2-courier-partners>div{max-width:1180px!important;margin:0 auto!important}
+.r2-courier-partners h2{margin-bottom:7px!important}
+.r2-courier-partners p{margin-bottom:18px!important}
+
+@media(max-width:767px){
+ .r2-hp-final-hero{min-height:500px!important;padding:42px 18px!important}
+ .r2-hp-final-section{padding-top:38px!important;padding-bottom:38px!important}
+ .r2-hp-final-stats{min-height:72px!important;padding:11px 14px!important}
+ .r2-hp-final-head{margin-bottom:15px!important;gap:10px!important}
+ .r2-hp-final-head h2{font-size:23px!important}
+ .r2-hp-final-benefits{gap:8px!important}
+ .r2-hp-final-benefits article{padding:15px!important;border-radius:14px!important}
+ .r2-hp-final-categories{gap:8px!important}
+ .r2-hp-final-category{border-radius:14px!important}
+ .r2-hp-final-category>div{padding:10px!important}
+ .r2-hp-final-products{gap:8px!important}
+ .r2-hp-final-products article{border-radius:14px!important}
+ .r2-hp-final-distributor{margin:34px 14px!important;padding:30px 18px!important;border-radius:20px!important}
+ .r2-hp-final-location{padding-top:36px!important;padding-bottom:36px!important;gap:18px!important}
+ .r2-hp-final-map-wrap,.r2-hp-final-map,.r2-hp-final-map-placeholder{min-height:250px!important}
+ .r2-hp-final-footer{padding-top:36px!important}
+ .r2-hp-final-footer-grid{gap:22px!important}
+ .r2-courier-partners{padding:30px 14px!important}
+}
+
+@media(max-width:380px){
+ .r2-hp-final-section{padding-top:32px!important;padding-bottom:32px!important}
+ .r2-hp-final-head h2{font-size:21px!important}
+ .r2-hp-final-distributor{margin:28px 10px!important;padding:26px 15px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+ .r2-hp-final *,.r2-courier-partners *{scroll-behavior:auto!important}
+}
