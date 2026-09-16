@@ -12,11 +12,22 @@ interface ProductThumbnailProps {
 
 const SAFE_FALLBACK = '/images/thumbnails/cigarette-pack-fallback.svg';
 
+function canUseNextImageOptimization(url: string): boolean {
+  if (!url) return false;
+  if (url.startsWith('/')) return true;
+  try {
+    return new URL(url).hostname === 'commons.wikimedia.org';
+  } catch {
+    return false;
+  }
+}
+
 export default function ProductThumbnail({ name, sourceUrl, size = 160, className }: ProductThumbnailProps): JSX.Element {
   const thumbnail = useThumbnail(name, sourceUrl);
   const [imageError, setImageError] = useState(false);
   const style: CSSProperties = { width: size, height: size, objectFit: 'contain' };
   const showFallback = imageError || thumbnail.source === 'cigarette-fallback';
+  const optimized = canUseNextImageOptimization(thumbnail.url);
 
   return (
     <div className={className} aria-label={`Gambar produk ${name}`} style={{ position: 'relative', width: size, height: size, display: 'grid', placeItems: 'center' }}>
@@ -25,7 +36,7 @@ export default function ProductThumbnail({ name, sourceUrl, size = 160, classNam
       ) : showFallback ? (
         <Image src={SAFE_FALLBACK} alt={`Visual rokok ${name}`} width={size} height={size} style={style} unoptimized />
       ) : (
-        <Image src={thumbnail.url} alt={name} width={size} height={size} style={style} unoptimized onError={() => setImageError(true)} />
+        <Image src={thumbnail.url} alt={name} width={size} height={size} style={style} unoptimized={!optimized} onError={() => setImageError(true)} />
       )}
     </div>
   );
