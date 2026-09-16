@@ -34,3 +34,12 @@
 @media(max-width:767px){.r2-home-header__wordmark strong{font-size:10px!important;gap:5px!important}.r2-home-header__wordmark strong::after{width:14px!important;height:14px!important;flex-basis:14px!important;font-size:9px!important}.r2-hp-final-brand strong{grid-template-columns:max-content 15px!important;column-gap:5px!important}.r2-hp-final-brand strong::after{width:15px!important;height:15px!important;flex-basis:15px!important;font-size:9px!important}}
 @media(max-width:380px){.r2-home-header__wordmark small{display:none!important}.r2-home-header__verified{display:none!important}.r2-home-header__wordmark strong::after{display:inline-grid!important}.r2-hp-final-brand strong{grid-template-columns:max-content 15px!important}}
 @media(prefers-reduced-motion:reduce){.r2-home-header__wordmark strong::after,.r2-hp-final-brand strong::after{animation:none!important;transition:none!important}}
+
+/* V50 — single verification mark policy: header + footer only. Hero and feature-card checks are neutralized. */
+.r2-hp-final-proof span:first-child svg{display:none!important}
+.r2-hp-final-proof span:first-child::before{content:"LIVE";display:inline-block!important;margin-right:5px!important;font-size:8px!important;font-weight:950!important;letter-spacing:.10em!important;color:#8A96A8!important}
+.r2-hp-final-benefits article:first-child>div svg{display:none!important}
+.r2-hp-final-benefits article:first-child>div::before{content:"LIVE";display:grid!important;place-items:center!important;width:19px!important;height:19px!important;border-radius:50%!important;background:#8A96A8!important;color:#0F3D6E!important;font-size:6px!important;font-weight:950!important;letter-spacing:.02em!important}
+/* Auth brand is a separate account surface, not a verification surface; remove its duplicate check. */
+.account-brand .verified{display:none!important}
+@media(max-width:767px){.r2-hp-final-proof span:first-child::before{font-size:7px!important}.r2-hp-final-benefits article:first-child>div::before{width:18px!important;height:18px!important;font-size:5.5px!important}}
