@@ -86,7 +86,7 @@ export default function CourierPartners() {
             <article className="r2-home-courier__card" key={partner.name} aria-label={`${partner.name}, slide ${i + 1} dari ${partners.length}`}>
               <div className="r2-home-courier__frame">
                 <div className="r2-home-courier__frame-glow" aria-hidden="true" />
-                <img src={`${ASSET}${partner.file}`} alt={`Logo ${partner.name}`} width="180" height="64" loading="lazy" decoding="async" />
+                <img src={`${ASSET}${partner.file}`} alt={`Logo ${partner.name}`} width="180" height="64" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.visibility = 'hidden' }} />
               </div>
               <div className="r2-home-courier__copy">
                 <div><span>OFFICIAL PARTNER</span><strong>{partner.name}</strong></div>
