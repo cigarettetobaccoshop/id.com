@@ -8,6 +8,16 @@ const money = (value) => Number.isFinite(Number(value))
   ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(value))
   : 'Harga belum tersedia';
 
+const professionalVariant = (product) => {
+  const option = text(product?.['Option1 Value']);
+  const type = text(product?.Type);
+  const normalized = option.toLowerCase().replace(/[_-]+/g, ' ').trim();
+  if (!option || normalized === 'default' || normalized === 'default title') {
+    return type && !['default', 'default title'].includes(type.toLowerCase().trim()) ? type : 'GROSIR';
+  }
+  return option;
+};
+
 export default function ProductCard({
   product,
   quantity = 0,
@@ -20,7 +30,7 @@ export default function ProductCard({
   const title = text(product?.Title || product?.Handle || 'Produk R2 NUSANTARA');
   const price = Number(product?.['Variant Price'] || 0);
   const inventory = stock(product?.['Variant Inventory Qty']);
-  const variant = text(product?.['Option1 Value'] || product?.Type || 'GROSIR');
+  const variant = professionalVariant(product);
   const sku = text(product?.['Variant SKU']);
   const isResmi = /^resmi-/i.test(sku);
   const sourceUrl = text(product?.thumbnail_url || product?.image_url || product?.source_url);
@@ -28,7 +38,7 @@ export default function ProductCard({
   return (
     <article className={styles.card} data-catalog={isResmi ? 'resmi' : 'r2'}>
       <div className={styles.media}>
-        <div className={`${styles.productVisual} ${styles[`tone${index % 4}`]}`}>
+        <div className={`${styles.productVisual} ${styles[`tone${index % 4]}`}>
           <ProductThumbnail name={title} sourceUrl={sourceUrl || undefined} size={190} className={styles.thumbnail} />
         </div>
         <span className={`${styles.stockBadge} ${inventory ? '' : styles.out}`}>{inventory ? 'READY STOCK' : 'STOK HABIS'}</span>
@@ -39,8 +49,8 @@ export default function ProductCard({
 
       <div className={styles.body}>
         <h2>{title}</h2>
-        <div className={styles.rating} aria-label={`Variant ${variant}`}>
-          <span aria-hidden="true">VARIANT</span><b>{variant}</b>{sku && <small>SKU {sku}</small>}
+        <div className={styles.rating} aria-label={`Varian ${variant}`}>
+          <span aria-hidden="true">VARIAN</span><b>{variant}</b>{sku && <small>SKU {sku}</small>}
         </div>
         <div className={styles.priceRow}>
           <strong>{money(price)}</strong>
