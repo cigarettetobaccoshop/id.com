@@ -1,1 +1,4 @@
-.src-hero-copy .src-type-em em{text-transform:capitalize!important}
+/* Deprecated compatibility placeholder.
+   The former .src-* typography selector has no active consumer in the current Next.js homepage.
+   Intentionally empty to preserve the existing global import without shipping dead rules.
+*/
