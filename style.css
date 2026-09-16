@@ -27,7 +27,27 @@ section[id] { scroll-margin-top: 96px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-gold); }
 ::selection { background: rgba(138,150,168,.25); color: var(--color-accent); }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html { scroll-behavior: auto !important; }
+  .marquee-track,
+  .watermark-float,
+  .hero-blob,
+  .float-chip,
+  .logo-frame::before,
+  .logo-orbit,
+  .logo-pulse,
+  .stat-band { animation: none !important; }
+  .fade-on-scroll,
+  .card-enter,
+  .hero-trust { opacity: 1 !important; transform: none !important; filter: none !important; }
+}
 
 /* ============= LOADER (sinkron loader-bg.jpg) ============= */
 .loader-screen { background: radial-gradient(1200px 600px at 20% 10%, rgba(138,150,168,.18), transparent 60%), radial-gradient(900px 500px at 85% 85%, rgba(30,95,168,.2), transparent 60%), #0b1220; }
