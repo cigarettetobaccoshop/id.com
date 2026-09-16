@@ -28,6 +28,7 @@ export default function ProductThumbnail({ name, sourceUrl, size = 160, classNam
   const style: CSSProperties = { width: size, height: size, objectFit: 'contain' };
   const showFallback = imageError || thumbnail.source === 'cigarette-fallback';
   const optimized = canUseNextImageOptimization(thumbnail.url);
+  const imageSizes = size <= 190 ? '(max-width: 639px) 45vw, 190px' : `${size}px`;
 
   return (
     <div className={className} aria-label={`Gambar produk ${name}`} style={{ position: 'relative', width: size, height: size, display: 'grid', placeItems: 'center' }}>
@@ -36,7 +37,7 @@ export default function ProductThumbnail({ name, sourceUrl, size = 160, classNam
       ) : showFallback ? (
         <Image src={SAFE_FALLBACK} alt={`Visual rokok ${name}`} width={size} height={size} style={style} unoptimized />
       ) : (
-        <Image src={thumbnail.url} alt={name} width={size} height={size} style={style} unoptimized={!optimized} onError={() => setImageError(true)} />
+        <Image src={thumbnail.url} alt={name} width={size} height={size} sizes={imageSizes} loading="lazy" decoding="async" style={style} unoptimized={!optimized} onError={() => setImageError(true)} />
       )}
     </div>
   );
