@@ -46,3 +46,19 @@
 @media(max-width:767px){
   .r2-hp-final-footer-grid>div:nth-child(2)>a,.r2-hp-final-footer-grid>div:nth-child(2)::after{min-width:0!important;width:100%!important}
 }
+
+/* V46 — locked Corporate Blue + Silver palette; additive visual refinement. */
+.r2-hp-final{--navy:#0F3D6E!important;--blue:#0F3D6E!important;--gold:#8A96A8!important}
+.r2-hp-final .r2-hp-final-copy h1 em,.r2-hp-final .r2-hp-final-head h2 em,.r2-hp-final .r2-hp-final-distributor h2 em,.r2-hp-final .r2-hp-final-location h2 em{color:#8A96A8!important}
+.r2-hp-final-hero{background:#0F3D6E!important}
+.r2-hp-final-hero-bg{background:linear-gradient(90deg,rgba(15,61,110,.98),rgba(15,61,110,.90) 45%,rgba(15,61,110,.72)),url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1800&q=84') center/cover!important}
+.r2-hp-final-product-visual{border-color:rgba(138,150,168,.48)!important}
+.r2-hp-final-product-visual>div{background:rgba(15,61,110,.92)!important}
+.r2-hp-final-distributor{background:linear-gradient(135deg,#0F3D6E,#174f88)!important}
+.r2-hp-final-distributor a{background:#8A96A8!important;color:#102b49!important}
+.r2-hp-final-distributor .r2-hp-final-points b{color:#8A96A8!important}
+.r2-hp-final-footer{background:#0F3D6E!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>b::before,.r2-hp-final-footer-grid>div:nth-child(3)>b::before{color:#8A96A8!important}
+.r2-home-header__logo-ring{background:conic-gradient(from 0deg,#0F3D6E,#5eb6ff,#8A96A8,#0F3D6E)!important}
+.r2-home-header__nav a.is-active:after{background:linear-gradient(90deg,#0F3D6E,#8A96A8)!important}
+@media(prefers-reduced-motion:reduce){.r2-hp-final *{scroll-behavior:auto!important;transition:none!important}.r2-home-header__logo-ring{animation:none!important}}
