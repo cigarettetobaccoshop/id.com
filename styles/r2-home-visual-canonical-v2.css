@@ -1,0 +1,75 @@
+/* R2 NUSANTARA — Homepage visual canonical cleanup v2
+   Presentation-only. Keeps the existing brand system while enforcing one badge policy.
+
+   HOMEPAGE VERIFIED BADGE CONTRACT:
+   1) Header: blue verified badge.
+   2) Footer: blue verified badge.
+   No blue verification/check badge is allowed in Hero, benefits, catalog cards, FAQ, or other homepage sections.
+*/
+
+/* Remove verification-shaped Lucide icons from every homepage surface except the dedicated header/footer marks. */
+.r2-hp-final .lucide-badge-check,
+.r2-hp-final .lucide-shield-check{
+  display:none!important;
+}
+
+/* Preserve the original icon slot rhythm without leaving an empty verification shape. */
+.r2-hp-final .r2-hp-final-proof > span:first-child,
+.r2-hp-final .r2-hp-final-benefits article:first-child > div,
+.r2-hp-final .r2-hp-final-benefits article:nth-child(4) > div{
+  min-width:19px;
+}
+
+.r2-hp-final .r2-hp-final-proof > span:first-child::before,
+.r2-hp-final .r2-hp-final-benefits article:first-child > div::before,
+.r2-hp-final .r2-hp-final-benefits article:nth-child(4) > div::before{
+  content:"";
+  width:7px;
+  height:7px;
+  flex:0 0 7px;
+  display:block;
+  border-radius:50%;
+  background:currentColor;
+  opacity:.72;
+}
+
+/* Footer owns the second and final blue verification mark. */
+.r2-hp-final .r2-hp-final-brand{
+  position:relative!important;
+}
+
+.r2-hp-final .r2-hp-final-brand strong{
+  position:relative!important;
+  padding-right:22px!important;
+}
+
+.r2-hp-final .r2-hp-final-brand strong::after{
+  content:"✓";
+  position:absolute;
+  right:0;
+  top:-1px;
+  width:15px;
+  height:15px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#1d9bf0;
+  color:#fff;
+  font-family:Inter,ui-sans-serif,system-ui,sans-serif;
+  font-size:9px;
+  font-weight:900;
+  line-height:1;
+  box-shadow:0 2px 7px rgba(29,155,240,.24);
+}
+
+@media(max-width:380px){
+  .r2-hp-final .r2-hp-final-brand strong::after{
+    width:14px;
+    height:14px;
+    font-size:8px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .r2-hp-final .r2-hp-final-brand strong::after{box-shadow:none}
+}
