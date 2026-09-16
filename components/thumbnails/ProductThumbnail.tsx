@@ -1,44 +1,40 @@
 import Image from 'next/image';
-import { useState } from 'react';
-import type { CSSProperties } from 'react';
-import { useThumbnail } from '../../hooks/thumbnails/useThumbnail';
 
 interface ProductThumbnailProps {
   name: string;
   sourceUrl?: string;
+  catalogLabel?: 'R2' | 'Resmi';
   size?: number;
   className?: string;
 }
 
-const SAFE_FALLBACK = '/images/thumbnails/cigarette-pack-fallback.svg';
+const PACK_ASSETS = {
+  R2: '/images/thumbnails/r2-pack-grayscale.svg',
+  Resmi: '/images/thumbnails/resmi-pack-grayscale.svg',
+};
 
-function canUseNextImageOptimization(url: string): boolean {
-  if (!url) return false;
-  if (url.startsWith('/')) return true;
-  try {
-    return new URL(url).hostname === 'commons.wikimedia.org';
-  } catch {
-    return false;
-  }
-}
-
-export default function ProductThumbnail({ name, sourceUrl, size = 160, className }: ProductThumbnailProps): JSX.Element {
-  const thumbnail = useThumbnail(name, sourceUrl);
-  const [imageError, setImageError] = useState(false);
-  const style: CSSProperties = { width: size, height: size, objectFit: 'contain' };
-  const showFallback = imageError || thumbnail.source === 'cigarette-fallback';
-  const optimized = canUseNextImageOptimization(thumbnail.url);
+export default function ProductThumbnail({ name, catalogLabel = 'R2', size = 160, className }: ProductThumbnailProps): JSX.Element {
+  const label = catalogLabel === 'Resmi' ? 'Resmi' : 'R2';
+  const src = PACK_ASSETS[label];
   const imageSizes = size <= 190 ? '(max-width: 639px) 45vw, 190px' : `${size}px`;
 
   return (
-    <div className={className} aria-label={`Gambar produk ${name}`} style={{ position: 'relative', width: size, height: size, display: 'grid', placeItems: 'center' }}>
-      {thumbnail.loading ? (
-        <div aria-hidden="true" style={{ ...style, borderRadius: 12, background: 'linear-gradient(90deg,#e5e7eb,#f8fafc,#e5e7eb)' }} />
-      ) : showFallback ? (
-        <Image src={SAFE_FALLBACK} alt={`Visual rokok ${name}`} width={size} height={size} style={style} unoptimized />
-      ) : (
-        <Image src={thumbnail.url} alt={name} width={size} height={size} sizes={imageSizes} loading="lazy" decoding="async" style={style} unoptimized={!optimized} onError={() => setImageError(true)} />
-      )}
+    <div
+      className={className}
+      aria-label={`Thumbnail katalog ${label} untuk ${name}`}
+      style={{ position: 'relative', width: size, height: size, display: 'grid', placeItems: 'center' }}
+    >
+      <Image
+        src={src}
+        alt={`Visual kemasan ${label} — ${name}`}
+        width={size}
+        height={size}
+        sizes={imageSizes}
+        loading="lazy"
+        decoding="async"
+        unoptimized
+        style={{ width: size, height: size, objectFit: 'contain' }}
+      />
     </div>
   );
 }
