@@ -1,13 +1,30 @@
 /* R2 NUSANTARA — Homepage verification badge cleanup
-   Visual-only layer. Keep exactly two blue verification marks on homepage:
+   Visual-only layer. EXACTLY two blue verification marks may be visible on homepage:
    1) Header brand mark
    2) Footer brand mark
-   Remove the hero's blue verification-style check from the visible proof row.
+   All other check/badge icons are neutralized so they are not mistaken for verification.
 */
 
 /* Hero: DATA LIVE is a status label, not a verification badge. */
 .r2-hp-final .r2-hp-final-proof > span:first-child svg{
   display:none!important;
+}
+
+/* Benefits: remove BadgeCheck/ShieldCheck visuals from the verification count. */
+.r2-hp-final .r2-hp-final-benefits article:first-child > div svg,
+.r2-hp-final .r2-hp-final-benefits article:nth-child(4) > div svg{
+  display:none!important;
+}
+
+.r2-hp-final .r2-hp-final-benefits article:first-child > div::before,
+.r2-hp-final .r2-hp-final-benefits article:nth-child(4) > div::before{
+  content:"";
+  width:19px;
+  height:19px;
+  display:block;
+  border:2px solid currentColor;
+  border-radius:6px;
+  opacity:.9;
 }
 
 /* Footer: single blue verified mark beside the brand wordmark. */
