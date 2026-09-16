@@ -1,104 +1,17 @@
-/* R2 NUSANTARA — homepage-only precision pass v42. Presentation layer only. */
-.r2-hp-final .r2-hp-final-copy::before{content:"";display:block;width:58px;height:58px;margin:0 0 18px;border-radius:50%;background:linear-gradient(#071a35,#071a35) padding-box,conic-gradient(from 0deg,#1da1f2,#0a66c2,#d8b36c,#1da1f2) border-box;border:2px solid transparent;box-shadow:0 0 0 5px rgba(29,161,242,.08),0 10px 28px rgba(0,0,0,.22),inset 0 0 0 4px rgba(255,255,255,.08);background-image:url('/assets/logo/logo.png'),linear-gradient(#071a35,#071a35),conic-gradient(from 0deg,#1da1f2,#0a66c2,#d8b36c,#1da1f2);background-size:46px 46px,100% 100%,100% 100%;background-position:center,center,center;background-repeat:no-repeat;animation:r2HomeHeroLogoOrbit 6s linear infinite}
-@keyframes r2HomeHeroLogoOrbit{to{transform:rotate(360deg)}}
-.r2-hp-final .r2-hp-final-copy h1{position:relative}
-.r2-hp-final .r2-hp-final-copy h1::after{content:"✓";display:inline-grid;place-items:center;vertical-align:middle;width:25px;height:25px;margin-left:9px;margin-bottom:7px;border-radius:50%;background:linear-gradient(135deg,#1da1f2,#0a66c2);color:#fff;font:900 14px/1 system-ui,sans-serif;letter-spacing:0;box-shadow:0 5px 14px rgba(10,102,194,.3);text-shadow:none}
-.r2-hp-final-product-visual{background:#0b3f95!important;background-image:none!important;border:1px solid rgba(216,179,108,.34)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 10px 24px rgba(7,29,73,.12)!important}
-.r2-hp-final-product-visual::before,.r2-hp-final-product-visual::after{display:none!important}
-.r2-hp-final-product-visual>span{font-size:8px!important;letter-spacing:.18em!important;color:#dcecff!important}
-.r2-hp-final-product-visual>div{border-color:rgba(255,255,255,.2)!important;background:rgba(255,255,255,.06)!important}
-.r2-hp-final-category>div{padding:16px!important;gap:8px!important}
-.r2-hp-final-category>div h3{margin-top:2px!important}
-.r2-hp-final-location{gap:clamp(28px,5vw,64px)!important}
-.r2-hp-final-map-wrap{overflow:hidden!important;border-radius:22px!important;border:1px solid #d8e3ef!important;box-shadow:0 16px 34px rgba(7,29,73,.12)!important;background:#eef3f8!important;min-height:320px!important}
-.r2-hp-final-map{display:block!important;width:100%!important;min-height:320px!important;border:0!important}
-.r2-hp-final-map-placeholder{display:flex!important;min-height:320px!important;width:100%!important;align-items:center!important;justify-content:center!important;flex-direction:column!important;gap:9px!important;border:0!important;background:linear-gradient(145deg,#eef5ff,#f8fafc)!important;color:#17395f!important;padding:24px!important}
-.r2-hp-final-map-placeholder span{font-size:9px!important;letter-spacing:.16em!important;font-weight:900!important;color:#0a66c2!important}
-.r2-hp-final-map-placeholder strong{font-size:22px!important;color:#0a1d36!important}
-.r2-hp-final-map-placeholder small{max-width:340px!important;text-align:center!important;color:#64758a!important;font-size:12px!important;line-height:1.5!important}
-.r2-hp-final-footer{border-top:1px solid rgba(216,227,239,.8)!important}
-.r2-hp-final-footer-grid{row-gap:32px!important}
-.r2-hp-final-footer-grid>div:first-child{min-width:0!important}
-.r2-hp-final-brand{position:relative!important}
-.r2-hp-final-brand strong{position:relative!important;padding-right:25px!important}
-.r2-hp-final-brand strong::before{content:"✓";position:absolute;right:0;top:0;width:19px;height:19px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#1da1f2,#0a66c2);color:#fff;font:900 11px/1 system-ui,sans-serif;box-shadow:0 4px 10px rgba(10,102,194,.22)}
-.r2-hp-final-footer-bottom{border-top:1px solid rgba(216,227,239,.28)!important;min-height:56px!important;font-size:12px!important;line-height:1.5!important}
-.r2-hp-final-footer-grid>div:nth-child(2),.r2-hp-final-footer-grid>div:nth-child(3){display:flex!important;flex-direction:column!important;gap:10px!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>b,.r2-hp-final-footer-grid>div:nth-child(3)>b{margin-bottom:5px!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a,.r2-hp-final-footer-grid>div:nth-child(3)>span{font-size:12px!important;line-height:1.55!important}
-.route-icon-nav{z-index:125!important}
-@media(max-width:767px){
-  .r2-hp-final .r2-hp-final-copy::before{width:50px;height:50px;background-size:40px 40px,100% 100%,100% 100%;margin-bottom:14px}
-  .r2-hp-final .r2-hp-final-copy h1::after{width:22px;height:22px;font-size:12px;margin-left:6px;margin-bottom:4px}
-  .r2-hp-final-footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:26px 20px!important}
-  .r2-hp-final-footer-grid>div:first-child{grid-column:1/-1}
-  .r2-hp-final-footer-bottom{align-items:flex-start!important}
-  .r2-hp-final-location{gap:24px!important}
-  .r2-hp-final-map-wrap,.r2-hp-final-map,.r2-hp-final-map-placeholder{min-height:280px!important}
-}
-@media(max-width:380px){
-  .r2-hp-final-footer-grid{grid-template-columns:1fr!important;gap:24px!important}
-  .r2-hp-final-footer-grid>div:first-child{grid-column:auto}
-  .r2-hp-final .r2-hp-final-copy h1::after{width:20px;height:20px;font-size:11px;margin-left:5px}
-  .r2-hp-final-map-wrap,.r2-hp-final-map,.r2-hp-final-map-placeholder{min-height:250px!important}
-}
-@media(min-width:768px){.r2-hp-final-footer-grid>div:nth-child(2),.r2-hp-final-footer-grid>div:nth-child(3){min-width:0}}
-@media(prefers-reduced-motion:reduce){.r2-hp-final .r2-hp-final-copy::before{animation:none!important}}
 
-/* FOOTER v43 — shipping reach + newsletter presentation, homepage scope only. */
-.r2-hp-final-footer-grid>div:nth-child(2)>b{font-size:0!important;letter-spacing:.14em!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>b::before{content:"JANGKAUAN PENGIRIMAN";font-size:10px!important;color:#e1bd78!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a{height:44px!important;min-width:116px!important;padding:0 14px!important;margin:0!important;border:1px solid rgba(143,180,221,.24)!important;border-radius:12px!important;background:rgba(255,255,255,.045)!important;color:#dce9f8!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;font-size:0!important;font-weight:800!important;letter-spacing:.02em!important;transition:transform .25s ease,border-color .25s ease,background .25s ease!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(1)::before{content:"Jawa";font-size:12px!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(2)::before{content:"Sumatera";font-size:12px!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(3)::before{content:"Kalimantan";font-size:12px!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(4)::before{content:"Sulawesi";font-size:12px!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(5)::before{content:"Bali & Nusra";font-size:12px!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a:hover{transform:translateY(-2px)!important;border-color:rgba(91,157,231,.55)!important;background:rgba(58,122,199,.12)!important}
-.r2-hp-final-footer-grid>div:nth-child(2){display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px 12px!important;align-content:start!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>b{grid-column:1/-1!important;margin-bottom:2px!important}
-.r2-hp-final-footer-grid>div:nth-child(2)::after{content:"Indonesia Timur";height:44px;min-width:116px;padding:0 14px;border:1px solid rgba(143,180,221,.24);border-radius:12px;background:rgba(255,255,255,.045);color:#dce9f8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;font-weight:800;grid-column:1/-1;justify-self:start;box-sizing:border-box}
-.r2-hp-final-footer-grid>div:nth-child(3){padding:0!important;gap:0!important;position:relative!important}
-.r2-hp-final-footer-grid>div:nth-child(3)>b{font-size:0!important;margin:0 0 14px!important}
-.r2-hp-final-footer-grid>div:nth-child(3)>b::before{content:"NEWSLETTER";font-size:10px!important;color:#e1bd78!important;letter-spacing:.14em!important}
-.r2-hp-final-footer-grid>div:nth-child(3)>span{display:none!important}
-.r2-hp-final-footer-grid>div:nth-child(3)::after{content:"Info Stok & Promo\A\AUpdate harga terbaru langsung ke email Anda.\A\Aemail@toko.com                         ➤";white-space:pre-wrap;display:block;min-height:178px;padding:22px 20px;border:1px solid rgba(143,180,221,.25);border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025));box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 18px 45px rgba(0,0,0,.12);color:#fff;font-size:13px;line-height:1.65;letter-spacing:0;box-sizing:border-box;overflow:hidden}
-.r2-hp-final-footer-grid>div:nth-child(3)::before{content:"";position:absolute;left:20px;right:20px;bottom:20px;height:52px;border:1px solid rgba(143,180,221,.28);border-radius:13px;background:rgba(255,255,255,.035);box-shadow:inset 0 1px 0 rgba(255,255,255,.035);pointer-events:none}
-.r2-hp-final-footer-grid>div:nth-child(3)::after{padding-bottom:78px}
-.r2-hp-final-footer-grid>div:nth-child(3)::marker{display:none}
-@media(max-width:767px){
- .r2-hp-final-footer-grid>div:nth-child(2)>a{min-width:0!important}
- .r2-hp-final-footer-grid>div:nth-child(2)::after{justify-self:stretch!important;grid-column:1/-1!important}
- .r2-hp-final-footer-grid>div:nth-child(3)::after{min-height:190px!important}
-}
-@media(max-width:380px){
- .r2-hp-final-footer-grid>div:nth-child(2){grid-template-columns:repeat(2,minmax(0,1fr))!important}
- .r2-hp-final-footer-grid>div:nth-child(2)>a,.r2-hp-final-footer-grid>div:nth-child(2)::after{min-width:0!important;width:100%!important}
-}
-
-/* FOOTER v44 — final shipping taxonomy + premium social presence. */
-.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(1)::before{content:"Sumatra"!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(2)::before{content:"Jawa"!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(3)::before{content:"Kalimantan"!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(4)::before{content:"Sulawesi"!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(5)::before{content:"Bali"!important}
-.r2-hp-final-footer-grid>div:nth-child(2)::after{content:"Nusa Tenggara"!important;grid-column:auto;justify-self:stretch!important;min-width:0!important}
-.r2-hp-final-footer-grid>div:nth-child(2){grid-template-columns:repeat(2,minmax(0,1fr))!important}
-.r2-hp-final-footer-grid>div:nth-child(3)>b::before{content:"SOCIAL MEDIA"!important}
-.r2-hp-final-footer-grid>div:nth-child(3)>span{display:flex!important;align-items:center!important;gap:12px!important;height:58px!important;margin:0 0 10px!important;padding:0 15px!important;border:1px solid rgba(143,180,221,.2)!important;border-radius:15px!important;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 12px 28px rgba(0,0,0,.1)!important;color:#dce9f8!important;font-size:0!important;font-weight:850!important;letter-spacing:.01em!important;position:relative!important;overflow:hidden!important}
-.r2-hp-final-footer-grid>div:nth-child(3)>span::before{content:"f";width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;border-radius:10px;background:linear-gradient(145deg,#1877f2,#0d5dcc);color:#fff;font:900 20px/1 Arial,sans-serif;box-shadow:0 8px 18px rgba(24,119,242,.28)!important}
-.r2-hp-final-footer-grid>div:nth-child(3)>span::after{content:"Facebook";font-size:11px!important;letter-spacing:.02em!important;color:#dce9f8!important}
-.r2-hp-final-footer-grid>div:nth-child(3)>span:nth-of-type(2)::before{content:"WA";background:linear-gradient(145deg,#25d366,#128c7e);font-size:10px!important;letter-spacing:-.04em;box-shadow:0 8px 18px rgba(37,211,102,.22)!important}
-.r2-hp-final-footer-grid>div:nth-child(3)>span:nth-of-type(2)::after{content:"WhatsApp Business"!important}
-.r2-hp-final-footer-grid>div:nth-child(3)>span:nth-of-type(n+3){display:none!important}
-.r2-hp-final-footer-grid>div:nth-child(3)::before{display:none!important}
-.r2-hp-final-footer-grid>div:nth-child(3)::after{display:none!important}
-@media(max-width:767px){
- .r2-hp-final-footer-grid>div:nth-child(2){grid-template-columns:repeat(2,minmax(0,1fr))!important}
- .r2-hp-final-footer-grid>div:nth-child(2)::after{grid-column:auto!important}
- .r2-hp-final-footer-grid>div:nth-child(3)>span{height:54px!important}
-}
-@media(max-width:380px){
- .r2-hp-final-footer-grid>div:nth-child(2){grid-template-columns:repeat(2,minmax(0,1fr))!important}
- .r2-hp-final-footer-grid>div:nth-child(2)>a,.r2-hp-final-footer-grid>div:nth-child(2)::after{width:100%!important}
-}
+/* V45 — locked Corporate Blue + Silver palette; additive override only. */
+.r2-hp-final{--navy:#0F3D6E!important;--blue:#0F3D6E!important;--gold:#8A96A8!important}
+.r2-hp-final .r2-hp-final-copy h1 em,.r2-hp-final .r2-hp-final-head h2 em,.r2-hp-final .r2-hp-final-distributor h2 em,.r2-hp-final .r2-hp-final-location h2 em{color:#8A96A8!important}
+.r2-hp-final-hero{background:#0F3D6E!important}
+.r2-hp-final-hero-bg{background:linear-gradient(90deg,rgba(15,61,110,.98),rgba(15,61,110,.9) 45%,rgba(15,61,110,.72)),url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1800&q=84') center/cover!important}
+.r2-hp-final-product-visual{border-color:rgba(138,150,168,.48)!important}
+.r2-hp-final-product-visual>div{background:rgba(15,61,110,.92)!important}
+.r2-hp-final-distributor{background:linear-gradient(135deg,#0F3D6E,#174f88)!important}
+.r2-hp-final-distributor a{background:#8A96A8!important;color:#102b49!important}
+.r2-hp-final-distributor .r2-hp-final-points b{color:#8A96A8!important}
+.r2-hp-final-footer{background:#0F3D6E!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>b::before,.r2-hp-final-footer-grid>div:nth-child(3)>b::before{color:#8A96A8!important}
+.r2-home-header__logo-ring{background:conic-gradient(from 0deg,#0F3D6E,#5eb6ff,#8A96A8,#0F3D6E)!important}
+.r2-home-header__nav a.is-active:after{background:linear-gradient(90deg,#0F3D6E,#8A96A8)!important}
+.r2-hp-final-footer-grid>div:first-child .r2-hp-final-brand>span{border-color:rgba(138,150,168,.72)!important;box-shadow:0 0 0 4px rgba(138,150,168,.08),0 10px 24px rgba(0,0,0,.18)!important}
+@media(prefers-reduced-motion:reduce){.r2-hp-final *{scroll-behavior:auto!important;transition:none!important}.r2-home-header__logo-ring{animation:none!important}}
