@@ -3,73 +3,29 @@
 
 /* Removed homepage showcases: keep catalog and product data intact, but remove these blocks from the visual composition. */
 .r2-hp-final > .r2-hp-final-section:has(.r2-hp-final-categories),
-.r2-hp-final > .r2-hp-final-section:has(.r2-hp-final-products){
-  display:none!important;
-}
-
-/* Final visual rhythm after showcase removal. */
-.r2-hp-final > .r2-hp-final-distributor{
-  margin-top:clamp(28px,4vw,48px)!important;
-}
-.r2-hp-final-section:has(.r2-hp-final-benefits){
-  border-top:1px solid rgba(180,199,222,.42)!important;
-}
-.r2-hp-final-section:has(.r2-hp-final-faq){
-  border-top:1px solid rgba(180,199,222,.42)!important;
-}
-
-/* Footer taxonomy: exactly six requested shipping regions. */
+.r2-hp-final > .r2-hp-final-section:has(.r2-hp-final-products){display:none!important;}
+.r2-hp-final > .r2-hp-final-distributor{margin-top:clamp(28px,4vw,48px)!important;}
+.r2-hp-final-section:has(.r2-hp-final-benefits),.r2-hp-final-section:has(.r2-hp-final-faq){border-top:1px solid rgba(180,199,222,.42)!important;}
 .r2-hp-final-footer-grid>div:nth-child(2)>b{font-size:0!important}
 .r2-hp-final-footer-grid>div:nth-child(2)>b::before{content:"JANGKAUAN PENGIRIMAN";font-size:10px!important;letter-spacing:.14em!important;color:#e1bd78!important}
 .r2-hp-final-footer-grid>div:nth-child(2){display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px 12px!important;align-content:start!important}
 .r2-hp-final-footer-grid>div:nth-child(2)>a{min-width:0!important;height:44px!important;margin:0!important;padding:0 12px!important;display:flex!important;align-items:center!important;justify-content:center!important;border:1px solid rgba(143,180,221,.24)!important;border-radius:12px!important;background:rgba(255,255,255,.045)!important;color:#dce9f8!important;font-size:0!important;font-weight:800!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(1)::before{content:"Sumatra";font-size:12px!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(2)::before{content:"Jawa";font-size:12px!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(3)::before{content:"Kalimantan";font-size:12px!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(4)::before{content:"Sulawesi";font-size:12px!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(5)::before{content:"Bali";font-size:12px!important}
+.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(1)::before{content:"Sumatra";font-size:12px!important}.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(2)::before{content:"Jawa";font-size:12px!important}.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(3)::before{content:"Kalimantan";font-size:12px!important}.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(4)::before{content:"Sulawesi";font-size:12px!important}.r2-hp-final-footer-grid>div:nth-child(2)>a:nth-of-type(5)::before{content:"Bali";font-size:12px!important}
 .r2-hp-final-footer-grid>div:nth-child(2)::after{content:"Nusa Tenggara";height:44px;min-width:0;padding:0 12px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(143,180,221,.24);border-radius:12px;background:rgba(255,255,255,.045);color:#dce9f8;font-size:12px;font-weight:800;box-sizing:border-box}
-
-/* Social cards: visual + keyboard affordance; existing interaction URLs remain unchanged. */
-.r2-hp-final-footer-grid>div:nth-child(3)>b{font-size:0!important}
-.r2-hp-final-footer-grid>div:nth-child(3)>b::before{content:"SOCIAL MEDIA";font-size:10px!important;letter-spacing:.14em!important;color:#e1bd78!important}
-.r2-hp-final-footer-grid>div:nth-child(3)>span{cursor:pointer!important;outline:none!important}
-.r2-hp-final-footer-grid>div:nth-child(3)>span:focus-visible{border-color:rgba(91,157,231,.8)!important;box-shadow:0 0 0 3px rgba(40,120,232,.18),0 12px 28px rgba(0,0,0,.1)!important}
-
-/* Clean, predictable motion and touch behavior. */
-.r2-hp-final a,.r2-hp-final button,.r2-hp-final [role="link"]{-webkit-tap-highlight-color:transparent}
-.r2-hp-final img{max-width:100%;height:auto}
-@media(prefers-reduced-motion:reduce){
-  .r2-hp-final [data-r2-reveal]{opacity:1!important;transform:none!important;transition:none!important}
-  .r2-hp-final .r2-hp-final-copy::before{animation:none!important}
-}
-@media(max-width:767px){
-  .r2-hp-final-footer-grid>div:nth-child(2)>a,.r2-hp-final-footer-grid>div:nth-child(2)::after{min-width:0!important;width:100%!important}
-}
-
-/* V46 — locked Corporate Blue + Silver palette; additive visual refinement. */
-.r2-hp-final{--navy:#0F3D6E!important;--blue:#0F3D6E!important;--gold:#8A96A8!important}
-.r2-hp-final .r2-hp-final-copy h1 em,.r2-hp-final .r2-hp-final-head h2 em,.r2-hp-final .r2-hp-final-distributor h2 em,.r2-hp-final .r2-hp-final-location h2 em{color:#8A96A8!important}
-.r2-hp-final-hero{background:#0F3D6E!important}
-.r2-hp-final-hero-bg{background:linear-gradient(90deg,rgba(15,61,110,.98),rgba(15,61,110,.90) 45%,rgba(15,61,110,.72)),url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1800&q=84') center/cover!important}
-.r2-hp-final-product-visual{border-color:rgba(138,150,168,.48)!important}
-.r2-hp-final-product-visual>div{background:rgba(15,61,110,.92)!important}
-.r2-hp-final-distributor{background:linear-gradient(135deg,#0F3D6E,#174f88)!important}
-.r2-hp-final-distributor a{background:#8A96A8!important;color:#102b49!important}
-.r2-hp-final-distributor .r2-hp-final-points b{color:#8A96A8!important}
-.r2-hp-final-footer{background:#0F3D6E!important}
-.r2-hp-final-footer-grid>div:nth-child(2)>b::before,.r2-hp-final-footer-grid>div:nth-child(3)>b::before{color:#8A96A8!important}
-.r2-home-header__logo-ring{background:conic-gradient(from 0deg,#0F3D6E,#5eb6ff,#8A96A8,#0F3D6E)!important}
-.r2-home-header__nav a.is-active:after{background:linear-gradient(90deg,#0F3D6E,#8A96A8)!important}
+.r2-hp-final-footer-grid>div:nth-child(3)>b{font-size:0!important}.r2-hp-final-footer-grid>div:nth-child(3)>b::before{content:"SOCIAL MEDIA";font-size:10px!important;letter-spacing:.14em!important;color:#e1bd78!important}.r2-hp-final-footer-grid>div:nth-child(3)>span{cursor:pointer!important;outline:none!important}.r2-hp-final-footer-grid>div:nth-child(3)>span:focus-visible{border-color:rgba(91,157,231,.8)!important;box-shadow:0 0 0 3px rgba(40,120,232,.18),0 12px 28px rgba(0,0,0,.1)!important}
+.r2-hp-final a,.r2-hp-final button,.r2-hp-final [role="link"]{-webkit-tap-highlight-color:transparent}.r2-hp-final img{max-width:100%;height:auto}
+@media(prefers-reduced-motion:reduce){.r2-hp-final [data-r2-reveal]{opacity:1!important;transform:none!important;transition:none!important}.r2-hp-final .r2-hp-final-copy::before{animation:none!important}}
+@media(max-width:767px){.r2-hp-final-footer-grid>div:nth-child(2)>a,.r2-hp-final-footer-grid>div:nth-child(2)::after{min-width:0!important;width:100%!important}}
+.r2-hp-final{--navy:#0F3D6E!important;--blue:#0F3D6E!important;--gold:#8A96A8!important}.r2-hp-final .r2-hp-final-copy h1 em,.r2-hp-final .r2-hp-final-head h2 em,.r2-hp-final .r2-hp-final-distributor h2 em,.r2-hp-final .r2-hp-final-location h2 em{color:#8A96A8!important}.r2-hp-final-hero{background:#0F3D6E!important}.r2-hp-final-hero-bg{background:linear-gradient(90deg,rgba(15,61,110,.98),rgba(15,61,110,.90) 45%,rgba(15,61,110,.72)),url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1800&q=84') center/cover!important}.r2-hp-final-product-visual{border-color:rgba(138,150,168,.48)!important}.r2-hp-final-product-visual>div{background:rgba(15,61,110,.92)!important}.r2-hp-final-distributor{background:linear-gradient(135deg,#0F3D6E,#174f88)!important}.r2-hp-final-distributor a{background:#8A96A8!important;color:#102b49!important}.r2-hp-final-distributor .r2-hp-final-points b{color:#8A96A8!important}.r2-hp-final-footer{background:#0F3D6E!important}.r2-hp-final-footer-grid>div:nth-child(2)>b::before,.r2-hp-final-footer-grid>div:nth-child(3)>b::before{color:#8A96A8!important}.r2-home-header__logo-ring{background:conic-gradient(from 0deg,#0F3D6E,#5eb6ff,#8A96A8,#0F3D6E)!important}.r2-home-header__nav a.is-active:after{background:linear-gradient(90deg,#0F3D6E,#8A96A8)!important}
 @media(prefers-reduced-motion:reduce){.r2-hp-final *{scroll-behavior:auto!important;transition:none!important}.r2-home-header__logo-ring{animation:none!important}}
-
-/* V47 — persistent modern blue verification marks for header + footer. */
-.r2-home-header__wordmark{position:relative!important;padding-right:24px!important}
-.r2-home-header__wordmark strong{display:inline-flex!important;align-items:center!important;gap:6px!important}
-.r2-home-header__wordmark strong::after{content:"✓";display:inline-grid;place-items:center;width:16px;height:16px;flex:0 0 16px;border-radius:50%;background:#1D9BF0;color:#fff;font-size:10px;line-height:1;font-weight:950;letter-spacing:0;box-shadow:0 2px 7px rgba(29,155,240,.30),inset 0 0 0 1px rgba(255,255,255,.24);-webkit-font-smoothing:antialiased}
-.r2-home-header__verified{display:none!important}
-.r2-hp-final-brand strong{position:relative!important;padding-right:24px!important;display:flex!important;flex-direction:column!important;gap:4px!important}
-.r2-hp-final-brand strong::after{content:"✓";position:absolute;top:0;right:0;display:grid;place-items:center;width:17px;height:17px;border-radius:50%;background:#1D9BF0;color:#fff;font-size:10px;line-height:1;font-weight:950;letter-spacing:0;box-shadow:0 2px 8px rgba(29,155,240,.32),inset 0 0 0 1px rgba(255,255,255,.25);-webkit-font-smoothing:antialiased}
-@media(max-width:767px){.r2-home-header__wordmark{padding-right:21px!important}.r2-home-header__wordmark strong{font-size:10px!important;gap:5px!important}.r2-home-header__wordmark strong::after{width:14px;height:14px;flex-basis:14px;font-size:9px}}
+.r2-home-header__wordmark{position:relative!important;padding-right:24px!important}.r2-home-header__wordmark strong{display:inline-flex!important;align-items:center!important;gap:6px!important}.r2-home-header__wordmark strong::after{content:"✓";display:inline-grid;place-items:center;width:16px;height:16px;flex:0 0 16px;border-radius:50%;background:#1D9BF0;color:#fff;font-size:10px;line-height:1;font-weight:950;box-shadow:0 2px 7px rgba(29,155,240,.30),inset 0 0 0 1px rgba(255,255,255,.24)}.r2-home-header__verified{display:none!important}
+@media(max-width:767px){.r2-home-header__wordmark{padding-right:21px!important}.r2-home-header__wordmark strong{font-size:10px!important;gap:5px!important}.r2-home-header__wordmark strong::after{width:14px;height:14px;flex-basis:14px;font-size:9px!important}}
 @media(max-width:380px){.r2-home-header__wordmark{padding-right:20px!important}.r2-home-header__wordmark small{display:none}.r2-home-header__verified{display:none!important}.r2-home-header__wordmark strong::after{display:inline-grid!important}}
-@media(prefers-reduced-motion:reduce){.r2-home-header__wordmark strong::after,.r2-hp-final-brand strong::after{transition:none!important;animation:none!important}}
+
+/* V48 — footer badge is part of the brand line, not a floating badge. */
+.r2-hp-final-brand{display:flex!important;align-items:center!important;gap:12px!important}
+.r2-hp-final-brand strong{display:inline-flex!important;flex-direction:row!important;align-items:center!important;flex-wrap:nowrap!important;gap:6px!important;position:relative!important;padding-right:0!important;line-height:1.1!important;white-space:nowrap!important}
+.r2-hp-final-brand strong::after{content:"✓";position:static!important;display:inline-grid!important;place-items:center!important;width:16px!important;height:16px!important;flex:0 0 16px!important;margin:0!important;border-radius:50%!important;background:#1D9BF0!important;color:#fff!important;font-size:10px!important;line-height:1!important;font-weight:950!important;box-shadow:0 2px 7px rgba(29,155,240,.28),inset 0 0 0 1px rgba(255,255,255,.24)!important;-webkit-font-smoothing:antialiased!important}
+.r2-hp-final-brand strong small{display:block!important;margin-left:0!important;font-size:7px!important;letter-spacing:.13em!important;opacity:.65!important}
+@media(max-width:767px){.r2-hp-final-brand strong{gap:5px!important}.r2-hp-final-brand strong::after{width:15px!important;height:15px!important;flex-basis:15px!important;font-size:9px!important}}
+@media(prefers-reduced-motion:reduce){.r2-home-header__wordmark strong::after,.r2-hp-final-brand strong::after{animation:none!important;transition:none!important}}
