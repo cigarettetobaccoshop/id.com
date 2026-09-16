@@ -52,15 +52,18 @@ import '../styles/r2-home-precision-v42.css'
 import '../styles/r2-home-hero-motion-final.css'
 import '../styles/r2-home-density-premium-v43.css'
 import '../styles/r2-home-final-qa-v45.css'
+import '../styles/r2-home-final-qa-v45.css'
+import '../styles/r2-home-final-qa-v45.css'
+import '../styles/r2-ai-chat.css'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Analytics } from '@vercel/analytics/next'
 import HomeHeader from '../components/homepage/HomeHeader'
+import R2AiChatWidget from '../components/R2AiChatWidget'
 
 const HomepageExperience = dynamic(() => import('../components/HomepageExperience'), { ssr: false })
-// Non-critical global UI/runtime is deferred until after hydration to reduce first-load JS contention.
 const RouteIconNav = dynamic(() => import('../components/RouteIconNav'), { ssr: false })
 const BrandAssetLoader = dynamic(() => import('../components/BrandAssetLoader'), { ssr: false })
 const ActivityMonitoringRuntime = dynamic(() => import('../components/monitoring/ActivityMonitoringRuntime'), { ssr: false })
@@ -96,5 +99,5 @@ export default function App({ Component, pageProps }) {
   const isAdminChrome=router.pathname==='/login'||router.pathname.startsWith('/admin')
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
-  return <>{isHome&&<HomeHeader/>}{!isHome&&router.pathname!=='/katalog'&&<BrandAssetLoader/>}<>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</>{mounted&&<>{!isAdminChrome&&<RouteIconNav/>}{!isAdminChrome&&<CheckoutPrompt/>}<GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>}</>
+  return <>{isHome&&<HomeHeader/>}{!isHome&&router.pathname!=='/katalog'&&<BrandAssetLoader/>}<>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</>{mounted&&<>{!isAdminChrome&&<RouteIconNav/>}{!isAdminChrome&&<CheckoutPrompt/>}{!isAdminChrome&&<R2AiChatWidget/>}<GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>}</>
 }
