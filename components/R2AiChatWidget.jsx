@@ -5,6 +5,26 @@ const initialMessage = {
   content: 'Halo Mas, saya R2 NUSANTARA Assistant. Saya bisa membantu mencari produk, mengecek stok, membantu alur pemesanan, dan mengecek status pesanan.'
 }
 
+function RobotIcon({ open = false }) {
+  return <span className="r2-ai-robot" aria-hidden="true">
+    <span className="r2-ai-robot-aura" />
+    <span className="r2-ai-robot-antenna"><b /></span>
+    <span className="r2-ai-robot-head">
+      <span className="r2-ai-robot-ear left" />
+      <span className="r2-ai-robot-ear right" />
+      <span className="r2-ai-robot-eye left" />
+      <span className="r2-ai-robot-eye right" />
+      <span className="r2-ai-robot-mouth" />
+      <span className="r2-ai-robot-cigarette"><i /></span>
+      <span className="r2-ai-robot-smoke smoke-1" />
+      <span className="r2-ai-robot-smoke smoke-2" />
+    </span>
+    <span className="r2-ai-robot-neck" />
+    <span className="r2-ai-robot-chest"><b>R2</b><i /></span>
+    <span className={`r2-ai-robot-status${open ? ' active' : ''}`} />
+  </span>
+}
+
 export default function R2AiChatWidget() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState(() => {
@@ -82,11 +102,12 @@ export default function R2AiChatWidget() {
 
   return <>
     <button className={`r2-ai-launcher${open ? ' is-open' : ''}`} type="button" aria-label={open ? 'Tutup R2 AI Assistant' : 'Buka R2 AI Assistant'} aria-expanded={open} onClick={() => setOpen((value) => !value)}>
-      <span aria-hidden="true">{open ? '×' : 'AI'}</span>
+      {open ? <span className="r2-ai-close">×</span> : <RobotIcon />}
+      {!open && <span className="r2-ai-label">AI</span>}
     </button>
     {open && <section className="r2-ai-panel" aria-label="R2 NUSANTARA AI Assistant">
       <header className="r2-ai-head">
-        <div><strong>R2 NUSANTARA</strong><small>AI Customer Service</small></div>
+        <div className="r2-ai-head-brand"><span className="r2-ai-head-avatar"><RobotIcon open /></span><span><strong>R2 NUSANTARA</strong><small>AI Customer Service • Online</small></span></div>
         <button type="button" onClick={() => setOpen(false)} aria-label="Tutup">×</button>
       </header>
       <div className="r2-ai-messages" aria-live="polite">
