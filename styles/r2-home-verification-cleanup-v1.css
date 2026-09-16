@@ -1,33 +1,41 @@
-/* R2 NUSANTARA — Homepage verification badge cleanup
-   Visual-only layer. EXACTLY two blue verification marks may be visible on homepage:
-   1) Header brand mark
-   2) Footer brand mark
-   All other check/badge icons are neutralized so they are not mistaken for verification.
+/* R2 NUSANTARA — Homepage verification badge cleanup v2
+   Canonical homepage badge policy:
+   - Header: exactly one blue verified badge.
+   - Footer: exactly one blue verified badge.
+   - Hero, benefits, catalog, FAQ and all other homepage sections: no verification badge/check.
+   Visual-only. No API, data, routing, cart, checkout or backend changes.
 */
 
-/* Hero: DATA LIVE is a status label, not a verification badge. */
-.r2-hp-final .r2-hp-final-proof > span:first-child svg{
-  display:none!important;
-}
-
-/* Benefits: remove BadgeCheck/ShieldCheck visuals from the verification count. */
+/* Robustly neutralize every verification-shaped Lucide icon inside the homepage content. */
+.r2-hp-final .lucide-badge-check,
+.r2-hp-final .lucide-shield-check,
+.r2-hp-final .r2-hp-final-proof > span:first-child svg,
 .r2-hp-final .r2-hp-final-benefits article:first-child > div svg,
 .r2-hp-final .r2-hp-final-benefits article:nth-child(4) > div svg{
   display:none!important;
 }
 
+/* Preserve the original visual rhythm with neutral status dots, not checkmarks. */
+.r2-hp-final .r2-hp-final-proof > span:first-child,
+.r2-hp-final .r2-hp-final-benefits article:first-child > div,
+.r2-hp-final .r2-hp-final-benefits article:nth-child(4) > div{
+  min-width:19px;
+}
+
+.r2-hp-final .r2-hp-final-proof > span:first-child::before,
 .r2-hp-final .r2-hp-final-benefits article:first-child > div::before,
 .r2-hp-final .r2-hp-final-benefits article:nth-child(4) > div::before{
   content:"";
-  width:19px;
-  height:19px;
+  width:7px;
+  height:7px;
+  flex:0 0 7px;
   display:block;
-  border:2px solid currentColor;
-  border-radius:6px;
-  opacity:.9;
+  border-radius:50%;
+  background:currentColor;
+  opacity:.72;
 }
 
-/* Footer: single blue verified mark beside the brand wordmark. */
+/* Footer owns the second and final blue verification mark. */
 .r2-hp-final .r2-hp-final-brand{
   position:relative!important;
 }
@@ -56,7 +64,7 @@
   box-shadow:0 2px 7px rgba(29,155,240,.24);
 }
 
-@media (max-width:380px){
+@media(max-width:380px){
   .r2-hp-final .r2-hp-final-brand strong::after{
     width:14px;
     height:14px;
@@ -64,6 +72,6 @@
   }
 }
 
-@media (prefers-reduced-motion:reduce){
+@media(prefers-reduced-motion:reduce){
   .r2-hp-final .r2-hp-final-brand strong::after{box-shadow:none}
 }
