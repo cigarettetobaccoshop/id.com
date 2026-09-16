@@ -57,12 +57,13 @@ import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Analytics } from '@vercel/analytics/next'
-import RouteIconNav from '../components/RouteIconNav'
-import BrandAssetLoader from '../components/BrandAssetLoader'
-import ActivityMonitoringRuntime from '../components/monitoring/ActivityMonitoringRuntime'
 import HomeHeader from '../components/homepage/HomeHeader'
 
 const HomepageExperience = dynamic(() => import('../components/HomepageExperience'), { ssr: false })
+// Non-critical global UI/runtime is deferred until after hydration to reduce first-load JS contention.
+const RouteIconNav = dynamic(() => import('../components/RouteIconNav'), { ssr: false })
+const BrandAssetLoader = dynamic(() => import('../components/BrandAssetLoader'), { ssr: false })
+const ActivityMonitoringRuntime = dynamic(() => import('../components/monitoring/ActivityMonitoringRuntime'), { ssr: false })
 
 function CheckoutPrompt() {
   const [count, setCount] = useState(0)
