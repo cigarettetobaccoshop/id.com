@@ -32,14 +32,15 @@ export default function ProductCard({
   const inventory = stock(product?.['Variant Inventory Qty']);
   const variant = professionalVariant(product);
   const sku = text(product?.['Variant SKU']);
-  const isResmi = /^resmi-/i.test(sku);
-  const sourceUrl = text(product?.thumbnail_url || product?.image_url || product?.source_url);
+  const catalog = text(product?.Catalog || product?.catalog);
+  const isResmi = /^resmi-/i.test(sku) || /^resmi$/i.test(catalog);
+  const catalogLabel = isResmi ? 'Resmi' : 'R2';
 
   return (
     <article className={styles.card} data-catalog={isResmi ? 'resmi' : 'r2'}>
       <div className={styles.media}>
-        <div className={`${styles.productVisual} ${styles[`tone${index % 4}`]}`}>
-          <ProductThumbnail name={title} sourceUrl={sourceUrl || undefined} size={190} className={styles.thumbnail} />
+        <div className={`${styles.productVisual} ${styles[`tone${index % 4]}`}>
+          <ProductThumbnail name={title} catalogLabel={catalogLabel} size={190} className={styles.thumbnail} />
         </div>
         <span className={`${styles.stockBadge} ${inventory ? '' : styles.out}`}>{inventory ? 'READY STOCK' : 'STOK HABIS'}</span>
         <button type="button" className={`${styles.favorite} ${favorite ? styles.active : ''}`} onClick={() => onFavorite?.(product)} aria-label={favorite ? `Hapus ${title} dari favorit` : `Tambah ${title} ke favorit`} aria-pressed={favorite}>
