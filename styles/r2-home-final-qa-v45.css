@@ -62,3 +62,14 @@
 .r2-home-header__logo-ring{background:conic-gradient(from 0deg,#0F3D6E,#5eb6ff,#8A96A8,#0F3D6E)!important}
 .r2-home-header__nav a.is-active:after{background:linear-gradient(90deg,#0F3D6E,#8A96A8)!important}
 @media(prefers-reduced-motion:reduce){.r2-hp-final *{scroll-behavior:auto!important;transition:none!important}.r2-home-header__logo-ring{animation:none!important}}
+
+/* V47 — persistent modern blue verification marks for header + footer. */
+.r2-home-header__wordmark{position:relative!important;padding-right:24px!important}
+.r2-home-header__wordmark strong{display:inline-flex!important;align-items:center!important;gap:6px!important}
+.r2-home-header__wordmark strong::after{content:"✓";display:inline-grid;place-items:center;width:16px;height:16px;flex:0 0 16px;border-radius:50%;background:#1D9BF0;color:#fff;font-size:10px;line-height:1;font-weight:950;letter-spacing:0;box-shadow:0 2px 7px rgba(29,155,240,.30),inset 0 0 0 1px rgba(255,255,255,.24);-webkit-font-smoothing:antialiased}
+.r2-home-header__verified{display:none!important}
+.r2-hp-final-brand strong{position:relative!important;padding-right:24px!important;display:flex!important;flex-direction:column!important;gap:4px!important}
+.r2-hp-final-brand strong::after{content:"✓";position:absolute;top:0;right:0;display:grid;place-items:center;width:17px;height:17px;border-radius:50%;background:#1D9BF0;color:#fff;font-size:10px;line-height:1;font-weight:950;letter-spacing:0;box-shadow:0 2px 8px rgba(29,155,240,.32),inset 0 0 0 1px rgba(255,255,255,.25);-webkit-font-smoothing:antialiased}
+@media(max-width:767px){.r2-home-header__wordmark{padding-right:21px!important}.r2-home-header__wordmark strong{font-size:10px!important;gap:5px!important}.r2-home-header__wordmark strong::after{width:14px;height:14px;flex-basis:14px;font-size:9px}}
+@media(max-width:380px){.r2-home-header__wordmark{padding-right:20px!important}.r2-home-header__wordmark small{display:none}.r2-home-header__verified{display:none!important}.r2-home-header__wordmark strong::after{display:inline-grid!important}}
+@media(prefers-reduced-motion:reduce){.r2-home-header__wordmark strong::after,.r2-hp-final-brand strong::after{transition:none!important;animation:none!important}}
