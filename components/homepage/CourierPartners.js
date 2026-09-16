@@ -1,12 +1,17 @@
+import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 
-const ASSET = '/assets/ekspedisi/'
+import jneLogo from '../../assets/ekspedisi/jne-express.png'
+import jntLogo from '../../assets/ekspedisi/j&t-express.png'
+import sicepatLogo from '../../assets/ekspedisi/sicepat-ekspres.png'
+import indahCargoLogo from '../../assets/ekspedisi/indah-cargo.png'
+
 const partners = [
-  { name: 'JNE Express', file: 'jne-express.png', note: 'Pengiriman reguler & nasional' },
-  { name: 'J&T Express', file: 'j&t-express.png', note: 'Jaringan pengiriman antarkota' },
-  { name: 'SiCepat Ekspres', file: 'sicepat-ekspres.png', note: 'Layanan ekspres & distribusi' },
-  { name: 'Indah Cargo', file: 'indah-cargo.png', note: 'Solusi kiriman volume & cargo' }
+  { name: 'JNE Express', src: jneLogo, note: 'Pengiriman reguler & nasional' },
+  { name: 'J&T Express', src: jntLogo, note: 'Jaringan pengiriman antarkota' },
+  { name: 'SiCepat Ekspres', src: sicepatLogo, note: 'Layanan ekspres & distribusi' },
+  { name: 'Indah Cargo', src: indahCargoLogo, note: 'Solusi kiriman volume & cargo' }
 ]
 
 export default function CourierPartners() {
@@ -86,7 +91,7 @@ export default function CourierPartners() {
             <article className="r2-home-courier__card" key={partner.name} aria-label={`${partner.name}, slide ${i + 1} dari ${partners.length}`}>
               <div className="r2-home-courier__frame">
                 <div className="r2-home-courier__frame-glow" aria-hidden="true" />
-                <img src={`${ASSET}${partner.file}`} alt={`Logo ${partner.name}`} width="180" height="64" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.style.visibility = 'hidden' }} />
+                <Image src={partner.src} alt={`Logo ${partner.name}`} width={180} height={64} loading="lazy" sizes="(max-width: 620px) 72vw, 35vw" />
               </div>
               <div className="r2-home-courier__copy">
                 <div><span>OFFICIAL PARTNER</span><strong>{partner.name}</strong></div>
