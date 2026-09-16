@@ -14,7 +14,7 @@ import '../styles/canva-layout-polish.css'
 import '../styles/mobile-locked-desktop.css'
 import '../styles/hero-header-final.css'
 import '../styles/preview-theme-final.css'
-import '../styles/index-header-system.css
+import '../styles/index-header-system.css'
 import '../styles/reference-visual-final.css'
 import '../styles/r2-blue-reference-ui.css'
 import '../styles/r2-reference-precision.css'
