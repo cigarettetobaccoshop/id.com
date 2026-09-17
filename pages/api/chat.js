@@ -62,20 +62,22 @@ function send(res, event, data) {
 
 function getProviders() {
   const providers = []
-  if (process.env.ANTHROPIC_API_KEY) {
-    providers.push({
-      name: 'anthropic',
-      endpoint: 'https://api.anthropic.com/v1/messages',
-      token: process.env.ANTHROPIC_API_KEY,
-      model: process.env.ANTHROPIC_MODEL || 'claude-3-5-haiku-latest',
-    })
-  }
+  // OpenRouter is intentionally first: the default route is zero-cost free inference.
   if (process.env.OPENROUTER_API_KEY) {
     providers.push({
       name: 'openrouter',
       endpoint: 'https://openrouter.ai/api/v1/chat/completions',
       token: process.env.OPENROUTER_API_KEY,
       model: process.env.OPENROUTER_MODEL || 'openrouter/free',
+    })
+  }
+  // Anthropic is opt-in only so the site cannot silently fall back to a paid provider.
+  if (process.env.ANTHROPIC_API_KEY && process.env.R2_AI_ALLOW_PAID_PROVIDER === 'true') {
+    providers.push({
+      name: 'anthropic',
+      endpoint: 'https://api.anthropic.com/v1/messages',
+      token: process.env.ANTHROPIC_API_KEY,
+      model: process.env.ANTHROPIC_MODEL || 'claude-3-5-haiku-latest',
     })
   }
   return providers
@@ -112,6 +114,7 @@ async function readSse(response, provider, res) {
   let currentTool = null
   let stopReason = null
   let text = ''
+  let emitted = false
 
   const handle = (raw) => {
     const dataLine = raw.split(/\r?\n/).find((line) => line.startsWith('data: '))
@@ -135,7 +138,10 @@ async function readSse(response, provider, res) {
         if (event.delta?.type === 'text_delta') {
           const part = event.delta.text || ''
           text += part
-          if (part) send(res, 'delta', { text: part })
+          if (part) {
+            emitted = true
+            send(res, 'delta', { text: part })
+          }
           const last = blocks[blocks.length - 1]
           if (last?.type === 'text') last.text += part
         }
@@ -151,6 +157,7 @@ async function readSse(response, provider, res) {
       const delta = choice?.delta
       const part = delta?.content || ''
       if (part) {
+        emitted = true
         text += part
         send(res, 'delta', { text: part })
       }
@@ -179,7 +186,7 @@ async function readSse(response, provider, res) {
   if (currentTool) {
     try { currentTool.input = currentTool.inputText ? JSON.parse(currentTool.inputText) : {} } catch { currentTool.input = {} }
   }
-  return { blocks, stopReason, text }
+  return { blocks, stopReason, text, emitted }
 }
 
 function anthropicMessages(messages) {
@@ -187,10 +194,7 @@ function anthropicMessages(messages) {
 }
 
 function openRouterMessages(messages) {
-  return messages.map((message) => {
-    if (typeof message.content === 'string') return message
-    return message
-  })
+  return messages.map((message) => message)
 }
 
 async function runProvider(provider, messages, res, requestId, toolRound = 0) {
@@ -217,7 +221,7 @@ async function runProvider(provider, messages, res, requestId, toolRound = 0) {
   const result = await readSse(response, provider, res)
   const toolUses = result.blocks.filter((block) => block.type === 'tool_use' && block.name)
   const wantsTools = provider.name === 'anthropic' ? result.stopReason === 'tool_use' : result.stopReason === 'tool_calls'
-  if (!wantsTools || !toolUses.length) return
+  if (!wantsTools || !toolUses.length) return { emitted: result.emitted }
 
   const toolResults = []
   for (const toolUse of toolUses) {
@@ -225,46 +229,43 @@ async function runProvider(provider, messages, res, requestId, toolRound = 0) {
     try {
       output = await executeAiTool(toolUse.name, toolUse.input || {})
     } catch (error) {
-      console.error(`[R2 AI] tool failed`, requestId, toolUse.name, error)
+      console.error('[R2 AI] tool failed', requestId, toolUse.name, error)
       output = { error: 'Tool tidak dapat dijalankan. Jangan menebak hasilnya.' }
     }
     toolResults.push({ toolUse, output })
   }
 
-  let nextMessages
-  if (provider.name === 'anthropic') {
-    nextMessages = [
-      ...messages,
-      { role: 'assistant', content: result.blocks.map((block) => block.type === 'text' ? { type: 'text', text: block.text } : { type: 'tool_use', id: block.id, name: block.name, input: block.input || {} }) },
-      { role: 'user', content: toolResults.map(({ toolUse, output }) => ({ type: 'tool_result', tool_use_id: toolUse.id, content: JSON.stringify(output).slice(0, 8000) })) },
-    ]
-  } else {
-    nextMessages = [
-      ...messages,
-      { role: 'assistant', content: result.text || null, tool_calls: toolUses.map((toolUse) => ({ id: toolUse.id, type: 'function', function: { name: toolUse.name, arguments: JSON.stringify(toolUse.input || {}) } })) },
-      ...toolResults.map(({ toolUse, output }) => ({ role: 'tool', tool_call_id: toolUse.id, content: JSON.stringify(output).slice(0, 8000) })),
-    ]
-  }
-  return runProvider(provider, nextMessages, res, requestId, toolRound + 1)
+  const nextMessages = provider.name === 'anthropic'
+    ? [
+        ...messages,
+        { role: 'assistant', content: result.blocks.map((block) => block.type === 'text' ? { type: 'text', text: block.text } : { type: 'tool_use', id: block.id, name: block.name, input: block.input || {} }) },
+        { role: 'user', content: toolResults.map(({ toolUse, output }) => ({ type: 'tool_result', tool_use_id: toolUse.id, content: JSON.stringify(output).slice(0, 8000) })) },
+      ]
+    : [
+        ...messages,
+        { role: 'assistant', content: result.text || null, tool_calls: toolUses.map((toolUse) => ({ id: toolUse.id, type: 'function', function: { name: toolUse.name, arguments: JSON.stringify(toolUse.input || {}) } })) },
+        ...toolResults.map(({ toolUse, output }) => ({ role: 'tool', tool_call_id: toolUse.id, content: JSON.stringify(output).slice(0, 8000) })),
+      ]
+
+  const next = await runProvider(provider, nextMessages, res, requestId, toolRound + 1)
+  return { emitted: result.emitted || next.emitted }
 }
 
 async function runWithFallback(messages, res, requestId) {
   const providers = getProviders()
-  if (!providers.length) throw new Error('Konfigurasi AI provider belum tersedia di server.')
+  if (!providers.length) throw new Error('FREE_AI_PROVIDER_NOT_CONFIGURED')
   let lastError
   for (const provider of providers) {
     try {
       console.info('[R2 AI] provider:start', requestId, provider.name, provider.model)
-      await runProvider(provider, messages, res, requestId)
+      const result = await runProvider(provider, messages, res, requestId)
       console.info('[R2 AI] provider:done', requestId, provider.name)
-      return
+      return result
     } catch (error) {
       lastError = error
       console.error('[R2 AI] provider:error', requestId, provider.name, error?.message || error)
-      if (!res.writableEnded) {
-        // If a provider has failed before any content was sent, try the next configured provider.
-        // If content was already streamed, do not append a second provider response.
-      }
+      // Never append a second provider response after any visible text has streamed.
+      if (error?.r2AiEmitted) throw error
     }
   }
   throw lastError || new Error('Layanan AI sedang tidak tersedia.')
@@ -303,7 +304,7 @@ export default async function handler(req, res) {
     send(res, 'done', {})
   } catch (error) {
     console.error('[R2 AI] request:error', requestId, error)
-    send(res, 'error', { message: 'Layanan AI sedang tidak tersedia. Silakan coba lagi atau hubungi admin R2 NUSANTARA.' })
+    send(res, 'error', { message: error?.message === 'FREE_AI_PROVIDER_NOT_CONFIGURED' ? 'AI gratis belum dikonfigurasi di server. Tambahkan OPENROUTER_API_KEY pada Vercel Production Environment Variables.' : 'Layanan AI sedang tidak tersedia. Silakan coba lagi atau hubungi admin R2 NUSANTARA.' })
   } finally {
     res.end()
   }
