@@ -5,6 +5,8 @@ const initialMessage = {
   content: 'Halo Mas, saya R2 NUSANTARA Assistant. Saya bisa membantu mencari produk, mengecek stok, membantu alur pemesanan, dan mengecek status pesanan.'
 }
 
+const REQUEST_TIMEOUT_MS = 45_000
+
 function RobotIcon({ open = false }) {
   return <span className="r2-ai-robot" aria-hidden="true">
     <span className="r2-ai-robot-aura" />
@@ -48,25 +50,50 @@ export default function R2AiChatWidget() {
     event?.preventDefault()
     const text = input.trim()
     if (!text || busy) return
-    setInput(''); setError(''); setBusy(true)
+
+    const requestId = `r2ai-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+    setInput('')
+    setError('')
+    setBusy(true)
     const next = [...messages, { role: 'user', content: text }, { role: 'assistant', content: '' }]
     setMessages(next)
 
+    const controller = new AbortController()
+    const timeoutId = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+
     try {
+      console.info('[R2 AI] request:start', requestId)
       const response = await fetch('/api/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
+        credentials: 'same-origin',
+        cache: 'no-store',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'text/event-stream',
+          'X-R2-AI-Request-ID': requestId,
+        },
         body: JSON.stringify({ messages: next.slice(0, -1).slice(-16) }),
+        signal: controller.signal,
       })
+
+      console.info('[R2 AI] request:response', requestId, response.status)
       if (!response.ok || !response.body) {
         const payload = await response.json().catch(() => ({}))
-        throw new Error(payload.error || 'Layanan AI belum tersedia.')
+        throw new Error(payload.error || `Layanan AI belum tersedia (${response.status}).`)
+      }
+
+      const contentType = response.headers.get('content-type') || ''
+      if (!contentType.includes('text/event-stream')) {
+        throw new Error('Respons AI tidak menggunakan kanal streaming yang valid.')
       }
 
       const reader = response.body.getReader()
       const decoder = new TextDecoder()
       let buffer = ''
       let answer = ''
+      let receivedDone = false
+      let receivedError = ''
+
       const consume = (chunk) => {
         buffer += chunk
         const events = buffer.split('\n\n')
@@ -84,20 +111,35 @@ export default function R2AiChatWidget() {
                 return copy
               })
             }
-            if (payload.message && !payload.text) setError(payload.message)
+            if (payload.message && !payload.text) receivedError = payload.message
+            if (raw.startsWith('event: error')) receivedError = payload.message || 'Layanan AI sedang tidak tersedia.'
+            if (raw.startsWith('event: done')) receivedDone = true
           } catch {}
         }
       }
+
       while (true) {
         const { done, value } = await reader.read()
         if (done) break
         consume(decoder.decode(value, { stream: true }))
       }
       consume(decoder.decode())
+
+      if (receivedError) throw new Error(receivedError)
+      if (!receivedDone) throw new Error('Koneksi AI terputus sebelum respons selesai.')
+      if (!answer.trim()) throw new Error('AI tidak mengembalikan jawaban.')
+      console.info('[R2 AI] request:done', requestId)
     } catch (err) {
-      setError(err.message || 'Terjadi kendala.')
+      const message = err?.name === 'AbortError'
+        ? 'Respons AI terlalu lama. Silakan coba lagi.'
+        : (err.message || 'Terjadi kendala pada layanan AI.')
+      console.error('[R2 AI] request:error', requestId, message)
+      setError(message)
       setMessages((current) => current.slice(0, -1))
-    } finally { setBusy(false) }
+    } finally {
+      window.clearTimeout(timeoutId)
+      setBusy(false)
+    }
   }
 
   return <>
