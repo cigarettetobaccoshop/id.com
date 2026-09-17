@@ -116,40 +116,51 @@ async function readAnthropicStream(response, res) {
   return { assistantBlocks, stopReason }
 }
 
-function gatewayAuth() {
-  const token = process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN
-  if (!token) return null
-  return token
+function getAiProvider() {
+  const openRouterKey = process.env.OPENROUTER_API_KEY
+  if (openRouterKey) {
+    return {
+      name: 'openrouter',
+      endpoint: 'https://openrouter.ai/api/v1/messages',
+      token: openRouterKey,
+      model: process.env.OPENROUTER_MODEL || 'openrouter/free',
+      headers: {
+        authorization: `Bearer ${openRouterKey}`,
+        'http-referer': process.env.NEXT_PUBLIC_SITE_URL || 'https://r2nusantara-shop.vercel.app',
+        'x-title': 'R2 NUSANTARA AI Customer Service',
+      },
+    }
+  }
+
+  const genericKey = process.env.AI_PROVIDER_API_KEY || process.env.AI_API_KEY
+  const genericEndpoint = process.env.AI_PROVIDER_ENDPOINT || process.env.AI_BASE_URL
+  if (genericKey && genericEndpoint) {
+    return {
+      name: 'custom-provider',
+      endpoint: genericEndpoint.replace(/\/$/, ''),
+      token: genericKey,
+      model: process.env.AI_PROVIDER_MODEL || process.env.AI_MODEL || 'openrouter/free',
+      headers: { authorization: `Bearer ${genericKey}` },
+    }
+  }
+
+  return null
 }
 
 async function requestAnthropic({ messages, requestId }) {
-  const gatewayToken = gatewayAuth()
-  const usingGateway = Boolean(gatewayToken)
-  const endpoint = usingGateway
-    ? 'https://ai-gateway.vercel.sh/v1/messages'
-    : 'https://api.anthropic.com/v1/messages'
+  const provider = getAiProvider()
+  if (!provider) throw new Error('Konfigurasi AI provider belum tersedia.')
 
-  const configuredModel = process.env.ANTHROPIC_MODEL || 'anthropic/claude-sonnet-5'
-  const model = usingGateway && !configuredModel.includes('/')
-    ? `anthropic/${configuredModel}`
-    : configuredModel
-
-  const headers = {
-    'content-type': 'application/json',
-    ...(usingGateway
-      ? { authorization: `Bearer ${gatewayToken}` }
-      : { 'x-api-key': process.env.ANTHROPIC_API_KEY || '', 'anthropic-version': '2023-06-01' }),
-  }
-
-  if (!usingGateway && !process.env.ANTHROPIC_API_KEY) throw new Error('Konfigurasi AI server belum tersedia.')
-
-  console.info('[R2 AI] upstream:start', requestId, usingGateway ? 'gateway' : 'anthropic', model)
+  console.info('[R2 AI] upstream:start', requestId, provider.name, provider.model)
   try {
-    const response = await fetch(endpoint, {
+    const response = await fetch(provider.endpoint, {
       method: 'POST',
-      headers,
+      headers: {
+        'content-type': 'application/json',
+        ...provider.headers,
+      },
       body: JSON.stringify({
-        model,
+        model: provider.model,
         max_tokens: 900,
         system: SYSTEM_PROMPT,
         messages,
@@ -161,8 +172,8 @@ async function requestAnthropic({ messages, requestId }) {
 
     if (!response.ok || !response.body) {
       const detail = await response.text().catch(() => '')
-      console.error(`${usingGateway ? 'AI Gateway' : 'Anthropic'} request failed:`, requestId, response.status, detail.slice(0, 700))
-      throw new Error('Layanan AI sedang tidak tersedia.')
+      console.error(`${provider.name} request failed:`, requestId, response.status, detail.slice(0, 700))
+      throw new Error('Provider AI tidak tersedia.')
     }
     console.info('[R2 AI] upstream:connected', requestId, response.status)
     return response
