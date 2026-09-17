@@ -143,10 +143,8 @@ async function requestAnthropic({ messages, requestId }) {
 
   if (!usingGateway && !process.env.ANTHROPIC_API_KEY) throw new Error('Konfigurasi AI server belum tersedia.')
 
-  const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS)
+  console.info('[R2 AI] upstream:start', requestId, usingGateway ? 'gateway' : 'anthropic', model)
   try {
-    console.info('[R2 AI] upstream:start', requestId, usingGateway ? 'gateway' : 'anthropic', model)
     const response = await fetch(endpoint, {
       method: 'POST',
       headers,
@@ -158,7 +156,7 @@ async function requestAnthropic({ messages, requestId }) {
         tools: AI_TOOLS,
         stream: true,
       }),
-      signal: controller.signal,
+      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
     })
 
     if (!response.ok || !response.body) {
@@ -169,10 +167,8 @@ async function requestAnthropic({ messages, requestId }) {
     console.info('[R2 AI] upstream:connected', requestId, response.status)
     return response
   } catch (error) {
-    if (error?.name === 'AbortError') throw new Error('Model AI tidak merespons dalam batas waktu.')
+    if (error?.name === 'TimeoutError' || error?.name === 'AbortError') throw new Error('Model AI tidak merespons dalam batas waktu.')
     throw error
-  } finally {
-    clearTimeout(timeoutId)
   }
 }
 
