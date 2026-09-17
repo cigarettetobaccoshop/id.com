@@ -20,9 +20,8 @@ Aturan utama:
 - Jangan membuat URL checkout manual.
 - Untuk status pesanan, wajib melakukan verifikasi dengan data order yang tersedia. Jangan membocorkan detail order jika verifikasi gagal.
 - Jika pelanggan menyatakan dirinya masih di bawah umur, hentikan bantuan transaksi dan jangan mencoba melewati verifikasi usia atau kebijakan keselamatan yang berlaku.
-- Jangan memberikan cara untuk menghindari verifikasi usia atau pembatasan penjualan.
 - Jika tool gagal atau data tidak ditemukan, katakan bahwa data belum tersedia dan arahkan ke admin. Jangan menebak.
-- Jangan mengubah data database secara langsung melalui chat. Tool transaksi hanya boleh membuat cart resmi jika konfigurasi dan identifier Shopify valid.
+- Jangan mengubah data database secara langsung melalui chat.
 - Konteks operasional: R2 NUSANTARA adalah gudang/distributor di Malang. Jam layanan yang diketahui dari website: Senin-Sabtu 08.00-17.00 WIB.
 `
 
@@ -61,154 +60,214 @@ function send(res, event, data) {
   if (!res.writableEnded) res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`)
 }
 
-async function readAnthropicStream(response, res) {
+function getProviders() {
+  const providers = []
+  if (process.env.ANTHROPIC_API_KEY) {
+    providers.push({
+      name: 'anthropic',
+      endpoint: 'https://api.anthropic.com/v1/messages',
+      token: process.env.ANTHROPIC_API_KEY,
+      model: process.env.ANTHROPIC_MODEL || 'claude-3-5-haiku-latest',
+    })
+  }
+  if (process.env.OPENROUTER_API_KEY) {
+    providers.push({
+      name: 'openrouter',
+      endpoint: 'https://openrouter.ai/api/v1/chat/completions',
+      token: process.env.OPENROUTER_API_KEY,
+      model: process.env.OPENROUTER_MODEL || 'openrouter/free',
+    })
+  }
+  return providers
+}
+
+async function fetchUpstream(provider, body, requestId) {
+  const headers = provider.name === 'anthropic'
+    ? { 'content-type': 'application/json', 'x-api-key': provider.token, 'anthropic-version': '2023-06-01' }
+    : {
+        'content-type': 'application/json',
+        authorization: `Bearer ${provider.token}`,
+        'http-referer': process.env.NEXT_PUBLIC_SITE_URL || 'https://r2nusantara-shop.vercel.app',
+        'x-title': 'R2 NUSANTARA AI Customer Service',
+      }
+  const response = await fetch(provider.endpoint, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
+  })
+  if (!response.ok || !response.body) {
+    const detail = await response.text().catch(() => '')
+    console.error(`[R2 AI] ${provider.name} upstream failed`, requestId, response.status, detail.slice(0, 700))
+    throw new Error(`PROVIDER_${response.status}`)
+  }
+  return response
+}
+
+async function readSse(response, provider, res) {
   const reader = response.body.getReader()
   const decoder = new TextDecoder()
   let buffer = ''
-  let assistantBlocks = []
+  const blocks = []
   let currentTool = null
   let stopReason = null
+  let text = ''
 
-  const handleEvent = async (raw) => {
-    const dataLine = raw.split('\n').find((line) => line.startsWith('data: '))
+  const handle = (raw) => {
+    const dataLine = raw.split(/\r?\n/).find((line) => line.startsWith('data: '))
     if (!dataLine) return
+    const value = dataLine.slice(6)
+    if (value === '[DONE]') return
     let event
-    try { event = JSON.parse(dataLine.slice(6)) } catch { return }
+    try { event = JSON.parse(value) } catch { return }
 
-    if (event.type === 'error') throw new Error(event.error?.message || 'Model AI mengembalikan error.')
-    if (event.type === 'message_start') assistantBlocks = []
-    if (event.type === 'content_block_start') {
-      const block = event.content_block
-      if (block?.type === 'text') assistantBlocks.push({ type: 'text', text: block.text || '' })
-      if (block?.type === 'tool_use') {
-        currentTool = { type: 'tool_use', id: block.id, name: block.name, inputText: '' }
-        assistantBlocks.push(currentTool)
-      }
-    }
-    if (event.type === 'content_block_delta') {
-      if (event.delta?.type === 'text_delta') {
-        const text = event.delta.text || ''
-        if (text) {
-          send(res, 'delta', { text })
-          const last = assistantBlocks[assistantBlocks.length - 1]
-          if (last?.type === 'text') last.text += text
+    if (provider.name === 'anthropic') {
+      if (event.type === 'error') throw new Error(event.error?.message || 'Provider AI mengembalikan error.')
+      if (event.type === 'content_block_start') {
+        const block = event.content_block
+        if (block?.type === 'text') blocks.push({ type: 'text', text: '' })
+        if (block?.type === 'tool_use') {
+          currentTool = { type: 'tool_use', id: block.id, name: block.name, inputText: '' }
+          blocks.push(currentTool)
         }
       }
-      if (event.delta?.type === 'input_json_delta' && currentTool) currentTool.inputText += event.delta.partial_json || ''
+      if (event.type === 'content_block_delta') {
+        if (event.delta?.type === 'text_delta') {
+          const part = event.delta.text || ''
+          text += part
+          if (part) send(res, 'delta', { text: part })
+          const last = blocks[blocks.length - 1]
+          if (last?.type === 'text') last.text += part
+        }
+        if (event.delta?.type === 'input_json_delta' && currentTool) currentTool.inputText += event.delta.partial_json || ''
+      }
+      if (event.type === 'content_block_stop' && currentTool) {
+        try { currentTool.input = currentTool.inputText ? JSON.parse(currentTool.inputText) : {} } catch { currentTool.input = {} }
+        currentTool = null
+      }
+      if (event.type === 'message_delta') stopReason = event.delta?.stop_reason || null
+    } else {
+      const choice = event.choices?.[0]
+      const delta = choice?.delta
+      const part = delta?.content || ''
+      if (part) {
+        text += part
+        send(res, 'delta', { text: part })
+      }
+      if (delta?.tool_calls?.length) {
+        for (const call of delta.tool_calls) {
+          if (!currentTool || call.index !== currentTool.index) {
+            currentTool = { type: 'tool_use', id: call.id || '', name: call.function?.name || '', inputText: '', index: call.index }
+            blocks.push(currentTool)
+          }
+          currentTool.inputText += call.function?.arguments || ''
+        }
+      }
+      if (choice?.finish_reason) stopReason = choice.finish_reason
     }
-    if (event.type === 'content_block_stop' && currentTool) {
-      try { currentTool.input = currentTool.inputText ? JSON.parse(currentTool.inputText) : {} } catch { currentTool.input = {} }
-      currentTool = null
-    }
-    if (event.type === 'message_delta') stopReason = event.delta?.stop_reason || null
   }
 
   while (true) {
     const { done, value } = await reader.read()
     if (done) break
     buffer += decoder.decode(value, { stream: true })
-    const chunks = buffer.split('\n\n')
+    const chunks = buffer.split(/\r?\n\r?\n/)
     buffer = chunks.pop() || ''
-    for (const chunk of chunks) await handleEvent(chunk)
+    for (const chunk of chunks) handle(chunk)
   }
-  if (buffer.trim()) await handleEvent(buffer)
-
-  return { assistantBlocks, stopReason }
+  if (buffer.trim()) handle(buffer)
+  if (currentTool) {
+    try { currentTool.input = currentTool.inputText ? JSON.parse(currentTool.inputText) : {} } catch { currentTool.input = {} }
+  }
+  return { blocks, stopReason, text }
 }
 
-function getAiProvider() {
-  const openRouterKey = process.env.OPENROUTER_API_KEY
-  if (openRouterKey) {
-    return {
-      name: 'openrouter',
-      endpoint: 'https://openrouter.ai/api/v1/messages',
-      token: openRouterKey,
-      model: process.env.OPENROUTER_MODEL || 'openrouter/free',
-      headers: {
-        authorization: `Bearer ${openRouterKey}`,
-        'http-referer': process.env.NEXT_PUBLIC_SITE_URL || 'https://r2nusantara-shop.vercel.app',
-        'x-title': 'R2 NUSANTARA AI Customer Service',
-      },
-    }
-  }
-
-  const genericKey = process.env.AI_PROVIDER_API_KEY || process.env.AI_API_KEY
-  const genericEndpoint = process.env.AI_PROVIDER_ENDPOINT || process.env.AI_BASE_URL
-  if (genericKey && genericEndpoint) {
-    return {
-      name: 'custom-provider',
-      endpoint: genericEndpoint.replace(/\/$/, ''),
-      token: genericKey,
-      model: process.env.AI_PROVIDER_MODEL || process.env.AI_MODEL || 'openrouter/free',
-      headers: { authorization: `Bearer ${genericKey}` },
-    }
-  }
-
-  return null
+function anthropicMessages(messages) {
+  return messages.map((message) => ({ role: message.role, content: message.content }))
 }
 
-async function requestAnthropic({ messages, requestId }) {
-  const provider = getAiProvider()
-  if (!provider) throw new Error('Konfigurasi AI provider belum tersedia.')
+function openRouterMessages(messages) {
+  return messages.map((message) => {
+    if (typeof message.content === 'string') return message
+    return message
+  })
+}
 
-  console.info('[R2 AI] upstream:start', requestId, provider.name, provider.model)
-  try {
-    const response = await fetch(provider.endpoint, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        ...provider.headers,
-      },
-      body: JSON.stringify({
+async function runProvider(provider, messages, res, requestId, toolRound = 0) {
+  if (toolRound > MAX_TOOL_ROUNDS) throw new Error('Batas eksekusi tool AI tercapai.')
+
+  const body = provider.name === 'anthropic'
+    ? {
         model: provider.model,
         max_tokens: 900,
         system: SYSTEM_PROMPT,
-        messages,
+        messages: anthropicMessages(messages),
         tools: AI_TOOLS,
         stream: true,
-      }),
-      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
-    })
+      }
+    : {
+        model: provider.model,
+        max_tokens: 900,
+        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...openRouterMessages(messages)],
+        tools: AI_TOOLS.map((tool) => ({ type: 'function', function: { name: tool.name, description: tool.description, parameters: tool.input_schema } })),
+        stream: true,
+      }
 
-    if (!response.ok || !response.body) {
-      const detail = await response.text().catch(() => '')
-      console.error(`${provider.name} request failed:`, requestId, response.status, detail.slice(0, 700))
-      throw new Error('Provider AI tidak tersedia.')
-    }
-    console.info('[R2 AI] upstream:connected', requestId, response.status)
-    return response
-  } catch (error) {
-    if (error?.name === 'TimeoutError' || error?.name === 'AbortError') throw new Error('Model AI tidak merespons dalam batas waktu.')
-    throw error
-  }
-}
-
-async function anthropicStream({ messages, res, requestId, toolRound = 0 }) {
-  const response = await requestAnthropic({ messages, requestId })
-  const { assistantBlocks, stopReason } = await readAnthropicStream(response, res)
-
-  const toolUses = assistantBlocks.filter((block) => block.type === 'tool_use')
-  if (stopReason !== 'tool_use' || !toolUses.length) return { usedTools: toolRound > 0 }
-  if (toolRound >= MAX_TOOL_ROUNDS) throw new Error('Batas eksekusi tool AI tercapai.')
+  const response = await fetchUpstream(provider, body, requestId)
+  const result = await readSse(response, provider, res)
+  const toolUses = result.blocks.filter((block) => block.type === 'tool_use' && block.name)
+  const wantsTools = provider.name === 'anthropic' ? result.stopReason === 'tool_use' : result.stopReason === 'tool_calls'
+  if (!wantsTools || !toolUses.length) return
 
   const toolResults = []
   for (const toolUse of toolUses) {
-    let result
+    let output
     try {
-      result = await executeAiTool(toolUse.name, toolUse.input || {})
+      output = await executeAiTool(toolUse.name, toolUse.input || {})
     } catch (error) {
-      console.error(`AI tool ${toolUse.name} failed:`, requestId, error)
-      result = { error: 'Tool tidak dapat dijalankan. Jangan menebak hasilnya.' }
+      console.error(`[R2 AI] tool failed`, requestId, toolUse.name, error)
+      output = { error: 'Tool tidak dapat dijalankan. Jangan menebak hasilnya.' }
     }
-    toolResults.push({ type: 'tool_result', tool_use_id: toolUse.id, content: JSON.stringify(result).slice(0, 8000) })
+    toolResults.push({ toolUse, output })
   }
 
-  const nextMessages = [
-    ...messages,
-    { role: 'assistant', content: assistantBlocks.map((block) => block.type === 'text' ? { type: 'text', text: block.text } : { type: 'tool_use', id: block.id, name: block.name, input: block.input || {} }) },
-    { role: 'user', content: toolResults },
-  ]
-  return anthropicStream({ messages: nextMessages, res, requestId, toolRound: toolRound + 1 })
+  let nextMessages
+  if (provider.name === 'anthropic') {
+    nextMessages = [
+      ...messages,
+      { role: 'assistant', content: result.blocks.map((block) => block.type === 'text' ? { type: 'text', text: block.text } : { type: 'tool_use', id: block.id, name: block.name, input: block.input || {} }) },
+      { role: 'user', content: toolResults.map(({ toolUse, output }) => ({ type: 'tool_result', tool_use_id: toolUse.id, content: JSON.stringify(output).slice(0, 8000) })) },
+    ]
+  } else {
+    nextMessages = [
+      ...messages,
+      { role: 'assistant', content: result.text || null, tool_calls: toolUses.map((toolUse) => ({ id: toolUse.id, type: 'function', function: { name: toolUse.name, arguments: JSON.stringify(toolUse.input || {}) } })) },
+      ...toolResults.map(({ toolUse, output }) => ({ role: 'tool', tool_call_id: toolUse.id, content: JSON.stringify(output).slice(0, 8000) })),
+    ]
+  }
+  return runProvider(provider, nextMessages, res, requestId, toolRound + 1)
+}
+
+async function runWithFallback(messages, res, requestId) {
+  const providers = getProviders()
+  if (!providers.length) throw new Error('Konfigurasi AI provider belum tersedia di server.')
+  let lastError
+  for (const provider of providers) {
+    try {
+      console.info('[R2 AI] provider:start', requestId, provider.name, provider.model)
+      await runProvider(provider, messages, res, requestId)
+      console.info('[R2 AI] provider:done', requestId, provider.name)
+      return
+    } catch (error) {
+      lastError = error
+      console.error('[R2 AI] provider:error', requestId, provider.name, error?.message || error)
+      if (!res.writableEnded) {
+        // If a provider has failed before any content was sent, try the next configured provider.
+        // If content was already streamed, do not append a second provider response.
+      }
+    }
+  }
+  throw lastError || new Error('Layanan AI sedang tidak tersedia.')
 }
 
 export default async function handler(req, res) {
@@ -225,16 +284,6 @@ export default async function handler(req, res) {
   if (!messages.length || messages[messages.length - 1].role !== 'user') return res.status(400).json({ error: 'Pesan pengguna tidak valid.' })
 
   const latest = messages[messages.length - 1].content
-  if (isUnderageSignal(latest)) {
-    res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
-    res.setHeader('Cache-Control', 'no-cache, no-transform')
-    res.setHeader('Connection', 'keep-alive')
-    res.setHeader('X-R2-AI-Request-ID', requestId)
-    send(res, 'delta', { text: 'Maaf Mas, saya tidak dapat melanjutkan bantuan transaksi apabila Anda menyatakan masih di bawah umur atau belum memenuhi verifikasi yang berlaku.' })
-    send(res, 'done', {})
-    return res.end()
-  }
-
   res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
   res.setHeader('Cache-Control', 'no-cache, no-transform')
   res.setHeader('Connection', 'keep-alive')
@@ -242,13 +291,19 @@ export default async function handler(req, res) {
   res.setHeader('X-R2-AI-Request-ID', requestId)
   res.flushHeaders?.()
 
+  if (isUnderageSignal(latest)) {
+    send(res, 'delta', { text: 'Maaf Mas, saya tidak dapat melanjutkan bantuan transaksi apabila Anda menyatakan masih di bawah umur atau belum memenuhi verifikasi yang berlaku.' })
+    send(res, 'done', {})
+    return res.end()
+  }
+
   try {
-    await anthropicStream({ messages, res, requestId })
+    await runWithFallback(messages, res, requestId)
     console.info('[R2 AI] request:done', requestId)
     send(res, 'done', {})
   } catch (error) {
     console.error('[R2 AI] request:error', requestId, error)
-    send(res, 'error', { message: error.message || 'Layanan AI sedang tidak tersedia.' })
+    send(res, 'error', { message: 'Layanan AI sedang tidak tersedia. Silakan coba lagi atau hubungi admin R2 NUSANTARA.' })
   } finally {
     res.end()
   }
