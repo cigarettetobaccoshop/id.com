@@ -29,17 +29,18 @@ function RobotIcon({ open = false }) {
 
 export default function R2AiChatWidget() {
   const [open, setOpen] = useState(false)
-  const [messages, setMessages] = useState(() => {
-    if (typeof window === 'undefined') return [initialMessage]
-    try {
-      const saved = JSON.parse(sessionStorage.getItem('r2-ai-chat') || 'null')
-      return Array.isArray(saved) && saved.length ? saved : [initialMessage]
-    } catch { return [initialMessage] }
-  })
+  const [messages, setMessages] = useState([initialMessage])
   const [input, setInput] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const endRef = useRef(null)
+
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem('r2-ai-chat') || 'null')
+      if (Array.isArray(saved) && saved.length) setMessages(saved)
+    } catch {}
+  }, [])
 
   useEffect(() => {
     try { sessionStorage.setItem('r2-ai-chat', JSON.stringify(messages.slice(-16))) } catch {}
