@@ -84,7 +84,7 @@ export default function R2AiChatWidget() {
       }
 
       const contentType = response.headers.get('content-type') || ''
-      if (!contentType.includes('text/event-stream')) {
+      if (!contentType.toLowerCase().includes('text/event-stream')) {
         throw new Error('Respons AI tidak menggunakan kanal streaming yang valid.')
       }
 
@@ -97,25 +97,24 @@ export default function R2AiChatWidget() {
 
       const consume = (chunk) => {
         buffer += chunk
-        const events = buffer.split('\n\n')
+        const events = buffer.split(/\r?\n\r?\n/)
         buffer = events.pop() || ''
         for (const raw of events) {
-          const line = raw.split('\n').find((item) => item.startsWith('data: '))
-          if (!line) continue
-          try {
-            const payload = JSON.parse(line.slice(6))
-            if (payload.text) {
-              answer += payload.text
-              setMessages((current) => {
-                const copy = [...current]
-                copy[copy.length - 1] = { role: 'assistant', content: answer }
-                return copy
-              })
-            }
-            if (payload.message && !payload.text) receivedError = payload.message
-            if (raw.startsWith('event: error')) receivedError = payload.message || 'Layanan AI sedang tidak tersedia.'
-            if (raw.startsWith('event: done')) receivedDone = true
-          } catch {}
+          const dataLine = raw.split(/\r?\n/).find((item) => item.startsWith('data: '))
+          if (!dataLine) continue
+          let payload
+          try { payload = JSON.parse(dataLine.slice(6)) } catch { continue }
+          const eventType = raw.split(/\r?\n/).find((item) => item.startsWith('event: '))?.slice(7) || ''
+          if (payload.text) {
+            answer += payload.text
+            setMessages((current) => {
+              const copy = [...current]
+              copy[copy.length - 1] = { role: 'assistant', content: answer }
+              return copy
+            })
+          }
+          if (eventType === 'error') receivedError = payload.message || 'Layanan AI sedang tidak tersedia.'
+          if (eventType === 'done') receivedDone = true
         }
       }
 
@@ -150,7 +149,7 @@ export default function R2AiChatWidget() {
     </button>
     {open && <section className="r2-ai-panel" aria-label="R2 NUSANTARA AI Assistant">
       <header className="r2-ai-head">
-        <div className="r2-ai-head-brand"><span className="r2-ai-head-avatar"><RobotIcon open /></span><span><strong>R2 NUSANTARA</strong><small>AI Customer Service • Online</small></span></div>
+        <div className="r2-ai-head-brand"><span className="r2-ai-head-avatar"><RobotIcon open /></span><span><strong>R2 NUSANTARA</strong><small>AI Customer Service • Siap membantu</small></span></div>
         <button type="button" onClick={() => setOpen(false)} aria-label="Tutup">×</button>
       </header>
       <div className="r2-ai-messages" aria-live="polite">
