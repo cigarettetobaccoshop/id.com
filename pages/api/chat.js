@@ -4,6 +4,7 @@ const MAX_MESSAGES = 16
 const MAX_MESSAGE_CHARS = 1800
 const WINDOW_MS = 60_000
 const MAX_REQUESTS = 12
+const MAX_TOOL_ROUNDS = 3
 const buckets = new Map()
 
 const SYSTEM_PROMPT = `Kamu adalah R2 NUSANTARA Assistant, customer service resmi untuk website R2 NUSANTARA.
@@ -56,36 +57,10 @@ function isUnderageSignal(text) {
 }
 
 function send(res, event, data) {
-  res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`)
+  if (!res.writableEnded) res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`)
 }
 
-async function anthropicStream({ messages, res, toolContext }) {
-  const apiKey = process.env.ANTHROPIC_API_KEY
-  if (!apiKey) throw new Error('ANTHROPIC_API_KEY belum dikonfigurasi di server.')
-
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-    },
-    body: JSON.stringify({
-      model: process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022',
-      max_tokens: 900,
-      system: SYSTEM_PROMPT,
-      messages,
-      tools: AI_TOOLS,
-      stream: true,
-    }),
-  })
-
-  if (!response.ok || !response.body) {
-    const detail = await response.text().catch(() => '')
-    console.error('Anthropic request failed:', response.status, detail.slice(0, 500))
-    throw new Error('Layanan AI sedang tidak tersedia.')
-  }
-
+async function readAnthropicStream(response, res) {
   const reader = response.body.getReader()
   const decoder = new TextDecoder()
   let buffer = ''
@@ -136,8 +111,64 @@ async function anthropicStream({ messages, res, toolContext }) {
   }
   if (buffer.trim()) await handleEvent(buffer)
 
+  return { assistantBlocks, stopReason }
+}
+
+function gatewayAuth() {
+  const token = process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN
+  if (!token) return null
+  return token
+}
+
+async function requestAnthropic({ messages }) {
+  const gatewayToken = gatewayAuth()
+  const usingGateway = Boolean(gatewayToken)
+  const endpoint = usingGateway
+    ? 'https://ai-gateway.vercel.sh/v1/messages'
+    : 'https://api.anthropic.com/v1/messages'
+
+  const configuredModel = process.env.ANTHROPIC_MODEL || 'anthropic/claude-sonnet-5'
+  const model = usingGateway && !configuredModel.includes('/')
+    ? `anthropic/${configuredModel}`
+    : configuredModel
+
+  const headers = {
+    'content-type': 'application/json',
+    ...(usingGateway
+      ? { authorization: `Bearer ${gatewayToken}` }
+      : { 'x-api-key': process.env.ANTHROPIC_API_KEY || '', 'anthropic-version': '2023-06-01' }),
+  }
+
+  if (!usingGateway && !process.env.ANTHROPIC_API_KEY) throw new Error('Konfigurasi AI server belum tersedia.')
+
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      model,
+      max_tokens: 900,
+      system: SYSTEM_PROMPT,
+      messages,
+      tools: AI_TOOLS,
+      stream: true,
+    }),
+  })
+
+  if (!response.ok || !response.body) {
+    const detail = await response.text().catch(() => '')
+    console.error(`${usingGateway ? 'AI Gateway' : 'Anthropic'} request failed:`, response.status, detail.slice(0, 700))
+    throw new Error('Layanan AI sedang tidak tersedia.')
+  }
+  return response
+}
+
+async function anthropicStream({ messages, res, toolRound = 0 }) {
+  const response = await requestAnthropic({ messages })
+  const { assistantBlocks, stopReason } = await readAnthropicStream(response, res)
+
   const toolUses = assistantBlocks.filter((block) => block.type === 'tool_use')
-  if (stopReason !== 'tool_use' || !toolUses.length) return { messages, usedTools: false }
+  if (stopReason !== 'tool_use' || !toolUses.length) return { usedTools: toolRound > 0 }
+  if (toolRound >= MAX_TOOL_ROUNDS) throw new Error('Batas eksekusi tool AI tercapai.')
 
   const toolResults = []
   for (const toolUse of toolUses) {
@@ -156,7 +187,7 @@ async function anthropicStream({ messages, res, toolContext }) {
     { role: 'assistant', content: assistantBlocks.map((block) => block.type === 'text' ? { type: 'text', text: block.text } : { type: 'tool_use', id: block.id, name: block.name, input: block.input || {} }) },
     { role: 'user', content: toolResults },
   ]
-  return anthropicStream({ messages: nextMessages, res, toolContext })
+  return anthropicStream({ messages: nextMessages, res, toolRound: toolRound + 1 })
 }
 
 export default async function handler(req, res) {
@@ -182,6 +213,7 @@ export default async function handler(req, res) {
   res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
   res.setHeader('Cache-Control', 'no-cache, no-transform')
   res.setHeader('Connection', 'keep-alive')
+  res.setHeader('X-Accel-Buffering', 'no')
   res.flushHeaders?.()
 
   try {
