@@ -5,6 +5,7 @@ const MAX_MESSAGE_CHARS = 1800
 const WINDOW_MS = 60_000
 const MAX_REQUESTS = 12
 const MAX_TOOL_ROUNDS = 3
+const UPSTREAM_TIMEOUT_MS = 40_000
 const buckets = new Map()
 
 const SYSTEM_PROMPT = `Kamu adalah R2 NUSANTARA Assistant, customer service resmi untuk website R2 NUSANTARA.
@@ -74,6 +75,7 @@ async function readAnthropicStream(response, res) {
     let event
     try { event = JSON.parse(dataLine.slice(6)) } catch { return }
 
+    if (event.type === 'error') throw new Error(event.error?.message || 'Model AI mengembalikan error.')
     if (event.type === 'message_start') assistantBlocks = []
     if (event.type === 'content_block_start') {
       const block = event.content_block
@@ -120,7 +122,7 @@ function gatewayAuth() {
   return token
 }
 
-async function requestAnthropic({ messages }) {
+async function requestAnthropic({ messages, requestId }) {
   const gatewayToken = gatewayAuth()
   const usingGateway = Boolean(gatewayToken)
   const endpoint = usingGateway
@@ -141,29 +143,41 @@ async function requestAnthropic({ messages }) {
 
   if (!usingGateway && !process.env.ANTHROPIC_API_KEY) throw new Error('Konfigurasi AI server belum tersedia.')
 
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({
-      model,
-      max_tokens: 900,
-      system: SYSTEM_PROMPT,
-      messages,
-      tools: AI_TOOLS,
-      stream: true,
-    }),
-  })
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS)
+  try {
+    console.info('[R2 AI] upstream:start', requestId, usingGateway ? 'gateway' : 'anthropic', model)
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        model,
+        max_tokens: 900,
+        system: SYSTEM_PROMPT,
+        messages,
+        tools: AI_TOOLS,
+        stream: true,
+      }),
+      signal: controller.signal,
+    })
 
-  if (!response.ok || !response.body) {
-    const detail = await response.text().catch(() => '')
-    console.error(`${usingGateway ? 'AI Gateway' : 'Anthropic'} request failed:`, response.status, detail.slice(0, 700))
-    throw new Error('Layanan AI sedang tidak tersedia.')
+    if (!response.ok || !response.body) {
+      const detail = await response.text().catch(() => '')
+      console.error(`${usingGateway ? 'AI Gateway' : 'Anthropic'} request failed:`, requestId, response.status, detail.slice(0, 700))
+      throw new Error('Layanan AI sedang tidak tersedia.')
+    }
+    console.info('[R2 AI] upstream:connected', requestId, response.status)
+    return response
+  } catch (error) {
+    if (error?.name === 'AbortError') throw new Error('Model AI tidak merespons dalam batas waktu.')
+    throw error
+  } finally {
+    clearTimeout(timeoutId)
   }
-  return response
 }
 
-async function anthropicStream({ messages, res, toolRound = 0 }) {
-  const response = await requestAnthropic({ messages })
+async function anthropicStream({ messages, res, requestId, toolRound = 0 }) {
+  const response = await requestAnthropic({ messages, requestId })
   const { assistantBlocks, stopReason } = await readAnthropicStream(response, res)
 
   const toolUses = assistantBlocks.filter((block) => block.type === 'tool_use')
@@ -176,7 +190,7 @@ async function anthropicStream({ messages, res, toolRound = 0 }) {
     try {
       result = await executeAiTool(toolUse.name, toolUse.input || {})
     } catch (error) {
-      console.error(`AI tool ${toolUse.name} failed:`, error)
+      console.error(`AI tool ${toolUse.name} failed:`, requestId, error)
       result = { error: 'Tool tidak dapat dijalankan. Jangan menebak hasilnya.' }
     }
     toolResults.push({ type: 'tool_result', tool_use_id: toolUse.id, content: JSON.stringify(result).slice(0, 8000) })
@@ -187,10 +201,13 @@ async function anthropicStream({ messages, res, toolRound = 0 }) {
     { role: 'assistant', content: assistantBlocks.map((block) => block.type === 'text' ? { type: 'text', text: block.text } : { type: 'tool_use', id: block.id, name: block.name, input: block.input || {} }) },
     { role: 'user', content: toolResults },
   ]
-  return anthropicStream({ messages: nextMessages, res, toolRound: toolRound + 1 })
+  return anthropicStream({ messages: nextMessages, res, requestId, toolRound: toolRound + 1 })
 }
 
 export default async function handler(req, res) {
+  const requestId = String(req.headers['x-r2-ai-request-id'] || `server-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`).slice(0, 80)
+  console.info('[R2 AI] request:received', requestId, req.method)
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST')
     return res.status(405).json({ error: 'Method Not Allowed' })
@@ -205,6 +222,7 @@ export default async function handler(req, res) {
     res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
     res.setHeader('Cache-Control', 'no-cache, no-transform')
     res.setHeader('Connection', 'keep-alive')
+    res.setHeader('X-R2-AI-Request-ID', requestId)
     send(res, 'delta', { text: 'Maaf Mas, saya tidak dapat melanjutkan bantuan transaksi apabila Anda menyatakan masih di bawah umur atau belum memenuhi verifikasi yang berlaku.' })
     send(res, 'done', {})
     return res.end()
@@ -214,13 +232,15 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-cache, no-transform')
   res.setHeader('Connection', 'keep-alive')
   res.setHeader('X-Accel-Buffering', 'no')
+  res.setHeader('X-R2-AI-Request-ID', requestId)
   res.flushHeaders?.()
 
   try {
-    await anthropicStream({ messages, res })
+    await anthropicStream({ messages, res, requestId })
+    console.info('[R2 AI] request:done', requestId)
     send(res, 'done', {})
   } catch (error) {
-    console.error('AI chat error:', error)
+    console.error('[R2 AI] request:error', requestId, error)
     send(res, 'error', { message: error.message || 'Layanan AI sedang tidak tersedia.' })
   } finally {
     res.end()
