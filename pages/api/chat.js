@@ -255,23 +255,25 @@ async function runWithFallback(messages, res, requestId) {
   const providers = getProviders()
   if (!providers.length) throw new Error('FREE_AI_PROVIDER_NOT_CONFIGURED')
   let lastError
+  let emitted = false
   for (const provider of providers) {
     try {
       console.info('[R2 AI] provider:start', requestId, provider.name, provider.model)
       const result = await runProvider(provider, messages, res, requestId)
+      emitted = emitted || Boolean(result?.emitted)
       console.info('[R2 AI] provider:done', requestId, provider.name)
       return result
     } catch (error) {
       lastError = error
       console.error('[R2 AI] provider:error', requestId, provider.name, error?.message || error)
-      // Never append a second provider response after any visible text has streamed.
-      if (error?.r2AiEmitted) throw error
+      // Never append another provider response after any visible text has streamed.
+      if (emitted || error?.r2AiEmitted) throw error
     }
   }
   throw lastError || new Error('Layanan AI sedang tidak tersedia.')
 }
 
-export default async function handler(req, res) {
+async function handleRequest(req, res) {
   const requestId = String(req.headers['x-r2-ai-request-id'] || `server-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`).slice(0, 80)
   console.info('[R2 AI] request:received', requestId, req.method)
 
@@ -309,3 +311,5 @@ export default async function handler(req, res) {
     res.end()
   }
 }
+
+export default handleRequest
