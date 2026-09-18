@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 interface ProductThumbnailProps {
   name: string;
@@ -71,6 +71,11 @@ export default function ProductThumbnail({ name, sourceUrl, catalogLabel = 'R2',
   const mappedSource = sourceUrl || undefined;
   const initialSource = mappedSource || generatedVisual;
   const [src, setSrc] = useState(initialSource);
+
+  useEffect(() => {
+    setSrc(initialSource);
+  }, [initialSource]);
+
   const imageSizes = size <= 190 ? '(max-width: 639px) 45vw, 190px' : `${size}px`;
 
   return (
