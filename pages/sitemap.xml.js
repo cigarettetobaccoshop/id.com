@@ -6,20 +6,21 @@ const esc = value => String(value || '').replace(/&/g, '&amp;').replace(/</g, '&
 export async function getServerSideProps({ res }) {
   const { data, error } = await supabase
     .from('products')
-    .select('handle,published,status')
-    .eq('published', true)
-    .eq('status', 'active')
+    .select('id,is_active')
+    .eq('is_active', true)
     .limit(1000)
 
   const products = error ? [] : (data || [])
   const urls = [
-    `${SITE_URL}/`,
-    `${SITE_URL}/products`,
-    `${SITE_URL}/contact`,
-    ...products.filter(p => p.handle).map(p => `${SITE_URL}/products/${encodeURIComponent(p.handle)}`),
+    SITE_URL + '/',
+    SITE_URL + '/products',
+    SITE_URL + '/contact',
+    ...products.filter(p => p.id).map(p => SITE_URL + '/products/' + encodeURIComponent(p.id)),
   ]
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(url => `  <url><loc>${esc(url)}</loc></url>`).join('\n')}\n</urlset>`
+  const xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    urls.map(url => '  <url><loc>' + esc(url) + '</loc></url>').join('\n') +
+    '\n</urlset>'
 
   res.setHeader('Content-Type', 'application/xml; charset=utf-8')
   res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=3600')
@@ -28,6 +29,4 @@ export async function getServerSideProps({ res }) {
   return { props: {} }
 }
 
-export default function Sitemap() {
-  return null
-}
+export default function Sitemap() { return null }
