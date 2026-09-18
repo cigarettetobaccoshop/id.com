@@ -6,7 +6,13 @@ const ADMIN_UUID = '60c5525a-d68a-4b0f-b7fd-b9bd2371bf4a'
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
-  const supabase = createMiddlewareClient({ req, res })
+  const supabase = createMiddlewareClient(
+    { req, res },
+    {
+      supabaseUrl: 'https://nwrqdcrknipnfvhogjyg.supabase.co',
+      supabaseKey: 'sb_publishable_mqJp3tqSL1gCjz1xdcgWGQ_mtDFRTmg',
+    },
+  )
   const path = req.nextUrl.pathname
 
   if (path.startsWith('/admin')) {
