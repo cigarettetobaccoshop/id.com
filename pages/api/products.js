@@ -2,9 +2,27 @@ import { supabase } from '../../lib/supabaseClient'
 
 const MAX_CATALOG_ROWS = 250
 
+function mapProduct(p) {
+  return {
+    Handle: p.id,
+    Title: p.name,
+    'Body (HTML)': p.description || '',
+    Vendor: p.segment_name || p.category || 'R2 Nusantara',
+    Type: p.category || 'r2',
+    Tags: p.segment || '',
+    Published: p.is_active,
+    'Option1 Name': 'Segment',
+    'Option1 Value': p.segment_name || p.segment || '',
+    'Variant SKU': p.id,
+    'Variant Price': p.price,
+    'Variant Inventory Qty': null,
+    Status: p.is_active ? 'active' : 'inactive',
+    Catalog: p.category,
+  }
+}
+
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300')
-
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET')
     return res.status(405).json({ data: [], count: 0, error: 'Method Not Allowed' })
@@ -17,9 +35,9 @@ export default async function handler(req, res) {
 
   const { data, count, error } = await supabase
     .from('products')
-    .select('handle,title,body_html,vendor,type,tags,published,option1_name,option1_value,variant_sku,variant_price,variant_inventory_qty,status,catalog', { count: 'exact' })
-    .eq('published', true)
-    .eq('status', 'active')
+    .select('id,name,price,category,segment,segment_name,description,rating,is_active', { count: 'exact' })
+    .eq('is_active', true)
+    .order('name', { ascending: true })
     .limit(limit)
 
   if (error) {
@@ -27,22 +45,5 @@ export default async function handler(req, res) {
     return res.status(500).json({ data: [], count: 0, error: 'Failed to load products' })
   }
 
-  const normalized = (data || []).map((p) => ({
-    Handle: p.handle,
-    Title: p.title,
-    'Body (HTML)': p.body_html,
-    Vendor: p.vendor,
-    Type: p.type,
-    Tags: p.tags,
-    Published: p.published,
-    'Option1 Name': p.option1_name,
-    'Option1 Value': p.option1_value,
-    'Variant SKU': p.variant_sku,
-    'Variant Price': p.variant_price,
-    'Variant Inventory Qty': p.variant_inventory_qty,
-    Status: p.status,
-    Catalog: p.catalog,
-  }))
-
-  return res.status(200).json({ data: normalized, count: count || 0 })
+  return res.status(200).json({ data: (data || []).map(mapProduct), count: count || 0 })
 }
