@@ -7,12 +7,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    const [{ count: activeProducts, error: productsError }, { count: ordersCount, error: ordersError }] = await Promise.all([
-      db.from('products').select('id', { count: 'exact', head: true }).eq('is_active', true),
-      db.from('orders').select('id', { count: 'exact', head: true }),
-    ])
+    const { count: activeProducts, error: productsError } = await db
+      .from('products')
+      .select('id', { count: 'exact', head: true })
+      .eq('is_active', true)
+
     if (productsError) throw productsError
-    if (ordersError) throw ordersError
 
     res.setHeader('Cache-Control', 'no-store, max-age=0')
     res.setHeader('X-R2-Health', 'ok')
@@ -23,7 +23,6 @@ export default async function handler(req, res) {
       service: 'r2-nusantara',
       database: 'connected',
       catalog: { active_products: activeProducts || 0 },
-      orders: { total: ordersCount || 0 },
       checked_at: new Date().toISOString(),
     })
   } catch (error) {
