@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import type { NextRequest } from 'next/server'
 
-const ADMIN_UUID = '76a6d92e-6de1-45e3-a5d0-90d7905c0d52'
+const ADMIN_UUID = '60c5525a-d68a-4b0f-b7fd-b9bd2371bf4a'
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
