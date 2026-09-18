@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
-const ADMIN_UUID = '76a6d92e-6de1-45e3-a5d0-90d7905c0d52'
+const ADMIN_UUID = '60c5525a-d68a-4b0f-b7fd-b9bd2371bf4a'
 const url = 'https://nwrqdcrknipnfvhogjyg.supabase.co'
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
