@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 
 const ADMIN_UUID = '76a6d92e-6de1-45e3-a5d0-90d7905c0d52'
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://zgsbtexngystdmakqjyi.supabase.co'
+const url = 'https://nwrqdcrknipnfvhogjyg.supabase.co'
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 function adminClient() {
