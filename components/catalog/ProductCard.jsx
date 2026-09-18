@@ -31,7 +31,7 @@ export default function ProductCard({
   const price = Number(product?.['Variant Price'] || 0);
   const inventory = stock(product?.['Variant Inventory Qty']);
   const availability = inventory == null ? Boolean(product?.Published && product?.Status === 'active') : inventory > 0;
-  const availabilityLabel = inventory == null ? (availability ? 'KETERSEDIAAN AKTIF' : 'TIDAK TERSEDIA') : (inventory > 0 ? 'READY STOCK' : 'STOK HABIS');
+  const availabilityLabel = inventory == null ? (availability ? (text(product?.['Stock Status']) || 'READY STOCK') : 'TIDAK TERSEDIA') : (inventory > 0 ? 'READY STOCK' : 'STOK HABIS');
   const variant = professionalVariant(product);
   const sku = text(product?.['Variant SKU']);
   const catalog = text(product?.Catalog || product?.catalog);
@@ -59,7 +59,7 @@ export default function ProductCard({
           <strong>{money(price)}</strong>
         </div>
         <div className={styles.reference}>Harga grosir</div>
-        <div className={styles.stock}><i aria-hidden="true" />{inventory == null ? (availability ? 'Ketersediaan aktif · stok dikonfirmasi saat pemesanan' : 'Tidak tersedia') : (inventory ? `${inventory} stok tersedia` : 'Stok habis')}</div>
+        <div className={styles.stock}><i aria-hidden="true" />{inventory == null ? (availability ? 'Ready stock · kuantitas dikonfirmasi saat pemesanan' : 'Tidak tersedia') : (inventory ? `${inventory} stok tersedia` : 'Stok habis')}</div>
 
         <div className={styles.actions}>
           <div className={styles.quantity} aria-label={`Jumlah ${title}`}>
