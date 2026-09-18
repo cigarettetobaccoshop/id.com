@@ -75,6 +75,6 @@ export default async function handler(req, res) {
     if (rpcError) { if (String(rpcError.message||'').includes('INSUFFICIENT_STOCK')) return res.status(409).json({error:'Stok baru saja berubah. Silakan kembali ke katalog dan coba lagi.'}); throw rpcError }
 
     const order = {order_number,customer_name,whatsapp,courier,payment_method,total}, wa_url = whatsappUrl(order,normalized), cloud = await sendCloudWhatsApp(order)
-    return res.status(201).json({order_number,subtotal,shipping_cost,total,status:'pending',reservation_expires_at:created.reservation_expires_at,whatsapp_url:wa_url,whatsapp_sent:cloud.sent})
+    return res.status(201).json({order_number,customer_name,whatsapp,courier,payment_method,items:normalized,subtotal,shipping_cost,total,status:'pending',reservation_expires_at:created.reservation_expires_at,whatsapp_url:wa_url,whatsapp_sent:cloud.sent})
   } catch (error) { console.error('create order error',error); return res.status(500).json({error:'Pesanan belum dapat dibuat. Silakan coba kembali.'}) }
 }
