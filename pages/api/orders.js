@@ -10,8 +10,22 @@ const money = (v) => new Intl.NumberFormat('id-ID',{style:'currency',currency:'I
 function whatsappUrl(order, items) {
   const phone = clean(process.env.WHATSAPP_BUSINESS_PHONE || DEFAULT_WA_BUSINESS, 30).replace(/\D/g,'')
   if (!phone) return null
-  const lines = ['Halo R2 NUSANTARA, saya ingin konfirmasi pesanan.',`No. Pesanan: ${order.order_number}`,`Nama: ${order.customer_name}`,`Total: ${money(order.total)}`,`Pembayaran: ${order.payment_method}`,`Kurir: ${order.courier}`,'','Detail:',...items.map((x) => `- ${x.title} (${x.sku}) x${x.qty}`),'','Mohon diproses dan dikonfirmasi. Terima kasih.']
-  return `https://wa.me/${phone}?text=${encodeURIComponent(lines.join('\n'))}`
+  const lines = [
+    'Halo R2 NUSANTARA, saya ingin konfirmasi pesanan.',
+    `No. Pesanan: ${order.order_number}`,
+    `Nama: ${order.customer_name}`,
+    `WhatsApp: ${order.whatsapp}`,
+    `Email: ${order.email || '-'}`,
+    `Alamat: ${order.address}${order.city ? `, ${order.city}` : ''}${order.postal_code ? ` ${order.postal_code}` : ''}`,
+    `Kurir: ${order.courier}`,
+    `Pembayaran: ${order.payment_method}`,
+    '', 'Detail:',
+    ...items.map((x) => `- ${x.title} (${x.sku}) x${x.qty} @ ${money(x.unit_price)}`),
+    '', `Subtotal: ${money(order.subtotal)}`, `Pengiriman: ${money(order.shipping_cost)}`, `TOTAL: ${money(order.total)}`,
+    order.notes ? `Catatan: ${order.notes}` : '',
+    '', 'Mohon diproses dan dikonfirmasi. Terima kasih.'
+  ].filter(Boolean)
+  return `https://wa.me/${phone}?text=${encodeURIComponent(lines.join('\\n'))}`
 }
 
 async function sendCloudWhatsApp(order) {

@@ -11,7 +11,7 @@ function Icon({name,size=20}){const p={back:<path d="m15 18-6-6 6-6"/>,check:<pa
 
 function buildMessage(result, form){
  const lines = (result.items||[]).map((x)=>`• ${x.title||x.handle||x.sku} | SKU: ${x.sku||'-'} | Qty: ${x.qty}`).join('\n')
- return `Halo R2 Nusantara, saya ingin konfirmasi pesanan.\n\nNO. PESANAN: ${result.order_number}\nNama: ${form.name}\nWhatsApp: ${form.whatsapp}\nAlamat: ${form.address}${form.city?`, ${form.city}`:''}${form.postal_code?` ${form.postal_code}`:''}\nKurir: ${form.courier}\nPembayaran: ${form.payment_method}\n\nITEM:\n${lines||'-'}\n\nSubtotal: ${money(result.subtotal)}\nPengiriman: ${money(result.shipping_cost)}\nTOTAL: ${money(result.total)}\n${form.notes?`Catatan: ${form.notes}\n`:''}\nMohon konfirmasi ketersediaan dan proses pesanan saya. Terima kasih.`
+ return `Halo R2 Nusantara, saya ingin konfirmasi pesanan.\n\nNO. PESANAN: ${result.order_number}\nNama: ${form.name}\nWhatsApp: ${form.whatsapp}\nEmail: ${form.email||'-'}\nAlamat: ${form.address}${form.city?`, ${form.city}`:''}${form.postal_code?` ${form.postal_code}`:''}\nKurir: ${form.courier}\nPembayaran: ${form.payment_method}\n\nITEM:\n${lines||'-'}\n\nSubtotal: ${money(result.subtotal)}\nPengiriman: ${money(result.shipping_cost)}\nTOTAL: ${money(result.total)}\n${form.notes?`Catatan: ${form.notes}\n`:''}\nMohon konfirmasi ketersediaan dan proses pesanan saya. Terima kasih.`
 }
 
 export default function Checkout(){
