@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import { getAdminSupabase } from '../../lib/supabaseAdminBrowser'
 
-const ADMIN_UUID = '76a6d92e-6de1-45e3-a5d0-90d7905c0d52'
+const ADMIN_UUID = '60c5525a-d68a-4b0f-b7fd-b9bd2371bf4a'
 const STATUSES = ['pending','confirmed','shipped','completed','cancelled']
 const LABELS = { pending:'Pending', confirmed:'Confirmed', shipped:'Shipped', completed:'Completed', cancelled:'Cancelled' }
 const money = (v) => new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(v)||0)
