@@ -3,7 +3,7 @@ import ProductThumbnail from '../thumbnails/ProductThumbnail';
 import styles from './ProductCard.module.css';
 
 const text = (value) => String(value ?? '').trim();
-const stock = (value) => Math.max(0, Number(value) || 0);
+const stock = (value) => value == null || value === '' ? null : Math.max(0, Number(value) || 0);
 const money = (value) => Number.isFinite(Number(value))
   ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(value))
   : 'Harga belum tersedia';
@@ -30,6 +30,8 @@ export default function ProductCard({
   const title = text(product?.Title || product?.Handle || 'Produk R2 NUSANTARA');
   const price = Number(product?.['Variant Price'] || 0);
   const inventory = stock(product?.['Variant Inventory Qty']);
+  const availability = inventory == null ? Boolean(product?.Published && product?.Status === 'active') : inventory > 0;
+  const availabilityLabel = inventory == null ? (availability ? 'KETERSEDIAAN AKTIF' : 'TIDAK TERSEDIA') : (inventory > 0 ? 'READY STOCK' : 'STOK HABIS');
   const variant = professionalVariant(product);
   const sku = text(product?.['Variant SKU']);
   const catalog = text(product?.Catalog || product?.catalog);
@@ -57,13 +59,13 @@ export default function ProductCard({
           <strong>{money(price)}</strong>
         </div>
         <div className={styles.reference}>Harga grosir</div>
-        <div className={styles.stock}><i aria-hidden="true" />{inventory ? `${inventory} stok tersedia` : 'Stok habis'}</div>
+        <div className={styles.stock}><i aria-hidden="true" />{inventory == null ? (availability ? 'Ketersediaan aktif · stok dikonfirmasi saat pemesanan' : 'Tidak tersedia') : (inventory ? `${inventory} stok tersedia` : 'Stok habis')}</div>
 
         <div className={styles.actions}>
           <div className={styles.quantity} aria-label={`Jumlah ${title}`}>
             <button type="button" onClick={() => onDecrease?.(product)} disabled={quantity === 0} aria-label={`Kurangi ${title}`}><Minus size={17} strokeWidth={2.4} /></button>
             <output aria-live="polite">{quantity}</output>
-            <button type="button" onClick={() => onAdd?.(product)} disabled={!inventory} aria-label={`Tambah ${title}`}><Plus size={17} strokeWidth={2.4} /></button>
+            <button type="button" onClick={() => onAdd?.(product)} disabled={!availability} aria-label={`Tambah ${title}`}><Plus size={17} strokeWidth={2.4} /></button>
           </div>
           <button type="button" className={styles.cart} onClick={() => onAdd?.(product)} disabled={!inventory} aria-label={`Tambah ${title} ke keranjang`}><ShoppingCart size={18} strokeWidth={2.3} /></button>
         </div>
