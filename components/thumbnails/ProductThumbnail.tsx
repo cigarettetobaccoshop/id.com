@@ -4,6 +4,7 @@ interface ProductThumbnailProps {
   name: string;
   sourceUrl?: string;
   catalogLabel?: 'R2' | 'Resmi';
+  sku?: string;
   size?: number;
   className?: string;
 }
@@ -63,17 +64,19 @@ function makeCatalogVisual(name: string, label: 'R2' | 'Resmi'): string {
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
-export default function ProductThumbnail({ name, sourceUrl, catalogLabel = 'R2', size = 160, className }: ProductThumbnailProps): JSX.Element {
+export default function ProductThumbnail({ name, sourceUrl, catalogLabel = 'R2', sku = '', size = 160, className }: ProductThumbnailProps): JSX.Element {
+  const normalizedSku = sku.trim();
   const label = catalogLabel === 'Resmi' ? 'Resmi' : 'R2';
   const generatedVisual = useMemo(() => makeCatalogVisual(name, label), [name, label]);
-  const initialSource = sourceUrl || generatedVisual;
+  const mappedSource = sourceUrl || undefined;
+  const initialSource = mappedSource || generatedVisual;
   const [src, setSrc] = useState(initialSource);
   const imageSizes = size <= 190 ? '(max-width: 639px) 45vw, 190px' : `${size}px`;
 
   return (
     <div
       className={className}
-      aria-label={`Thumbnail katalog ${label} untuk ${name}`}
+      aria-label={`Thumbnail katalog ${label} untuk ${name}${normalizedSku ? `, SKU ${normalizedSku}` : ''}`}
       style={{ position: 'relative', width: size, height: size, display: 'grid', placeItems: 'center', overflow: 'hidden', borderRadius: 18 }}
     >
       <img
@@ -84,7 +87,7 @@ export default function ProductThumbnail({ name, sourceUrl, catalogLabel = 'R2',
         sizes={imageSizes}
         loading="lazy"
         decoding="async"
-        onError={() => setSrc(sourceUrl ? generatedVisual : FALLBACK_ASSETS[label])}
+        onError={() => setSrc(mappedSource ? generatedVisual : FALLBACK_ASSETS[label])}
         style={{ width: size, height: size, objectFit: 'cover', display: 'block' }}
       />
     </div>
