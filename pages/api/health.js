@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://zgsbtexngystdmakqjyi.supabase.co'
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://nwrqdcrknipnfvhogjyg.supabase.co'
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 function dbClient() {
@@ -16,25 +16,23 @@ export default async function handler(req, res) {
 
   try {
     const db = dbClient()
-    const [{ count: activeProducts, error: productsError }, { count: ordersCount, error: ordersError }, { count: reservationsCount, error: reservationsError }] = await Promise.all([
-      db.from('products').select('handle', { count: 'exact', head: true }).eq('published', true).eq('status', 'active'),
+    const [{ count: activeProducts, error: productsError }, { count: ordersCount, error: ordersError }] = await Promise.all([
+      db.from('products').select('id', { count: 'exact', head: true }).eq('is_active', true),
       db.from('orders').select('id', { count: 'exact', head: true }),
-      db.from('inventory_reservations').select('id', { count: 'exact', head: true }),
     ])
     if (productsError) throw productsError
     if (ordersError) throw ordersError
-    if (reservationsError) throw reservationsError
 
     res.setHeader('Cache-Control', 'no-store, max-age=0')
     res.setHeader('X-R2-Health', 'ok')
     if (req.method === 'HEAD') return res.status(200).end()
+
     return res.status(200).json({
       ok: true,
       service: 'r2-nusantara',
       database: 'connected',
       catalog: { active_products: activeProducts || 0 },
       orders: { total: ordersCount || 0 },
-      inventory_reservations: { total: reservationsCount || 0 },
       checked_at: new Date().toISOString(),
     })
   } catch (error) {
