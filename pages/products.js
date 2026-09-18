@@ -9,7 +9,7 @@ import ProductCard from '../components/catalog/ProductCard';
 
 // public.products is the single production source of truth. The mapper keeps
 // the existing storefront component contract unchanged.
-const COLUMNS = 'id,name,price,category,segment,segment_name,description,rating,is_active';
+const COLUMNS = 'id,name,price,category,segment,segment_name,description,rating,is_active,product_images(image_url,verification_status)';
 const PAGE_SIZE = 24;
 const text = (value) => String(value ?? '').trim();
 const stock = (value) => value == null || value === '' ? null : Math.max(0, Number(value) || 0);
@@ -31,6 +31,7 @@ const mapProduct = (p) => ({
   'Stock Status': p.is_active ? 'READY STOCK' : 'STOK HABIS',
   Status: p.is_active ? 'active' : 'inactive',
   Catalog: p.category,
+  imageUrl: p.product_images?.find((image) => image.verification_status === 'verified')?.image_url || '',
 });
 export async function getServerSideProps({ res, query }) {
   res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
