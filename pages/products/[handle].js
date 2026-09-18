@@ -5,7 +5,10 @@ import { RouteIcon } from '../../components/RouteIconNav'
 
 const SITE_URL = 'https://r2nusantara-shop.vercel.app'
 const money = value => Number.isFinite(Number(value)) ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(value)) : 'Harga belum tersedia'
-const stock = value => Math.max(0, Number(value) || 0)
+const stock = value => value == null || value === '' ? null : Math.max(0, Number(value) || 0)
+const isAvailable = product => product?.['Variant Inventory Qty'] == null
+  ? Boolean(product?.Published && product?.Status === 'active')
+  : stock(product['Variant Inventory Qty']) > 0
 
 export async function getServerSideProps({ params, req }) {
   const host = req.headers.host || 'r2nusantara-shop.vercel.app'
@@ -38,7 +41,9 @@ export default function ProductDetail({ product }) {
   }
 
   const url = `${SITE_URL}/products/${encodeURIComponent(product.Handle)}`
-  const description = `${product.Title || product.Handle} — katalog wholesale R2 Nusantara. Harga ${money(product['Variant Price'])}, stok ${stock(product['Variant Inventory Qty'])}.`
+  const available = isAvailable(product)
+  const availabilityText = available ? 'READY STOCK' : 'STOK HABIS'
+  const description = `${product.Title || product.Handle} — katalog wholesale R2 Nusantara. Harga ${money(product['Variant Price'])}, ketersediaan ${availabilityText}.`
 
   return <>
     <Head>
@@ -61,7 +66,7 @@ export default function ProductDetail({ product }) {
         category: product.Type || 'Wholesale',
         brand: { '@type': 'Brand', name: product.Vendor || 'R2 NUSANTARA' },
         image: [`${SITE_URL}/assets/ui/r2-detail-pack.svg`],
-        offers: { '@type': 'Offer', url, priceCurrency: 'IDR', price: Number(product['Variant Price'] || 0), availability: stock(product['Variant Inventory Qty']) > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' },
+        offers: { '@type': 'Offer', url, priceCurrency: 'IDR', price: Number(product['Variant Price'] || 0), availability: available ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' },
       }) }} />
     </Head>
     <main className="catalog-app product-detail-page">
@@ -72,7 +77,7 @@ export default function ProductDetail({ product }) {
       <section className="catalog-top"><Link href="/products" className="desktop-back">← Kembali ke katalog</Link><div><span className="eyebrow">LIVE PRODUCT DATA · WHOLESALE</span><h1>{product.Title || product.Handle}</h1><p>Informasi produk bersumber dari katalog R2 NUSANTARA yang terintegrasi.</p></div><div className="live-dot"><i/> LIVE</div></section>
       <section className="quick-modal product-detail-card">
         <div className="product-visual tone-0">
-          <span className="badge">{stock(product['Variant Inventory Qty']) > 0 ? 'READY STOCK' : 'OUT OF STOCK'}</span>
+          <span className="badge">{available ? 'READY STOCK' : 'STOK HABIS'}</span>
           <img className="r2-detail-image" src="/assets/ui/r2-detail-pack.svg" alt="R2 NUSANTARA — produk" width="720" height="720" loading="eager" decoding="async" />
         </div>
         <span className="category">{product.Type || product.Vendor || 'WHOLESALE'}</span>
@@ -80,10 +85,10 @@ export default function ProductDetail({ product }) {
         {product['Option1 Value'] && <p className="variant">{product['Option1 Name'] || 'VARIANT'} · {product['Option1 Value']}</p>}
         <div className="price">{money(product['Variant Price'])}</div>
         <p><strong>SKU:</strong> {product['Variant SKU'] || '—'}</p>
-        <p><strong>Stok real-time:</strong> {stock(product['Variant Inventory Qty'])} unit</p>
+        <p><strong>Ketersediaan:</strong> {available ? 'READY STOCK' : 'STOK HABIS'}{product['Variant Inventory Qty'] != null ? ` · ${stock(product['Variant Inventory Qty'])} unit` : ''}</p>
         <p><strong>Vendor:</strong> {product.Vendor || 'R2 NUSANTARA'}</p>
         <p><strong>Tags:</strong> {product.Tags || '—'}</p>
-        <button type="button" className="modal-add" disabled={stock(product['Variant Inventory Qty']) <= 0} onClick={add}>{stock(product['Variant Inventory Qty']) > 0 ? 'ADD TO CART →' : 'STOK HABIS'}</button>
+        <button type="button" className="modal-add" disabled={!available} onClick={add}>{available ? 'ADD TO CART →' : 'STOK HABIS'}</button>
       </section>
       <footer className="footer">© {new Date().getFullYear()} R2 NUSANTARA · WHOLESALE DISTRIBUTION PARTNER</footer>
     </main>
