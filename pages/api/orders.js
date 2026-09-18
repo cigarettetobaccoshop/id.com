@@ -46,29 +46,27 @@ export default async function handler(req, res) {
 
     const { data: catalog, error: catalogError } = await supabase
       .from('products')
-      .select('handle,title,vendor,type,variant_sku,variant_price,variant_inventory_qty,published,status')
-      .eq('published', true)
-      .eq('status', 'active')
+      .select('id,name,price,category,is_active')
+      .eq('is_active', true)
       .limit(250)
     if (catalogError) throw catalogError
 
     const byKey = new Map()
     for (const p of catalog || []) {
-      if (p.variant_sku) byKey.set(`sku:${p.variant_sku}`, p)
-      if (p.handle) byKey.set(`handle:${p.handle}`, p)
+      if (p.id) {
+        byKey.set('sku:' + p.id, p)
+        byKey.set('handle:' + p.id, p)
+      }
     }
 
     const normalized = []; let subtotal = 0
     for (const raw of items.slice(0,50)) {
       const qty = Math.max(1,Math.min(999,Number(raw.qty||raw.quantity||1))), key = raw.sku ? `sku:${clean(raw.sku,120)}` : `handle:${clean(raw.handle,200)}`, product = byKey.get(key)
       if (!product) return res.status(400).json({ error:'Ada produk yang sudah tidak tersedia.' })
-      // Validate against the server-side Variant Inventory Qty catalog field.
-      const stock = Math.max(0,Number(product.variant_inventory_qty)||0)
-      if (qty > stock) return res.status(409).json({ error:`${product.title||'Produk'} melebihi stok tersedia (${stock}). Silakan refresh katalog.` })
-      const unit_price = Number(product.variant_price)||0
-      if (unit_price <= 0) return res.status(400).json({error:'Harga produk tidak valid.'})
-      subtotal += unit_price*qty
-      normalized.push({sku:product.variant_sku||null,handle:product.handle||null,title:product.title||product.handle,qty,unit_price})
+      const unit_price = Number(product.price) || 0
+      if (unit_price <= 0) return res.status(400).json({ error: 'Harga produk tidak valid.' })
+      subtotal += unit_price * qty
+      normalized.push({ sku: product.id, handle: product.id, title: product.name || product.id, qty, unit_price })
     }
 
     const shipping_cost = COURIERS[courier], total = subtotal + shipping_cost, order_number = `R2-${new Date().toISOString().slice(0,10).replaceAll('-','')}-${randomUUID().slice(0,8).toUpperCase()}`
@@ -77,8 +75,6 @@ export default async function handler(req, res) {
     if (rpcError) { if (String(rpcError.message||'').includes('INSUFFICIENT_STOCK')) return res.status(409).json({error:'Stok baru saja berubah. Silakan kembali ke katalog dan coba lagi.'}); throw rpcError }
 
     const order = {order_number,customer_name,whatsapp,courier,payment_method,total}, wa_url = whatsappUrl(order,normalized), cloud = await sendCloudWhatsApp(order)
-    const { error: updateError } = await supabase.from('orders').update({whatsapp_status:cloud.sent?'sent':'pending',whatsapp_last_sent_at:cloud.sent?new Date().toISOString():null}).eq('id',created.order_id)
-    if (updateError) console.error('order WhatsApp status update error', updateError)
     return res.status(201).json({order_number,subtotal,shipping_cost,total,status:'pending',reservation_expires_at:created.reservation_expires_at,whatsapp_url:wa_url,whatsapp_sent:cloud.sent})
   } catch (error) { console.error('create order error',error); return res.status(500).json({error:'Pesanan belum dapat dibuat. Silakan coba kembali.'}) }
 }
