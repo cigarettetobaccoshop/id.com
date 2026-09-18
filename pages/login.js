@@ -17,30 +17,15 @@ export default function LoginPage() {
     let active = true
     const client = getAdminSupabase()
     if (!client) return undefined
-    const timeout = window.setTimeout(() => {
-      if (!active) return
-      setLoading(false)
-      setError('Verifikasi sesi admin terlalu lama. Silakan muat ulang halaman dan coba lagi.')
-    }, 8000)
-
     client.auth.getUser().then(({ data, error: userError }) => {
       if (!active) return
-      window.clearTimeout(timeout)
       if (!userError && data.user?.id === ADMIN_UUID) {
         window.location.replace('/admin/dashboard')
         return
       }
       setLoading(false)
-    }).catch(() => {
-      if (!active) return
-      window.clearTimeout(timeout)
-      setLoading(false)
-      setError('Koneksi sesi admin gagal diverifikasi. Silakan coba lagi.')
-    })
-    return () => {
-      active = false
-      window.clearTimeout(timeout)
-    }
+    }).catch(() => active && setLoading(false))
+    return () => { active = false }
   }, [])
 
   async function handleSubmit(event) {
