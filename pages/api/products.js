@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     ? Math.min(Math.max(rawLimit, 1), MAX_CATALOG_ROWS)
     : MAX_CATALOG_ROWS
 
-  const { data, count, error } = await supabase
+  const { data, count, error } = await supabaseServer
     .from('products')
     .select('id,name,price,category,segment,segment_name,description,rating,is_active', { count: 'exact' })
     .eq('is_active', true)
