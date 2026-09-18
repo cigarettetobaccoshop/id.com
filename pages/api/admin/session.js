@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
-const ADMIN_UUID = '60c5525a-d68a-4b0f-b7fd-b9bd2371bf4a'
+import { ADMIN_UUID } from '../../../lib/admin/constants'
 const url = 'https://nwrqdcrknipnfvhogjyg.supabase.co'
 const publishableKey = 'sb_publishable_mqJp3tqSL1gCjz1xdcgWGQ_mtDFRTmg'
 
