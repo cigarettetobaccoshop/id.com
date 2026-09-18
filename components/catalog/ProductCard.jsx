@@ -44,7 +44,7 @@ export default function ProductCard({
         <div className={`${styles.productVisual} ${styles[`tone${index % 4}`]}`}>
           <ProductThumbnail name={title} catalogLabel={catalogLabel} size={190} className={styles.thumbnail} />
         </div>
-        <span className={`${styles.stockBadge} ${inventory ? '' : styles.out}`}>{inventory ? 'READY STOCK' : 'STOK HABIS'}</span>
+        <span className={`${styles.stockBadge} ${availability ? '' : styles.out}`}>{availabilityLabel}</span>
         <button type="button" className={`${styles.favorite} ${favorite ? styles.active : ''}`} onClick={() => onFavorite?.(product)} aria-label={favorite ? `Hapus ${title} dari favorit` : `Tambah ${title} ke favorit`} aria-pressed={favorite}>
           <Heart size={17} fill={favorite ? 'currentColor' : 'none'} aria-hidden="true" />
         </button>
@@ -67,7 +67,7 @@ export default function ProductCard({
             <output aria-live="polite">{quantity}</output>
             <button type="button" onClick={() => onAdd?.(product)} disabled={!availability} aria-label={`Tambah ${title}`}><Plus size={17} strokeWidth={2.4} /></button>
           </div>
-          <button type="button" className={styles.cart} onClick={() => onAdd?.(product)} disabled={!inventory} aria-label={`Tambah ${title} ke keranjang`}><ShoppingCart size={18} strokeWidth={2.3} /></button>
+          <button type="button" className={styles.cart} onClick={() => onAdd?.(product)} disabled={!availability} aria-label={`Tambah ${title} ke keranjang`}><ShoppingCart size={18} strokeWidth={2.3} /></button>
         </div>
       </div>
     </article>
