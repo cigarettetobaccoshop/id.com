@@ -7,16 +7,14 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' })
   }
 
-  const handle = String(req.query.handle || '').trim()
-  if (!handle) return res.status(400).json({ error: 'Handle is required' })
+  const id = String(req.query.handle || '').trim()
+  if (!id) return res.status(400).json({ error: 'Product id is required' })
 
   const { data, error } = await supabase
     .from('products')
-    .select('handle,title,body_html,vendor,type,tags,published,option1_name,option1_value,variant_sku,variant_price,variant_inventory_qty,status,catalog')
-    .eq('handle', handle)
-    .eq('published', true)
-    .eq('status', 'active')
-    .limit(1)
+    .select('id,name,price,category,segment,segment_name,description,rating,is_active')
+    .eq('id', id)
+    .eq('is_active', true)
     .maybeSingle()
 
   if (error) {
@@ -26,19 +24,19 @@ export default async function handler(req, res) {
   if (!data) return res.status(404).json({ error: 'Product not found' })
 
   return res.status(200).json({ data: {
-    Handle: data.handle,
-    Title: data.title,
-    'Body (HTML)': data.body_html,
-    Vendor: data.vendor,
-    Type: data.type,
-    Tags: data.tags,
-    Published: data.published,
-    'Option1 Name': data.option1_name,
-    'Option1 Value': data.option1_value,
-    'Variant SKU': data.variant_sku,
-    'Variant Price': data.variant_price,
-    'Variant Inventory Qty': data.variant_inventory_qty,
-    Status: data.status,
-    Catalog: data.catalog,
+    Handle: data.id,
+    Title: data.name,
+    'Body (HTML)': data.description || '',
+    Vendor: data.segment_name || data.category || 'R2 Nusantara',
+    Type: data.category || 'r2',
+    Tags: data.segment || '',
+    Published: data.is_active,
+    'Option1 Name': 'Segment',
+    'Option1 Value': data.segment_name || data.segment || '',
+    'Variant SKU': data.id,
+    'Variant Price': data.price,
+    'Variant Inventory Qty': null,
+    Status: data.is_active ? 'active' : 'inactive',
+    Catalog: data.category,
   }})
 }
