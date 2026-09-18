@@ -1,12 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
-
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://nwrqdcrknipnfvhogjyg.supabase.co'
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-function dbClient() {
-  if (!serviceKey) throw new Error('Server Supabase credentials are not configured')
-  return createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } })
-}
+import { supabaseCatalogServer as db } from '../../lib/supabaseCatalogServer'
 
 export default async function handler(req, res) {
   if (!['GET', 'HEAD'].includes(req.method)) {
@@ -15,7 +7,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    const db = dbClient()
     const [{ count: activeProducts, error: productsError }, { count: ordersCount, error: ordersError }] = await Promise.all([
       db.from('products').select('id', { count: 'exact', head: true }).eq('is_active', true),
       db.from('orders').select('id', { count: 'exact', head: true }),
