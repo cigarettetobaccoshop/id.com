@@ -42,7 +42,7 @@ export default function ProductCard({
     <article className={styles.card} data-catalog={isResmi ? 'resmi' : 'r2'}>
       <div className={styles.media}>
         <div className={`${styles.productVisual} ${styles[`tone${index % 4}`]}`}>
-          <ProductThumbnail name={title} catalogLabel={catalogLabel} size={190} className={styles.thumbnail} />
+          <ProductThumbnail name={title} sku={sku} catalogLabel={catalogLabel} size={190} className={styles.thumbnail} />
         </div>
         <span className={`${styles.stockBadge} ${availability ? '' : styles.out}`}>{availabilityLabel}</span>
         <button type="button" className={`${styles.favorite} ${favorite ? styles.active : ''}`} onClick={() => onFavorite?.(product)} aria-label={favorite ? `Hapus ${title} dari favorit` : `Tambah ${title} ke favorit`} aria-pressed={favorite}>
