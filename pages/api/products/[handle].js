@@ -36,6 +36,7 @@ export default async function handler(req, res) {
     'Variant SKU': data.id,
     'Variant Price': data.price,
     'Variant Inventory Qty': null,
+    'Stock Status': data.is_active ? 'READY STOCK' : 'STOK HABIS',
     Status: data.is_active ? 'active' : 'inactive',
     Catalog: data.category,
   }})
