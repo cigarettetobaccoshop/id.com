@@ -2,12 +2,13 @@ import { randomUUID } from 'crypto'
 import { supabaseServer as supabase } from '../../lib/supabaseServer'
 
 const COURIERS = { JNE: 25000, 'J&T': 22000, SiCepat: 22000, Pickup: 0 }
+const DEFAULT_WA_BUSINESS = '6285715905079'
 const PAYMENT_METHODS = new Set(['Bank Transfer', 'Escrow (Bayar Setelah Resi)'])
 const clean = (v, max = 500) => String(v ?? '').trim().slice(0, max)
 const money = (v) => new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(v)||0)
 
 function whatsappUrl(order, items) {
-  const phone = clean(process.env.WHATSAPP_BUSINESS_PHONE, 30).replace(/\D/g,'')
+  const phone = clean(process.env.WHATSAPP_BUSINESS_PHONE || DEFAULT_WA_BUSINESS, 30).replace(/\D/g,'')
   if (!phone) return null
   const lines = ['Halo R2 NUSANTARA, saya ingin konfirmasi pesanan.',`No. Pesanan: ${order.order_number}`,`Nama: ${order.customer_name}`,`Total: ${money(order.total)}`,`Pembayaran: ${order.payment_method}`,`Kurir: ${order.courier}`,'','Detail:',...items.map((x) => `- ${x.title} (${x.sku}) x${x.qty}`),'','Mohon diproses dan dikonfirmasi. Terima kasih.']
   return `https://wa.me/${phone}?text=${encodeURIComponent(lines.join('\n'))}`
