@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   const id = String(req.query.handle || '').trim()
   if (!id) return res.status(400).json({ error: 'Product id is required' })
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseServer
     .from('products')
     .select('id,name,price,category,segment,segment_name,description,rating,is_active')
     .eq('id', id)
