@@ -56,7 +56,7 @@ Di Supabase Dashboard, tambahkan callback production dan development pada konfig
 Environment yang dibutuhkan aplikasi Production:
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://zgsbtexngystdmakqjyi.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://nwrqdcrknipnfvhogjyg.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-supabase-publishable-key
 NEXT_PUBLIC_APP_URL=https://r2nusantara-shop.vercel.app
 NEXT_PUBLIC_OAUTH_REDIRECT_URL=https://r2nusantara-shop.vercel.app/auth/callback
