@@ -2,11 +2,10 @@ import { createClient } from '@supabase/supabase-js'
 
 const ADMIN_UUID = '60c5525a-d68a-4b0f-b7fd-b9bd2371bf4a'
 const url = 'https://nwrqdcrknipnfvhogjyg.supabase.co'
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+const publishableKey = 'sb_publishable_mqJp3tqSL1gCjz1xdcgWGQ_mtDFRTmg'
 
 function adminClient() {
-  if (!serviceKey) throw new Error('Server Supabase credentials are not configured')
-  return createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } })
+  return createClient(url, publishableKey, { auth: { persistSession: false, autoRefreshToken: false } })
 }
 
 export default async function handler(req, res) {
