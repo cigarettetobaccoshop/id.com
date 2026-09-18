@@ -9,34 +9,34 @@ import ProductCard from '../components/catalog/ProductCard';
 
 // public.products is the single production source of truth. The mapper keeps
 // the existing storefront component contract unchanged.
-const COLUMNS = 'handle,title,vendor,type,tags,published,option1_name,option1_value,variant_sku,variant_price,variant_inventory_qty,status';
+const COLUMNS = 'id,name,price,category,segment,segment_name,description,rating,is_active';
 const PAGE_SIZE = 24;
 const text = (value) => String(value ?? '').trim();
-const stock = (value) => Math.max(0, Number(value) || 0);
+const stock = (value) => value == null || value === '' ? null : Math.max(0, Number(value) || 0);
 const keyOf = (product) => product?.['Variant SKU'] || product?.Handle || product?.Title || '';
-const isResmi = (product) => /^resmi-/i.test(text(product?.['Variant SKU']));
+const isResmi = (product) => text(product?.category || product?.Catalog || product?.Type).toLowerCase() === 'resmi';
 const mapProduct = (p) => ({
-  Handle: p.handle,
-  Title: p.title,
-  Vendor: p.vendor,
-  Type: p.type,
-  Tags: p.tags,
-  Published: p.published,
-  'Option1 Name': p.option1_name,
-  'Option1 Value': p.option1_value,
-  'Variant SKU': p.variant_sku,
-  'Variant Price': p.variant_price,
-  'Variant Inventory Qty': p.variant_inventory_qty,
-  Status: p.status,
+  ...p,
+  Handle: p.id,
+  Title: p.name,
+  Vendor: p.segment_name || p.category || 'R2 Nusantara',
+  Type: p.category || 'r2',
+  Tags: p.segment || '',
+  Published: p.is_active,
+  'Option1 Name': 'Segment',
+  'Option1 Value': p.segment_name || p.segment || '',
+  'Variant SKU': p.id,
+  'Variant Price': p.price,
+  'Variant Inventory Qty': null,
+  Status: p.is_active ? 'active' : 'inactive',
+  Catalog: p.category,
 });
-
 export async function getServerSideProps({ res, query }) {
   res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
   const { data, count, error } = await supabase
     .from('products')
     .select(COLUMNS, { count: 'exact' })
-    .eq('published', true)
-    .eq('status', 'active')
+    .eq('is_active', true)
     .limit(250);
   const products = error ? [] : (data || []).map(mapProduct);
   return { props: { products, count: count || 0, initialError: Boolean(error), initialCatalog: query?.catalog === 'resmi' ? 'resmi' : 'r2' } };
@@ -92,9 +92,9 @@ export default function ProductsPage({ products, count, initialError, initialCat
     const rows = catalogProducts.filter((p) => {
       const hay = [p.Title, p.Handle, p['Variant SKU'], p.Tags, p.Type, p.Vendor].filter(Boolean).join(' ').toLowerCase();
       const source = `${p.Type || ''} ${p.Tags || ''}`.toUpperCase(); const price = Number(p['Variant Price'] || 0);
-      return (!search || hay.includes(search)) && (cat === 'ALL' || source.includes(cat)) && (lo === null || price >= lo) && (hi === null || price <= hi) && (!stockOnly || stock(p['Variant Inventory Qty']) > 0) && (brand === 'ALL' || text(p.Vendor) === brand) && (variant === 'ALL' || text(p['Option1 Value']) === variant);
+      return (!search || hay.includes(search)) && (cat === 'ALL' || source.includes(cat)) && (lo === null || price >= lo) && (hi === null || price <= hi) && (!stockOnly || p.Published === true) && (brand === 'ALL' || text(p.Vendor) === brand) && (variant === 'ALL' || text(p['Option1 Value']) === variant);
     });
-    return rows.sort((a, b) => sort === 'price-asc' ? Number(a['Variant Price'] || 0) - Number(b['Variant Price'] || 0) : sort === 'price-desc' ? Number(b['Variant Price'] || 0) - Number(a['Variant Price'] || 0) : sort === 'name' ? text(a.Title).localeCompare(text(b.Title), 'id') : sort === 'stock' ? stock(b['Variant Inventory Qty']) - stock(a['Variant Inventory Qty']) : 0);
+    return rows.sort((a, b) => sort === 'price-asc' ? Number(a['Variant Price'] || 0) - Number(b['Variant Price'] || 0) : sort === 'price-desc' ? Number(b['Variant Price'] || 0) - Number(a['Variant Price'] || 0) : sort === 'name' ? text(a.Title).localeCompare(text(b.Title), 'id') : sort === 'stock' ? Number(Boolean(b.Published)) - Number(Boolean(a.Published)) : 0);
   }, [catalogProducts, q, cat, sort, minPrice, maxPrice, stockOnly, brand, variant]);
 
   const shown = filtered.slice(0, visible);
