@@ -1,4 +1,4 @@
-import supabaseServer from '../../../lib/supabaseServer'
+import supabaseServer from '../../../lib/supabaseCatalogServer'
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300')
