@@ -1,4 +1,4 @@
-import { supabase } from '../../lib/supabaseClient'
+import supabaseServer from '../../lib/supabaseServer'
 
 const MAX_CATALOG_ROWS = 250
 
