@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { BadgeCheck, LayoutGrid, List, PackageCheck, Search, SlidersHorizontal, X } from 'lucide-react';
-import { supabase } from '../lib/supabaseClient';
+import { supabaseCatalogServer as supabase } from '../lib/supabaseCatalogServer';
 import { RouteIcon } from '../components/RouteIconNav';
 import ProductCard from '../components/catalog/ProductCard';
 
