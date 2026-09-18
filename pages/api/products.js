@@ -16,6 +16,7 @@ function mapProduct(p) {
     'Variant SKU': p.id,
     'Variant Price': p.price,
     'Variant Inventory Qty': null,
+    'Stock Status': p.is_active ? 'READY STOCK' : 'STOK HABIS',
     Status: p.is_active ? 'active' : 'inactive',
     Catalog: p.category,
   }
