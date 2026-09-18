@@ -25,7 +25,7 @@ function whatsappUrl(order, items) {
     order.notes ? `Catatan: ${order.notes}` : '',
     '', 'Mohon diproses dan dikonfirmasi. Terima kasih.'
   ].filter(Boolean)
-  return `https://wa.me/${phone}?text=${encodeURIComponent(lines.join('\\n'))}`
+  return `https://wa.me/${phone}?text=${encodeURIComponent(lines.join('\n'))}`
 }
 
 async function sendCloudWhatsApp(order) {
