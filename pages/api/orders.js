@@ -89,7 +89,7 @@ export default async function handler(req, res) {
     const { data: created, error: rpcError } = await supabase.rpc('create_order_atomic',{p_order_number:order_number,p_customer_name:customer_name,p_whatsapp:whatsapp,p_email:email,p_address:address,p_city:city,p_postal_code:postal_code,p_courier:courier,p_payment_method:payment_method,p_notes:notes,p_items:normalized,p_subtotal:subtotal,p_shipping_cost:shipping_cost,p_total:total,p_reservation_minutes:30,p_user_id:user?.id || null})
     if (rpcError) { if (String(rpcError.message||'').includes('INSUFFICIENT_STOCK')) return res.status(409).json({error:'Stok baru saja berubah. Silakan kembali ke katalog dan coba lagi.'}); throw rpcError }
 
-    const order = {order_number,customer_name,whatsapp,courier,payment_method,total}, wa_url = whatsappUrl(order,normalized), cloud = await sendCloudWhatsApp(order)
+    const order = {order_number,customer_name,whatsapp,email,address,city,postal_code,courier,payment_method,notes,subtotal,shipping_cost,total}, wa_url = whatsappUrl(order,normalized), cloud = await sendCloudWhatsApp(order)
     return res.status(201).json({order_number,customer_name,whatsapp,courier,payment_method,items:normalized,subtotal,shipping_cost,total,status:'pending',reservation_expires_at:created.reservation_expires_at,whatsapp_url:wa_url,whatsapp_sent:cloud.sent})
   } catch (error) { console.error('create order error',error); return res.status(500).json({error:'Pesanan belum dapat dibuat. Silakan coba kembali.'}) }
 }
