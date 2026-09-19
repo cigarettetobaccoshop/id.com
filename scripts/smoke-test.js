@@ -88,4 +88,5 @@ const cssImports = [...app.matchAll(/import ['"]\.\.\/styles\/([^'"]+\.css)['"]/
 const duplicateImports = cssImports.filter((name, index) => cssImports.indexOf(name) !== index)
 if (duplicateImports.length) throw new Error(`Duplicate global CSS import: ${duplicateImports.join(', ')}`)
 
+require('./css-declaration-audit.js')
 console.log('R2 NUSANTARA production smoke test: PASS')
