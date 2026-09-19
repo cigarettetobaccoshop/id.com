@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { getAdminSupabase } from '../lib/supabaseAdminBrowser'
 
-const ADMIN_UUID = '60c5525a-d68a-4b0f-b7fd-b9bd2371bf4a'
+import { ADMIN_UUID } from '../lib/admin/constants'
 
 export default function LoginPage() {
   const router = useRouter()

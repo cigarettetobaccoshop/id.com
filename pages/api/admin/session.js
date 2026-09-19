@@ -1,26 +1,12 @@
-import { createClient } from '@supabase/supabase-js'
-
-const ADMIN_UUID = '60c5525a-d68a-4b0f-b7fd-b9bd2371bf4a'
-const url = 'https://nwrqdcrknipnfvhogjyg.supabase.co'
-const publishableKey = 'sb_publishable_mqJp3tqSL1gCjz1xdcgWGQ_mtDFRTmg'
-
-function adminClient() {
-  return createClient(url, publishableKey, { auth: { persistSession: false, autoRefreshToken: false } })
-}
+import { requireAdmin } from '../../../lib/admin/authorization'
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'private, no-store')
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' })
 
   try {
-    const auth = req.headers.authorization || ''
-    const token = auth.startsWith('Bearer ') ? auth.slice(7) : ''
-    if (!token) return res.status(401).json({ error: 'Sesi admin tidak ditemukan.' })
-
-    const { data: { user }, error } = await adminClient().auth.getUser(token)
-    if (error || !user || user.id !== ADMIN_UUID) {
-      return res.status(403).json({ error: 'Verifikasi admin gagal.' })
-    }
+    const user = await requireAdmin(req)
+    if (!user) return res.status(403).json({ error: 'Verifikasi admin gagal.' })
 
     return res.status(200).json({
       ok: true,
