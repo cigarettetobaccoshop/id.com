@@ -4,7 +4,6 @@ import { SUPABASE_URL } from '../../../lib/supabase/config'
 import { requireAdmin } from '../../../lib/admin/authorization'
 const STATUS = new Set(['pending','confirmed','shipped','completed','cancelled'])
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-const publishableKey = 'sb_publishable_mqJp3tqSL1gCjz1xdcgWGQ_mtDFRTmg'
 
 function adminClient() {
   if (!SUPABASE_URL || !serviceKey) throw new Error('Server Supabase credentials are not configured')
