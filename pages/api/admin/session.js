@@ -1,11 +1,11 @@
 import { createClient } from '@supabase/supabase-js'
-
+import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from '../../../lib/supabase/config'
 import { ADMIN_UUID } from '../../../lib/admin/constants'
-const url = 'https://nwrqdcrknipnfvhogjyg.supabase.co'
-const publishableKey = 'sb_publishable_mqJp3tqSL1gCjz1xdcgWGQ_mtDFRTmg'
 
-function adminClient() {
-  return createClient(url, publishableKey, { auth: { persistSession: false, autoRefreshToken: false } })
+function authClient() {
+  return createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  })
 }
 
 export default async function handler(req, res) {
@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     const token = auth.startsWith('Bearer ') ? auth.slice(7) : ''
     if (!token) return res.status(401).json({ error: 'Sesi admin tidak ditemukan.' })
 
-    const { data: { user }, error } = await adminClient().auth.getUser(token)
+    const { data: { user }, error } = await authClient().auth.getUser(token)
     if (error || !user || user.id !== ADMIN_UUID) {
       return res.status(403).json({ error: 'Verifikasi admin gagal.' })
     }
