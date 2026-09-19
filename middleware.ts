@@ -3,14 +3,15 @@ import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import type { NextRequest } from 'next/server'
 
 import { ADMIN_UUID } from './lib/admin/constants'
+import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from './lib/supabase/config'
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
   const supabase = createMiddlewareClient(
     { req, res },
     {
-      supabaseUrl: 'https://nwrqdcrknipnfvhogjyg.supabase.co',
-      supabaseKey: 'sb_publishable_mqJp3tqSL1gCjz1xdcgWGQ_mtDFRTmg',
+      supabaseUrl: SUPABASE_URL,
+      supabaseKey: SUPABASE_PUBLISHABLE_KEY,
     },
   )
   const path = req.nextUrl.pathname
