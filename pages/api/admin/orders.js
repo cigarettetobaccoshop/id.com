@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
-import { ADMIN_UUID } from '../../../lib/admin/constants'
+import { requireAdmin } from '../../../lib/admin/authorization'
 const STATUS = new Set(['pending','confirmed','shipped','completed','cancelled'])
 const url = 'https://nwrqdcrknipnfvhogjyg.supabase.co'
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
