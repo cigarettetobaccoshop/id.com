@@ -1,27 +1,14 @@
 import { createClient } from '@supabase/supabase-js'
+import { SUPABASE_URL } from '../../../lib/supabase/config'
 
 import { requireAdmin } from '../../../lib/admin/authorization'
 const STATUS = new Set(['pending','confirmed','shipped','completed','cancelled'])
-const url = 'https://nwrqdcrknipnfvhogjyg.supabase.co'
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 const publishableKey = 'sb_publishable_mqJp3tqSL1gCjz1xdcgWGQ_mtDFRTmg'
 
 function adminClient() {
-  if (!url || !serviceKey) throw new Error('Server Supabase credentials are not configured')
-  return createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } })
-}
-
-function authClient() {
-  return createClient(url, publishableKey, { auth: { persistSession: false, autoRefreshToken: false } })
-}
-
-async function requireAdmin(req) {
-  const auth = req.headers.authorization || ''
-  const token = auth.startsWith('Bearer ') ? auth.slice(7) : ''
-  if (!token) return null
-  const { data: { user }, error } = await authClient().auth.getUser(token)
-  if (error || !user || user.id !== ADMIN_UUID) return null
-  return user
+  if (!SUPABASE_URL || !serviceKey) throw new Error('Server Supabase credentials are not configured')
+  return createClient(SUPABASE_URL, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } })
 }
 
 function mapOrder(row) {
