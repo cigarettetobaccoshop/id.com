@@ -72,7 +72,7 @@ if (!adminLogin.includes('/api/admin/session')) throw new Error('Admin server ve
 if (!adminDashboard.includes('/api/admin/orders')) throw new Error('Admin dashboard order API integration missing')
 if (!adminDashboard.includes('/api/admin/session')) throw new Error('Admin dashboard session verification missing')
 if (!adminSession.includes('requireAdmin')) throw new Error('Admin session authorization guard missing')
-if (!adminSession.includes('ADMIN_UUID')) throw new Error('Admin UUID verification missing')
+if (!adminAuthorization.includes('ADMIN_UUID')) throw new Error('Central admin UUID verification missing')
 if (!adminOrders.includes('SUPABASE_SERVICE_ROLE_KEY')) throw new Error('Admin order server credential guard missing')
 if (!adminOrders.includes('requireAdmin')) throw new Error('Admin order authorization guard missing')
 if (!adminBrowser.includes('createBrowserSupabaseClient')) throw new Error('Cookie-based admin browser client missing')
@@ -89,4 +89,5 @@ const duplicateImports = cssImports.filter((name, index) => cssImports.indexOf(n
 if (duplicateImports.length) throw new Error(`Duplicate global CSS import: ${duplicateImports.join(', ')}`)
 
 require('./css-declaration-audit.js')
+require('./css-cascade-map.js')
 console.log('R2 NUSANTARA production smoke test: PASS')
