@@ -34,7 +34,6 @@
 
 /* Mobile lock: one stable viewport-width layout, no accidental horizontal scrolling.
    Global box-sizing is owned by the canonical r2-premium.css foundation. */
-html,body{width:100%;max-width:100%;overflow-x:hidden!important}
 body{-webkit-text-size-adjust:100%;text-rendering:optimizeLegibility}
 img,svg,video,iframe{max-width:100%}
 
