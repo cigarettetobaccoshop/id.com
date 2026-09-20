@@ -1,0 +1,90 @@
+/* R2 Accessibility V48 — courier controls: touch targets + contrast only.
+   Scope is limited to the courier partner module. No JS/data/checkout changes. */
+
+.r2-home-courier__dots{
+  display:flex;
+  align-items:center;
+  gap:2px;
+  min-height:44px;
+}
+
+.r2-home-courier__dots button{
+  position:relative;
+  box-sizing:border-box;
+  display:inline-grid;
+  place-items:center;
+  flex:0 0 44px;
+  width:44px;
+  min-width:44px;
+  height:44px;
+  min-height:44px;
+  margin:0;
+  padding:0;
+  border:0;
+  border-radius:10px;
+  background:transparent;
+  color:#12365d;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.r2-home-courier__dots button::before{
+  content:"";
+  display:block;
+  width:8px;
+  height:8px;
+  border-radius:999px;
+  background:#6b7f95;
+  box-shadow:0 0 0 1px rgba(10,29,54,.08);
+  transition:width .25s ease,background-color .25s ease,box-shadow .25s ease;
+}
+
+.r2-home-courier__dots button.is-active::before{
+  width:22px;
+  background:#0f3d6e;
+  box-shadow:0 0 0 1px rgba(15,61,110,.14);
+}
+
+.r2-home-courier__dots button:hover{
+  background:rgba(15,61,110,.06);
+}
+
+.r2-home-courier__dots button:focus-visible{
+  outline:3px solid rgba(15,61,110,.55);
+  outline-offset:1px;
+  background:rgba(15,61,110,.06);
+}
+
+.r2-home-courier__copy span,
+.r2-home-courier__bottom>span{
+  color:#52677f;
+}
+
+.r2-home-courier__copy small{
+  color:#536b84;
+}
+
+.r2-home-courier__controls button:focus-visible{
+  outline:3px solid rgba(15,61,110,.55);
+  outline-offset:2px;
+}
+
+@media(max-width:620px){
+  .r2-home-courier__dots{
+    gap:0;
+    min-height:44px;
+  }
+  .r2-home-courier__dots button{
+    flex-basis:44px;
+    width:44px;
+    min-width:44px;
+    height:44px;
+    min-height:44px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .r2-home-courier__dots button::before{
+    transition:none;
+  }
+}
