@@ -87,7 +87,7 @@ const nextConfig = {
       {
         source: '/products',
         headers: [
-          { key: 'Cache-Control', value: 'private, no-cache, no-store, must-revalidate' },
+          { key: 'Cache-Control', value: 'public, s-maxage=300, stale-while-revalidate=3600' },
         ],
       },
     ]
