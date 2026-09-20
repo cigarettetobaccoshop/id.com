@@ -11,15 +11,16 @@ export async function getServerSideProps({ res }) {
     .limit(1000)
 
   const products = error ? [] : (data || [])
+  const now = new Date().toISOString()
   const urls = [
-    SITE_URL + '/',
-    SITE_URL + '/products',
-    SITE_URL + '/contact',
-    ...products.filter(p => p.id).map(p => SITE_URL + '/products/' + encodeURIComponent(p.id)),
+    { loc: SITE_URL + '/', lastmod: now },
+    { loc: SITE_URL + '/products', lastmod: now },
+    { loc: SITE_URL + '/contact', lastmod: now },
+    ...products.filter(p => p.id).map(p => ({ loc: SITE_URL + '/products/' + encodeURIComponent(p.id), lastmod: now })),
   ]
 
   const xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-    urls.map(url => '  <url><loc>' + esc(url) + '</loc></url>').join('\n') +
+    urls.map(({ loc, lastmod }) => '  <url><loc>' + esc(loc) + '</loc><lastmod>' + lastmod + '</lastmod></url>').join('\n') +
     '\n</urlset>'
 
   res.setHeader('Content-Type', 'application/xml; charset=utf-8')
