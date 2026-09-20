@@ -1,14 +1,6 @@
-import { createClient } from '@supabase/supabase-js'
-import { SUPABASE_URL } from '../../../lib/supabase/config'
+import { createAdminDataClient, getBearerToken, requireAdmin } from '../../../lib/admin/authorization'
 
-import { requireAdmin } from '../../../lib/admin/authorization'
 const STATUS = new Set(['pending','confirmed','shipped','completed','cancelled'])
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-function adminClient() {
-  if (!SUPABASE_URL || !serviceKey) throw new Error('Server Supabase credentials are not configured')
-  return createClient(SUPABASE_URL, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } })
-}
 
 function mapOrder(row) {
   return {
@@ -19,78 +11,78 @@ function mapOrder(row) {
   }
 }
 
+function rpcErrorCode(error) {
+  const message = String(error?.message || '')
+  if (message.includes('ORDER_NOT_FOUND')) return 'ORDER_NOT_FOUND'
+  if (message.includes('INVALID_ORDER_STATUS')) return 'INVALID_ORDER_STATUS'
+  if (message.includes('INVALID_STATUS_FILTER')) return 'INVALID_STATUS_FILTER'
+  if (message.includes('ADMIN_ACCESS_DENIED')) return 'ADMIN_ACCESS_DENIED'
+  return 'ADMIN_DATA_REQUEST_FAILED'
+}
+
 export default async function handler(req, res) {
   if (!['GET','PATCH'].includes(req.method)) return res.status(405).json({ error: 'Method not allowed' })
   res.setHeader('Cache-Control', 'private, no-store, max-age=0')
+
   try {
     const user = await requireAdmin(req)
     if (!user) return res.status(403).json({ error: 'Akses admin ditolak.' })
-    const db = adminClient()
+
+    const token = getBearerToken(req)
+    const db = createAdminDataClient(token)
 
     if (req.method === 'GET') {
-      const { status, from, to, limit = '50' } = req.query
+      const { status, limit = '50' } = req.query
       const max = Math.min(Math.max(Number.parseInt(limit, 10) || 50, 1), 100)
-      let query = db.from('orders')
-        .select('id,order_code,customer_name,customer_phone,email,address,city,province,postal_code,ekspedisi,payment_method,items,subtotal,shipping_cost,total,status,notes,created_at,updated_at')
-        .order('created_at',{ascending:false})
-        .limit(max)
+      const normalizedStatus = typeof status === 'string' && STATUS.has(status) ? status : null
 
-      if (typeof status === 'string' && STATUS.has(status)) query = query.eq('status', status)
-      if (typeof from === 'string' && from) query = query.gte('created_at', from)
-      if (typeof to === 'string' && to) query = query.lte('created_at', to)
+      if (typeof status === 'string' && status && !normalizedStatus) {
+        return res.status(400).json({ error: 'Filter status tidak valid.' })
+      }
 
-      const [{ data: orders, error }, { data: all, error: statsError }] = await Promise.all([
-        query,
-        db.from('orders').select('status,total,created_at')
-      ])
+      const { data, error } = await db.rpc('admin_dashboard_snapshot', {
+        p_status: normalizedStatus,
+        p_limit: max,
+      })
+
       if (error) throw error
-      if (statsError) throw statsError
 
-      const rows = all || []
-      const today = new Date()
-      today.setHours(0,0,0,0)
-      const stats = {
-        total_orders: rows.length,
-        today_orders: rows.filter(o => new Date(o.created_at) >= today).length,
-        pending: 0, confirmed: 0, shipped: 0, completed: 0, cancelled: 0,
-        total_sales: 0
-      }
-      for (const o of rows) {
-        if (stats[o.status] !== undefined) stats[o.status] += 1
-        if (o.status !== 'cancelled') stats.total_sales += Number(o.total) || 0
-      }
-
+      const snapshot = data || {}
       return res.status(200).json({
         ok: true,
-        generated_at: new Date().toISOString(),
-        orders: (orders || []).map(mapOrder),
-        stats,
+        generated_at: snapshot.generated_at || new Date().toISOString(),
+        orders: Array.isArray(snapshot.orders) ? snapshot.orders.map(mapOrder) : [],
+        stats: snapshot.stats || null,
+        database: snapshot.database || null,
+        image_integrity: snapshot.image_integrity || null,
         reservations: [],
-        audit_log: []
+        audit_log: [],
       })
     }
 
     const { id, status } = req.body || {}
-    if (!id || !STATUS.has(status)) return res.status(400).json({ error: 'ID order atau status tidak valid.' })
+    if (!id || !STATUS.has(status)) {
+      return res.status(400).json({ error: 'ID order atau status tidak valid.' })
+    }
 
-    const { data: current, error: readError } = await db
-      .from('orders')
-      .select('id,order_code,status,updated_at')
-      .eq('id',id)
-      .maybeSingle()
-    if (readError) throw readError
-    if (!current) return res.status(404).json({ error: 'Order tidak ditemukan.' })
-    if (current.status === status) return res.status(200).json({ ok:true, order:mapOrder(current), unchanged:true })
+    const { data, error } = await db.rpc('admin_update_order_status', {
+      p_order_id: id,
+      p_status: status,
+    })
 
-    const { data: updated, error: updateError } = await db
-      .from('orders')
-      .update({ status, updated_at:new Date().toISOString() })
-      .eq('id',id)
-      .select('id,order_code,status,updated_at')
-      .single()
-    if (updateError) throw updateError
+    if (error) {
+      const code = rpcErrorCode(error)
+      if (code === 'ORDER_NOT_FOUND') return res.status(404).json({ error: 'Order tidak ditemukan.' })
+      if (code === 'INVALID_ORDER_STATUS') return res.status(400).json({ error: 'Status order tidak valid.' })
+      throw error
+    }
 
-    return res.status(200).json({ ok:true, order:mapOrder(updated) })
+    const result = data || {}
+    return res.status(200).json({
+      ok: true,
+      unchanged: Boolean(result.unchanged),
+      order: result.order ? mapOrder(result.order) : null,
+    })
   } catch (error) {
     console.error('admin orders API error:', error?.message || error)
     return res.status(500).json({ error: 'Permintaan admin gagal diproses.' })
