@@ -1,0 +1,283 @@
+/* R2 NUSANTARA — Homepage Upgrade v46
+   Scope: visual hierarchy, hero, trust, mobile polish, performance.
+   No API, Supabase, auth, cart, checkout, routing or database changes.
+*/
+
+/* ---------- HERO ---------- */
+.r2-hp-final-hero{
+  min-height:clamp(560px,72svh,720px)!important;
+  background:#071a35!important;
+}
+.r2-hp-final-hero-bg{
+  background:
+    linear-gradient(90deg,rgba(4,17,36,.98) 0%,rgba(5,26,54,.91) 48%,rgba(5,26,54,.66) 100%),
+    url('/assets/logo/hero-bg.jpg') center/cover no-repeat!important;
+  transform:none!important;
+}
+.r2-hp-final-hero-inner{
+  width:min(1240px,calc(100% - 48px))!important;
+  grid-template-columns:minmax(0,1fr) 350px!important;
+  gap:64px!important;
+}
+.r2-hp-final-copy{
+  max-width:760px!important;
+}
+.r2-hp-final-eyebrow{
+  font-size:9px!important;
+  letter-spacing:.17em!important;
+  border-color:rgba(255,255,255,.18)!important;
+  background:rgba(255,255,255,.07)!important;
+}
+.r2-hp-final-copy h1{
+  font-size:clamp(46px,6.4vw,78px)!important;
+  line-height:.94!important;
+  letter-spacing:-.065em!important;
+  margin:20px 0!important;
+}
+.r2-hp-final-copy h1 em{
+  display:block!important;
+  margin-top:10px!important;
+  font-size:clamp(16px,2vw,23px)!important;
+  letter-spacing:.045em!important;
+  line-height:1.15!important;
+}
+.r2-hp-final-copy>p{
+  max-width:680px!important;
+  font-size:14px!important;
+  line-height:1.75!important;
+}
+.r2-hp-final-actions a{
+  min-height:46px!important;
+}
+.r2-hp-final-live{
+  min-height:350px!important;
+  border-radius:26px!important;
+  background:linear-gradient(155deg,rgba(255,255,255,.12),rgba(255,255,255,.035))!important;
+  box-shadow:0 28px 70px rgba(0,0,0,.28)!important;
+}
+
+/* ---------- TRUST / STATS ---------- */
+.r2-hp-final-stats{
+  margin-top:-18px!important;
+  border:1px solid #d9e4ef!important;
+  border-radius:18px!important;
+  box-shadow:0 22px 55px rgba(7,29,73,.10)!important;
+}
+.r2-hp-final-stats strong{
+  color:#0b2b54!important;
+}
+.r2-hp-final-stats span{
+  color:#657991!important;
+}
+
+/* ---------- BENEFITS / TRUST SECTION ---------- */
+.r2-hp-final-benefits article{
+  min-height:205px!important;
+  padding:23px!important;
+  border-color:#dbe5ef!important;
+  border-radius:18px!important;
+}
+.r2-hp-final-benefits article>div{
+  width:44px!important;
+  height:44px!important;
+  border-radius:12px!important;
+}
+.r2-hp-final-benefits strong{
+  font-size:13px!important;
+}
+.r2-hp-final-benefits p{
+  font-size:10px!important;
+  line-height:1.7!important;
+}
+
+/* ---------- PRODUCT VISUAL SYSTEM ---------- */
+.r2-hp-final-product-visual{
+  background:
+    radial-gradient(circle at 50% 35%,rgba(62,137,230,.24),transparent 42%),
+    linear-gradient(145deg,#f1f6fb,#dce7f2)!important;
+}
+.r2-hp-final-product-visual:after{
+  content:"R2 NUSANTARA";
+  position:absolute;
+  right:10px;
+  bottom:8px;
+  font-size:6px;
+  letter-spacing:.16em;
+  font-weight:900;
+  color:rgba(11,63,149,.34);
+}
+.r2-hp-final-product-visual>div{
+  position:relative;
+  width:96px!important;
+  height:122px!important;
+  border-radius:10px!important;
+  background:linear-gradient(160deg,#174c86 0%,#0a2853 65%,#071a35 100%)!important;
+  border:1px solid rgba(255,255,255,.55)!important;
+  box-shadow:0 22px 32px rgba(7,26,53,.24),inset 0 1px 0 rgba(255,255,255,.22)!important;
+}
+.r2-hp-final-product-visual>div:before{
+  content:"DISTRIBUTOR";
+  position:absolute;
+  top:10px;
+  font-size:5px;
+  letter-spacing:.18em;
+  color:#a9c7e9;
+}
+.r2-hp-final-product-visual>div strong{
+  font-size:34px!important;
+  margin-top:9px;
+}
+.r2-hp-final-product-visual>div small{
+  color:#e3be75!important;
+}
+.r2-hp-final-product-body h3{
+  color:#102d4f!important;
+}
+.r2-hp-final-product-body>strong{
+  color:#1766c8!important;
+}
+.r2-hp-final-products article>button{
+  min-height:40px!important;
+  background:#0b3f95!important;
+  color:#fff!important;
+}
+
+/* ---------- DISTRIBUTOR TRUST BANNER ---------- */
+.r2-hp-final-distributor{
+  background:
+    radial-gradient(circle at 88% 18%,rgba(66,143,235,.22),transparent 26%),
+    linear-gradient(135deg,#061932,#0c315d 62%,#123e70)!important;
+  box-shadow:0 28px 70px rgba(7,26,53,.22)!important;
+}
+.r2-hp-final-points article{
+  border-color:rgba(255,255,255,.13)!important;
+  background:rgba(255,255,255,.065)!important;
+}
+
+/* ---------- MOBILE POLISH ---------- */
+@media(max-width:767px){
+  .r2-hp-final-hero{
+    min-height:auto!important;
+  }
+  .r2-hp-final-hero-inner{
+    width:calc(100% - 24px)!important;
+    padding:44px 0 42px!important;
+    gap:22px!important;
+  }
+  .r2-hp-final-copy h1{
+    font-size:clamp(37px,11.5vw,52px)!important;
+    line-height:.95!important;
+    margin:15px 0!important;
+  }
+  .r2-hp-final-copy h1 em{
+    font-size:15px!important;
+    letter-spacing:.035em!important;
+  }
+  .r2-hp-final-copy>p{
+    font-size:11.5px!important;
+    line-height:1.72!important;
+  }
+  .r2-hp-final-actions{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+  }
+  .r2-hp-final-actions a{
+    min-height:46px!important;
+    padding:0 10px!important;
+  }
+  .r2-hp-final-proof{
+    gap:7px!important;
+  }
+  .r2-hp-final-proof span{
+    min-height:32px!important;
+    padding:6px 7px!important;
+    border-radius:8px!important;
+    background:rgba(255,255,255,.055)!important;
+  }
+  .r2-hp-final-live{
+    min-height:250px!important;
+    padding:17px!important;
+    border-radius:18px!important;
+  }
+  .r2-hp-final-stats{
+    width:calc(100% - 20px)!important;
+    margin-top:-10px!important;
+  }
+  .r2-hp-final-stats div{
+    min-height:76px!important;
+    padding:16px 12px!important;
+  }
+  .r2-hp-final-section,
+  .r2-hp-final-distributor,
+  .r2-hp-final-location{
+    width:calc(100% - 24px)!important;
+  }
+  .r2-hp-final-section{
+    margin-top:52px!important;
+    margin-bottom:52px!important;
+  }
+  .r2-hp-final-head h2{
+    font-size:clamp(29px,8.5vw,38px)!important;
+  }
+  .r2-hp-final-benefits article{
+    min-height:185px!important;
+    padding:15px!important;
+  }
+  .r2-hp-final-category{
+    height:205px!important;
+  }
+  .r2-hp-final-products{
+    gap:8px!important;
+  }
+  .r2-hp-final-product-visual{
+    height:145px!important;
+  }
+  .r2-hp-final-product-visual>div{
+    width:68px!important;
+    height:88px!important;
+  }
+  .r2-hp-final-product-visual>div strong{
+    font-size:25px!important;
+  }
+  .r2-hp-final-products article>button{
+    min-height:40px!important;
+    width:calc(100% - 20px)!important;
+    margin:0 10px 10px!important;
+  }
+  .r2-hp-final-distributor{
+    margin-top:52px!important;
+    margin-bottom:52px!important;
+    padding:28px 18px!important;
+  }
+  .r2-hp-final-location{
+    margin-top:52px!important;
+    margin-bottom:52px!important;
+  }
+}
+
+/* ---------- PERFORMANCE ---------- */
+.r2-hp-final-section,
+.r2-hp-final-distributor,
+.r2-hp-final-location{
+  content-visibility:auto;
+  contain-intrinsic-size:600px;
+}
+.r2-hp-final-category img{
+  content-visibility:auto;
+}
+@media(max-width:767px){
+  .r2-hp-final-live,
+  .r2-hp-final-actions .secondary{
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+  .r2-hp-final [data-r2-reveal]{
+    transition-duration:.45s!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .r2-hp-final [data-r2-reveal]{
+    transition:none!important;
+  }
+}
