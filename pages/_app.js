@@ -55,6 +55,7 @@ import '../styles/r2-home-hero-structure-v47.css'
 import '../styles/r2-accessibility-touch-contrast-v48.css'
 import '../styles/r2-ai-chat.css'
 import '../styles/r2-home-verification-cleanup-v1.css'
+import Head from 'next/head'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
@@ -99,5 +100,19 @@ export default function App({ Component, pageProps }) {
   const isAdminChrome=router.pathname==='/login'||router.pathname.startsWith('/admin')
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
-  return <>{isHome&&<HomeHeader/>}{!isHome&&router.pathname!=='/katalog'&&<BrandAssetLoader/>}<>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</>{mounted&&<>{!isAdminChrome&&<RouteIconNav/>}{!isAdminChrome&&<CheckoutPrompt/>}{!isAdminChrome&&<R2AiChatWidget/>}<GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>}</>
+  return <>
+    {isHome&&<Head>
+      <title>R2 NUSANTARA | Distributor Rokok Online & Grosir Malang</title>
+      <meta name="description" content="R2 NUSANTARA adalah website distributor rokok online dan grosir dari gudang Malang, dengan katalog produk live, informasi harga, dan layanan pengiriman Indonesia." />
+      <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+      <link rel="canonical" href="https://r2nusantara-shop.vercel.app/" />
+      <meta property="og:type" content="website" />
+      <meta property="og:site_name" content="R2 NUSANTARA" />
+      <meta property="og:title" content="R2 NUSANTARA | Distributor Rokok Online & Grosir Malang" />
+      <meta property="og:description" content="Website distributor rokok online dan grosir dari gudang Malang dengan katalog produk live dan pengiriman Indonesia." />
+      <meta property="og:url" content="https://r2nusantara-shop.vercel.app/" />
+      <meta property="og:image" content="https://r2nusantara-shop.vercel.app/assets/logo/logo.png" />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify({'@context':'https://schema.org','@type':'Organization','name':'R2 NUSANTARA','url':'https://r2nusantara-shop.vercel.app/','logo':'https://r2nusantara-shop.vercel.app/assets/logo/logo.png','description':'Distributor rokok online dan grosir dari gudang Malang, Indonesia.','areaServed':'ID'})}} />
+    </Head>}
+    {isHome&&<HomeHeader/>}{!isHome&&router.pathname!=='/katalog'&&<BrandAssetLoader/>}<>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</>{mounted&&<>{!isAdminChrome&&<RouteIconNav/>}{!isAdminChrome&&<CheckoutPrompt/>}{!isAdminChrome&&<R2AiChatWidget/>}<GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>}</>
 }
