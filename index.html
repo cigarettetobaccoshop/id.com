@@ -297,8 +297,7 @@ tailwind.config = {
  <button onclick="toggleWishlistItem('resmi-4', event)" data-wish-heart="resmi-4" class="wishlist-heart-btn" aria-label="Wishlist"><i class="fa-regular fa-heart text-xs"></i></button>
  <button onclick="openQuickView('resmi-4')" class="quickview-btn" aria-label="Lihat Cepat"><i class="fa-solid fa-eye text-xs"></i></button>
  </div>
- <div class="featured-visual fv-dss mt-8"><span>DSS</span><i class="fa-solid fa-crown"></i></div>
- <h3 class="mt-5 font-serif font-bold text-lg text-deep group-hover:text-gold transition-colors">Dji Sam Soe Filter</h3>
+ <div class="featured-visual fv-dss mt-8"><span>DSS</span><i class="fa-solid fa-crown"></i></div> <h3 class="mt-5 font-serif font-bold text-lg text-deep group-hover:text-gold transition-colors">Dji Sam Soe Filter</h3>
  <p class="text-xs text-slate-500 mt-1 mb-4">Kretek Filter Premium — legendaris, perputaran cepat di semua toko.</p>
  <div class="flex items-center justify-between">
  <div class="font-mono font-bold text-xl text-deep tracking-tighter">Rp 220.000<span class="text-[10px] text-slate-500 font-sans font-medium">/slop</span></div>
@@ -598,7 +597,6 @@ tailwind.config = {
  </div>
  </div>
 </section>
-
 </main>
 
 <!-- ============ FOOTER ============ -->
@@ -618,7 +616,7 @@ tailwind.config = {
  <span class="badge-pill"><i class="fa-solid fa-shield-halved text-emerald-400"></i> Anti Penipuan</span>
  </div>
  <div class="footer-mini-map mt-4">
- <iframe src="https://maps.google.com/maps?q=Malang%2C%20Jawa%20Timur%2C%20Indonesia&z=11&output=embed&hl=id" class="w-full h-[120px] block" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Peta Mini Lokasi Gudang R2 Nusantara"></iframe>
+ <iframe src="https://maps.google.com/maps?q=Malang%2C%20Jawa%20Timur%2C%20Indonesia&z=11&output=embed&hl=id" class="w-full h-[88px] block" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Peta Mini Lokasi Gudang R2 Nusantara"></iframe>
  <a href="#lokasi" class="footer-mini-map-overlay"><i class="fa-solid fa-location-dot"></i> Lihat Lokasi Lengkap</a>
  </div>
  </div>
@@ -670,9 +668,8 @@ tailwind.config = {
  <a href="#" onclick="openLegalModal('privacy');return false;" class="footer-legal-link">Kebijakan Privasi</a>
  <a href="#" onclick="openLegalModal('cookie');return false;" class="footer-legal-link">Kebijakan Cookie</a>
  </div>
- <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
- <span>© <span id="copyrightYear">2026</span> CV. R2 Nusantara. All rights reserved.</span>
- <span class="font-mono">Gudang Malang · Jawa Timur · Indonesia</span>
+ <div class="footer-copyright">
+ <span>©2026 R2 NUSANTARA - Cigaratte Tobacco Shop</span>
  </div>
  </div>
  </div>
@@ -897,8 +894,7 @@ tailwind.config = {
 </div>
 
 <!-- Skrip Eksternal -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer></script>
-<script src="data.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer></script><script src="data.js" defer></script>
 <script src="app.js" defer></script>
 </body>
 </html>
