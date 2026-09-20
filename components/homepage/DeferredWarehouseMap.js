@@ -99,7 +99,7 @@ export default function DeferredWarehouseMap() {
 const warehouseFooterStyles = `
   .r2-hp-final-location.is-relocated-to-footer{display:none!important}
   .r2-hp-final-footer-map-slot{grid-column:1/-1;min-width:0;width:100%}
-  .r2-hp-final-footer-warehouse{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:22px;align-items:stretch;width:100%;margin-top:4px;padding:20px;border:1px solid rgba(148,163,184,.18);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.035));box-shadow:0 20px 55px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.07);overflow:hidden}
+  .r2-hp-final-footer-warehouse{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);gap:16px;align-items:stretch;width:100%;margin-top:4px;padding:14px;border:1px solid rgba(148,163,184,.18);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.035));box-shadow:0 20px 55px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.07);overflow:hidden}
   .r2-hp-final-footer-warehouse-copy{min-width:0;display:flex;flex-direction:column;justify-content:center;padding:8px 4px 8px 2px}
   .r2-hp-final-footer-kicker{font-size:7px;letter-spacing:.2em;font-weight:950;color:#9fc5ff}
   .r2-hp-final-footer-warehouse-copy h2{margin:12px 0 12px;color:#fff;font-size:clamp(24px,3vw,38px);line-height:.98;letter-spacing:-.045em}
@@ -119,7 +119,7 @@ const warehouseFooterStyles = `
   .r2-hp-final-footer-map-head i{width:26px;height:26px;border:1px solid rgba(255,255,255,.16);border-radius:50%;display:grid;place-items:center;position:relative}
   .r2-hp-final-footer-map-head i:before{content:"";width:8px;height:8px;border-radius:50%;background:#6ee7b7;box-shadow:0 0 0 5px rgba(110,231,183,.09)}
   .r2-hp-final-footer-map-head i b{position:absolute;inset:7px;border:1px solid rgba(110,231,183,.45);border-radius:50%;animation:r2FooterMapPulse 2.2s ease-out infinite}
-  .r2-hp-final-footer-map-frame{position:relative;margin:0 9px;height:190px;border-radius:14px;overflow:hidden;background:#dce7f3}
+  .r2-hp-final-footer-map-frame{position:relative;margin:0 9px;height:112px;border-radius:12px;overflow:hidden;background:#dce7f3}
   .r2-hp-final-footer-map .r2-hp-final-map{display:block;width:100%;height:100%;border:0}
   .r2-hp-final-footer-map .r2-hp-final-map-placeholder{display:grid;width:100%;height:100%;place-content:center;gap:7px;padding:18px;border:0;background:linear-gradient(135deg,#e8f1fa,#cddceb);color:#0b2444;text-align:center;cursor:pointer}
   .r2-hp-final-footer-map .r2-hp-final-map-placeholder span{font-size:7px;letter-spacing:.2em;font-weight:950;color:#51708f}
@@ -130,8 +130,8 @@ const warehouseFooterStyles = `
   .r2-hp-final-footer-map-meta{margin:8px 13px 11px!important;font-size:8px!important;color:rgba(226,232,240,.68)!important;letter-spacing:.03em}
   .r2-hp-final-footer-map-meta span{margin:0 5px;color:#6ee7b7}
   @keyframes r2FooterMapPulse{0%{transform:scale(.6);opacity:.9}70%,100%{transform:scale(1.5);opacity:0}}
-  @media (max-width:900px){.r2-hp-final-footer-warehouse{grid-template-columns:1fr;gap:16px}.r2-hp-final-footer-map-slot{max-width:none;justify-self:stretch}.r2-hp-final-footer-map-frame{height:170px}}
-  @media (max-width:620px){.r2-hp-final-footer-warehouse{grid-template-columns:1fr;padding:14px;border-radius:20px;gap:12px}.r2-hp-final-footer-warehouse-copy{padding:5px 3px 3px}.r2-hp-final-footer-warehouse-copy h2{font-size:27px;margin:10px 0 10px}.r2-hp-final-footer-warehouse-copy>p{font-size:10px;line-height:1.55}.r2-hp-final-footer-hours{margin-top:14px}.r2-hp-final-footer-location-link{margin-top:13px}.r2-hp-final-footer-map-frame{height:155px}}
+  @media (max-width:900px){.r2-hp-final-footer-warehouse{grid-template-columns:1fr;gap:16px}.r2-hp-final-footer-map-slot{max-width:none;justify-self:stretch}.r2-hp-final-footer-map-frame{height:100px}}
+  @media (max-width:620px){.r2-hp-final-footer-warehouse{grid-template-columns:1fr;padding:12px;border-radius:18px;gap:10px}.r2-hp-final-footer-warehouse-copy{padding:5px 3px 3px}.r2-hp-final-footer-warehouse-copy h2{font-size:24px;margin:8px 0 8px}.r2-hp-final-footer-warehouse-copy>p{font-size:10px;line-height:1.55}.r2-hp-final-footer-hours{margin-top:14px}.r2-hp-final-footer-location-link{margin-top:13px}.r2-hp-final-footer-map-frame{height:92px}}
   @media (prefers-reduced-motion:reduce){.r2-hp-final-footer-map-head i b,.r2-hp-final-footer-location-link,.r2-hp-final-footer-map-open{animation:none;transition:none}
   }
 `
