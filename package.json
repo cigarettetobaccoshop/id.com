@@ -1,43 +1,35 @@
 {
-  "name": "id-com",
-  "version": "1.0.0",
-  "description": "R2 Nusantara - Distributor Rokok Grosir Premium Malang",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "test": "node scripts/smoke-test.js",
-    "audit:css:rendered": "node scripts/css-rendered-selector-inventory.js",
-    "audit:protected-deps": "node scripts/protected-dependency-audit.js"
+  "name":"id-com",
+  "version":"1.0.0",
+  "description":"R2 Nusantara - Distributor Rokok Grosir Premium Malang",
+  "scripts":{
+    "dev":"next dev",
+    "build":"next build",
+    "start":"next start",
+    "lint":"next lint",
+    "test":"node scripts/smoke-test.js",
+    "audit:css:rendered":"node scripts/css-rendered-selector-inventory.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cigarettetobaccoshop/id.com.git"
+  "repository":{
+    "type":"git",
+    "url":"git+https://github.com/cigarettetobaccoshop/id.com.git"
   },
-  "keywords": [
-    "vercel",
-    "analytics",
-    "distributor",
-    "b2b"
-  ],
-  "author": "",
-  "license": "ISC",
-  "engines": {
-    "node": "22.x"
+  "keywords":["vercel","analytics","distributor","b2b"],
+  "author":"",
+  "license":"ISC",
+  "engines":{"node":"22.x"},
+  "dependencies":{
+    "@supabase/auth-helpers-nextjs":"^0.10.0",
+    "@supabase/supabase-js":"^2.45.0",
+    "@vercel/analytics":"^2.0.1",
+    "lucide-react":"^0.468.0",
+    "next":"^14.0.0",
+    "react":"^18.2.0",
+    "react-dom":"^18.2.0"
   },
-  "dependencies": {
-    "@supabase/auth-helpers-nextjs": "^0.10.0",
-    "@supabase/supabase-js": "^2.45.0",
-    "@vercel/analytics": "^2.0.1",
-    "lucide-react": "^0.468.0",
-    "next": "^14.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.11.5",
-    "@types/react": "^18.2.48",
-    "typescript": "^5.3.3"
+  "devDependencies":{
+    "@types/node":"^20.11.5",
+    "@types/react":"^18.2.48",
+    "typescript":"^5.3.3"
   }
-}\n
+}
