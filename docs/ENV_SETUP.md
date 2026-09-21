@@ -1,29 +1,27 @@
-# Environment Variables Setup Guide
+# Environment Setup — R2 Nusantara
 
-## 1. Production Setup (Vercel)
+## Production
+Konfigurasi environment dikelola melalui Vercel. Jangan commit file rahasia.
 
-Di Supabase Dashboard → Settings > API → Copy credentials:
-- NEXT_PUBLIC_SUPABASE_URL
-- NEXT_PUBLIC_SUPABASE_ANON_KEY
-- SUPABASE_SERVICE_ROLE_KEY
+Variabel Supabase yang digunakan aplikasi harus tersedia pada environment yang memang membutuhkan aksesnya, dengan service-role credential tetap server-only.
 
-Di Vercel Dashboard → Settings > Environment Variables → Add:
-- NEXT_PUBLIC_SUPABASE_URL (Production, Preview, Development)
-- NEXT_PUBLIC_SUPABASE_ANON_KEY (Production, Preview, Development)
-- SUPABASE_SERVICE_ROLE_KEY (Production only)
+## Authentication
+Alur autentikasi production menggunakan implementasi repository saat ini. Jangan menggunakan URL demo lama seperti `id.com/auth/callback` sebagai asumsi konfigurasi tanpa memeriksa route dan domain production terbaru.
 
-## 2. OAuth Setup
+## Verification
+Setelah perubahan environment:
+1. Build/deployment Vercel harus READY.
+2. `/api/health` harus merespons normal.
+3. `/api/products` harus dapat membaca katalog.
+4. Login/admin harus tetap dapat diakses.
+5. Checkout/order tidak boleh mengalami regresi.
 
-Google OAuth: console.cloud.google.com → Credentials → OAuth 2.0
-GitHub OAuth: github.com → Settings > Developer settings > OAuth Apps
+## Local development
+Gunakan `.env.local` yang tidak di-commit. Jalankan:
 
-Redirect URLs:
-- Development: http://localhost:3000/auth/callback
-- Production: https://id.com/auth/callback
+```bash
+npm install
+npm run dev
+```
 
-Then configure in Supabase Dashboard > Authentication > Providers
-
-## 3. Verify Setup
-
-Development: npm run dev → http://localhost:3000/supabase-demo
-Production: Vercel auto-deploys on push to main
+Gunakan route production yang benar sebagai referensi, bukan demo Supabase lama.
