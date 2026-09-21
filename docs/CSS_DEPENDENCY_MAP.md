@@ -8,7 +8,7 @@ Routes audited:
 
 - `/` — `components/HomepageExperience.js` + `HomeHeader`/global shell
 - `/products` — `pages/products.js` + `components/catalog/ProductCard`
-- `/katalog` — `pages/katalog.js` + `components/catalog/CatalogPage.jsx` + CSS Module
+- `/katalog` — `pages/katalog.js` compatibility redirect to canonical `/products`; no separate catalog component/CSS module
 - `/checkout` — `pages/checkout.js` with route-local global JSX styles
 - `/login` and `/admin/dashboard` — route-local/admin UI styles and authentication shell
 
@@ -20,7 +20,7 @@ Protected from this audit: Supabase, API handlers, transaction flow, Vercel conf
 |---|---|---|---|
 | `/` | `.r2-hp-final-*` | `HomepageExperience.js` inline styles + late homepage refinement layers in `_app.js` | ACTIVE |
 | `/products` | `.r2-clean-*`, `.r2-filter-*`, `.r2-view`, `.r2-load-more` | `r2-catalog-clean-v37.css`, `r2-accessibility-contrast-v38.css`, related catalog layers | ACTIVE |
-| `/katalog` | CSS-module classes from `CatalogPage.module.css` plus catalog/global compatibility layers | `CatalogPage.jsx` + catalog CSS stack | ACTIVE / LEGACY ROUTE, DO NOT DELETE |
+| `/katalog` | redirect/compatibility route; no page-specific visual selectors | `pages/katalog.js` → `/products` | ACTIVE / LEGACY ROUTE, DO NOT DELETE |
 | `/checkout` | `.checkout-*`, `.panel`, `.steps`, `.summary`, etc. | route-local `<style jsx global>` in `pages/checkout.js` | ACTIVE; no external checkout CSS required |
 | `/login` | login-specific JSX classes | route-local/component styles | ACTIVE |
 | `/admin/dashboard` | admin-specific JSX classes | route-local `<style jsx global>` in dashboard | ACTIVE |

@@ -39,7 +39,7 @@ Primary ownership: pages/products.js, components/catalog/ProductCard, r2-catalog
 
 ### /katalog
 
-Primary ownership: pages/katalog.js, components/catalog/CatalogPage.jsx, CatalogPage.module.css, and catalog compatibility layers. This route is retained intentionally.
+Primary ownership: pages/katalog.js as a compatibility redirect to canonical `/products`. The former `CatalogPage.jsx` demo component and CSS Module were removed in PR #88 after source-reference audit.
 
 ### /checkout
 
