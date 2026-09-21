@@ -14,7 +14,6 @@
   --shop-radius:12px;
   --shop-ease:cubic-bezier(.2,.8,.2,1);
 }
-*{box-sizing:border-box}
 body{background:#fff!important;color:var(--shop-ink)!important}
 /* Storefront shell */
 .hx-page{background:#fff!important}
