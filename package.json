@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "node scripts/smoke-test.js",
-    "audit:css:rendered": "node scripts/css-rendered-selector-inventory.js"
+    "audit:css:rendered": "node scripts/css-rendered-selector-inventory.js",
+    "audit:protected-deps": "node scripts/protected-dependency-audit.js"
   },
   "repository": {
     "type": "git",
@@ -39,4 +40,4 @@
     "@types/react": "^18.2.48",
     "typescript": "^5.3.3"
   }
-}
+}\n
