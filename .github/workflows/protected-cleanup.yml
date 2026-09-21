@@ -34,7 +34,7 @@ jobs:
           cache: npm
 
       - name: Run protected cleanup audit
-        run: node scripts/protected-dependency-audit.js --base "$${{ github.event.pull_request.base.sha }}"
+        run: node scripts/protected-dependency-audit.js --base "${{ github.event.pull_request.base.sha }}"
 
   build:
     name: Production build validation
