@@ -144,3 +144,129 @@
     transition:none!important;
   }
 }
+
+
+/* V2 — Hero operational metrics: keep the warehouse photo visible and move the four
+   headline metrics into a compact animated panel directly below the live graph. */
+.r2-hp-final-hero-bg{
+  background:
+    linear-gradient(90deg,rgba(4,17,36,.46) 0%,rgba(5,26,54,.38) 52%,rgba(5,26,54,.30) 100%),
+    url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1800&q=84') center/cover no-repeat!important;
+}
+.r2-hp-final-live{
+  overflow:hidden!important;
+}
+.r2-hp-final-hero-stat-slider{
+  position:relative;
+  margin-top:18px;
+  overflow:hidden;
+  border-top:1px solid rgba(255,255,255,.10);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  background:rgba(2,15,32,.20);
+}
+.r2-hp-final-hero-stat-track{
+  display:flex;
+  width:400%;
+  transition:transform .65s cubic-bezier(.22,.8,.22,1);
+  will-change:transform;
+}
+.r2-hp-final-hero-stat{
+  flex:0 0 25%;
+  min-width:0;
+  min-height:74px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:12px 12px 10px;
+}
+.r2-hp-final-hero-stat-icon{
+  flex:0 0 34px;
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:10px;
+  color:#e4bf77;
+  background:rgba(255,255,255,.07);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 8px 18px rgba(0,0,0,.12);
+}
+.r2-hp-final-hero-stat div{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.r2-hp-final-hero-stat strong{
+  color:#fff;
+  font-size:20px;
+  line-height:1;
+  letter-spacing:-.04em;
+}
+.r2-hp-final-hero-stat small{
+  color:#c4d5e9;
+  font-size:7px;
+  line-height:1.25;
+  font-weight:900;
+  letter-spacing:.13em;
+}
+.r2-hp-final-hero-stat-dots{
+  position:absolute;
+  right:10px;
+  bottom:7px;
+  display:flex;
+  gap:4px;
+  z-index:2;
+}
+.r2-hp-final-hero-stat-dots button{
+  width:5px;
+  height:5px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.30);
+  cursor:pointer;
+}
+.r2-hp-final-hero-stat-dots button.is-active{
+  width:16px;
+  border-radius:99px;
+  background:#e4bf77;
+}
+.r2-hp-final-hero-stat-dots button:focus-visible{
+  outline:2px solid #fff;
+  outline-offset:3px;
+}
+@media(max-width:767px){
+  .r2-hp-final-hero-bg{
+    background:
+      linear-gradient(180deg,rgba(4,17,36,.40) 0%,rgba(5,26,54,.34) 55%,rgba(5,26,54,.28) 100%),
+      url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1000&q=78') center/cover no-repeat!important;
+  }
+  .r2-hp-final-live{
+    padding:14px!important;
+  }
+  .r2-hp-final-live>strong{
+    margin:20px 0 12px!important;
+  }
+  .r2-hp-final-hero-stat-slider{
+    margin-top:14px;
+  }
+  .r2-hp-final-hero-stat{
+    min-height:68px;
+    padding:10px 10px 11px;
+  }
+  .r2-hp-final-hero-stat-icon{
+    flex-basis:32px;
+    width:32px;
+    height:32px;
+  }
+  .r2-hp-final-hero-stat strong{
+    font-size:18px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .r2-hp-final-hero-stat-track{
+    transition:none!important;
+  }
+}
