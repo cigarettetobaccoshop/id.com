@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const { execFileSync } = require("node:child_process");
-const fs = require("node:fs");
 const path = require("node:path");
 
 const args = process.argv.slice(2);
@@ -39,7 +38,6 @@ if (deleted.length === 0) {
 
 const tracked = git("ls-files").split("\n").filter(Boolean);
 const textExtensions = new Set([".js",".jsx",".ts",".tsx",".mjs",".cjs",".json",".css"]);
-const candidates = deleted.filter(file => textExtensions.has(path.extname(file)));
 
 function contentAtHead(file) {
   try {
@@ -72,7 +70,7 @@ for (const candidate of deleted) {
   for (const file of tracked) {
     if (file === candidate || !textExtensions.has(path.extname(file))) continue;
     const content = contentAtHead(file);
-    const re = /(?:import|export)\\s+(?:[^'"]+?\\s+from\\s+)?['"]([^'"]+)['"]|(?:require|import)\\(\\s*['"]([^'"]+)['"]\\s*\\)/g;
+    const re = /(?:import|export)\s+(?:[^'"]+?\s+from\s+)?['"]([^'"]+)['"]|(?:require|import)\(\s*['"]([^'"]+)['"]\s*\)/g;
     let match;
     while ((match = re.exec(content))) {
       const specifier = match[1] || match[2];
