@@ -32,3 +32,6 @@ jobs:
 
       - name: Production build
         run: npm run build
+
+      - name: Rendered CSS selector inventory
+        run: npm run audit:css:rendered

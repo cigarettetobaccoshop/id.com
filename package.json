@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node scripts/smoke-test.js"
+    "test": "node scripts/smoke-test.js",
+    "audit:css:rendered": "node scripts/css-rendered-selector-inventory.js"
   },
   "repository": {
     "type": "git",
@@ -21,10 +22,6 @@
   ],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/cigarettetobaccoshop/id.com/issues"
-  },
-  "homepage": "https://github.com/cigarettetobaccoshop/id.com#readme",
   "engines": {
     "node": "22.x"
   },
