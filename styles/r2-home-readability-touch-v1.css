@@ -1,0 +1,146 @@
+/* R2 NUSANTARA — Homepage Readability & Touch Precision V1
+   Scope: visual/accessibility refinement only.
+   No API, Supabase, auth, cart, checkout, routing, or business logic changes.
+*/
+
+/* 1. Hero readability: keep the warehouse image visible while adding a controlled scrim. */
+.r2-hp-final-hero-bg{
+  background:
+    linear-gradient(90deg,rgba(4,17,36,.64) 0%,rgba(5,26,54,.50) 52%,rgba(5,26,54,.38) 100%),
+    url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1800&q=84') center/cover no-repeat!important;
+}
+.r2-hp-final-copy h1{
+  color:#fff!important;
+  font-weight:900!important;
+  text-shadow:0 4px 22px rgba(0,0,0,.42)!important;
+}
+.r2-hp-final-copy>p{
+  color:#fff!important;
+  font-weight:650!important;
+  text-shadow:0 2px 14px rgba(0,0,0,.42)!important;
+}
+
+/* 2. Secondary CTA: unmistakably interactive + safer separation from the primary CTA. */
+.r2-hp-final-actions{
+  gap:14px!important;
+}
+.r2-hp-final-actions .secondary{
+  min-height:48px!important;
+  padding-inline:18px!important;
+  border:1px solid rgba(255,255,255,.72)!important;
+  background:rgba(7,26,53,.22)!important;
+  color:#fff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 8px 22px rgba(0,0,0,.10)!important;
+}
+.r2-hp-final-actions .secondary:hover,
+.r2-hp-final-actions .secondary:focus-visible{
+  background:rgba(255,255,255,.12)!important;
+  border-color:#fff!important;
+}
+
+/* 3. Search: explicit search action instead of an ambiguous arrow/submit affordance. */
+.r2-hp-final-search button{
+  flex:0 0 auto;
+  min-height:40px;
+  min-width:58px;
+  padding:0 13px;
+  border:0;
+  border-radius:9px;
+  background:#071a35;
+  color:#fff;
+  font:900 8px/1 Inter,"Plus Jakarta Sans",system-ui,sans-serif;
+  letter-spacing:.08em;
+  cursor:pointer;
+  transition:transform .2s ease,background .2s ease,box-shadow .2s ease;
+}
+.r2-hp-final-search button:hover,
+.r2-hp-final-search button:focus-visible{
+  background:#1766d5;
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px rgba(23,102,213,.18);
+}
+.r2-hp-final-search button:focus-visible{
+  outline:3px solid rgba(49,133,243,.28);
+  outline-offset:2px;
+}
+
+/* 4. Active SKU/stat strip: make the complete block a clear navigation target. */
+.r2-hp-final-stats{
+  cursor:pointer;
+  text-decoration:none!important;
+}
+.r2-hp-final-stats:hover{
+  box-shadow:0 22px 55px rgba(7,29,73,.13)!important;
+}
+.r2-hp-final-stats:focus-visible{
+  outline:3px solid rgba(31,111,227,.34);
+  outline-offset:4px;
+}
+
+/* 5. Status labels: one consistent visual language; informational, not fake filters. */
+.r2-hp-final-proof{
+  gap:10px!important;
+}
+.r2-hp-final-proof span{
+  min-height:32px;
+  padding:7px 10px!important;
+  border:1px solid rgba(255,255,255,.20)!important;
+  border-radius:8px!important;
+  background:rgba(255,255,255,.07)!important;
+  color:rgba(255,255,255,.86)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+
+/* Mobile: preserve the locked vertical rhythm and prevent fat-finger collisions. */
+@media(max-width:767px){
+  .r2-hp-final-hero-bg{
+    background:
+      linear-gradient(180deg,rgba(4,17,36,.56) 0%,rgba(5,26,54,.46) 55%,rgba(5,26,54,.40) 100%),
+      url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1000&q=78') center/cover no-repeat!important;
+  }
+  .r2-hp-final-actions{
+    gap:12px!important;
+  }
+  .r2-hp-final-actions a{
+    min-height:48px!important;
+  }
+  .r2-hp-final-search{
+    height:auto!important;
+    min-height:54px!important;
+    padding:6px 7px 6px 13px!important;
+  }
+  .r2-hp-final-search button{
+    min-width:54px;
+    min-height:40px;
+  }
+  .r2-hp-final-search kbd{
+    display:none!important;
+  }
+  .r2-hp-final-proof{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:7px!important;
+  }
+  .r2-hp-final-proof span{
+    justify-content:center!important;
+    min-width:0!important;
+    white-space:nowrap!important;
+    padding-inline:6px!important;
+    font-size:6px!important;
+  }
+}
+@media(max-width:380px){
+  .r2-hp-final-actions{
+    grid-template-columns:1fr!important;
+  }
+  .r2-hp-final-actions .secondary{
+    margin-top:0!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .r2-hp-final-actions .secondary,
+  .r2-hp-final-search button,
+  .r2-hp-final-stats{
+    transition:none!important;
+  }
+}
