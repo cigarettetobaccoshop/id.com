@@ -47,7 +47,7 @@ Client state already handles catalog selection, search, category, price range, s
 - renders product cards inline as `.product-card`
 - uses existing cart/favorite handlers and selected-product state
 
-Legacy `components/ProductCardVisual.jsx` exists elsewhere in the repository, but it is not imported by the active `pages/products.js` flow. It will not be removed or modified in this visual refactor.
+Historical reference only: `components/ProductCardVisual.jsx` is no longer present in the production repository and is not part of the active `pages/products.js` flow. The active catalog uses `components/catalog/ProductCard.jsx`.
 
 ## 4. Existing Design Tokens
 
