@@ -69,9 +69,6 @@
   cursor:pointer;
   text-decoration:none!important;
 }
-.r2-hp-final-stats:hover{
-  box-shadow:0 22px 55px rgba(7,29,73,.13)!important;
-}
 .r2-hp-final-stats:focus-visible{
   outline:3px solid rgba(31,111,227,.34);
   outline-offset:4px;
