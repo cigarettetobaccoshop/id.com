@@ -129,9 +129,6 @@
 @media(prefers-reduced-motion:reduce){
   .r2-hp-final-actions .secondary,
   .r2-hp-final-search button,
-  .r2-hp-final-stats{
-    transition:none!important;
-  }
 }
 
 
