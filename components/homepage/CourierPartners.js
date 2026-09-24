@@ -5,16 +5,21 @@ import { createPortal } from 'react-dom'
 import jneLogo from '../../assets/ekspedisi/jne-express.png'
 import jntLogo from '../../assets/ekspedisi/j&t-express.png'
 import sicepatLogo from '../../assets/ekspedisi/sicepat-ekspres.png'
+import anterAjaLogo from '../../assets/ekspedisi/anter-aja.png'
 import indahCargoLogo from '../../assets/ekspedisi/indah-cargo.png'
+import lionParcelLogo from '../../assets/ekspedisi/lion-parcel.jpg'
+import ninjaXpressLogo from '../../assets/ekspedisi/ninja-xpres.jpg'
+import posIndonesiaLogo from '../../assets/ekspedisi/pos-indonesia.png'
 
 const partners = [
   { name: 'JNE Express', src: jneLogo, note: 'Reguler & Cargo' },
   { name: 'J&T Express', src: jntLogo, note: 'Antarkota & nasional' },
   { name: 'SiCepat Ekspres', src: sicepatLogo, note: 'Ekspres & distribusi' },
-  { name: 'AnterAja', mark: 'anteraja', tone: 'pink', note: 'Pengiriman nasional' },
-  { name: 'Lion Parcel', mark: 'lion parcel', tone: 'red', note: 'Paket & cargo' },
-  { name: 'Ninja Xpress', mark: 'ninja xpress', tone: 'red-dark', note: 'Antarkota & nasional' },
-  { name: 'POS Indonesia', mark: 'POS INDONESIA', tone: 'orange', note: 'Jangkauan nasional' }
+  { name: 'AnterAja', src: anterAjaLogo, note: 'Pengiriman nasional' },
+  { name: 'Indah Cargo', src: indahCargoLogo, note: 'Cargo & distribusi' },
+  { name: 'Lion Parcel', src: lionParcelLogo, note: 'Paket & cargo' },
+  { name: 'Ninja Xpress', src: ninjaXpressLogo, note: 'Antarkota & nasional' },
+  { name: 'POS Indonesia', src: posIndonesiaLogo, note: 'Jangkauan nasional' }
 ]
 export default function CourierPartners() {
   const [slot, setSlot] = useState(null)
@@ -71,19 +76,15 @@ export default function CourierPartners() {
               <article className="r2-home-courier__card">
                 <div className="r2-home-courier__logo-frame">
                   <div className="r2-home-courier__shine" aria-hidden="true" />
-                  <div className={`r2-home-courier__logo-box ${partner.mark ? `r2-home-courier__mark r2-home-courier__mark--${partner.tone}` : ''}`}>
-                    {partner.src ? (
-                      <Image
-                        src={partner.src}
-                        alt={`Logo ${partner.name}`}
-                        width={180}
-                        height={64}
-                        loading="lazy"
-                        sizes="(max-width: 620px) 38vw, (max-width: 899px) 20vw, 180px"
-                      />
-                    ) : (
-                      <span aria-label={partner.name}>{partner.mark}</span>
-                    )}
+                  <div className="r2-home-courier__logo-box">
+                    <Image
+                      src={partner.src}
+                      alt={`Logo ${partner.name}`}
+                      width={180}
+                      height={64}
+                      loading="lazy"
+                      sizes="(max-width: 620px) 38vw, (max-width: 899px) 20vw, 180px"
+                    />
                   </div>
                 </div>
                 <div className="r2-home-courier__copy">
@@ -114,7 +115,7 @@ export default function CourierPartners() {
 
         <div className="r2-home-courier__bottom">
           <span><b aria-hidden="true">✓</b> Mitra pengiriman terintegrasi dengan alur pemesanan</span>
-          <span className="r2-home-courier__count">07 PARTNERS · NATIONAL COVERAGE</span>
+          <span className="r2-home-courier__count">08 PARTNERS · NATIONAL COVERAGE</span>
         </div>
       </div>
 
