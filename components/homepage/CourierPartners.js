@@ -96,7 +96,14 @@ export default function CourierPartners() {
           ))}
           <li className="r2-home-courier__item">
             <article className="r2-home-courier__card r2-home-courier__coverage">
-              <div className="r2-home-courier__coverage-icon" aria-hidden="true">▰</div>
+              <div className="r2-home-courier__coverage-icon" aria-hidden="true">
+                <svg viewBox="0 0 64 40" focusable="false">
+                  <path d="M4 7h35v22H4zM39 15h10l9 9v5H39z" />
+                  <path d="M48 15v9h10M15 29a6 6 0 1 0 12 0M47 29a6 6 0 1 0 12 0" />
+                  <circle cx="21" cy="29" r="3" />
+                  <circle cx="53" cy="29" r="3" />
+                </svg>
+              </div>
               <div className="r2-home-courier__coverage-title">PENGIRIMAN KE<br/><b>SELURUH INDONESIA</b></div>
               <small>Distribusi dari gudang Malang</small>
             </article>
@@ -144,7 +151,8 @@ export default function CourierPartners() {
         .r2-home-courier__copy strong{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;line-height:1.15;color:#103b73;font-weight:900}
         .r2-home-courier__copy span{display:none}
         .r2-home-courier__coverage{display:grid;place-items:center;text-align:center;padding:20px;background:linear-gradient(145deg,#f0f8ff,#deedfc);border-color:#cbdff1}
-        .r2-home-courier__coverage-icon{display:grid;place-items:center;width:48px;height:48px;margin-bottom:8px;border-radius:12px;background:linear-gradient(145deg,#0b4f93,#082f67);color:#fff;font-size:19px;font-weight:900;box-shadow:0 9px 20px rgba(13,75,140,.2)}
+        .r2-home-courier__coverage-icon{display:grid;place-items:center;width:48px;height:48px;margin-bottom:8px;border-radius:12px;background:linear-gradient(145deg,#0b4f93,#082f67);color:#fff;box-shadow:0 9px 20px rgba(13,75,140,.2)}
+        .r2-home-courier__coverage-icon svg{width:31px;height:31px;display:block;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
         .r2-home-courier__coverage-title{color:#123b70;font-size:14px;line-height:1.25;font-weight:800;letter-spacing:.01em}.r2-home-courier__coverage-title b{font-weight:950}
         .r2-home-courier__coverage small{margin-top:8px;color:#6c829a;font-size:8px}
         .r2-home-courier__trust{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:24px;padding:17px 18px;border:1px solid #d3e4f3;border-radius:20px;background:linear-gradient(90deg,#eaf6ff,#f4faff);box-shadow:0 9px 24px rgba(20,73,126,.06)}
@@ -175,7 +183,8 @@ export default function CourierPartners() {
           .r2-home-courier__copy{min-height:30px;margin:6px 1px 0;padding:6px 6px}
           .r2-home-courier__copy strong{font-size:8.5px}
           .r2-home-courier__coverage{padding:9px}
-          .r2-home-courier__coverage-icon{width:32px;height:32px;margin-bottom:6px;border-radius:9px;font-size:13px}
+          .r2-home-courier__coverage-icon{width:32px;height:32px;margin-bottom:6px;border-radius:9px}
+          .r2-home-courier__coverage-icon svg{width:21px;height:21px}
           .r2-home-courier__coverage-title{font-size:9px}
           .r2-home-courier__coverage small{margin-top:5px;font-size:5.5px}
           .r2-home-courier__trust{grid-template-columns:1fr 1fr;margin-top:12px;padding:9px;border-radius:15px;gap:3px}
