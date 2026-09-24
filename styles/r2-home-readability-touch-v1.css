@@ -65,10 +65,6 @@
 }
 
 /* 4. Active SKU/stat strip: make the complete block a clear navigation target. */
-.r2-hp-final-stats{
-  cursor:pointer;
-  text-decoration:none!important;
-}
 
 /* 5. Status labels: one consistent visual language; informational, not fake filters. */
 .r2-hp-final-proof{
