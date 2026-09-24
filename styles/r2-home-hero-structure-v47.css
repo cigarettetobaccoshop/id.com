@@ -90,9 +90,6 @@
   min-width:0!important;
   overflow:hidden!important;
 }
-.r2-hp-final-stats{
-  margin-top:0!important;
-}
 
 /* Tablet: one clean vertical hero column before the layout gets cramped. */
 @media(max-width:960px){
@@ -186,9 +183,6 @@
   .r2-hp-final-live>strong{
     margin:24px 0 12px!important;
     font-size:38px!important;
-  }
-  .r2-hp-final-stats{
-    margin-top:0!important;
   }
 }
 

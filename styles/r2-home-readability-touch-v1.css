@@ -65,17 +65,6 @@
 }
 
 /* 4. Active SKU/stat strip: make the complete block a clear navigation target. */
-.r2-hp-final-stats{
-  cursor:pointer;
-  text-decoration:none!important;
-}
-.r2-hp-final-stats:hover{
-  box-shadow:0 22px 55px rgba(7,29,73,.13)!important;
-}
-.r2-hp-final-stats:focus-visible{
-  outline:3px solid rgba(31,111,227,.34);
-  outline-offset:4px;
-}
 
 /* 5. Status labels: one consistent visual language; informational, not fake filters. */
 .r2-hp-final-proof{
@@ -140,9 +129,6 @@
 @media(prefers-reduced-motion:reduce){
   .r2-hp-final-actions .secondary,
   .r2-hp-final-search button,
-  .r2-hp-final-stats{
-    transition:none!important;
-  }
 }
 
 

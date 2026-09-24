@@ -111,7 +111,6 @@ export default function HomeHeader() {
         @keyframes r2LogoOrbit{to{transform:rotate(360deg)}}
 
         .r2-hp-final-section{padding-top:clamp(64px,8vw,104px)!important;padding-bottom:clamp(64px,8vw,104px)!important}
-        .r2-hp-final-stats{min-height:100px!important;padding:20px clamp(20px,4vw,48px)!important}
         .r2-hp-final-head{gap:28px!important;margin-bottom:30px!important}
         .r2-hp-final-benefits{gap:14px!important}
         .r2-hp-final-benefits article{padding:24px!important;border-radius:18px!important}

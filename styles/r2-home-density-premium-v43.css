@@ -4,8 +4,6 @@
 .r2-hp-final{background:#f5f8fc!important}
 .r2-hp-final-hero{min-height:clamp(500px,64vh,680px)!important;padding:clamp(48px,6vw,78px) clamp(18px,4vw,48px)!important}
 .r2-hp-final-section{padding-top:clamp(42px,5vw,68px)!important;padding-bottom:clamp(42px,5vw,68px)!important}
-.r2-hp-final-stats{min-height:82px!important;padding:14px clamp(16px,3vw,36px)!important}
-.r2-hp-final-stats>div{gap:0!important}
 .r2-hp-final-head{gap:14px!important;margin-bottom:18px!important}
 .r2-hp-final-head h2{margin:0!important}
 .r2-hp-final-head p{margin:0!important;max-width:720px!important}
@@ -60,7 +58,6 @@
 @media(max-width:767px){
  .r2-hp-final-hero{min-height:500px!important;padding:42px 18px!important}
  .r2-hp-final-section{padding-top:38px!important;padding-bottom:38px!important}
- .r2-hp-final-stats{min-height:72px!important;padding:11px 14px!important}
  .r2-hp-final-head{margin-bottom:15px!important;gap:10px!important}
  .r2-hp-final-head h2{font-size:23px!important}
  .r2-hp-final-benefits{gap:8px!important}
