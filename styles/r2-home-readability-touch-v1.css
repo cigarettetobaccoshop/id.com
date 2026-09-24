@@ -69,10 +69,6 @@
   cursor:pointer;
   text-decoration:none!important;
 }
-.r2-hp-final-stats:focus-visible{
-  outline:3px solid rgba(31,111,227,.34);
-  outline-offset:4px;
-}
 
 /* 5. Status labels: one consistent visual language; informational, not fake filters. */
 .r2-hp-final-proof{
