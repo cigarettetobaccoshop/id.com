@@ -66,9 +66,6 @@
 .r2-hp-final-stats strong{
   color:#0b2b54!important;
 }
-.r2-hp-final-stats span{
-  color:#657991!important;
-}
 
 /* ---------- BENEFITS / TRUST SECTION ---------- */
 .r2-hp-final-benefits article{
@@ -199,10 +196,6 @@
     min-height:250px!important;
     padding:17px!important;
     border-radius:18px!important;
-  }
-  .r2-hp-final-stats{
-    width:calc(100% - 20px)!important;
-    margin-top:-10px!important;
   }
   .r2-hp-final-stats div{
     min-height:76px!important;
