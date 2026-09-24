@@ -63,9 +63,6 @@
   border-radius:18px!important;
   box-shadow:0 22px 55px rgba(7,29,73,.10)!important;
 }
-.r2-hp-final-stats strong{
-  color:#0b2b54!important;
-}
 
 /* ---------- BENEFITS / TRUST SECTION ---------- */
 .r2-hp-final-benefits article{
@@ -196,10 +193,6 @@
     min-height:250px!important;
     padding:17px!important;
     border-radius:18px!important;
-  }
-  .r2-hp-final-stats div{
-    min-height:76px!important;
-    padding:16px 12px!important;
   }
   .r2-hp-final-section,
   .r2-hp-final-distributor,
