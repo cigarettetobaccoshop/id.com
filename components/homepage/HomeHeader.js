@@ -92,7 +92,17 @@ export default function HomeHeader() {
         .r2-home-header__logo-core{position:relative;z-index:1;width:44px;height:44px;border-radius:50%;overflow:hidden;background:#0b3f95;border:1px solid rgba(255,255,255,.82);box-shadow:0 6px 16px rgba(7,29,73,.18)}
         .r2-home-header__logo-core img{display:block;width:100%;height:100%;object-fit:cover}
         .r2-home-header__wordmark{display:flex;flex-direction:column;line-height:1.05;min-width:0}
-        .r2-home-header__wordmark strong{font-size:13px;letter-spacing:.12em;font-weight:900;color:#0a1d36;white-space:nowrap}
+        .r2-home-header__wordmark strong{font-size:13px;letter-spacing:.12em;font-weight:900;color:#0a1d36;white-space:nowrap;position:relative}
+        /* Canonical header badge: wordmark itself must never generate a second check. */
+        .r2-home-header__wordmark strong::before,
+        .r2-home-header__wordmark strong::after,
+        .r2-home-header__wordmark i,
+        .r2-home-header__wordmark .verified,
+        .r2-home-header__wordmark [class*="verified"],
+        .r2-home-header__wordmark [class*="check"]{
+          content:none!important;display:none!important;width:0!important;height:0!important;
+          margin:0!important;padding:0!important;background:none!important;box-shadow:none!important;
+        }
         .r2-home-header__wordmark small{margin-top:5px;font-size:7px;letter-spacing:.14em;font-weight:800;color:#73839a;white-space:nowrap}
         .r2-home-header__verified{display:grid;place-items:center;width:22px;height:22px;flex:0 0 22px;border-radius:50%;background:#1689ed;color:#fff!important;border:2px solid #fff;box-shadow:0 3px 10px rgba(22,137,237,.28);margin-left:-3px;line-height:1}.r2-home-header__verified::before,.r2-home-header__verified::after{content:none!important;display:none!important}.r2-home-header__verified svg{display:block!important;visibility:visible!important;stroke:currentColor!important}
         .r2-home-header__nav{display:flex;align-items:center;justify-content:center;gap:4px;flex:1}
