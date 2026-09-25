@@ -33,7 +33,7 @@ These are explicitly required by the production smoke test or are directly regis
 - `styles/r2-premium.css`
 - `styles/catalog-modern.css`
 - `styles/catalog-mobile-grid.css`
-- `styles/homepage-experience.css`
+- `components/HomepageExperience.js` (current homepage owner; legacy `homepage-experience.css`, `homepage-visual-final.css`, `reference-visual-final.css`, and `r2-home-final-v25.css` were removed in the 2026-09-25 safe layer-prune pass)
 - `styles/r2-cross-page-theme-final.css`
 
 The smoke test also rejects duplicate imports in `_app.js` and checks the canonical theme token `--r2-gold`.
