@@ -70,12 +70,12 @@
 }
 
 /* Keep one canonical verified mark in the header; suppress pseudo duplicates. */
-:global(.r2-home-header__inner .r2-home-header__brand .r2-home-header__verified) {
+.home :global(.r2-home-header__inner .r2-home-header__brand .r2-home-header__verified) {
   display: grid !important;
   visibility: visible !important;
 }
-:global(.r2-home-header__wordmark strong::before),
-:global(.r2-home-header__wordmark strong::after) {
+.home :global(.r2-home-header__wordmark strong::before),
+.home :global(.r2-home-header__wordmark strong::after) {
   content: none !important;
   display: none !important;
 }
