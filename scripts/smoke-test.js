@@ -23,7 +23,6 @@ const requiredFiles = [
   'styles/r2-premium.css',
   'styles/catalog-modern.css',
   'styles/catalog-mobile-grid.css',
-  'styles/homepage-experience.css',
   'styles/r2-cross-page-theme-final.css',
   'next.config.js',
   'vercel.json',
