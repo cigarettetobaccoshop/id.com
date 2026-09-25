@@ -203,6 +203,7 @@ export default function HomeHeader() {
           .r2-hp-final ~ .route-icon-nav a.is-active::before{top:3px!important;width:20px!important;height:3px!important}
         }
         @media(prefers-reduced-motion:reduce){.r2-home-header__logo-ring{animation:none!important}}
+        @media(max-width:380px){.r2-home-header__verified{display:grid!important}.r2-home-header__wordmark small{display:block!important;font-size:5px!important;letter-spacing:.035em!important}}
       `}</style>
     </>
   )
