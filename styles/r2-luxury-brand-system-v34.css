@@ -193,3 +193,13 @@
 @media(prefers-reduced-motion:reduce){
   .src-logo-r2::before,.src-logo-r2::after,.src-hero-copy .src-type-em em,.r2-asset-loader-card img{animation:none!important}
 }
+
+/* Homepage header verification policy: one canonical badge only.
+   Legacy Instagram-like brand verification and logo-corner checks are disabled. */
+.r2-home-header .src-logo-check,
+.r2-home-header .src-brand strong i,
+.r2-home-header .r2-home-header__verified::before,
+.r2-home-header .r2-home-header__verified::after{
+  display:none!important;
+  content:none!important;
+}
