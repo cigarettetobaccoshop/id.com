@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { Menu, ShoppingBag, X, ArrowRight, LayoutGrid, MapPin, MessageCircle, BadgeCheck } from 'lucide-react'
+import { Menu, ShoppingBag, X, ArrowRight, LayoutGrid, MapPin, MessageCircle, Check } from 'lucide-react'
 
 export default function HomeHeader() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -43,7 +43,7 @@ export default function HomeHeader() {
               <small>GUDANG DISTRIBUTOR R2 & RESMI</small>
             </span>
             <span className="r2-home-header__verified" title="Distributor resmi terverifikasi" aria-label="Distributor resmi terverifikasi">
-              <BadgeCheck aria-hidden="true" size={16} strokeWidth={2.6} />
+              <Check aria-hidden="true" size={13} strokeWidth={3.2} />
             </span>
           </Link>
 
@@ -94,7 +94,7 @@ export default function HomeHeader() {
         .r2-home-header__wordmark{display:flex;flex-direction:column;line-height:1.05;min-width:0}
         .r2-home-header__wordmark strong{font-size:13px;letter-spacing:.12em;font-weight:900;color:#0a1d36;white-space:nowrap}
         .r2-home-header__wordmark small{margin-top:5px;font-size:7px;letter-spacing:.14em;font-weight:800;color:#73839a;white-space:nowrap}
-        .r2-home-header__verified{display:grid;place-items:center;color:#0a66c2;filter:drop-shadow(0 2px 4px rgba(10,102,194,.18));margin-left:-4px}.r2-home-header__verified::before,.r2-home-header__verified::after{content:none!important;display:none!important}.r2-home-header__verified>*{display:block!important;visibility:visible!important}.r2-home-header__verified svg{display:block!important;visibility:visible!important}
+        .r2-home-header__verified{display:grid;place-items:center;width:22px;height:22px;flex:0 0 22px;border-radius:50%;background:#1689ed;color:#fff!important;border:2px solid #fff;box-shadow:0 3px 10px rgba(22,137,237,.28);margin-left:-3px;line-height:1}.r2-home-header__verified::before,.r2-home-header__verified::after{content:none!important;display:none!important}.r2-home-header__verified svg{display:block!important;visibility:visible!important;stroke:currentColor!important}
         .r2-home-header__nav{display:flex;align-items:center;justify-content:center;gap:4px;flex:1}
         .r2-home-header__nav a{display:inline-flex;align-items:center;gap:6px;position:relative;padding:10px 11px;border-radius:10px;color:#5d6e84;font-size:10px;font-weight:850;letter-spacing:.01em;transition:color .2s ease,background .2s ease,transform .2s ease}
         .r2-home-header__nav a:hover{color:#0a1d36;background:#f3f7fc;transform:translateY(-1px)}
@@ -169,8 +169,8 @@ export default function HomeHeader() {
           .r2-home-header__logo-ring{inset:-3px!important}
           .r2-home-header__wordmark strong{font-size:13px!important;letter-spacing:.11em!important}
           .r2-home-header__wordmark small{font-size:7px!important;letter-spacing:.11em!important;margin-top:5px!important}
-          .r2-home-header__verified{margin-left:0!important;width:38px;height:38px;border-radius:50%;background:#e9f6ff!important;box-shadow:0 4px 14px rgba(29,155,240,.12)!important}
-          .r2-home-header__verified svg{width:20px!important;height:20px!important}
+          .r2-home-header__verified{margin-left:0!important;width:30px!important;height:30px!important;flex-basis:30px!important;border-radius:50%!important;background:#1689ed!important;color:#fff!important;border:2px solid #fff!important;box-shadow:0 4px 14px rgba(22,137,237,.22)!important}
+          .r2-home-header__verified svg{width:15px!important;height:15px!important;stroke:#fff!important}
           .r2-home-header__actions{gap:14px!important}
           .r2-home-header__cart,.r2-home-header__menu{width:62px!important;height:62px!important;border-radius:18px!important}
           .r2-home-header__cart svg,.r2-home-header__menu svg{width:27px!important;height:27px!important}
@@ -189,8 +189,8 @@ export default function HomeHeader() {
           .r2-home-header__logo-core{width:42px!important;height:42px!important}
           .r2-home-header__wordmark strong{font-size:10px!important;letter-spacing:.07em!important}
           .r2-home-header__wordmark small{font-size:5.5px!important;letter-spacing:.06em!important;margin-top:3px!important}
-          .r2-home-header__verified{width:26px!important;height:26px!important}
-          .r2-home-header__verified svg{width:15px!important;height:15px!important}
+          .r2-home-header__verified{width:26px!important;height:26px!important;flex-basis:26px!important}
+          .r2-home-header__verified svg{width:13px!important;height:13px!important}
           .r2-home-header__actions{gap:7px!important}
           .r2-home-header__cart,.r2-home-header__menu{width:44px!important;height:44px!important;border-radius:13px!important}
           .r2-home-header__cart svg,.r2-home-header__menu svg{width:21px!important;height:21px!important}
