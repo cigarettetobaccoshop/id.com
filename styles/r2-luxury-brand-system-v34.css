@@ -203,3 +203,16 @@
   display:none!important;
   content:none!important;
 }
+
+/* Header verification canonicalization:
+   The legacy Instagram-like check after the R2 NUSANTARA wordmark is redundant.
+   Keep only .r2-home-header__verified as the single header verification badge. */
+.r2-home-header .src-brand strong i,
+.src-header .src-brand strong i{
+  display:none!important;
+  width:0!important;
+  height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
