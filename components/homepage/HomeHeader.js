@@ -160,6 +160,49 @@ export default function HomeHeader() {
           .r2-hp-final-footer{padding-left:16px!important;padding-right:16px!important}
         }
         @media (prefers-reduced-motion:reduce){.r2-home-header__logo-ring{animation:none!important}.r2-home-header__nav a,.r2-home-header__cart,.r2-home-header__admin,.r2-hp-final-footer a{transition:none!important}.r2-hp-final [data-r2-reveal]{opacity:1!important;transform:none!important;transition:none!important}}
+        /* Screenshot parity: larger mobile header and matching floating dock */
+        @media(max-width:767px){
+          .r2-home-header__inner{min-height:96px!important;width:calc(100% - 30px)!important;gap:12px!important}
+          .r2-home-header__brand{gap:12px!important}
+          .r2-home-header__logo-shell{width:62px!important;height:62px!important;flex-basis:62px!important}
+          .r2-home-header__logo-core{width:58px!important;height:58px!important}
+          .r2-home-header__logo-ring{inset:-3px!important}
+          .r2-home-header__wordmark strong{font-size:13px!important;letter-spacing:.11em!important}
+          .r2-home-header__wordmark small{font-size:7px!important;letter-spacing:.11em!important;margin-top:5px!important}
+          .r2-home-header__verified{margin-left:0!important;width:38px;height:38px;border-radius:50%;background:#e9f6ff!important;box-shadow:0 4px 14px rgba(29,155,240,.12)!important}
+          .r2-home-header__verified svg{width:20px!important;height:20px!important}
+          .r2-home-header__actions{gap:14px!important}
+          .r2-home-header__cart,.r2-home-header__menu{width:62px!important;height:62px!important;border-radius:18px!important}
+          .r2-home-header__cart svg,.r2-home-header__menu svg{width:27px!important;height:27px!important}
+          .r2-hp-final{padding-bottom:148px!important}
+          .r2-hp-final ~ .route-icon-nav{width:min(calc(100% - 44px),740px)!important;min-height:130px!important;padding:12px 14px!important;gap:10px!important;bottom:max(16px,env(safe-area-inset-bottom))!important;border-radius:30px!important}
+          .r2-hp-final ~ .route-icon-nav a{min-height:100px!important;border-radius:24px!important;gap:8px!important}
+          .r2-hp-final ~ .route-icon-nav .route-icon-wrap{width:36px!important;height:36px!important}
+          .r2-hp-final ~ .route-icon-nav .route-icon{width:31px!important;height:31px!important;stroke-width:1.7!important}
+          .r2-hp-final ~ .route-icon-nav .route-icon-label{font-size:14px!important;font-weight:750!important}
+          .r2-hp-final ~ .route-icon-nav a.is-active::before{top:7px!important;width:34px!important;height:4px!important}
+        }
+        @media(max-width:599px){
+          .r2-home-header__inner{min-height:76px!important;width:calc(100% - 18px)!important;gap:7px!important}
+          .r2-home-header__brand{gap:8px!important}
+          .r2-home-header__logo-shell{width:46px!important;height:46px!important;flex-basis:46px!important}
+          .r2-home-header__logo-core{width:42px!important;height:42px!important}
+          .r2-home-header__wordmark strong{font-size:10px!important;letter-spacing:.07em!important}
+          .r2-home-header__wordmark small{font-size:5.5px!important;letter-spacing:.06em!important;margin-top:3px!important}
+          .r2-home-header__verified{width:26px!important;height:26px!important}
+          .r2-home-header__verified svg{width:15px!important;height:15px!important}
+          .r2-home-header__actions{gap:7px!important}
+          .r2-home-header__cart,.r2-home-header__menu{width:44px!important;height:44px!important;border-radius:13px!important}
+          .r2-home-header__cart svg,.r2-home-header__menu svg{width:21px!important;height:21px!important}
+          .r2-hp-final{padding-bottom:100px!important}
+          .r2-hp-final ~ .route-icon-nav{width:calc(100% - 28px)!important;min-height:76px!important;padding:7px!important;gap:4px!important;bottom:max(8px,env(safe-area-inset-bottom))!important;border-radius:22px!important}
+          .r2-hp-final ~ .route-icon-nav a{min-height:60px!important;border-radius:15px!important;gap:4px!important}
+          .r2-hp-final ~ .route-icon-nav .route-icon-wrap{width:27px!important;height:27px!important}
+          .r2-hp-final ~ .route-icon-nav .route-icon{width:23px!important;height:23px!important}
+          .r2-hp-final ~ .route-icon-nav .route-icon-label{font-size:10px!important}
+          .r2-hp-final ~ .route-icon-nav a.is-active::before{top:3px!important;width:20px!important;height:3px!important}
+        }
+        @media(prefers-reduced-motion:reduce){.r2-home-header__logo-ring{animation:none!important}}
       `}</style>
     </>
   )
