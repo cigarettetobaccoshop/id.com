@@ -68,3 +68,19 @@
     transition: none;
   }
 }
+
+/* Keep one canonical verified mark in the header; suppress pseudo duplicates. */
+:global(.r2-home-header__inner .r2-home-header__brand .r2-home-header__verified) {
+  display: grid !important;
+  visibility: visible !important;
+}
+:global(.r2-home-header__wordmark strong::before),
+:global(.r2-home-header__wordmark strong::after) {
+  content: none !important;
+  display: none !important;
+}
+/* Brand identity appears in the header only; hero stays typography-led. */
+.home :global(.r2-hp-final-emblem),
+.home :global(.r2-hp-final-title-verified) {
+  display: none !important;
+}
