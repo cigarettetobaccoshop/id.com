@@ -3,12 +3,6 @@
    No API, Supabase, auth, cart, checkout, routing, or business logic changes.
 */
 
-/* 1. Hero readability: keep the warehouse image visible while adding a controlled scrim. */
-.r2-hp-final-hero-bg{
-  background:
-    linear-gradient(90deg,rgba(4,17,36,.64) 0%,rgba(5,26,54,.50) 52%,rgba(5,26,54,.38) 100%),
-    url('/assets/logo/hero-bg.jpg') center/cover no-repeat!important;
-}
 .r2-hp-final-copy h1{
   color:#fff!important;
   font-weight:900!important;
@@ -82,11 +76,6 @@
 
 /* Mobile: preserve the locked vertical rhythm and prevent fat-finger collisions. */
 @media(max-width:767px){
-  .r2-hp-final-hero-bg{
-    background:
-      linear-gradient(180deg,rgba(4,17,36,.56) 0%,rgba(5,26,54,.46) 55%,rgba(5,26,54,.40) 100%),
-      url('/assets/logo/hero-bg.jpg') center/cover no-repeat!important;
-  }
   .r2-hp-final-actions{
     gap:12px!important;
   }
