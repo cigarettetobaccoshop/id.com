@@ -47,5 +47,6 @@ export default function HomepageExperience(){
 .r2-hp-final-proof{gap:6px!important;margin-top:20px!important}.r2-hp-final-proof span{min-height:42px!important;padding:0 5px!important;font-size:6.5px!important}.r2-hp-final-live{min-height:380px!important;padding:18px!important;border-radius:22px!important}.r2-hp-final-live>strong{margin:40px 0 25px!important;font-size:48px!important}.r2-hp-final-live>strong small{font-size:9px!important}.r2-hp-final-bars{height:100px!important;gap:4px!important}.r2-hp-final-live footer{margin-top:18px!important;padding-top:16px!important}
 }
 @media(prefers-reduced-motion:reduce){.r2-hp-final-emblem img{animation:none!important}}
+.r2-hp-final-copy h1 .r2-hp-final-title-sub em{display:inline!important}.r2-hp-final-copy h1 .r2-hp-final-title-sub{display:flex!important;align-items:center!important;flex-wrap:nowrap!important}
 `}</style></div></>
 }
