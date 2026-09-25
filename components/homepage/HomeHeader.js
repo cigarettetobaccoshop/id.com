@@ -105,6 +105,29 @@ export default function HomeHeader() {
         }
         .r2-home-header__wordmark small{margin-top:5px;font-size:7px;letter-spacing:.14em;font-weight:800;color:#73839a;white-space:nowrap}
         .r2-home-header__verified{display:grid;place-items:center;width:22px;height:22px;flex:0 0 22px;border-radius:50%;background:#1689ed;color:#fff!important;border:2px solid #fff;box-shadow:0 3px 10px rgba(22,137,237,.28);margin-left:-3px;line-height:1}.r2-home-header__verified::before,.r2-home-header__verified::after{content:none!important;display:none!important}.r2-home-header__verified svg{display:block!important;visibility:visible!important;stroke:currentColor!important}
+        /* SINGLE-BADGE HARD LOCK:
+           No legacy inline <i>, verified/check class, or pseudo-element may render
+           anywhere inside the header. The canonical badge below is the sole exception. */
+        .r2-home-header i,
+        .r2-home-header [class*="verified"],
+        .r2-home-header [class*="Verified"],
+        .r2-home-header [class*="check"],
+        .r2-home-header [class*="Check"]{
+          display:none!important;
+          content:none!important;
+          width:0!important;height:0!important;
+          margin:0!important;padding:0!important;
+        }
+        .r2-home-header .r2-home-header__verified{
+          display:grid!important;
+          visibility:visible!important;
+          width:22px!important;height:22px!important;
+          flex:0 0 22px!important;
+        }
+        .r2-home-header .r2-home-header__verified svg{
+          display:block!important;visibility:visible!important;
+          width:13px!important;height:13px!important;
+        }
         .r2-home-header__nav{display:flex;align-items:center;justify-content:center;gap:4px;flex:1}
         .r2-home-header__nav a{display:inline-flex;align-items:center;gap:6px;position:relative;padding:10px 11px;border-radius:10px;color:#5d6e84;font-size:10px;font-weight:850;letter-spacing:.01em;transition:color .2s ease,background .2s ease,transform .2s ease}
         .r2-home-header__nav a:hover{color:#0a1d36;background:#f3f7fc;transform:translateY(-1px)}
