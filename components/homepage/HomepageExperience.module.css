@@ -1,0 +1,86 @@
+/* Scoped mobile reference polish for the homepage hero.
+   Existing global styles remain intact; this module only layers visual refinements. */
+.home {
+  --r2-reference-navy: #06152f;
+  --r2-reference-blue: #1689ed;
+  --r2-reference-gold: #e4bf77;
+}
+.home :global(.r2-hp-final-hero) {
+  background: var(--r2-reference-navy);
+  color: #f8fbff;
+}
+.home :global(.r2-hp-final-hero-bg) {
+  background-color: var(--r2-reference-navy);
+}
+.home :global(.r2-hp-final-live) {
+  border: 1px solid rgba(174, 202, 238, 0.16);
+  background: linear-gradient(145deg, rgba(37, 49, 66, 0.97), rgba(25, 37, 54, 0.97));
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.22);
+}
+.home :global(.r2-hp-final-live footer b) {
+  color: #74e4a6;
+}
+.home :global(.r2-hp-final-title-verified) {
+  background: var(--r2-reference-blue);
+  box-shadow: 0 5px 18px rgba(22, 137, 237, 0.34);
+}
+@media (max-width: 767px) {
+  .home :global(.r2-hp-final-hero) {
+    min-height: 0;
+    background: var(--r2-reference-navy);
+  }
+  .home :global(.r2-hp-final-hero-inner) {
+    width: calc(100% - 48px);
+    padding: 26px 0 32px;
+    gap: 34px;
+  }
+  .home :global(.r2-hp-final-copy) {
+    max-width: none;
+  }
+  .home :global(.r2-hp-final-copy h1) {
+    font-size: clamp(36px, 11vw, 52px);
+    line-height: 0.98;
+  }
+  .home :global(.r2-hp-final-copy > p) {
+    color: rgba(245, 249, 255, 0.82);
+    font-size: 12px;
+    line-height: 1.65;
+  }
+  .home :global(.r2-hp-final-actions a) {
+    min-height: 48px;
+    border-radius: 14px;
+  }
+  .home :global(.r2-hp-final-live) {
+    padding: 20px;
+    border-radius: 24px;
+  }
+  .home :global(.r2-hp-final-bars) {
+    height: 118px;
+    gap: 7px;
+    padding: 0 2px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home :global(.r2-hp-final [data-r2-reveal]) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Keep one canonical verified mark in the header; suppress pseudo duplicates. */
+.home :global(.r2-home-header__inner .r2-home-header__brand .r2-home-header__verified) {
+  display: grid !important;
+  visibility: visible !important;
+}
+.home :global(.r2-home-header__wordmark strong::before),
+.home :global(.r2-home-header__wordmark strong::after) {
+  content: none !important;
+  display: none !important;
+}
+/* Brand identity appears in the header only; hero stays typography-led. */
+.home :global(.r2-hp-final-emblem),
+.home :global(.r2-hp-final-title-verified) {
+  display: none !important;
+}
