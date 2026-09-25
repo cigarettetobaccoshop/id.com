@@ -113,11 +113,7 @@ export default function HomeHeader() {
         .r2-hp-final-section{padding-top:clamp(64px,8vw,104px)!important;padding-bottom:clamp(64px,8vw,104px)!important}
         .r2-hp-final-head{gap:28px!important;margin-bottom:30px!important}
         .r2-hp-final-benefits{gap:14px!important}
-        .r2-hp-final-benefits article{padding:24px!important;border-radius:18px!important}
-        .r2-hp-final-categories{gap:16px!important}
-        .r2-hp-final-category{border-radius:20px!important;overflow:hidden!important}
-        .r2-hp-final-products{gap:16px!important}
-        .r2-hp-final-products article{border-radius:18px!important}
+        .r2-hp-final-benefits article{padding:24px!important;border-radius:18px!important}        .r2-hp-final-products article{border-radius:18px!important}
         .r2-hp-final-distributor{margin-top:0!important;margin-bottom:0!important;padding:clamp(58px,8vw,100px) clamp(20px,5vw,60px)!important}
         .r2-hp-final-faq{gap:10px!important}
         .r2-hp-final-location{padding-top:clamp(58px,7vw,92px)!important;padding-bottom:clamp(58px,7vw,92px)!important}
