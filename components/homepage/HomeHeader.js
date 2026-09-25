@@ -43,7 +43,7 @@ export default function HomeHeader() {
               <small>GUDANG DISTRIBUTOR R2 & RESMI</small>
             </span>
             <span className="r2-home-header__verified" title="Distributor resmi terverifikasi" aria-label="Distributor resmi terverifikasi">
-              <BadgeCheck size={16} strokeWidth={2.4} />
+              <BadgeCheck aria-hidden="true" size={16} strokeWidth={2.6} />
             </span>
           </Link>
 
@@ -94,7 +94,7 @@ export default function HomeHeader() {
         .r2-home-header__wordmark{display:flex;flex-direction:column;line-height:1.05;min-width:0}
         .r2-home-header__wordmark strong{font-size:13px;letter-spacing:.12em;font-weight:900;color:#0a1d36;white-space:nowrap}
         .r2-home-header__wordmark small{margin-top:5px;font-size:7px;letter-spacing:.14em;font-weight:800;color:#73839a;white-space:nowrap}
-        .r2-home-header__verified{display:grid;place-items:center;color:#0a66c2;filter:drop-shadow(0 2px 4px rgba(10,102,194,.18));margin-left:-4px}
+        .r2-home-header__verified{display:grid;place-items:center;color:#0a66c2;filter:drop-shadow(0 2px 4px rgba(10,102,194,.18));margin-left:-4px}.r2-home-header__verified::before,.r2-home-header__verified::after{content:none!important;display:none!important}.r2-home-header__verified>*{display:block!important;visibility:visible!important}.r2-home-header__verified svg{display:block!important;visibility:visible!important}
         .r2-home-header__nav{display:flex;align-items:center;justify-content:center;gap:4px;flex:1}
         .r2-home-header__nav a{display:inline-flex;align-items:center;gap:6px;position:relative;padding:10px 11px;border-radius:10px;color:#5d6e84;font-size:10px;font-weight:850;letter-spacing:.01em;transition:color .2s ease,background .2s ease,transform .2s ease}
         .r2-home-header__nav a:hover{color:#0a1d36;background:#f3f7fc;transform:translateY(-1px)}
