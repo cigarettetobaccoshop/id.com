@@ -10,8 +10,8 @@ interface ProductThumbnailProps {
 }
 
 const THUMBNAIL_ASSETS = {
-  R2: 'https://i.ibb.co.com/93cLbdpZ/1000090184-99kb.jpg',
-  Resmi: 'https://i.ibb.co.com/HLP1wkQV/1000090185-99kb.jpg',
+  R2: 'https://i.ibb.co.com/RpJyY5Sn/thumbnail-katalog-r2-100kb.jpg',
+  Resmi: 'https://i.ibb.co.com/pjcxgm29/thumbnail-katalog-resmi-100kb.jpg',
 };
 
 const FALLBACK_ASSETS = {
@@ -69,7 +69,7 @@ export default function ProductThumbnail({ name, sourceUrl, catalogLabel = 'R2',
   const label = catalogLabel === 'Resmi' ? 'Resmi' : 'R2';
   const generatedVisual = useMemo(() => makeCatalogVisual(name, label), [name, label]);
   const mappedSource = sourceUrl || undefined;
-  const initialSource = mappedSource || generatedVisual;
+  const initialSource = THUMBNAIL_ASSETS[label] || mappedSource || generatedVisual;
   const [src, setSrc] = useState(initialSource);
 
   useEffect(() => {
@@ -92,7 +92,7 @@ export default function ProductThumbnail({ name, sourceUrl, catalogLabel = 'R2',
         sizes={imageSizes}
         loading="lazy"
         decoding="async"
-        onError={() => setSrc(mappedSource ? generatedVisual : FALLBACK_ASSETS[label])}
+        onError={() => setSrc(mappedSource || generatedVisual || FALLBACK_ASSETS[label])}
         style={{ width: size, height: size, objectFit: 'cover', display: 'block' }}
       />
     </div>
