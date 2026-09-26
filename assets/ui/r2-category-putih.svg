@@ -1,1 +1,114 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071d49"/><stop offset="1" stop-color="#3f8ee8"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="18" stdDeviation="18" flood-opacity=".2"/></filter></defs><rect width="640" height="420" rx="34" fill="url(#g)"/><circle cx="130" cy="60" r="130" fill="#fff" opacity=".08"/><g filter="url(#s)" transform="translate(222 58) rotate(7)"><rect width="190" height="300" rx="18" fill="#fff"/><rect x="16" y="16" width="158" height="268" rx="10" fill="#f7f9fc"/><rect x="28" y="30" width="134" height="72" rx="8" fill="#0d4b9a"/><text x="95" y="75" text-anchor="middle" font-family="Arial,sans-serif" font-size="27" font-weight="800" fill="#fff">R2</text><text x="95" y="146" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#0d4b9a">FILTER</text><path d="M48 190h94M48 206h94M48 222h94" stroke="#0d4b9a" opacity=".28" stroke-width="3"/></g><text x="38" y="370" font-family="Arial,sans-serif" font-size="18" font-weight="800" letter-spacing="3" fill="#fff">ROKOK PUTIH</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient (Deep Blue Premium) -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#071d49" />
+      <stop offset="100%" stop-color="#020a1c" />
+    </linearGradient>
+
+    <!-- Kertas Body Putih dengan Dimensi Tabung/Volume -->
+    <linearGradient id="whiteBody" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="85%" stop-color="#F2F5F8" />
+      <stop offset="100%" stop-color="#D9E0E8" />
+    </linearGradient>
+
+    <!-- Tutup Box Biru (Blue Lid) -->
+    <linearGradient id="blueLid" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#14468C" />
+      <stop offset="50%" stop-color="#1B59B3" />
+      <stop offset="85%" stop-color="#0D336B" />
+      <stop offset="100%" stop-color="#071d49" />
+    </linearGradient>
+
+    <!-- Gradasi Gold Foil Premium -->
+    <linearGradient id="goldFoil" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C59341" />
+      <stop offset="30%" stop-color="#E2B96B" />
+      <stop offset="50%" stop-color="#FBF5B7" />
+      <stop offset="70%" stop-color="#E2B96B" />
+      <stop offset="100%" stop-color="#9C6B27" />
+    </linearGradient>
+
+    <!-- Shadow untuk Ilusi 3D Melayang -->
+    <filter id="dropShadow" x="-20%" y="-20%" width="150%" height="150%">
+      <feDropShadow dx="15" dy="25" stdDeviation="20" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+
+    <!-- Clip Path untuk Radius Bungkus -->
+    <clipPath id="boxRadius">
+      <rect x="230" y="135" width="340" height="530" rx="14" />
+    </clipPath>
+  </defs>
+
+  <!-- Latar Belakang -->
+  <rect width="100%" height="100%" fill="url(#bgGradient)" />
+  
+  <!-- Efek Spotlight Latar Belakang (Seperti di studio foto) -->
+  <circle cx="200" cy="150" r="350" fill="#ffffff" opacity="0.04" />
+  <circle cx="650" cy="700" r="250" fill="#3f8ee8" opacity="0.05" />
+
+  <!-- Base Box Putih + Shadow -->
+  <rect x="230" y="135" width="340" height="530" rx="14" fill="url(#whiteBody)" filter="url(#dropShadow)" />
+
+  <!-- Konten Bungkus Rokok (Dibatasi oleh Clip Path) -->
+  <g clip-path="url(#boxRadius)">
+    
+    <!-- Warna Dasar Body Putih -->
+    <rect x="230" y="135" width="340" height="530" fill="url(#whiteBody)" />
+
+    <!-- Tutup Bagian Atas (Biru R2) -->
+    <rect x="230" y="135" width="340" height="190" fill="url(#blueLid)" />
+
+    <!-- Garis Potongan Tutup (Lid Crease) & Aksen Gold -->
+    <line x1="230" y1="325" x2="570" y2="325" stroke="url(#goldFoil)" stroke-width="6" />
+    <line x1="230" y1="328" x2="570" y2="328" stroke="#000000" stroke-width="1.5" opacity="0.2"/>
+
+    <!-- Simulasi Pita Cukai (Kanan Atas) -->
+    <rect x="460" y="135" width="80" height="45" fill="#EAEAEA" />
+    <rect x="465" y="135" width="70" height="40" fill="none" stroke="#2c3e50" stroke-width="1.5" />
+    <line x1="460" y1="155" x2="540" y2="155" stroke="#0D336B" stroke-width="2" />
+    <text x="500" y="172" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#2c3e50" text-anchor="middle" letter-spacing="1">CUKAI RI</text>
+
+    <!-- Teks Brand: R2 -->
+    <text x="402" y="272" font-family="Arial, sans-serif" font-size="110" font-weight="900" fill="#000000" opacity="0.4" text-anchor="middle" letter-spacing="5">R2</text>
+    <text x="400" y="270" font-family="Arial, sans-serif" font-size="110" font-weight="900" fill="url(#goldFoil)" text-anchor="middle" letter-spacing="5">R2</text>
+    
+    <!-- Teks Varian: FILTER -->
+    <text x="400" y="405" font-family="Arial, sans-serif" font-size="40" font-weight="900" fill="#071d49" text-anchor="middle" letter-spacing="12">FILTER</text>
+    
+    <!-- Ornamen Garis Bawah FILTER -->
+    <line x1="320" y1="430" x2="480" y2="430" stroke="#071d49" stroke-width="2.5" opacity="0.6"/>
+    <line x1="320" y1="440" x2="480" y2="440" stroke="#071d49" stroke-width="2.5" opacity="0.4"/>
+    <line x1="320" y1="450" x2="480" y2="450" stroke="#071d49" stroke-width="2.5" opacity="0.2"/>
+
+    <!-- Area Peringatan Kesehatan (Standard Bawah) -->
+    <rect x="250" y="505" width="300" height="145" fill="#FFFFFF" />
+    <!-- Border Luar Hitam Peringatan -->
+    <rect x="250" y="505" width="300" height="145" fill="none" stroke="#000000" stroke-width="8" />
+    <!-- Border Dalam Peringatan -->
+    <rect x="260" y="515" width="280" height="125" fill="none" stroke="#000000" stroke-width="2" />
+    
+    <!-- Header Hitam Peringatan -->
+    <rect x="260" y="515" width="280" height="30" fill="#000000" />
+    <text x="400" y="536" font-family="Arial, sans-serif" font-size="16" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="3">PERINGATAN:</text>
+    
+    <!-- Teks Peringatan Utama -->
+    <text x="400" y="580" font-family="Arial, sans-serif" font-size="28" font-weight="900" fill="#000000" text-anchor="middle">ROKOK</text>
+    <text x="400" y="615" font-family="Arial, sans-serif" font-size="28" font-weight="900" fill="#000000" text-anchor="middle">MEMBUNUHMU</text>
+    
+    <!-- Efek Ilusi 3D: Pantulan Plastik Wrap / Highlights (Kiri) -->
+    <path d="M 230 135 L 280 135 L 255 665 L 230 665 Z" fill="#FFFFFF" opacity="0.4" />
+    <path d="M 280 135 L 300 135 L 275 665 L 255 665 Z" fill="#FFFFFF" opacity="0.1" />
+
+    <!-- Efek Ilusi 3D: Bayangan Sisi Gelap / Shadow (Kanan) -->
+    <path d="M 540 135 L 570 135 L 570 665 L 525 665 Z" fill="#000000" opacity="0.15" />
+    <line x1="567" y1="135" x2="567" y2="665" stroke="#000000" stroke-width="3" opacity="0.2"/>
+
+  </g>
+
+  <!-- Label Teks Luar (Watermark Identitas Produk) -->
+  <text x="50" y="740" font-family="Arial, sans-serif" font-size="32" font-weight="900" letter-spacing="8" fill="url(#goldFoil)">ROKOK PUTIH</text>
+  <text x="50" y="765" font-family="Arial, sans-serif" font-size="14" font-weight="600" letter-spacing="2" fill="#3f8ee8">KATALOG R2 NUSANTARA</text>
+  
+</svg>
