@@ -1,1 +1,98 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b3d91"/><stop offset="1" stop-color="#1f72d0"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="18" stdDeviation="18" flood-opacity=".2"/></filter></defs><rect width="640" height="420" rx="34" fill="url(#g)"/><circle cx="520" cy="70" r="150" fill="#fff" opacity=".08"/><g filter="url(#s)" transform="translate(220 58) rotate(-7)"><rect width="190" height="300" rx="18" fill="#fff"/><rect x="16" y="16" width="158" height="268" rx="10" fill="#0d2f70"/><rect x="28" y="30" width="134" height="72" rx="8" fill="#fff" opacity=".95"/><text x="95" y="74" text-anchor="middle" font-family="Arial,sans-serif" font-size="28" font-weight="800" fill="#0d2f70">R2</text><text x="95" y="146" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#fff">KRETEK</text><path d="M48 190h94M48 206h94M48 222h94" stroke="#fff" opacity=".45" stroke-width="3"/></g><text x="38" y="370" font-family="Arial,sans-serif" font-size="18" font-weight="800" letter-spacing="3" fill="#fff">ROKOK KRETEK</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" width="100%" height="100%">
+  <defs>
+    <!-- Gradasi Gold Foil Premium -->
+    <linearGradient id="goldFoil" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C59341" />
+      <stop offset="25%" stop-color="#E2B96B" />
+      <stop offset="50%" stop-color="#FBF5B7" />
+      <stop offset="75%" stop-color="#E2B96B" />
+      <stop offset="100%" stop-color="#9C6B27" />
+    </linearGradient>
+
+    <!-- Tekstur Matte Black dengan pencahayaan melengkung (efek tabung/box) -->
+    <linearGradient id="matteBlack" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#333333" />
+      <stop offset="15%" stop-color="#1A1A1A" />
+      <stop offset="85%" stop-color="#151515" />
+      <stop offset="100%" stop-color="#050505" />
+    </linearGradient>
+
+    <!-- Gradasi Kertas Foil Dalam (Silver) -->
+    <linearGradient id="silverFoil" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#999999" />
+    </linearGradient>
+
+    <!-- Efek Drop Shadow untuk ilusi 3D melayang -->
+    <filter id="dropShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="12" dy="18" stdDeviation="15" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+
+    <!-- Clip Path untuk menjaga sudut tetap melengkung -->
+    <clipPath id="boxRadius">
+      <rect x="50" y="50" width="300" height="500" rx="12" />
+    </clipPath>
+  </defs>
+
+  <!-- Background Transparan (Hapus atau ubah fill ini jika ingin latar belakang warna lain) -->
+  <rect width="400" height="600" fill="transparent" />
+
+  <!-- Base Box Hitam dengan Shadow -->
+  <rect x="50" y="50" width="300" height="500" rx="12" fill="url(#matteBlack)" filter="url(#dropShadow)" />
+
+  <!-- Konten Dalam Bungkus Rokok -->
+  <g clip-path="url(#boxRadius)">
+    
+    <!-- Kertas Foil Dalam (Silver) yang menyembul di atas -->
+    <path d="M 50 140 L 200 170 L 350 140 L 350 50 L 50 50 Z" fill="url(#silverFoil)" />
+    <!-- Garis Lipatan Foil -->
+    <path d="M 50 140 L 200 170 L 350 140" fill="none" stroke="#666" stroke-width="1.5" />
+    <path d="M 50 120 L 200 150 L 350 120" fill="none" stroke="#CCC" stroke-width="0.5" opacity="0.5"/>
+
+    <!-- Garis Potongan Tutup (Lid Crease) -->
+    <line x1="50" y1="180" x2="350" y2="180" stroke="#000" stroke-width="4" />
+    <line x1="50" y1="182" x2="350" y2="182" stroke="#444" stroke-width="1" />
+
+    <!-- Frame Garis Gold Elegan -->
+    <rect x="65" y="195" width="270" height="210" fill="none" stroke="url(#goldFoil)" stroke-width="2" rx="4"/>
+    <rect x="72" y="202" width="256" height="196" fill="none" stroke="url(#goldFoil)" stroke-width="0.5" rx="2"/>
+
+    <!-- Logo Geometris Abstrak Premium -->
+    <g transform="translate(200, 245)">
+      <polygon points="0,-25 25,0 0,25 -25,0" fill="none" stroke="url(#goldFoil)" stroke-width="2" />
+      <polygon points="0,-15 15,0 0,15 -15,0" fill="url(#goldFoil)" />
+    </g>
+
+    <!-- Teks Brand: R2 NUSANTARA -->
+    <text x="200" y="305" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-weight="bold" fill="url(#goldFoil)" text-anchor="middle" letter-spacing="3">R2 NUSANTARA</text>
+    
+    <!-- Teks Utama Sesuai Request -->
+    <text x="200" y="345" font-family="Arial, sans-serif" font-size="28" font-weight="900" fill="url(#goldFoil)" text-anchor="middle" letter-spacing="5">ROKOK KRETEK</text>
+    
+    <!-- Sub-teks Kualitas -->
+    <text x="200" y="375" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#C59341" text-anchor="middle" letter-spacing="2">PREMIUM QUALITY 20 CLASS A</text>
+
+    <!-- Area Pita Cukai (Simulasi di Kanan Atas) -->
+    <rect x="330" y="50" width="20" height="70" fill="#e8d5c4" />
+    <line x1="330" y1="60" x2="350" y2="60" stroke="#c0392b" stroke-width="2" />
+    <line x1="330" y1="110" x2="350" y2="110" stroke="#2980b9" stroke-width="2" />
+    
+    <!-- Area Label Peringatan Kesehatan (Standard Bawah) -->
+    <rect x="50" y="420" width="300" height="130" fill="#FFFFFF" />
+    <!-- Batas Hitam Label Peringatan -->
+    <line x1="50" y1="420" x2="350" y2="420" stroke="#000" stroke-width="5" />
+    <!-- Kotak Border Dalam Peringatan -->
+    <rect x="60" y="430" width="280" height="110" fill="none" stroke="#000" stroke-width="2" />
+    
+    <!-- Teks Peringatan -->
+    <text x="200" y="455" font-family="Arial, sans-serif" font-size="14" font-weight="900" fill="#000" text-anchor="middle" letter-spacing="1">PERINGATAN</text>
+    <text x="200" y="485" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="#000" text-anchor="middle">MEROKOK MEMBUNUHMU</text>
+    <text x="200" y="515" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#000" text-anchor="middle" letter-spacing="1">(18+ ONLY)</text>
+
+    <!-- Pencahayaan Realistis: Pantulan Plastik Wrap (Kiri) -->
+    <path d="M 50 50 L 95 50 L 70 550 L 50 550 Z" fill="#FFFFFF" opacity="0.08" />
+    <!-- Pencahayaan Realistis: Bayangan Sisi Gelap (Kanan) -->
+    <path d="M 330 50 L 350 50 L 350 550 L 315 550 Z" fill="#000000" opacity="0.3" />
+
+  </g>
+</svg>
