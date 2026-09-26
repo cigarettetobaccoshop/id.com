@@ -235,6 +235,20 @@ export default function CourierPartners() {
           .r2-home-courier__trust small{font-size:5px}
         }
         @media(prefers-reduced-motion:reduce){.r2-home-courier__card,.r2-home-courier__shine,.r2-home-courier__logo-box img,.r2-home-courier__meta span i{transition:none;animation:none}.r2-home-courier__card{animation:none}.r2-home-courier__card:hover{transform:none}}
+
+        /* Uniform circular courier logo system: 4-column desktop grid, 2-column mobile */
+        .r2-home-courier__grid{grid-template-columns:repeat(4,minmax(0,1fr));}
+        .r2-home-courier__logo-frame{width:116px;height:116px;margin:0 auto;border-radius:50%;border:1px solid #d7e7f5;background:radial-gradient(circle at 34% 25%,#fff 0%,#f8fbff 58%,#e9f3fc 100%);box-shadow:inset 0 0 0 6px rgba(255,255,255,.85),0 8px 20px rgba(20,73,126,.08);overflow:hidden;transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s ease,border-color .28s ease;}
+        .r2-home-courier__logo-frame:before{content:"";position:absolute;inset:5px;border:1px solid rgba(73,137,194,.14);border-radius:50%;pointer-events:none;}
+        .r2-home-courier__logo-frame:after{inset:0;border:0;border-radius:50%;background:conic-gradient(from 20deg,transparent 0 72%,rgba(65,151,235,.17) 84%,transparent 100%);opacity:.75;transition:transform .6s ease;}
+        .r2-home-courier__card:hover .r2-home-courier__logo-frame{transform:translateY(-2px) scale(1.035);border-color:#91bfe6;box-shadow:inset 0 0 0 6px #fff,0 13px 28px rgba(20,73,126,.15);}
+        .r2-home-courier__card:hover .r2-home-courier__logo-frame:after{transform:rotate(35deg);}
+        .r2-home-courier__logo-box{width:78%;height:78%;padding:9px;border-radius:50%;background:rgba(255,255,255,.84);box-shadow:0 3px 12px rgba(7,48,92,.045);}
+        .r2-home-courier__logo-box img{max-height:100%;object-fit:contain;}
+        @media(max-width:899px){.r2-home-courier__logo-frame{width:104px;height:104px}.r2-home-courier__logo-box{width:78%;height:78%;}}
+        @media(max-width:620px){.r2-home-courier__grid{grid-template-columns:repeat(2,minmax(0,1fr));}.r2-home-courier__card{min-height:0;padding:12px 8px}.r2-home-courier__logo-frame{width:86px;height:86px}.r2-home-courier__logo-box{width:78%;height:78%;padding:8px}.r2-home-courier__copy{margin-top:9px}}
+        @media(max-width:380px){.r2-home-courier__logo-frame{width:76px;height:76px}.r2-home-courier__card{padding:10px 6px}}
+        @media(prefers-reduced-motion:reduce){.r2-home-courier__logo-frame,.r2-home-courier__logo-frame:after{transition:none}.r2-home-courier__card:hover .r2-home-courier__logo-frame{transform:none}}
       `}</style>
     </section>
   )
