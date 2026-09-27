@@ -11,7 +11,7 @@ const faqs=[['Bagaimana cara melakukan pemesanan?','Pilih produk dari katalog, m
 function BenefitIcon({type}){if(type==='ship')return <Truck size={19}/>;if(type==='stock')return <PackageCheck size={19}/>;if(type==='safe')return <ShieldCheck size={19}/>;return <BadgeCheck size={19}/>}
 export default function HomepageExperience(){
  const [products,setProducts]=useState([]),[count,setCount]=useState(0),[loading,setLoading]=useState(true),[dataError,setDataError]=useState(false)
- const [whyTyped,setWhyTyped]=useState('')
+ const [whyTyped,setWhyTyped]=useState(''),[activeBenefit,setActiveBenefit]=useState(0)
  useEffect(()=>{const target='Infrastruktur untuk bisnis jangka panjang.';const node=document.getElementById('r2-hp-final-pillars-title');if(!node)return;const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduce){setWhyTyped(target);return}let timer;const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){observer.disconnect();let i=0;timer=window.setInterval(()=>{i+=1;setWhyTyped(target.slice(0,i));if(i>=target.length)window.clearInterval(timer)},42)}},{threshold:.35});observer.observe(node);return()=>{observer.disconnect();if(timer)window.clearInterval(timer)}},[])
  useEffect(()=>{let active=true;fetch('/api/products?limit=8',{headers:{Accept:'application/json'},cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('catalog');return r.json()}).then(p=>{if(!active)return;setProducts(p.data||[]);setCount(Number(p.count)||Number(p.meta?.total)||0);setDataError(false)}).catch(()=>{if(active){setProducts([]);setCount(0);setDataError(true)}}).finally(()=>{if(active)setLoading(false)});return()=>{active=false}},[])
  useEffect(()=>{const observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('is-visible')}),{threshold:.08});document.querySelectorAll('[data-r2-reveal]').forEach(el=>observer.observe(el));return()=>observer.disconnect()},[products.length])
@@ -19,10 +19,26 @@ export default function HomepageExperience(){
  <section className="r2-hp-final-hero"><div className="r2-hp-final-hero-bg"/><div className="r2-hp-final-hero-inner"><div className="r2-hp-final-copy" data-r2-reveal><div className="r2-hp-final-emblem" aria-hidden="true"><img src="/assets/logo/logo.png" alt="" width="62" height="62"/></div><span className="r2-hp-final-eyebrow"><i/> OFFICIAL DISTRIBUTOR · VERIFIED SYSTEM</span><h1><span className="r2-hp-final-title-main">R2 NUSANTARA</span><span className="r2-hp-final-title-sub"><em>Cigarette Tobacco Shop</em><span className="r2-hp-final-title-verified" aria-label="Verified"><BadgeCheck size={18} strokeWidth={2.5}/></span></span></h1><p>Katalog live untuk kebutuhan distribusi rokok dan tembakau, dengan stok aktif, informasi produk yang jelas, dan layanan profesional dari gudang Malang.</p><div className="r2-hp-final-actions"><Link href="/products" className="primary">BUKA KATALOG <ArrowRight size={16}/></Link><Link href="#distributor" className="secondary">LIHAT SISTEM</Link></div><div className="r2-hp-final-proof"><span><BadgeCheck size={14}/> DATA LIVE</span><span><ShieldCheck size={14}/> TERSTRUKTUR</span><span><Truck size={14}/> NASIONAL</span></div></div><aside className="r2-hp-final-live" data-r2-reveal><div><span><i/> LIVE CATALOG</span><small>SYS / 01</small></div><strong>{loading?'—':count}<small> ACTIVE SKUs</small></strong><div className="r2-hp-final-bars">{Array.from({length:22},(_,i)=><i key={i} style={{height:`${22+((i*17)%60)}%`}}/>)}</div><footer><span>CATALOG STATUS</span><b>{dataError?'CHECK':'OPERATIONAL'}</b></footer></aside>
 <section className="r2-hp-final-pillars" id="keunggulan" aria-labelledby="r2-hp-final-pillars-title">
   <div className="r2-hp-final-pillars-head"><div><span>WHY R2 NUSANTARA</span><h2 id="r2-hp-final-pillars-title" aria-label="Infrastruktur untuk bisnis jangka panjang."><span aria-hidden="true">{whyTyped}</span><span className="r2-why-type-cursor" aria-hidden="true">▍</span></h2></div><p>Ringkas di depan, terstruktur di belakang.</p></div>
-  <div className="r2-hp-final-pillars-grid" role="list" aria-label="Empat pilar layanan R2 NUSANTARA">{benefits.map(([type,title,desc],i)=><article className="r2-hp-final-pillar" key={title} role="listitem" tabIndex={0}>
-    <span className="r2-hp-final-pillar-icon"><BenefitIcon type={type}/></span>
-    <div className="r2-hp-final-pillar-copy"><strong>{title}</strong><p>{desc}</p><small>{i===0?(loading?'MEMUAT API PRODUCTION':dataError?'PERIKSA KONEKSI':'API BERHASIL DIMUAT'):i===1?'MENGACU INVENTORY SISTEM':i===2?'GUDANG MALANG · NASIONAL':'ORDER → VERIFIKASI → KONFIRMASI'}</small></div>
-  </article>)}</div>
+  <div className="r2-hp-final-carousel" aria-label="Slider empat pilar layanan R2 NUSANTARA">
+    <div className="r2-hp-final-carousel-top"><span>PILAR {String(activeBenefit+1).padStart(2,'0')} <i/> 04</span><span>{['LIVE CATALOG','INVENTORY','DISTRIBUSI','OPERASIONAL'][activeBenefit]}</span></div>
+    <div className="r2-hp-final-carousel-window" aria-live="polite" aria-atomic="true">
+      <div className="r2-hp-final-carousel-track" style={{transform:`translateX(-${activeBenefit*100}%)`}}>
+        {benefits.map(([type,title,desc],i)=><article className="r2-hp-final-pillar" key={title} aria-label={`Pilar ${i+1} dari 4: ${title}`} aria-hidden={i!==activeBenefit}>
+          <span className="r2-hp-final-pillar-icon"><BenefitIcon type={type}/></span>
+          <div className="r2-hp-final-pillar-copy"><span className="r2-hp-final-pillar-index">0{i+1} / R2 SYSTEM</span><strong>{title}</strong><p>{desc}</p><small>{i===0?(loading?'MEMUAT API PRODUCTION':dataError?'PERIKSA KONEKSI':'API BERHASIL DIMUAT'):i===1?'MENGACU INVENTORY SISTEM':i===2?'GUDANG MALANG · NASIONAL':'ORDER → VERIFIKASI → KONFIRMASI'}</small></div>
+        </article>)}
+      </div>
+    </div>
+    <div className="r2-hp-final-carousel-controls">
+      <div className="r2-hp-final-carousel-dots" role="group" aria-label="Pilih pilar layanan">
+        {benefits.map(([type,title],i)=><button key={title} type="button" className={i===activeBenefit?'is-active':''} aria-label={`Tampilkan pilar ${i+1}: ${title}`} aria-pressed={i===activeBenefit} onClick={()=>setActiveBenefit(i)}><span/></button>)}
+      </div>
+      <div className="r2-hp-final-carousel-arrows">
+        <button type="button" aria-label="Pilar sebelumnya" onClick={()=>setActiveBenefit(i=>(i+benefits.length-1)%benefits.length)}><ChevronRight size={17}/></button>
+        <button type="button" aria-label="Pilar berikutnya" onClick={()=>setActiveBenefit(i=>(i+1)%benefits.length)}><ChevronRight size={17}/></button>
+      </div>
+    </div>
+  </div>
 </section></div></section>
  
 
