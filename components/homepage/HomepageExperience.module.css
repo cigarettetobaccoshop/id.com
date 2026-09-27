@@ -374,3 +374,97 @@
   .home :global(.r2-hp-final-carousel-arrows button) { transition: none; }
   .home :global(.r2-hp-final-carousel-arrows button:hover) { transform: none; }
 }
+
+
+/* R2 NUSANTARA — Premium Reference Refinement 2026-09-27
+   Presentation-only. Intentionally isolated to homepage visuals.
+   No API, Supabase, auth, cart, checkout, routing, inventory, or data changes.
+*/
+.home :global(.r2-hp-final-hero-inner){
+  max-width:1180px;
+}
+.home :global(.r2-hp-final-copy > p){
+  max-width:620px;
+  letter-spacing:-.005em;
+}
+.home :global(.r2-hp-final-actions a){
+  border-radius:12px;
+  font-weight:900;
+  letter-spacing:.055em;
+  transition:transform .2s ease,box-shadow .2s ease,background .2s ease,border-color .2s ease;
+}
+.home :global(.r2-hp-final-actions .primary){
+  box-shadow:0 12px 28px rgba(8,45,91,.24),inset 0 1px 0 rgba(255,255,255,.2);
+}
+.home :global(.r2-hp-final-actions .primary:hover){
+  transform:translateY(-2px);
+  box-shadow:0 16px 34px rgba(8,45,91,.30),inset 0 1px 0 rgba(255,255,255,.22);
+}
+.home :global(.r2-hp-final-live){
+  border-color:rgba(171,201,237,.22);
+  background:linear-gradient(155deg,rgba(17,48,82,.94),rgba(7,25,49,.97));
+  box-shadow:0 26px 64px rgba(2,14,31,.32),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.home :global(.r2-hp-final-pillars),
+.home :global(.r2-hp-final-distributor),
+.home :global(.r2-hp-final-location){
+  scroll-margin-top:90px;
+}
+.home :global(.r2-hp-final-distributor){
+  border:1px solid rgba(139,184,231,.18);
+  border-radius:26px;
+}
+.home :global(.r2-hp-final-distributor h2){
+  max-width:720px;
+  letter-spacing:-.035em;
+}
+.home :global(.r2-hp-final-distributor p){
+  max-width:650px;
+  color:rgba(239,247,255,.78);
+}
+.home :global(.r2-hp-final-footer){
+  border-top:1px solid rgba(160,196,235,.16);
+}
+.home :global(.r2-hp-final-footer-bottom){
+  letter-spacing:.035em;
+}
+@media (max-width:767px){
+  .home :global(.r2-hp-final-hero-inner){
+    width:calc(100% - 28px);
+    padding-top:30px;
+    padding-bottom:34px;
+    gap:18px;
+  }
+  .home :global(.r2-hp-final-copy h1){
+    font-size:clamp(35px,11.2vw,49px);
+    letter-spacing:-.052em;
+  }
+  .home :global(.r2-hp-final-copy > p){
+    max-width:none;
+    font-size:12px;
+    line-height:1.7;
+  }
+  .home :global(.r2-hp-final-actions){
+    margin-top:17px;
+  }
+  .home :global(.r2-hp-final-actions a){
+    min-height:48px;
+  }
+  .home :global(.r2-hp-final-proof span){
+    min-height:36px;
+  }
+  .home :global(.r2-hp-final-pillars){
+    width:calc(100% - 24px);
+    margin-top:44px;
+    margin-bottom:44px;
+    box-shadow:0 18px 48px rgba(6,24,52,.09);
+  }
+  .home :global(.r2-hp-final-distributor){
+    width:calc(100% - 24px);
+    border-radius:20px;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .home :global(.r2-hp-final-actions a){transition:none}
+  .home :global(.r2-hp-final-actions .primary:hover){transform:none}
+}
