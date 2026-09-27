@@ -237,11 +237,13 @@ export default function HomeHeader() {
         }
         @media(prefers-reduced-motion:reduce){.r2-home-header__logo-ring{animation:none!important}}
         @media(max-width:380px){.r2-home-header__verified{display:grid!important}.r2-home-header__wordmark small{display:block!important;font-size:5px!important;letter-spacing:.035em!important}}
+        /* Apple-principled icon alignment: quiet, semantic, optically balanced. */
+        .r2-home-header svg{vertical-align:-0.12em}
+        .r2-home-header__nav svg{flex:0 0 auto;stroke-width:1.8}
+        .r2-home-header__cart svg,.r2-home-header__menu svg{stroke-width:1.8}
+        @media(max-width:767px){.r2-home-header__cart,.r2-home-header__menu{min-width:44px;min-height:44px}.r2-home-header__cart svg,.r2-home-header__menu svg{width:20px!important;height:20px!important;stroke-width:1.8!important}}
       `}</style>
     </>
   )
 }
 
-/* Apple-principled icon alignment: quiet, semantic, optically balanced. */
-.r2-home-header svg{vertical-align:-0.12em}.r2-home-header__nav svg{flex:0 0 auto;stroke-width:1.8}.r2-home-header__cart svg,.r2-home-header__menu svg{stroke-width:1.8}
-@media(max-width:767px){.r2-home-header__cart,.r2-home-header__menu{min-width:44px;min-height:44px}.r2-home-header__cart svg,.r2-home-header__menu svg{width:20px!important;height:20px!important;stroke-width:1.8!important}}
