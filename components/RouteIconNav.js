@@ -1,19 +1,19 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { Home, Grid2X2, ShoppingCart, UserRound } from 'lucide-react'
+import { House, Grid2X2, ShoppingBag, CircleUserRound } from 'lucide-react'
 
 const ICONS = {
-  home: { label: 'Beranda', path: '/', Icon: Home },
+  home: { label: 'Beranda', path: '/', Icon: House },
   products: { label: 'Katalog', path: '/products', Icon: Grid2X2 },
-  cart: { label: 'Keranjang', path: '/checkout', Icon: ShoppingCart },
-  account: { label: 'Akun', path: '/auth', Icon: UserRound },
+  cart: { label: 'Keranjang', path: '/checkout', Icon: ShoppingBag },
+  account: { label: 'Akun', path: '/auth', Icon: CircleUserRound },
 }
 
 export function RouteIcon({ type, size = 21, strokeWidth = 2, className = '', active = false }) {
   const item = ICONS[type] || ICONS.home
   const Icon = item.Icon
-  return <Icon className={`route-icon route-icon-${type} ${className}`} width={size} height={size} strokeWidth={strokeWidth} fill={active ? 'currentColor' : 'none'} aria-hidden="true" focusable="false" />
+  return <Icon className={`route-icon route-icon-${type} ${className}`} width={size} height={size} strokeWidth={active ? Math.max(strokeWidth, 2.1) : 1.75} aria-hidden="true" focusable="false" />
 }
 
 export default function RouteIconNav() {
@@ -29,6 +29,13 @@ export default function RouteIconNav() {
   const active = path => path === '/' ? router.pathname === '/' : router.pathname.startsWith(path)
   if (router.pathname === '/katalog') return null
   return <nav className="route-icon-nav" aria-label="Navigasi utama mobile">
+    <style jsx global>{`
+      .route-icon-nav .route-icon-wrap{display:grid;place-items:center;position:relative}
+      .route-icon-nav .route-icon{stroke-linecap:round;stroke-linejoin:round;transition:transform .18s ease,stroke-width .18s ease}
+      .route-icon-nav a.is-active .route-icon{transform:translateY(-.5px)}
+      .route-icon-nav a{ -webkit-tap-highlight-color:transparent }
+      @media(prefers-reduced-motion:reduce){.route-icon-nav .route-icon{transition:none!important}}
+    `}</style>
     {Object.entries(ICONS).map(([type, item]) => {
       const isActive = active(item.path)
       return <Link href={item.path} key={type} className={isActive ? 'is-active' : ''} aria-current={isActive ? 'page' : undefined}>
