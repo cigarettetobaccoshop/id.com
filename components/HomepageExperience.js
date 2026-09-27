@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
-import { Activity, ArrowRight, BadgeCheck, ChevronRight, Clock3, Database, ExternalLink, Layers3, MapPin, PackageCheck, ShieldCheck, Truck } from 'lucide-react'
+import { Activity, ArrowRight, ChevronRight, Clock3, Database, ExternalLink, Layers3, PackageCheck, ShieldCheck, Truck } from 'lucide-react'
 import styles from './homepage/HomepageExperience.module.css'
 
 const DeferredWarehouseMap = dynamic(() => import('./homepage/DeferredWarehouseMap'), { ssr: false })
