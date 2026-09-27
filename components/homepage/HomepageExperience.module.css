@@ -328,7 +328,7 @@
 }
 .home :global(.r2-hp-final-carousel-dots) { display: flex; align-items: center; gap: 7px; }
 .home :global(.r2-hp-final-carousel-dots button) {
-  display: grid; place-items: center; width: 28px; height: 28px; padding: 0;
+  display: grid; place-items: center; width: 44px; min-width: 44px; height: 44px; min-height: 44px; padding: 0;
   border: 0; border-radius: 99px; background: transparent; cursor: pointer;
 }
 .home :global(.r2-hp-final-carousel-dots button span) {
@@ -340,7 +340,7 @@
 }
 .home :global(.r2-hp-final-carousel-arrows) { display: flex; gap: 8px; }
 .home :global(.r2-hp-final-carousel-arrows button) {
-  display: grid; place-items: center; width: 38px; height: 38px;
+  display: grid; place-items: center; width: 44px; min-width: 44px; height: 44px; min-height: 44px;
   border: 1px solid #d9e4f1; border-radius: 12px; background: #fff;
   color: #246bc3; cursor: pointer; transition: transform .2s ease, background .2s ease;
 }
@@ -358,11 +358,11 @@
     gap: 14px; border-radius: 13px;
   }
   .home :global(.r2-hp-final-pillar-icon) { flex-basis: 46px; width: 46px; height: 46px; border-radius: 13px; }
-  .home :global(.r2-hp-final-pillar-copy strong) { font-size: 17px; }
+  .home :global(.r2-hp-final-pillar-copy strong) { font-size: clamp(17px, 2vw, 23px); }
   .home :global(.r2-hp-final-pillar-copy p) { font-size: 12px; line-height: 1.65; }
   .home :global(.r2-hp-final-pillar-copy small) { font-size: 7px; padding: 8px 9px; }
   .home :global(.r2-hp-final-carousel-controls) { padding-top: 10px; }
-  .home :global(.r2-hp-final-carousel-arrows button) { width: 36px; height: 36px; }
+  .home :global(.r2-hp-final-carousel-arrows button) { width: 44px; min-width: 44px; height: 44px; min-height: 44px; }
 }
 @media (max-width: 390px) {
   .home :global(.r2-hp-final-pillar) { min-height: 238px; padding: 17px 12px; gap: 10px; }
