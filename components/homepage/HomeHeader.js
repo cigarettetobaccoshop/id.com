@@ -104,7 +104,7 @@ export default function HomeHeader() {
           margin:0!important;padding:0!important;background:none!important;box-shadow:none!important;
         }
         .r2-home-header__wordmark small{margin-top:5px;font-size:7px;letter-spacing:.14em;font-weight:800;color:#73839a;white-space:nowrap}
-        .r2-home-header__verified{display:grid;place-items:center;width:22px;height:22px;flex:0 0 22px;border-radius:50%;background:#1689ed;color:#fff!important;border:2px solid #fff;box-shadow:0 3px 10px rgba(22,137,237,.28);margin-left:-3px;line-height:1}.r2-home-header__verified::before,.r2-home-header__verified::after{content:none!important;display:none!important}.r2-home-header__verified svg{display:block!important;visibility:visible!important;stroke:currentColor!important}
+        .r2-home-header__verified{display:grid;place-items:center;width:20px;height:20px;flex:0 0 20px;border-radius:50%;background:#1689ed;color:#fff!important;border:1.5px solid #fff;box-shadow:0 2px 8px rgba(22,137,237,.22);margin-left:-2px;line-height:1}.r2-home-header__verified::before,.r2-home-header__verified::after{content:none!important;display:none!important}.r2-home-header__verified svg{display:block!important;visibility:visible!important;stroke:currentColor!important;stroke-width:2.5!important}
         /* SINGLE-BADGE HARD LOCK:
            No legacy inline <i>, verified/check class, or pseudo-element may render
            anywhere inside the header. The canonical badge below is the sole exception. */
@@ -169,7 +169,7 @@ export default function HomeHeader() {
           .r2-home-header__logo-ring{inset:-2px}
           .r2-home-header__wordmark strong{font-size:10px;letter-spacing:.09em}
           .r2-home-header__wordmark small{font-size:5.5px;letter-spacing:.09em;margin-top:3px}
-          .r2-home-header__verified{margin-left:-3px}.r2-home-header__verified svg{width:14px;height:14px}
+          .r2-home-header__verified{margin-left:-2px;width:20px;height:20px;flex-basis:20px}.r2-home-header__verified svg{width:12px;height:12px}
           .r2-home-header__nav{display:none}
           .r2-home-header__cart{width:36px;height:36px;border-radius:11px}
           .r2-home-header__admin{display:none}
@@ -202,8 +202,8 @@ export default function HomeHeader() {
           .r2-home-header__logo-ring{inset:-3px!important}
           .r2-home-header__wordmark strong{font-size:13px!important;letter-spacing:.11em!important}
           .r2-home-header__wordmark small{font-size:7px!important;letter-spacing:.11em!important;margin-top:5px!important}
-          .r2-home-header__verified{margin-left:0!important;width:30px!important;height:30px!important;flex-basis:30px!important;border-radius:50%!important;background:#1689ed!important;color:#fff!important;border:2px solid #fff!important;box-shadow:0 4px 14px rgba(22,137,237,.22)!important}
-          .r2-home-header__verified svg{width:15px!important;height:15px!important;stroke:#fff!important}
+          .r2-home-header__verified{margin-left:-2px!important;width:20px!important;height:20px!important;flex-basis:20px!important;border-radius:50%!important;background:#1689ed!important;color:#fff!important;border:1.5px solid #fff!important;box-shadow:0 2px 8px rgba(22,137,237,.20)!important}
+          .r2-home-header__verified svg{width:12px!important;height:12px!important;stroke:#fff!important;stroke-width:2.5!important}
           .r2-home-header__actions{gap:14px!important}
           .r2-home-header__cart,.r2-home-header__menu{width:62px!important;height:62px!important;border-radius:18px!important}
           .r2-home-header__cart svg,.r2-home-header__menu svg{width:27px!important;height:27px!important}
@@ -222,8 +222,8 @@ export default function HomeHeader() {
           .r2-home-header__logo-core{width:42px!important;height:42px!important}
           .r2-home-header__wordmark strong{font-size:10px!important;letter-spacing:.07em!important}
           .r2-home-header__wordmark small{font-size:5.5px!important;letter-spacing:.06em!important;margin-top:3px!important}
-          .r2-home-header__verified{width:26px!important;height:26px!important;flex-basis:26px!important}
-          .r2-home-header__verified svg{width:13px!important;height:13px!important}
+          .r2-home-header__verified{width:20px!important;height:20px!important;flex-basis:20px!important}
+          .r2-home-header__verified svg{width:12px!important;height:12px!important}
           .r2-home-header__actions{gap:7px!important}
           .r2-home-header__cart,.r2-home-header__menu{width:44px!important;height:44px!important;border-radius:13px!important}
           .r2-home-header__cart svg,.r2-home-header__menu svg{width:21px!important;height:21px!important}
@@ -237,7 +237,13 @@ export default function HomeHeader() {
         }
         @media(prefers-reduced-motion:reduce){.r2-home-header__logo-ring{animation:none!important}}
         @media(max-width:380px){.r2-home-header__verified{display:grid!important}.r2-home-header__wordmark small{display:block!important;font-size:5px!important;letter-spacing:.035em!important}}
+        /* Apple-principled icon alignment: quiet, semantic, optically balanced. */
+        .r2-home-header svg{vertical-align:-0.12em}
+        .r2-home-header__nav svg{flex:0 0 auto;stroke-width:1.8}
+        .r2-home-header__cart svg,.r2-home-header__menu svg{stroke-width:1.8}
+        @media(max-width:767px){.r2-home-header__cart,.r2-home-header__menu{min-width:44px;min-height:44px}.r2-home-header__cart svg,.r2-home-header__menu svg{width:20px!important;height:20px!important;stroke-width:1.8!important}}
       `}</style>
     </>
   )
 }
+
