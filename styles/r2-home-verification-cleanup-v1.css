@@ -75,3 +75,7 @@
 @media(prefers-reduced-motion:reduce){
   .r2-hp-final .r2-hp-final-brand strong::after{box-shadow:none}
 }
+
+
+/* Mobile screenshot QA: keep the hero typography-led; the brand mark belongs in the header. */
+.r2-hp-final .r2-hp-final-emblem{display:none!important;visibility:hidden!important;}
