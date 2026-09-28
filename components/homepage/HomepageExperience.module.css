@@ -531,3 +531,58 @@
   .home :global(.r2-hp-final-proof span){font-size:5.5px}
 }
 @media(prefers-reduced-motion:reduce){.home :global(.r2-hp-final-hero-bg){animation:none!important;transform:scale(1.018)!important}}
+
+
+/* HERO TYPOGRAPHY — exact Unicode display copy with a restrained three-tone corporate palette.
+   Visual-only: no API, Supabase, catalog, cart, checkout, routing, or transaction changes. */
+.home :global(.r2-hero-brand-copy) {
+  font-family: Georgia, "Times New Roman", serif !important;
+  text-rendering: optimizeLegibility;
+  font-variant-ligatures: none;
+}
+.home :global(.r2-hero-brand-copy .r2-hp-final-title-main) {
+  display: block;
+  color: #f8fbff !important;
+  font-weight: 900 !important;
+  text-shadow: 0 10px 30px rgba(0,0,0,.28);
+}
+.home :global(.r2-hero-brand-copy .r2-hp-final-title-sub) {
+  display: block !important;
+  margin-top: 10px !important;
+}
+.home :global(.r2-hero-brand-copy .r2-hp-final-title-sub em) {
+  color: #e4bf77 !important;
+  font-style: normal !important;
+  font-weight: 800 !important;
+}
+.home :global(.r2-hero-description) {
+  color: #b9d8ff !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-weight: 600 !important;
+  letter-spacing: .008em;
+  text-shadow: 0 5px 20px rgba(0,0,0,.24);
+}
+@media (max-width: 767px) {
+  .home :global(.r2-hero-brand-copy .r2-hp-final-title-main) {
+    font-size: clamp(35px, 10.5vw, 50px) !important;
+    line-height: 1 !important;
+  }
+  .home :global(.r2-hero-brand-copy .r2-hp-final-title-sub) {
+    margin-top: 11px !important;
+  }
+  .home :global(.r2-hero-brand-copy .r2-hp-final-title-sub em) {
+    font-size: clamp(16px, 4.25vw, 23px) !important;
+    line-height: 1.18 !important;
+  }
+  .home :global(.r2-hero-description) {
+    font-size: 12px !important;
+    line-height: 1.72 !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home :global(.r2-hero-brand-copy .r2-hp-final-title-main),
+  .home :global(.r2-hero-brand-copy .r2-hp-final-title-sub),
+  .home :global(.r2-hero-description) {
+    animation: none !important;
+  }
+}
