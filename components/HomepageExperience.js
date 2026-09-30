@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
-import { Activity, ArrowRight, ChevronRight, Clock3, Database, ExternalLink, Layers3, PackageCheck, ShieldCheck, Truck } from 'lucide-react'
+import { Activity, ArrowRight, ChevronRight, Clock3, Database, ExternalLink, Layers3, PackageCheck, ShieldCheck, Truck, ShoppingCart, Workflow, BadgeCheck } from 'lucide-react'
 import styles from './homepage/HomepageExperience.module.css'
 
 const DeferredWarehouseMap = dynamic(() => import('./homepage/DeferredWarehouseMap'), { ssr: false })
@@ -42,7 +42,20 @@ export default function HomepageExperience(){
 </section></div></section>
  
 
- <section className="r2-hp-final-distributor" id="distributor" data-r2-reveal><div><span>GUDANG DISTRIBUTOR · MALANG</span><h2>Dibangun untuk kebutuhan distribusi <em>jangka panjang.</em></h2><p>R2 NUSANTARA menggabungkan katalog digital, data produk aktif, dan proses pemesanan terstruktur agar toko dapat bekerja lebih cepat tanpa mengorbankan ketelitian.</p><div><Link href="/products">MULAI DARI KATALOG <ArrowRight size={15}/></Link><Link href="/contact">HUBUNGI ADMIN</Link></div></div><div className="r2-hp-final-points"><article><b>01</b><strong>Data katalog aktif</strong><span>Satu sumber produk untuk storefront production.</span></article><article><b>02</b><strong>Order terstruktur</strong><span>Keranjang dan checkout mengikuti alur existing.</span></article><article><b>03</b><strong>Konfirmasi profesional</strong><span>Detail pesanan diteruskan melalui proses admin.</span></article></div></section>
+ <section className="r2-hp-final-distributor" id="distributor" data-r2-reveal aria-labelledby="r2-distributor-title">
+  <div className="r2-hp-final-distributor-intro">
+    <div className="r2-hp-final-distributor-kicker"><span className="r2-hp-final-distributor-kicker-line"/><span>GUDANG DISTRIBUTOR · MALANG</span><small>R2 / SYSTEM 03</small></div>
+    <h2 id="r2-distributor-title">Dibangun untuk kebutuhan distribusi <em>jangka panjang.</em></h2>
+    <p>R2 NUSANTARA menggabungkan katalog digital, data produk aktif, dan proses pemesanan terstruktur agar toko dapat bekerja lebih cepat tanpa mengorbankan ketelitian.</p>
+    <div className="r2-hp-final-distributor-actions"><Link href="/products">MULAI DARI KATALOG <ArrowRight size={15}/></Link><Link href="/contact">HUBUNGI ADMIN</Link></div>
+    <div className="r2-hp-final-distributor-status"><span><i/> SISTEM OPERASIONAL</span><span>GUDANG MALANG</span><span>DISTRIBUSI NASIONAL</span></div>
+  </div>
+  <div className="r2-hp-final-points" role="list" aria-label="Struktur layanan R2 NUSANTARA">
+    <article role="listitem"><div className="r2-point-index"><b>01</b><span>CORE DATA</span></div><div className="r2-point-icon"><Database size={22}/></div><strong>Data katalog aktif</strong><span>Satu sumber produk untuk storefront production.</span><small><BadgeCheck size={13}/> DATA LIVE</small></article>
+    <article role="listitem"><div className="r2-point-index"><b>02</b><span>ORDER FLOW</span></div><div className="r2-point-icon"><ShoppingCart size={22}/></div><strong>Order terstruktur</strong><span>Keranjang dan checkout mengikuti alur existing.</span><small><Workflow size={13}/> FLOW TERJAGA</small></article>
+    <article role="listitem"><div className="r2-point-index"><b>03</b><span>VERIFICATION</span></div><div className="r2-point-icon"><ShieldCheck size={22}/></div><strong>Konfirmasi profesional</strong><span>Detail pesanan diteruskan melalui proses admin.</span><small><BadgeCheck size={13}/> VERIFIED PROCESS</small></article>
+  </div>
+</section>
  <section className="r2-hp-final-section" id="faq" data-r2-reveal><div className="r2-hp-final-head"><div><span>FAQ</span><h2>Jawaban sebelum<br/><em>Anda mulai.</em></h2></div></div><div className="r2-hp-final-faq">{faqs.map(([q,a])=><details key={q}><summary>{q}<ChevronRight size={17}/></summary><p>{a}</p></details>)}</div></section>
  <section className="r2-hp-final-location" data-r2-reveal><div><span>WAREHOUSE LOCATION</span><h2>Gudang R2 NUSANTARA<br/><em>Malang, Jawa Timur.</em></h2><p>Lokasi fisik distributor untuk kebutuhan operasional dan konfirmasi kunjungan.</p><div className="r2-hp-final-hours"><Clock3 size={17}/><span>Senin—Sabtu <b>08.00—17.00 WIB</b></span></div><a href="https://maps.google.com/?q=Malang%2C%20Jawa%20Timur%2C%20Indonesia" target="_blank" rel="noreferrer">BUKA GOOGLE MAPS <ExternalLink size={14}/></a></div><DeferredWarehouseMap/></section>
  <footer className="r2-hp-final-footer"><div className="r2-hp-final-footer-grid"><div><Link href="/" className="r2-hp-final-brand"><span><img src="/assets/logo/logo.png" alt="" width="46" height="46" /></span><strong>R2 NUSANTARA<small>GUDANG DISTRIBUTOR R2 & RESMI</small></strong></Link><p>Distributor dan gudang R2 NUSANTARA untuk kebutuhan toko dan pembelian grosir.</p></div><div><b>NAVIGASI</b><Link href="/">Beranda</Link><Link href="/products">Katalog</Link><Link href="/checkout">Keranjang</Link><Link href="/contact">Kontak</Link><Link href="/login">Login Admin</Link></div><div><b>OPERASIONAL</b><span>Malang · Jawa Timur</span><span>Senin—Sabtu · 08.00—17.00</span><span>Distribusi nasional</span></div></div><div className="r2-hp-final-footer-bottom r2-hp-final-copyright"><span>©2026 R2 NUSANTARA - Cigaratte Tobacco Shop</span></div></footer>
