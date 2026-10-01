@@ -27,3 +27,424 @@
 /* Auth brand is a separate account surface, not a verification surface; remove its duplicate check. */
 .account-brand .verified{display:none!important}
 @media(max-width:767px){.r2-hp-final-proof span:first-child::before{font-size:7px!important}.r2-hp-final-benefits article:first-child>div::before{width:18px!important;height:18px!important;font-size:5.5px!important}}
+
+
+/* Consolidated from r2-home-verification-cleanup-v1.css. Keep this block last to preserve cascade order. */
+/* R2 NUSANTARA — Homepage verification badge cleanup v2
+   Canonical homepage badge policy:
+   - Header: exactly one blue verified badge.
+   - Footer: exactly one blue verified badge.
+   - Hero, benefits, catalog, FAQ and all other homepage sections: no verification badge/check.
+   Visual-only. No API, data, routing, cart, checkout or backend changes.
+*/
+
+/* Robustly neutralize every verification-shaped Lucide icon inside the homepage content. */
+.r2-hp-final .lucide-badge-check,
+.r2-hp-final .lucide-shield-check,
+.r2-hp-final .r2-hp-final-proof > span:first-child svg,
+.r2-hp-final .r2-hp-final-benefits article:first-child > div svg,
+.r2-hp-final .r2-hp-final-benefits article:nth-child(4) > div svg{
+  display:none!important;
+}
+
+/* Preserve the original visual rhythm with neutral status dots, not checkmarks. */
+.r2-hp-final .r2-hp-final-proof > span:first-child,
+.r2-hp-final .r2-hp-final-benefits article:first-child > div,
+.r2-hp-final .r2-hp-final-benefits article:nth-child(4) > div{
+  min-width:19px;
+}
+
+.r2-hp-final .r2-hp-final-proof > span:first-child::before,
+.r2-hp-final .r2-hp-final-benefits article:first-child > div::before,
+.r2-hp-final .r2-hp-final-benefits article:nth-child(4) > div::before{
+  content:"";
+  width:7px;
+  height:7px;
+  flex:0 0 7px;
+  display:block;
+  border-radius:50%;
+  background:currentColor;
+  opacity:.72;
+}
+
+/* Footer owns the second and final blue verification mark. */
+.r2-hp-final .r2-hp-final-brand{
+  position:relative!important;
+}
+
+.r2-hp-final .r2-hp-final-brand strong{
+  position:relative!important;
+  padding-right:22px!important;
+}
+
+.r2-hp-final .r2-hp-final-brand strong::after{
+  content:"✓";
+  position:absolute;
+  right:0;
+  top:-1px;
+  width:15px;
+  height:15px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#1d9bf0;
+  color:#fff;
+  font-family:Inter,ui-sans-serif,system-ui,sans-serif;
+  font-size:9px;
+  font-weight:900;
+  line-height:1;
+  box-shadow:0 2px 7px rgba(29,155,240,.24);
+}
+
+@media(max-width:380px){
+  .r2-hp-final .r2-hp-final-brand strong::after{
+    width:14px;
+    height:14px;
+    font-size:8px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .r2-hp-final .r2-hp-final-brand strong::after{box-shadow:none}
+}
+
+
+/* Mobile screenshot QA: keep the hero typography-led; the brand mark belongs in the header. */
+.r2-hp-final .r2-hp-final-emblem{display:none!important;visibility:hidden!important;}
+
+
+/* V51 — Homepage final visual hierarchy + mobile safe-area polish.
+   Presentation-only: no API, Supabase, database, auth, catalog, cart, checkout,
+   order, routing, analytics, or transaction behavior is changed. */
+
+.r2-hp-final{
+  --r2-ui-navy:#071a35;
+  --r2-ui-blue:#1766d5;
+  --r2-ui-gold:#e4bf77;
+  --r2-ui-line:rgba(151,183,218,.22);
+  --r2-ui-muted:#91a6bd;
+  --r2-ui-radius:18px;
+}
+
+/* Reduce decorative noise: hierarchy is carried by type, spacing and one primary accent. */
+.r2-hp-final .r2-hp-final-proof{
+  gap:12px!important;
+  margin-top:20px!important;
+}
+.r2-hp-final .r2-hp-final-proof span{
+  min-height:28px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:rgba(235,243,252,.72)!important;
+  font-size:7px!important;
+  letter-spacing:.10em!important;
+}
+.r2-hp-final .r2-hp-final-proof span svg{
+  width:13px!important;
+  height:13px!important;
+  opacity:.85;
+}
+
+/* Premium CTA hierarchy: one filled action + one restrained ghost action. */
+.r2-hp-final .r2-hp-final-actions{
+  gap:10px!important;
+  margin-top:22px!important;
+}
+.r2-hp-final .r2-hp-final-actions a{
+  min-height:48px!important;
+  padding:0 18px!important;
+  border-radius:13px!important;
+  border:1px solid transparent!important;
+  box-shadow:none!important;
+  transition:transform .22s ease,box-shadow .22s ease,background-color .22s ease,border-color .22s ease!important;
+}
+.r2-hp-final .r2-hp-final-actions .primary{
+  background:linear-gradient(135deg,#f0d08d 0%,#d3a95e 100%)!important;
+  color:#10233f!important;
+  box-shadow:0 10px 26px rgba(190,143,55,.24),inset 0 1px 0 rgba(255,255,255,.52)!important;
+}
+.r2-hp-final .r2-hp-final-actions .primary:hover,
+.r2-hp-final .r2-hp-final-actions .primary:focus-visible{
+  transform:translateY(-2px)!important;
+  box-shadow:0 15px 32px rgba(190,143,55,.30),inset 0 1px 0 rgba(255,255,255,.58)!important;
+}
+.r2-hp-final .r2-hp-final-actions .secondary{
+  position:relative!important;
+  background:rgba(5,24,52,.18)!important;
+  border-color:rgba(255,255,255,.48)!important;
+  color:#fff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10)!important;
+  backdrop-filter:none!important;
+}
+.r2-hp-final .r2-hp-final-actions .secondary::after{
+  content:"→";
+  margin-left:5px;
+  font-size:13px;
+  line-height:1;
+  color:#e4bf77;
+  transition:transform .22s ease;
+}
+.r2-hp-final .r2-hp-final-actions .secondary:hover,
+.r2-hp-final .r2-hp-final-actions .secondary:focus-visible{
+  transform:translateY(-2px)!important;
+  border-color:rgba(255,255,255,.78)!important;
+  background:rgba(255,255,255,.08)!important;
+}
+.r2-hp-final .r2-hp-final-actions .secondary:hover::after,
+.r2-hp-final .r2-hp-final-actions .secondary:focus-visible::after{transform:translateX(3px)}
+
+/* Live catalog becomes a proof module, not a second visual focal point. */
+.r2-hp-final .r2-hp-final-live{
+  border-radius:20px!important;
+  padding:20px!important;
+  box-shadow:0 18px 46px rgba(0,0,0,.20)!important;
+}
+.r2-hp-final .r2-hp-final-live>strong{
+  margin:28px 0 14px!important;
+}
+.r2-hp-final .r2-hp-final-bars{
+  height:68px!important;
+  gap:4px!important;
+}
+
+/* Distributor system: business language first, system language second. */
+.r2-hp-final .r2-hp-final-distributor{
+  gap:38px!important;
+  padding:48px!important;
+  border-radius:26px!important;
+  box-shadow:0 22px 56px rgba(4,24,52,.20)!important;
+}
+.r2-hp-final .r2-hp-final-distributor-kicker small{font-size:0!important}
+.r2-hp-final .r2-hp-final-distributor-kicker small::after{
+  content:"OPERASIONAL";
+  font-size:7px;
+  color:#7894b3;
+  letter-spacing:.12em;
+}
+.r2-hp-final .r2-hp-final-points{gap:8px!important}
+.r2-hp-final .r2-hp-final-points article{
+  min-height:118px!important;
+  padding:16px 16px 14px 68px!important;
+  border-radius:16px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07)!important;
+}
+.r2-hp-final .r2-point-index span{
+  display:block!important;
+  font-size:0!important;
+}
+.r2-hp-final .r2-point-index span::after{
+  font-size:5.5px;
+  letter-spacing:.12em;
+  color:#6f8ba9;
+}
+.r2-hp-final .r2-hp-final-points article:nth-child(1) .r2-point-index span::after{content:"KATALOG"}
+.r2-hp-final .r2-hp-final-points article:nth-child(2) .r2-point-index span::after{content:"PESANAN"}
+.r2-hp-final .r2-hp-final-points article:nth-child(3) .r2-point-index span::after{content:"KONFIRMASI"}
+.r2-hp-final .r2-hp-final-points article small{
+  font-size:0!important;
+  letter-spacing:.10em!important;
+}
+.r2-hp-final .r2-hp-final-points article small svg{width:12px!important;height:12px!important}
+.r2-hp-final .r2-hp-final-points article:nth-child(1) small::after{content:"DATA LIVE";font-size:6px}
+.r2-hp-final .r2-hp-final-points article:nth-child(2) small::after{content:"ALUR TERJAGA";font-size:6px}
+.r2-hp-final .r2-hp-final-points article:nth-child(3) small::after{content:"ADMIN TERKONFIRMASI";font-size:6px}
+
+/* Keep the distributor status row quiet and secondary. */
+.r2-hp-final .r2-hp-final-distributor-status{
+  gap:10px 16px!important;
+  margin-top:20px!important;
+  padding-top:14px!important;
+}
+.r2-hp-final .r2-hp-final-distributor-status span{
+  font-size:6.5px!important;
+  letter-spacing:.09em!important;
+}
+
+/* Fixed mobile dock: compact, consistent and never the dominant element. */
+@media(max-width:767px){
+  html{scroll-padding-bottom:96px!important}
+  body{padding-bottom:0!important}
+  .r2-hp-final{
+    padding-bottom:120px!important;
+  }
+  .r2-hp-final .r2-hp-final-footer{
+    padding-bottom:calc(120px + env(safe-area-inset-bottom))!important;
+  }
+  .r2-hp-final ~ .route-icon-nav{
+    width:min(calc(100% - 24px),430px)!important;
+    height:64px!important;
+    min-height:64px!important;
+    padding:5px!important;
+    gap:3px!important;
+    bottom:calc(8px + env(safe-area-inset-bottom))!important;
+    border-radius:18px!important;
+    box-shadow:0 12px 30px rgba(17,24,39,.13),0 2px 8px rgba(17,24,39,.05)!important;
+  }
+  .r2-hp-final ~ .route-icon-nav a{
+    min-height:52px!important;
+    height:52px!important;
+    border-radius:12px!important;
+    gap:3px!important;
+  }
+  .r2-hp-final ~ .route-icon-nav .route-icon-wrap{
+    width:24px!important;
+    height:24px!important;
+  }
+  .r2-hp-final ~ .route-icon-nav .route-icon{
+    width:19px!important;
+    height:19px!important;
+  }
+  .r2-hp-final ~ .route-icon-nav .route-icon-label{
+    font-size:8px!important;
+    font-weight:750!important;
+  }
+  .r2-hp-final ~ .route-icon-nav a.is-active{
+    box-shadow:0 3px 10px rgba(17,24,39,.13)!important;
+  }
+
+  /* Mobile hero: tighter hierarchy, fewer containers, larger breathing room around the title. */
+  .r2-hp-final .r2-hp-final-hero-inner{
+    width:calc(100% - 24px)!important;
+    padding:28px 0 30px!important;
+    gap:18px!important;
+  }
+  .r2-hp-final .r2-hp-final-eyebrow{
+    font-size:6.5px!important;
+    padding:6px 8px!important;
+    background:rgba(5,24,52,.18)!important;
+  }
+  .r2-hp-final .r2-hp-final-copy h1{
+    margin:16px 0 13px!important;
+  }
+  .r2-hp-final .r2-hp-final-copy>p{
+    font-size:11.5px!important;
+    line-height:1.68!important;
+  }
+  .r2-hp-final .r2-hp-final-actions{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    gap:8px!important;
+    margin-top:18px!important;
+  }
+  .r2-hp-final .r2-hp-final-actions a{
+    min-height:48px!important;
+    padding:0 8px!important;
+    font-size:7.5px!important;
+  }
+  .r2-hp-final .r2-hp-final-actions .secondary::after{font-size:11px}
+  .r2-hp-final .r2-hp-final-proof{
+    gap:9px!important;
+    margin-top:14px!important;
+  }
+  .r2-hp-final .r2-hp-final-proof span{
+    min-height:26px!important;
+    font-size:6px!important;
+    letter-spacing:.08em!important;
+  }
+  .r2-hp-final .r2-hp-final-live{
+    padding:15px!important;
+    border-radius:18px!important;
+  }
+  .r2-hp-final .r2-hp-final-live>strong{
+    margin:20px 0 12px!important;
+    font-size:40px!important;
+  }
+  .r2-hp-final .r2-hp-final-bars{
+    height:62px!important;
+  }
+
+  /* Distributor mobile: one dominant heading, then three quiet proof cards. */
+  .r2-hp-final .r2-hp-final-distributor{
+    width:calc(100% - 24px)!important;
+    margin-top:48px!important;
+    margin-bottom:48px!important;
+    padding:24px 16px 16px!important;
+    gap:18px!important;
+    border-radius:20px!important;
+  }
+  .r2-hp-final .r2-hp-final-distributor-intro h2{
+    margin:14px 0 12px!important;
+    font-size:clamp(28px,8.2vw,36px)!important;
+  }
+  .r2-hp-final .r2-hp-final-distributor-intro p{
+    font-size:10.5px!important;
+    line-height:1.72!important;
+  }
+  .r2-hp-final .r2-hp-final-distributor-actions{
+    margin-top:17px!important;
+    gap:7px!important;
+  }
+  .r2-hp-final .r2-hp-final-distributor-actions a{
+    min-height:46px!important;
+    padding:0 9px!important;
+    font-size:7px!important;
+  }
+  .r2-hp-final .r2-hp-final-distributor-status{
+    margin-top:16px!important;
+    padding-top:12px!important;
+    gap:6px 9px!important;
+  }
+  .r2-hp-final .r2-hp-final-distributor-status span{
+    font-size:5.5px!important;
+  }
+  .r2-hp-final .r2-hp-final-points{
+    gap:7px!important;
+  }
+  .r2-hp-final .r2-hp-final-points article{
+    min-height:112px!important;
+    padding:14px 48px 13px 64px!important;
+    border-radius:14px!important;
+  }
+  .r2-hp-final .r2-point-index{left:14px!important;top:14px!important}
+  .r2-hp-final .r2-point-icon{
+    right:12px!important;
+    top:12px!important;
+    width:34px!important;
+    height:34px!important;
+    border-radius:10px!important;
+  }
+  .r2-hp-final .r2-hp-final-points article strong{
+    margin-top:38px!important;
+    font-size:12px!important;
+  }
+  .r2-hp-final .r2-hp-final-points article > span{
+    margin-top:6px!important;
+    font-size:8px!important;
+    line-height:1.5!important;
+  }
+  .r2-hp-final .r2-hp-final-points article small{
+    margin-top:8px!important;
+  }
+}
+
+@media(max-width:390px){
+  .r2-hp-final{
+    padding-bottom:116px!important;
+  }
+  .r2-hp-final .r2-hp-final-footer{
+    padding-bottom:calc(116px + env(safe-area-inset-bottom))!important;
+  }
+  .r2-hp-final ~ .route-icon-nav{
+    width:calc(100% - 18px)!important;
+    height:62px!important;
+    min-height:62px!important;
+    bottom:calc(7px + env(safe-area-inset-bottom))!important;
+    border-radius:17px!important;
+  }
+  .r2-hp-final ~ .route-icon-nav a{
+    height:50px!important;
+    min-height:50px!important;
+  }
+  .r2-hp-final ~ .route-icon-nav .route-icon-label{font-size:7.5px!important}
+  .r2-hp-final .r2-hp-final-actions{grid-template-columns:1fr 1fr!important}
+  .r2-hp-final .r2-hp-final-actions a{font-size:7px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .r2-hp-final .r2-hp-final-actions a,
+  .r2-hp-final .r2-hp-final-actions .secondary::after{transition:none!important}
+  .r2-hp-final .r2-hp-final-actions a:hover,
+  .r2-hp-final .r2-hp-final-actions a:focus-visible{transform:none!important}
+}
