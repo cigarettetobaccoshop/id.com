@@ -116,23 +116,72 @@ export default function HomepageExperience(){
 .r2-hp-final-pillar:focus-visible{outline:2px solid #8bc2ff;outline-offset:3px}
 @media(max-width:620px){.r2-hp-final-pillars-grid{display:flex;gap:10px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding:8px;padding:2px 8px 12px;margin:0 -8px;-webkit-overflow-scrolling:touch}.r2-hp-final-pillar{flex:0 0 min(82%,290px);min-height:150px;display:flex;align-items:flex-start;padding:15px 13px;border-radius:15px;scroll-snap-align:start;scroll-snap-stop:always;background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.035));box-shadow:0 9px 22px rgba(0,0,0,.12)}.r2-hp-final-pillar-icon{flex-basis:34px;width:34px;height:34px}.r2-hp-final-pillar strong{font-size:12px}.r2-hp-final-pillar p{font-size:9px;line-height:1.55}.r2-hp-final-pillar small{font-size:6.5px}.r2-hp-final-pillars-grid:focus-visible{outline:2px solid #8bc2ff;outline-offset:2px}}
 @media(min-width:621px){.r2-hp-final-pillars-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}}
-/* Hero typography — requested Unicode display style. Presentation-only; no business logic/integration changes. */
-.r2-hp-final-hero .r2-hero-brand-copy{font-family:"Noto Sans Math","Cambria Math","Segoe UI Symbol","DejaVu Sans",system-ui,sans-serif;unicode-bidi:plaintext}
-.r2-hp-final-hero .r2-hp-final-title-main,.r2-hp-final-hero .r2-hp-final-title-sub em,.r2-hp-final-hero .r2-hero-description{font-family:inherit;font-weight:700;font-style:normal}
-.r2-hp-final-hero .r2-hp-final-title-main{display:block;white-space:normal}
-.r2-hp-final-hero .r2-hp-final-title-sub{display:block!important;margin-top:14px}
-.r2-hp-final-hero .r2-hp-final-title-sub em{display:block!important;color:#e6c77f!important;font-size:.42em;line-height:1.2;letter-spacing:.015em}
-.r2-hp-final-hero .r2-hero-description{font-size:13px;line-height:1.85;letter-spacing:.005em;color:rgba(245,248,252,.84)}
+/* Hero typography — real display font for the requested Unicode mathematical-sans look. Presentation-only; no business logic/integration changes. */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Math&display=swap');
+.r2-hp-final-hero .r2-hero-brand-copy{
+  font-family:"Noto Sans Math","Cambria Math","STIX Two Math","DejaVu Sans",system-ui,sans-serif;
+  font-variant-ligatures:none;
+  font-variant-numeric:normal;
+  unicode-bidi:plaintext;
+}
+.r2-hp-final-hero .r2-hp-final-title-main,
+.r2-hp-final-hero .r2-hp-final-title-sub em,
+.r2-hp-final-hero .r2-hero-description{
+  font-family:inherit;
+  font-style:normal;
+  font-weight:400;
+  text-rendering:geometricPrecision;
+}
+.r2-hp-final-hero .r2-hp-final-title-main{
+  display:block;
+  white-space:normal;
+  letter-spacing:-.055em;
+}
+.r2-hp-final-hero .r2-hp-final-title-sub{
+  display:block!important;
+  margin-top:14px;
+}
+.r2-hp-final-hero .r2-hp-final-title-sub em{
+  display:block!important;
+  color:#e6c77f!important;
+  font-size:.42em;
+  line-height:1.2;
+  letter-spacing:.01em;
+}
+.r2-hp-final-hero .r2-hero-description{
+  font-size:13px;
+  line-height:1.85;
+  letter-spacing:.002em;
+  color:rgba(245,248,252,.84);
+}
 @media(max-width:767px){
- .r2-hp-final-hero .r2-hp-final-copy h1{font-size:clamp(34px,8.8vw,62px)!important;line-height:1.02!important;letter-spacing:-.045em!important}
+ .r2-hp-final-hero .r2-hp-final-copy h1{
+   font-size:clamp(34px,8.8vw,62px)!important;
+   line-height:1.02!important;
+   letter-spacing:-.04em!important;
+ }
  .r2-hp-final-hero .r2-hp-final-title-sub{margin-top:13px!important}
- .r2-hp-final-hero .r2-hp-final-title-sub em{font-size:clamp(16px,4vw,25px)!important;line-height:1.2!important;letter-spacing:.01em!important}
- .r2-hp-final-hero .r2-hero-description{font-size:11px!important;line-height:1.72!important}
+ .r2-hp-final-hero .r2-hp-final-title-sub em{
+   font-size:clamp(16px,4vw,25px)!important;
+   line-height:1.2!important;
+   letter-spacing:.008em!important;
+ }
+ .r2-hp-final-hero .r2-hero-description{
+   font-size:11px!important;
+   line-height:1.72!important;
+ }
 }
 @media(max-width:380px){
- .r2-hp-final-hero .r2-hp-final-copy h1{font-size:clamp(31px,8.6vw,43px)!important}
- .r2-hp-final-hero .r2-hp-final-title-sub em{font-size:clamp(14px,3.9vw,18px)!important}
- .r2-hp-final-hero .r2-hero-description{font-size:10px!important;line-height:1.68!important}
+ .r2-hp-final-hero .r2-hp-final-copy h1{
+   font-size:clamp(31px,8.6vw,43px)!important;
+ }
+ .r2-hp-final-hero .r2-hp-final-title-sub em{
+   font-size:clamp(14px,3.9vw,18px)!important;
+ }
+ .r2-hp-final-hero .r2-hero-description{
+   font-size:10px!important;
+   line-height:1.68!important;
+ }
 }
 
 /* Hero artwork framing: preserve composition on narrow screens; do not upscale by CSS crop */
