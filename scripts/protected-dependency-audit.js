@@ -18,11 +18,7 @@ function git(...gitArgs) {
 
 const protectedPaths = new Set([
   "components/homepage/DeferredWarehouseMap.js",
-  "components/BentoGrid.jsx",
-  "components/BentoItem.jsx",
-  "components/thumbnails/ThumbnailProvider.tsx",
   "lib/curatedBadges.js",
-  "utils/supabase-server.ts",
   "lib/supabaseStorage.js"
 ]);
 
