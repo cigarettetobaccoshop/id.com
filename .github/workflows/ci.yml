@@ -35,3 +35,6 @@ jobs:
 
       - name: Rendered CSS selector inventory
         run: npm run audit:css:rendered
+
+      - name: Exact CSS duplicate declaration audit
+        run: npm run audit:css:duplicates
