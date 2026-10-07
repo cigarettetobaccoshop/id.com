@@ -19,6 +19,7 @@ const requiredFiles = [
   'lib/supabaseClient.js',
   'lib/supabaseAdminBrowser.js',
   'middleware.ts',
+  'styles/r2-global-entry.css',
   'styles/mobile-lock.css',
   'styles/r2-premium.css',
   'styles/catalog-modern.css',
@@ -49,6 +50,7 @@ const adminAuthorization = fs.readFileSync(path.join(process.cwd(), 'lib/admin/a
 const middleware = fs.readFileSync(path.join(process.cwd(), 'middleware.ts'), 'utf8')
 const homepage = fs.readFileSync(path.join(process.cwd(), 'components/HomepageExperience.js'), 'utf8')
 const app = fs.readFileSync(path.join(process.cwd(), 'pages/_app.js'), 'utf8')
+const globalEntry = fs.readFileSync(path.join(process.cwd(), 'styles/r2-global-entry.css'), 'utf8')
 const mobile = fs.readFileSync(path.join(process.cwd(), 'styles/mobile-lock.css'), 'utf8')
 const theme = fs.readFileSync(path.join(process.cwd(), 'styles/r2-cross-page-theme-final.css'), 'utf8')
 
@@ -58,7 +60,7 @@ if (!products.includes("select(COLUMNS")) throw new Error('Catalog schema mappin
 if (!apiProducts.includes('.limit(limit)')) throw new Error('Products API limit handling missing')
 if (!apiProducts.includes("count: 'exact'")) throw new Error('Products API exact count missing')
 if (!orders.includes('PAYMENT_METHODS')) throw new Error('Order payment validation missing')
-if (!orders.includes(".select('id,name,price,category,is_active')")) throw new Error('Checkout catalog schema mapping missing')
+if (!orders.includes("select('id,name,price,category,is_active')")) throw new Error('Checkout catalog schema mapping missing')
 if (!orders.includes('create_order_atomic')) throw new Error('Atomic order RPC integration missing')
 if (!checkout.includes("fetch('/api/orders'")) throw new Error('Checkout order API integration missing')
 if (!checkout.includes("localStorage.getItem('r2-cart')")) throw new Error('Guest cart persistence missing')
@@ -79,14 +81,16 @@ if (!adminBrowser.includes('createBrowserSupabaseClient')) throw new Error('Cook
 if (!adminAuthorization.includes('verifyAdminToken')) throw new Error('Central admin authorization guard missing')
 if (!middleware.includes('supabase.auth.getUser()')) throw new Error('Admin middleware Auth validation missing')
 if (!homepage.includes('Login Admin')) throw new Error('Admin login navigation missing from site drawer')
-if (!app.includes('mobile-lock.css')) throw new Error('Global mobile lock is not registered')
-if (!app.includes('r2-cross-page-theme-final.css')) throw new Error('Canonical visual system is not registered')
+if (!app.includes("import '../styles/r2-global-entry.css'")) throw new Error('Consolidated global CSS entrypoint is not registered')
+if (!globalEntry.includes("@import url('./mobile-lock.css')")) throw new Error('Global mobile lock is not registered in consolidated entrypoint')
+if (!globalEntry.includes("@import url('./r2-cross-page-theme-final.css')")) throw new Error('Canonical visual system is not registered in consolidated entrypoint')
 if (!mobile.includes('@media (max-width:620px)')) throw new Error('Mobile breakpoint missing')
 if (!theme.includes('--r2-gold')) throw new Error('Canonical visual token system missing')
 
-const cssImports = [...app.matchAll(/import ['"]\.\.\/styles\/([^'"]+\.css)['"]/g)].map(m => m[1])
-const duplicateImports = cssImports.filter((name, index) => cssImports.indexOf(name) !== index)
-if (duplicateImports.length) throw new Error(`Duplicate global CSS import: ${duplicateImports.join(', ')}`)
+const directGlobalCssImports = [...app.matchAll(/import ['"]\.\.\/styles\/([^'"]+\.css)['"]/g)].map(m => m[1])
+if (directGlobalCssImports.length !== 1 || directGlobalCssImports[0] !== 'r2-global-entry.css') {
+  throw new Error(`Expected exactly one global CSS entrypoint, found: ${directGlobalCssImports.join(', ') || 'none'}`)
+}
 
 require('./css-declaration-audit.js')
 require('./css-cascade-map.js')
