@@ -8,7 +8,8 @@
     "start":"next start",
     "lint":"next lint",
     "test":"node scripts/smoke-test.js",
-    "audit:css:rendered":"node scripts/css-rendered-selector-inventory.js"
+    "audit:css:rendered":"node scripts/css-rendered-selector-inventory.js",
+    "audit:css:duplicates":"node scripts/css-duplicate-audit.js"
   },
   "repository":{
     "type":"git",
