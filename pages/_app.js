@@ -46,6 +46,7 @@ export default function App({ Component, pageProps }) {
   useEffect(() => setMounted(true), [])
   return <>
     {isHome&&<Head>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title>R2 NUSANTARA | Distributor Rokok Online & Grosir Malang</title>
       <meta name="description" content="R2 NUSANTARA adalah website distributor rokok online dan grosir dari gudang Malang, dengan katalog produk live, informasi harga, dan layanan pengiriman Indonesia." />
       <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
