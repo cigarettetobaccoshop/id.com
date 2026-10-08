@@ -4,6 +4,7 @@ export default function Document() {
   return (
     <Html lang="id">
       <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="application-name" content="R2 NUSANTARA" />
         <meta name="apple-mobile-web-app-title" content="R2 NUSANTARA" />
         <meta name="theme-color" content="#0F3D6E" />
