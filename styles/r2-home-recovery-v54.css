@@ -39,3 +39,44 @@
     pointer-events:auto!important;
   }
 }
+
+
+/* V54 contrast correction: the homepage component injects late global styles.
+ * Higher specificity keeps the premium dark header legible without changing behavior. */
+body .r2-home-header{
+  background:rgba(6,23,43,.96)!important;
+  border-bottom-color:rgba(216,181,108,.22)!important;
+  box-shadow:0 8px 30px rgba(0,0,0,.18)!important;
+}
+body .r2-home-header .r2-home-header__wordmark strong{color:#fff!important}
+body .r2-home-header .r2-home-header__wordmark small{color:#aebed0!important}
+body .r2-home-header .r2-home-header__nav a{
+  color:#dbe6f0!important;
+  background:transparent!important;
+}
+body .r2-home-header .r2-home-header__nav a:hover{
+  color:#fff!important;
+  background:rgba(255,255,255,.08)!important;
+}
+body .r2-home-header .r2-home-header__nav a.is-active{
+  color:#fff!important;
+  background:rgba(216,181,108,.13)!important;
+}
+body .r2-home-header .r2-home-header__nav a.is-active:after{
+  background:linear-gradient(90deg,#d8b56c,#f0d89e)!important;
+}
+body .r2-home-header .r2-home-header__cart,
+body .r2-home-header .r2-home-header__menu{
+  color:#fff!important;
+  background:rgba(255,255,255,.07)!important;
+  border-color:rgba(255,255,255,.18)!important;
+}
+body .r2-home-header .r2-home-header__admin{
+  background:#d8b56c!important;
+  color:#071a2d!important;
+}
+body .r2-home-header .r2-home-header__mobile-panel{
+  background:#06172b!important;
+  border-color:rgba(216,181,108,.20)!important;
+}
+body .r2-home-header .r2-home-header__mobile-panel a{color:#e4edf5!important}
