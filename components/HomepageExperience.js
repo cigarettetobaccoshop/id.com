@@ -67,7 +67,7 @@ export default function HomepageExperience(){
           </span>
           <ChevronRight className="r2-point-chevron" size={18} aria-hidden="true"/>
         </button>
-        <div className={"r2-point-detail " + (loading?"is-loading":"")} id="r2-point-detail-01" hidden={activePoint!==0}>
+        <div className={"r2-point-detail " + (activePoint===0?"is-open ":"") + (loading?"is-loading":"")} id="r2-point-detail-01" aria-hidden={activePoint!==0}>
           {loading ? <span className="r2-point-skeleton" aria-label="Memuat jumlah produk" /> : dataError ? <span><b>—</b> produk aktif</span> : <span><b>{catalogCountDisplay.toLocaleString("id-ID")}</b> produk aktif, diperbarui langsung dari katalog.</span>}
         </div>
       </article>
