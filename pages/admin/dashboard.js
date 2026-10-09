@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { getAdminSupabase } from '../../lib/supabaseAdminBrowser'
 
 import { ADMIN_UUID } from '../../lib/admin/constants'
+import MobileAdminOperations from '../../components/admin/MobileAdminOperations'
 const STATUSES = ['pending','confirmed','shipped','completed','cancelled']
 const LABELS = { pending:'Pending', confirmed:'Confirmed', processing:'Processing', shipped:'Shipped', completed:'Completed', cancelled:'Cancelled' }
 const money = (v) => new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(v)||0)
@@ -129,6 +130,8 @@ export default function AdminDashboard() {
         <div className="hero-grid"><div><span className="eyebrow"><b className="live-dot"/> SECURE OPERATIONS · LIVE MONITORING</span><h1>Dashboard <em>Monitoring</em></h1><p>Command center untuk order, reservation, aktivitas audit, katalog, dan kesehatan sistem.</p></div><div className="hero-right"><div className={`system-pill ${system.status}`}><b>●</b><span>{system.status === 'online' ? 'SYSTEM ONLINE' : system.status === 'degraded' ? 'CHECK REQUIRED' : 'CHECKING'}</span><small>Production</small></div><a href="/" target="_blank" rel="noreferrer">Buka Website <b>↗</b></a></div></div>
         <div className="hero-meta"><span>ENV <b>PRODUCTION</b></span><span>DATABASE <b>{system.database === 'connected' ? 'CONNECTED' : String(system.database).toUpperCase()}</b></span><span>LAST SYNC <b>{lastSync ? lastSync.toLocaleTimeString('id-ID') : '—'}</b></span></div>
       </section>
+
+      <MobileAdminOperations session={session} orders={filteredOrders} stats={stats} database={database} onRefresh={() => load(session)} />
 
       {stats && <section className="stats" aria-label="Ringkasan metrik"><div className="stat stat-primary"><span>Total Order</span><strong>{stats.total_orders}</strong><small>seluruh order tercatat</small><i>ORDERS</i></div><div className="stat"><span>Hari Ini</span><strong>{stats.today_orders}</strong><small>order masuk hari ini</small></div><div className="stat"><span>Pending</span><strong>{stats.pending}</strong><small>perlu perhatian</small></div><div className="stat"><span>Shipped</span><strong>{stats.shipped}</strong><small>dalam pengiriman</small></div><div className="stat"><span>Completed</span><strong>{stats.completed}</strong><small>selesai</small></div><div className="stat"><span>Cancelled</span><strong>{stats.cancelled}</strong><small>dibatalkan</small></div><div className="stat sales"><span>Total Penjualan</span><strong>{money(stats.total_sales)}</strong><small>akumulasi data order</small></div></section>}
 
