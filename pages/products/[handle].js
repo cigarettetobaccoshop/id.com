@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { RouteIcon } from '../../components/RouteIconNav'
+import { supabaseCatalogServer } from '../../lib/supabaseCatalogServer'
 
 const SITE_URL = 'https://r2nusantara-shop.vercel.app'
 const money = value => Number.isFinite(Number(value)) ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(value)) : 'Harga belum tersedia'
@@ -10,17 +11,45 @@ const isAvailable = product => product?.['Variant Inventory Qty'] == null
   ? Boolean(product?.Published && product?.Status === 'active')
   : stock(product['Variant Inventory Qty']) > 0
 
-export async function getServerSideProps({ params, req }) {
-  const host = req.headers.host || 'r2nusantara-shop.vercel.app'
-  const protocol = req.headers['x-forwarded-proto'] || 'https'
-  const origin = `${protocol}://${host}`
-  try {
-    const response = await fetch(`${origin}/api/products/${encodeURIComponent(params.handle)}`)
-    if (!response.ok) return { notFound: true }
-    const payload = await response.json()
-    return { props: { product: payload.data || null } }
-  } catch {
+export async function getServerSideProps({ params }) {
+  const id = String(params?.handle || '').trim()
+  if (!id) return { notFound: true }
+
+  // Query the same Supabase source as /api/products/[handle] directly.
+  // Avoid a server-side HTTP self-request, which fails on Vercel-protected Previews.
+  const { data, error } = await supabaseCatalogServer
+    .from('products')
+    .select('id,name,price,category,segment,segment_name,description,rating,is_active')
+    .eq('id', id)
+    .eq('is_active', true)
+    .maybeSingle()
+
+  if (error) {
+    console.error('Supabase product detail query failed:', error.message)
     return { notFound: true }
+  }
+  if (!data) return { notFound: true }
+
+  return {
+    props: {
+      product: {
+        Handle: data.id,
+        Title: data.name,
+        'Body (HTML)': data.description || '',
+        Vendor: data.segment_name || data.category || 'R2 Nusantara',
+        Type: data.category || 'r2',
+        Tags: data.segment || '',
+        Published: data.is_active,
+        'Option1 Name': 'Segment',
+        'Option1 Value': data.segment_name || data.segment || '',
+        'Variant SKU': data.id,
+        'Variant Price': data.price,
+        'Variant Inventory Qty': null,
+        'Stock Status': data.is_active ? 'READY STOCK' : 'STOK HABIS',
+        Status: data.is_active ? 'active' : 'inactive',
+        Catalog: data.category,
+      },
+    },
   }
 }
 
