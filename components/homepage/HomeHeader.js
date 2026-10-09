@@ -35,7 +35,7 @@ export default function HomeHeader() {
             <span className="r2-home-header__logo-shell" aria-hidden="true">
               <span className="r2-home-header__logo-ring" />
               <span className="r2-home-header__logo-core">
-                <img src="/assets/logo/logo.png" alt="" width="44" height="44" />
+                <img src="/assets/logo/logo.png" alt="Logo R2 NUSANTARA" width="44" height="44" />
               </span>
             </span>
             <span className="r2-home-header__wordmark">
@@ -129,15 +129,16 @@ export default function HomeHeader() {
           width:13px!important;height:13px!important;
         }
         .r2-home-header__nav{display:flex;align-items:center;justify-content:center;gap:4px;flex:1}
-        .r2-home-header__nav a{text-decoration:none!important;display:inline-flex;align-items:center;gap:6px;position:relative;padding:10px 11px;border-radius:10px;color:#e2e8f0;font-size:10px;font-weight:850;letter-spacing:.01em;transition:color .2s ease,background .2s ease,transform .2s ease}
+        .r2-home-header__nav a{text-decoration:none!important;display:inline-flex;align-items:center;gap:6px;position:relative;min-height:44px;padding:10px 11px;border-radius:10px;color:#e2e8f0;font-size:10px;font-weight:850;letter-spacing:.01em;transition:color .2s ease,background .2s ease,transform .2s ease}
         .r2-home-header__nav a:hover{color:#0a1d36;background:#f3f7fc;transform:translateY(-1px)}
         .r2-home-header__nav a.is-active{color:#0b3f95;background:#eef5ff}
         .r2-home-header__nav a.is-active:after{content:"";position:absolute;left:12px;right:12px;bottom:4px;height:2px;border-radius:999px;background:linear-gradient(90deg,#1f78e8,#d8b36c)}
         .r2-home-header__actions{display:flex;align-items:center;gap:8px}
-        .r2-home-header__cart{position:relative;width:40px;height:40px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.22);border-radius:12px;color:#fff;background:rgba(255,255,255,.08);transition:.2s ease}
+        .r2-home-header__cart{position:relative;width:44px;height:44px;min-width:44px;min-height:44px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.22);border-radius:12px;color:#fff;background:rgba(255,255,255,.08);transition:.2s ease}
         .r2-home-header__cart:hover{transform:translateY(-2px);border-color:#9dc3ef;box-shadow:0 8px 18px rgba(11,63,149,.12)}
+        .r2-home-header a:focus-visible,.r2-home-header button:focus-visible{outline:2px solid #8A96A8;outline-offset:3px}
         .r2-home-header__cart b{position:absolute;right:-5px;top:-6px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;display:grid;place-items:center;background:#0a66c2;color:#fff;border:2px solid #fff;font-size:7px;font-weight:900}
-        .r2-home-header__admin{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 14px;border-radius:12px;background:#0b3f95;color:#fff!important;font-size:9px;font-weight:900;letter-spacing:.04em;box-shadow:0 8px 18px rgba(11,63,149,.18);transition:.2s ease}
+        .r2-home-header__admin{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 14px;border-radius:12px;background:#0b3f95;color:#fff!important;font-size:9px;font-weight:900;letter-spacing:.04em;box-shadow:0 8px 18px rgba(11,63,149,.18);transition:.2s ease}
         .r2-home-header__admin:hover{transform:translateY(-2px);background:#0a66c2}
         .r2-home-header__menu{display:none;width:40px;height:40px;border:1px solid rgba(255,255,255,.22);border-radius:12px;background:rgba(255,255,255,.08);color:#fff;place-items:center}
         .r2-home-header__mobile-panel{display:none}
@@ -175,7 +176,7 @@ export default function HomeHeader() {
           .r2-home-header__admin{display:none}
           .r2-home-header__menu{display:grid;width:36px;height:36px;border-radius:11px}
           .r2-home-header__mobile-panel{display:flex;flex-direction:column;gap:4px;width:calc(100% - 20px);margin:0 10px 10px;padding:10px;border:1px solid #dfe7f0;border-radius:18px;background:rgba(255,255,255,.97);box-shadow:0 20px 45px rgba(7,29,73,.14);backdrop-filter:blur(18px)}
-          .r2-home-header__mobile-panel a{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border-radius:12px;color:#17395f;font-size:11px;font-weight:850}
+          .r2-home-header__mobile-panel a{display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:13px 14px;border-radius:12px;color:#17395f;font-size:11px;font-weight:850}
           .r2-home-header__mobile-panel a:hover{background:#eef5ff}
           .r2-home-header__mobile-panel .is-admin{background:#0b3f95;color:#fff!important}
           .r2-hp-final-section{padding-top:56px!important;padding-bottom:56px!important}
