@@ -31,9 +31,12 @@ export default function MobileAdminOperations({ session, orders = [], stats, dat
     } finally {
       setLoadingProducts(false)
     }
-  }, [session?.access_token])
+  }, [session])
 
-  useEffect(() => { loadProducts() }, [loadProducts])
+  useEffect(() => {
+    const timer = window.setTimeout(() => { loadProducts() }, 0)
+    return () => window.clearTimeout(timer)
+  }, [loadProducts])
 
   const visibleProducts = useMemo(() => {
     const term = search.trim().toLowerCase()
