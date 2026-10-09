@@ -53,7 +53,53 @@ export default function HomepageExperience(){
     <div className="r2-hp-final-distributor-actions"><Link href="/products">MULAI DARI KATALOG <ArrowRight size={15}/></Link><Link href="/contact">HUBUNGI ADMIN</Link></div>
     <div className="r2-hp-final-distributor-status" aria-label="Status operasional"><span><i/> SISTEM OPERASIONAL</span><span><i/> GUDANG MALANG</span><span><i/> DISTRIBUSI NASIONAL</span></div>
   </div>
-  <div className="r2-distributor-system"><div className="r2-distributor-progress" aria-hidden="true"><span style={{width:((activePoint+1)/3*100)+'%'}}/></div><ol className="r2-hp-final-points" aria-label="Struktur layanan R2 NUSANTARA"><li className={`r2-point-card-wrap ${activePoint===0?'is-active':''}`} data-r2-distributor-card="0"><article className="r2-point-card"><button type="button" className="r2-point-toggle" aria-expanded={activePoint===0} aria-controls="r2-point-detail-01" onClick={()=>setActivePoint(activePoint===0?-1:0)}><span className="r2-point-index"><b>01</b><span>KATALOG</span></span><span className="r2-point-icon"><Database size={22}/></span><span className="r2-point-content"><strong>Data katalog aktif</strong><span>Satu sumber produk untuk storefront production.</span><small><BadgeCheck size={13}/> DATA LIVE</small></span><ChevronRight className="r2-point-chevron" size={18} aria-hidden="true"/></button>{activePoint===0&&<div className="r2-point-detail" id="r2-point-detail-01">{count>0&&<span><b>{catalogCountDisplay.toLocaleString('id-ID')}</b> produk aktif terdeteksi dari data live.</span>}</div>}</article></li><li className={`r2-point-card-wrap ${activePoint===1?'is-active':''}`} data-r2-distributor-card="1"><article className="r2-point-card"><button type="button" className="r2-point-toggle" aria-expanded={activePoint===1} aria-controls="r2-point-detail-02" onClick={()=>setActivePoint(activePoint===1?-1:1)}><span className="r2-point-index"><b>02</b><span>PESANAN</span></span><span className="r2-point-icon"><ShoppingCart size={22}/></span><span className="r2-point-content"><strong>Order terstruktur</strong><span>Keranjang dan checkout mengikuti alur existing.</span><small><Workflow size={13}/> FLOW TERJAGA</small></span><ChevronRight className="r2-point-chevron" size={18} aria-hidden="true"/></button>{activePoint===1&&<div className="r2-point-detail" id="r2-point-detail-02"><div className="r2-mini-stepper"><span>KERANJANG</span><i/><span>CHECKOUT</span><i/><span>ADMIN</span></div></div>}</article></li><li className={`r2-point-card-wrap ${activePoint===2?'is-active':''}`} data-r2-distributor-card="2"><article className="r2-point-card"><button type="button" className="r2-point-toggle" aria-expanded={activePoint===2} aria-controls="r2-point-detail-03" onClick={()=>setActivePoint(activePoint===2?-1:2)}><span className="r2-point-index"><b>03</b><span>KONFIRMASI</span></span><span className="r2-point-icon"><ShieldCheck size={22}/></span><span className="r2-point-content"><strong>Konfirmasi profesional</strong><span>Detail pesanan diteruskan melalui proses admin.</span><small><BadgeCheck size={13}/> VERIFIED PROCESS</small></span><ChevronRight className="r2-point-chevron" size={18} aria-hidden="true"/></button>{activePoint===2&&<div className="r2-point-detail" id="r2-point-detail-03"><span>Admin meninjau detail order, lalu konfirmasi melalui kanal resmi.</span><Link href="/contact">HUBUNGI ADMIN <ArrowRight size={13}/></Link></div>}</article></li></ol></div>
+  <div className="r2-distributor-system">
+  <ul className="r2-hp-final-points" aria-label="Struktur layanan R2 NUSANTARA">
+    <li className={"r2-point-card-wrap " + (activePoint===0?"is-active":"")} data-r2-distributor-card="0">
+      <article className="r2-point-card">
+        <button type="button" className="r2-point-toggle" aria-expanded={activePoint===0} aria-controls="r2-point-detail-01" onClick={()=>setActivePoint(activePoint===0?-1:0)}>
+          <span className="r2-point-index"><b>01</b><span>KATALOG</span></span>
+          <span className="r2-point-icon" aria-hidden="true"><Database size={22}/></span>
+          <span className="r2-point-content">
+            <strong>Data katalog aktif</strong>
+            <span>Satu sumber data produk yang selalu sinkron dengan katalog.</span>
+            <small className={"r2-point-badge " + (!loading&&!dataError?"is-live":"")}><BadgeCheck size={13} aria-hidden="true"/>{!loading&&!dataError&&<i className="r2-point-live-dot" aria-hidden="true"/>} DATA LIVE</small>
+          </span>
+          <ChevronRight className="r2-point-chevron" size={18} aria-hidden="true"/>
+        </button>
+        <div className={"r2-point-detail " + (loading?"is-loading":"")} id="r2-point-detail-01" hidden={activePoint!==0}>
+          {loading ? <span className="r2-point-skeleton" aria-label="Memuat jumlah produk" /> : dataError ? <span><b>—</b> produk aktif</span> : <span><b>{catalogCountDisplay.toLocaleString("id-ID")}</b> produk aktif, diperbarui langsung dari katalog.</span>}
+        </div>
+      </article>
+    </li>
+    <li className="r2-point-card-wrap" data-r2-distributor-card="1">
+      <article className="r2-point-card">
+        <div className="r2-point-static">
+          <span className="r2-point-index"><b>02</b><span>PESANAN</span></span>
+          <span className="r2-point-icon" aria-hidden="true"><ShoppingCart size={22}/></span>
+          <span className="r2-point-content">
+            <strong>Order terstruktur</strong>
+            <span>Keranjang dan checkout berjalan dalam satu alur yang rapi dan terjaga.</span>
+            <small className="r2-point-badge"><Workflow size={13} aria-hidden="true"/> FLOW TERJAGA</small>
+          </span>
+        </div>
+      </article>
+    </li>
+    <li className="r2-point-card-wrap" data-r2-distributor-card="2">
+      <article className="r2-point-card">
+        <div className="r2-point-static">
+          <span className="r2-point-index"><b>03</b><span>KONFIRMASI</span></span>
+          <span className="r2-point-icon" aria-hidden="true"><ShieldCheck size={22}/></span>
+          <span className="r2-point-content">
+            <strong>Konfirmasi profesional</strong>
+            <span>Detail pesanan diteruskan melalui proses admin.</span>
+            <small className="r2-point-badge"><BadgeCheck size={13} aria-hidden="true"/> VERIFIED PROCESS</small>
+          </span>
+        </div>
+      </article>
+    </li>
+  </ul>
+</div>
 </section>
 <section className="r2-hp-final-section" id="faq" data-r2-reveal><div className="r2-hp-final-head"><div><span>FAQ</span><h2>Jawaban sebelum<br/><em>Anda mulai.</em></h2></div></div><div className="r2-hp-final-faq">{faqs.map(([q,a])=><details key={q}><summary>{q}<ChevronRight size={17}/></summary><p>{a}</p></details>)}</div></section>
  <section className="r2-hp-final-location" data-r2-reveal><div><span>WAREHOUSE LOCATION</span><h2>Gudang R2 NUSANTARA<br/><em>Malang, Jawa Timur.</em></h2><p>Lokasi fisik distributor untuk kebutuhan operasional dan konfirmasi kunjungan.</p><div className="r2-hp-final-hours"><Clock3 size={17}/><span>Senin—Sabtu <b>08.00—17.00 WIB</b></span></div><a href="https://maps.google.com/?q=Malang%2C%20Jawa%20Timur%2C%20Indonesia" target="_blank" rel="noreferrer">BUKA GOOGLE MAPS <ExternalLink size={14}/></a></div><DeferredWarehouseMap/></section>
