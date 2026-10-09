@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 const currency = (value) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(value) || 0)
 const statusLabels = { pending: 'Menunggu konfirmasi', confirmed: 'Diproses', processing: 'Diproses', shipped: 'Dikirim', completed: 'Selesai', cancelled: 'Dibatalkan' }
@@ -18,10 +18,8 @@ export default function MobileAdminOperations({ session, orders = [], stats, dat
   const [trackingOrder, setTrackingOrder] = useState('')
   const [trackingNumber, setTrackingNumber] = useState('')
 
-  async function loadProducts() {
+  const loadProducts = useCallback(async () => {
     if (!session?.access_token) return
-    setLoadingProducts(true)
-    setError('')
     try {
       const response = await fetch('/api/admin/products', { headers: { Authorization: `Bearer ${session.access_token}` }, cache: 'no-store' })
       const body = await response.json().catch(() => ({}))
@@ -33,9 +31,12 @@ export default function MobileAdminOperations({ session, orders = [], stats, dat
     } finally {
       setLoadingProducts(false)
     }
-  }
+  }, [session])
 
-  useEffect(() => { loadProducts() }, [session?.access_token])
+  useEffect(() => {
+    const timer = window.setTimeout(() => { loadProducts() }, 0)
+    return () => window.clearTimeout(timer)
+  }, [loadProducts])
 
   const visibleProducts = useMemo(() => {
     const term = search.trim().toLowerCase()
