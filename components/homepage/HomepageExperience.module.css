@@ -1044,7 +1044,8 @@
 .home :global(#distributor) :global(.r2-hp-final-distributor-status i){animation:none}
 .home :global(#distributor) :global(.r2-hp-final-points){display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin:0;padding:0;list-style:none}
 .home :global(#distributor) :global(.r2-point-card-wrap){opacity:1;transform:none}
-.home :global(#distributor) :global(.r2-point-card){min-height:0;height:100%;border-radius:16px;transform:none;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.home :global(#distributor) :global(.r2-point-card-wrap){display:block!important;width:100%!important;min-width:0}
+.home :global(#distributor) :global(.r2-point-card){display:block!important;width:100%!important;min-width:0;min-height:0;height:100%;border-radius:16px;transform:none;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
 .home :global(#distributor) :global(.r2-point-card:hover){transform:translateY(-2px)}
 .home :global(#distributor) :global(.r2-point-toggle),
 .home :global(#distributor) :global(.r2-point-static){
