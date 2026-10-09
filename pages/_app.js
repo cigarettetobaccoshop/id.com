@@ -56,6 +56,10 @@ export default function App({ Component, pageProps }) {
       <meta property="og:description" content="Website distributor rokok online dan grosir dari gudang Malang dengan katalog produk live dan pengiriman Indonesia." />
       <meta property="og:url" content="https://r2nusantara-shop.vercel.app/" />
       <meta property="og:image" content="https://r2nusantara-shop.vercel.app/assets/logo/logo.png" />
+      <meta property="og:image:width" content="512" />
+      <meta property="og:image:height" content="512" />
+      <meta property="og:image:alt" content="Logo R2 NUSANTARA" />
+      <meta name="twitter:card" content="summary_large_image" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify({'@context':'https://schema.org','@type':'Organization','name':'R2 NUSANTARA','url':'https://r2nusantara-shop.vercel.app/','logo':'https://r2nusantara-shop.vercel.app/assets/logo/logo.png','description':'Distributor rokok online dan grosir dari gudang Malang, Indonesia.','areaServed':'ID'})}} />
     </Head>}
     {isHome&&<HomeHeader/>}{!isHome&&router.pathname!=='/katalog'&&<BrandAssetLoader/>}<Component {...pageProps}/>{mounted&&<>{!isAdminChrome&&<RouteIconNav/>}{!isAdminChrome&&<CheckoutPrompt/>}{!isAdminChrome&&<R2AiChatWidget/>}<GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>}</>
