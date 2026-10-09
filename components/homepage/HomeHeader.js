@@ -129,7 +129,7 @@ export default function HomeHeader() {
           width:13px!important;height:13px!important;
         }
         .r2-home-header__nav{display:flex;align-items:center;justify-content:center;gap:4px;flex:1}
-        .r2-home-header__nav a{text-decoration:none!important;display:inline-flex;align-items:center;gap:6px;position:relative;padding:10px 11px;border-radius:10px;color:#5d6e84;font-size:10px;font-weight:850;letter-spacing:.01em;transition:color .2s ease,background .2s ease,transform .2s ease}
+        .r2-home-header__nav a{text-decoration:none!important;display:inline-flex;align-items:center;gap:6px;position:relative;padding:10px 11px;border-radius:10px;color:#e2e8f0;font-size:10px;font-weight:850;letter-spacing:.01em;transition:color .2s ease,background .2s ease,transform .2s ease}
         .r2-home-header__nav a:hover{color:#0a1d36;background:#f3f7fc;transform:translateY(-1px)}
         .r2-home-header__nav a.is-active{color:#0b3f95;background:#eef5ff}
         .r2-home-header__nav a.is-active:after{content:"";position:absolute;left:12px;right:12px;bottom:4px;height:2px;border-radius:999px;background:linear-gradient(90deg,#1f78e8,#d8b36c)}

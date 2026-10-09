@@ -8,7 +8,7 @@ import { Analytics } from '@vercel/analytics/next'
 import HomeHeader from '../components/homepage/HomeHeader'
 import R2AiChatWidget from '../components/R2AiChatWidget'
 
-const HomepageExperience = dynamic(() => import('../components/HomepageExperience'), { ssr: false })
+const HomepageExperience = dynamic(() => import('../components/HomepageExperience'), { ssr: true })
 const RouteIconNav = dynamic(() => import('../components/RouteIconNav'), { ssr: false })
 const BrandAssetLoader = dynamic(() => import('../components/BrandAssetLoader'), { ssr: false })
 const ActivityMonitoringRuntime = dynamic(() => import('../components/monitoring/ActivityMonitoringRuntime'), { ssr: false })
