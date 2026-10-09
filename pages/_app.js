@@ -8,7 +8,6 @@ import { Analytics } from '@vercel/analytics/next'
 import HomeHeader from '../components/homepage/HomeHeader'
 import R2AiChatWidget from '../components/R2AiChatWidget'
 
-const HomepageExperience = dynamic(() => import('../components/HomepageExperience'), { ssr: true })
 const RouteIconNav = dynamic(() => import('../components/RouteIconNav'), { ssr: false })
 const BrandAssetLoader = dynamic(() => import('../components/BrandAssetLoader'), { ssr: false })
 const ActivityMonitoringRuntime = dynamic(() => import('../components/monitoring/ActivityMonitoringRuntime'), { ssr: false })
@@ -59,5 +58,5 @@ export default function App({ Component, pageProps }) {
       <meta property="og:image" content="https://r2nusantara-shop.vercel.app/assets/logo/logo.png" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify({'@context':'https://schema.org','@type':'Organization','name':'R2 NUSANTARA','url':'https://r2nusantara-shop.vercel.app/','logo':'https://r2nusantara-shop.vercel.app/assets/logo/logo.png','description':'Distributor rokok online dan grosir dari gudang Malang, Indonesia.','areaServed':'ID'})}} />
     </Head>}
-    {isHome&&<HomeHeader/>}{!isHome&&router.pathname!=='/katalog'&&<BrandAssetLoader/>}<>{isHome?<HomepageExperience/>:<Component {...pageProps}/>}</>{mounted&&<>{!isAdminChrome&&<RouteIconNav/>}{!isAdminChrome&&<CheckoutPrompt/>}{!isAdminChrome&&<R2AiChatWidget/>}<GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>}</>
+    {isHome&&<HomeHeader/>}{!isHome&&router.pathname!=='/katalog'&&<BrandAssetLoader/>}<Component {...pageProps}/>{mounted&&<>{!isAdminChrome&&<RouteIconNav/>}{!isAdminChrome&&<CheckoutPrompt/>}{!isAdminChrome&&<R2AiChatWidget/>}<GlobalInteractionGuard/><ActivityMonitoringRuntime/><Analytics/></>}</>
 }

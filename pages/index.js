@@ -1,6 +1,9 @@
-// Homepage rendering is owned by pages/_app.js -> HomepageExperience.
-// Keep this route component intentionally side-effect free so the legacy
-// homepage implementation cannot execute an obsolete Supabase query.
-export default function LegacyHomeRoute() {
-  return null
+import dynamic from 'next/dynamic'
+
+// Render the homepage at its route boundary. Keeping the dynamic import here
+// lets Next.js server-render the page once and hydrate that same tree.
+const HomepageExperience = dynamic(() => import('../components/HomepageExperience'), { ssr: true })
+
+export default function HomePage() {
+  return <HomepageExperience />
 }
