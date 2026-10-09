@@ -64,7 +64,7 @@ function makeCatalogVisual(name: string, label: 'R2' | 'Resmi'): string {
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
-export default function ProductThumbnail({ name, sourceUrl, catalogLabel = 'R2', sku = '', size = 160, className }: ProductThumbnailProps): JSX.Element {
+export default function ProductThumbnail({ name, sourceUrl, catalogLabel = 'R2', sku = '', size = 160, className }: ProductThumbnailProps): import('react').ReactElement {
   const normalizedSku = sku.trim();
   const label = catalogLabel === 'Resmi' ? 'Resmi' : 'R2';
   const generatedVisual = useMemo(() => makeCatalogVisual(name, label), [name, label]);
