@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 const currency = (value) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(value) || 0)
-const statusLabels = { pending: 'Menunggu konfirmasi', confirmed: 'Dikonfirmasi', processing: 'Diproses', shipped: 'Dikirim', completed: 'Selesai', cancelled: 'Dibatalkan' }
+const statusLabels = { pending: 'Menunggu konfirmasi', confirmed: 'Diproses', processing: 'Diproses', shipped: 'Dikirim', completed: 'Selesai', cancelled: 'Dibatalkan' }
 
 export default function MobileAdminOperations({ session, orders = [], stats, database, onRefresh }) {
   const [products, setProducts] = useState([])
