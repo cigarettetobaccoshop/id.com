@@ -7,7 +7,7 @@ import styles from './homepage/HomepageExperience.module.css'
 
 const DeferredWarehouseMap = dynamic(() => import('./homepage/DeferredWarehouseMap'), { ssr: false })
 const benefits=[['live','Katalog live','Data produk aktif tersaji dari database production.'],['stock','Stok aktif','Ketersediaan mengikuti inventory yang tersimpan di sistem.'],['ship','Distribusi nasional','Pengiriman disiapkan dari gudang Malang ke berbagai kota.'],['safe','Alur profesional','Order, verifikasi, dan konfirmasi mengikuti alur operasional.']]
-const faqs=[['Bagaimana cara melakukan pemesanan?','Pilih produk dari katalog, masukkan ke keranjang, lanjut checkout, lalu ikuti proses konfirmasi admin.'],['Apakah katalog menggunakan data stok live?','Ya. Homepage membaca produk aktif melalui API production yang bersumber dari public.products.'],['Berapa minimal program gratis ongkir?','Program subsidi ongkir dimulai dari minimal 1 bal (20 slop), mengikuti ketentuan operasional yang berlaku.'],['Di mana lokasi gudang?','Gudang R2 NUSANTARA berada di Malang, Jawa Timur. Detail kunjungan dapat dikonfirmasi terlebih dahulu.']]
+const faqs=[['Bagaimana cara melakukan pemesanan?','Pilih produk dari katalog, masukkan ke keranjang, lanjut checkout, lalu ikuti proses konfirmasi admin.'],['Apakah katalog menggunakan data stok live?','Ya. Katalog di beranda menampilkan produk aktif dan ketersediaan stok yang diperbarui langsung dari sistem kami.'],['Berapa minimal program gratis ongkir?','Program subsidi ongkir dimulai dari minimal 1 bal (20 slop), mengikuti ketentuan operasional yang berlaku.'],['Di mana lokasi gudang?','Gudang R2 NUSANTARA berada di Malang, Jawa Timur. Detail kunjungan dapat dikonfirmasi terlebih dahulu.']]
 function BenefitIcon({type}){if(type==='ship')return <Truck size={19}/>;if(type==='stock')return <PackageCheck size={19}/>;if(type==='safe')return <ShieldCheck size={19}/>;return <Database size={19} strokeWidth={1.8} aria-hidden="true"/>}
 export default function HomepageExperience(){
  const [products,setProducts]=useState([]),[count,setCount]=useState(0),[loading,setLoading]=useState(true),[dataError,setDataError]=useState(false)
@@ -27,7 +27,7 @@ export default function HomepageExperience(){
       <div className="r2-hp-final-carousel-track" style={{transform:`translateX(-${activeBenefit*100}%)`}}>
         {benefits.map(([type,title,desc],i)=><article className="r2-hp-final-pillar" key={title} aria-label={`Pilar ${i+1} dari 4: ${title}`} aria-hidden={i!==activeBenefit}>
           <span className="r2-hp-final-pillar-icon"><BenefitIcon type={type}/></span>
-          <div className="r2-hp-final-pillar-copy"><span className="r2-hp-final-pillar-index">0{i+1} / R2 SYSTEM</span><strong>{title}</strong><p>{desc}</p><small>{i===0?(loading?'MEMUAT API PRODUCTION':dataError?'PERIKSA KONEKSI':'API BERHASIL DIMUAT'):i===1?'MENGACU INVENTORY SISTEM':i===2?'GUDANG MALANG · NASIONAL':'ORDER → VERIFIKASI → KONFIRMASI'}</small></div>
+          <div className="r2-hp-final-pillar-copy"><span className="r2-hp-final-pillar-index">0{i+1} / R2 SYSTEM</span><strong>{title}</strong><p>{desc}</p><small>{i===0?(loading?'MEMUAT DATA KATALOG':dataError?'PERIKSA KONEKSI':'KATALOG BERHASIL DIMUAT'):i===1?'MENGACU INVENTORY SISTEM':i===2?'GUDANG MALANG · NASIONAL':'ORDER → VERIFIKASI → KONFIRMASI'}</small></div>
         </article>)}
       </div>
     </div>
