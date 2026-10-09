@@ -1018,3 +1018,267 @@
   .home :global(.r2-point-card){transform:none!important}
   .home :global(.r2-point-card:hover){transform:none}
 }
+
+
+/* Distributor section UX pass — scoped to this section only. */
+.home :global(.r2-hp-final-distributor){
+  width:min(1200px,calc(100% - 32px));
+  max-width:1200px;
+  min-width:0;
+  margin-left:auto;
+  margin-right:auto;
+  box-sizing:border-box;
+  padding:clamp(22px,3.6vw,44px);
+  gap:clamp(22px,3vw,40px);
+}
+.home :global(.r2-hp-final-distributor-intro),
+.home :global(.r2-distributor-system),
+.home :global(.r2-hp-final-points),
+.home :global(.r2-point-card-wrap),
+.home :global(.r2-point-card){min-width:0;max-width:100%}
+.home :global(.r2-hp-final-distributor-kicker){font-size:12px;letter-spacing:.10em;line-height:1.4;min-width:0}
+.home :global(.r2-hp-final-distributor-kicker small){font-size:12px;letter-spacing:.08em;white-space:nowrap}
+.home :global(.r2-hp-final-distributor-intro h2){
+  font-size:clamp(30px,4vw,52px);
+  line-height:1.18;
+  letter-spacing:-.04em;
+  overflow-wrap:anywhere;
+}
+.home :global(.r2-hp-final-distributor-intro p){font-size:15px;line-height:1.65}
+.home :global(.r2-hp-final-distributor-actions){gap:12px}
+.home :global(.r2-hp-final-distributor-actions a){
+  min-height:48px;
+  padding:12px 18px;
+  font-size:12px;
+  letter-spacing:.055em;
+  line-height:1.4;
+}
+.home :global(.r2-hp-final-distributor-actions a:first-child)::after{content:none!important;display:none!important}
+.home :global(.r2-hp-final-distributor-status){
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  border-top-color:rgba(215,234,255,.18);
+}
+.home :global(.r2-hp-final-distributor-status span){
+  min-height:32px;
+  max-width:100%;
+  padding:5px 10px;
+  gap:8px;
+  font-size:12px;
+  line-height:1.35;
+  letter-spacing:.035em;
+  white-space:normal;
+}
+.home :global(.r2-hp-final-distributor-status i){animation:none}
+.home :global(.r2-hp-final-points){
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:12px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.home :global(.r2-point-card-wrap){opacity:1;transform:none}
+.home :global(.r2-point-card){
+  min-height:0;
+  height:100%;
+  border-radius:16px;
+  transform:none;
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.home :global(.r2-point-card:hover){transform:translateY(-2px)}
+.home :global(.r2-point-toggle),
+.home :global(.r2-point-static){
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:44px minmax(0,1fr);
+  grid-template-areas:"index index" "icon content";
+  align-items:start;
+  column-gap:12px;
+  row-gap:12px;
+  width:100%;
+  min-height:0;
+  height:100%;
+  padding:17px;
+  text-align:left;
+  color:inherit;
+  border:0;
+  background:transparent;
+  font:inherit;
+}
+.home :global(.r2-point-toggle){cursor:pointer}
+.home :global(.r2-point-static){cursor:default}
+.home :global(.r2-point-toggle:focus-visible){
+  outline:3px solid #f0d08d;
+  outline-offset:-4px;
+  border-radius:15px;
+}
+.home :global(.r2-point-index){
+  position:relative;
+  inset:auto;
+  grid-area:index;
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  gap:9px;
+  min-width:0;
+  padding-right:28px;
+}
+.home :global(.r2-point-index b){font-size:12px;line-height:1.4}
+.home :global(.r2-point-index span){font-size:12px;line-height:1.4;letter-spacing:.09em}
+.home :global(.r2-point-icon){
+  position:relative;
+  inset:auto;
+  grid-area:icon;
+  width:44px;
+  height:44px;
+  flex:0 0 44px;
+  border-radius:13px;
+}
+.home :global(.r2-point-content){
+  grid-area:content;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  min-width:0;
+  padding:0;
+}
+.home :global(.r2-point-content strong){
+  margin:0;
+  color:#f4f8ff;
+  font-size:17px;
+  line-height:1.4;
+  letter-spacing:-.015em;
+  overflow-wrap:anywhere;
+}
+.home :global(.r2-point-content > span){
+  max-width:none;
+  margin-top:5px;
+  color:#c3d3e6;
+  font-size:14px;
+  line-height:1.55;
+  overflow-wrap:anywhere;
+}
+.home :global(.r2-point-badge){
+  display:inline-flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px;
+  width:max-content;
+  max-width:100%;
+  min-height:28px;
+  margin-top:11px;
+  padding:4px 9px;
+  border:1px solid rgba(170,207,242,.22);
+  border-radius:999px;
+  color:#dce9f7;
+  background:rgba(255,255,255,.055);
+  font-size:12px;
+  line-height:1.35;
+  font-weight:800;
+  letter-spacing:.035em;
+  animation:none;
+}
+.home :global(.r2-point-badge.is-live){
+  border-color:rgba(98,223,160,.28);
+  color:#a8f0c5;
+  background:rgba(80,201,135,.075);
+}
+.home :global(.r2-point-live-dot){
+  width:7px;
+  height:7px;
+  flex:0 0 7px;
+  border-radius:50%;
+  background:#62dfa0;
+  box-shadow:0 0 0 3px rgba(98,223,160,.12);
+  animation:r2DistributorLiveBadge 2.8s ease-in-out infinite;
+}
+.home :global(.r2-point-chevron){
+  position:absolute;
+  top:15px;
+  right:14px;
+  bottom:auto;
+  width:18px;
+  height:18px;
+  color:#a9bfd8;
+  transition:transform .2s ease,color .2s ease;
+}
+.home :global(.r2-point-card-wrap.is-active .r2-point-chevron){transform:rotate(90deg);color:#e5c27b}
+.home :global(.r2-point-detail){
+  max-height:0;
+  margin:0 17px;
+  padding:0 12px;
+  overflow:hidden;
+  border-top:1px solid transparent;
+  opacity:0;
+  font-size:14px;
+  line-height:1.55;
+  transition:max-height .22s ease,opacity .2s ease,padding .22s ease,margin .22s ease,border-color .2s ease;
+}
+.home :global(.r2-point-detail.is-open){
+  max-height:160px;
+  margin:0 17px 15px;
+  padding:12px;
+  border-top-color:rgba(215,234,255,.14);
+  opacity:1;
+}
+.home :global(.r2-point-detail b){font-size:28px;font-variant-numeric:tabular-nums;line-height:1.2}
+.home :global(.r2-point-skeleton){
+  display:block;
+  width:150px;
+  max-width:100%;
+  height:28px;
+  border-radius:7px;
+  background:linear-gradient(90deg,rgba(255,255,255,.07),rgba(255,255,255,.16),rgba(255,255,255,.07));
+  background-size:200% 100%;
+  animation:r2DistributorSkeleton 1.3s ease-in-out infinite;
+}
+@keyframes r2DistributorSkeleton{from{background-position:100% 0}to{background-position:-100% 0}}
+@media(min-width:768px) and (max-width:1023px){
+  .home :global(.r2-hp-final-distributor){
+    grid-template-columns:minmax(0,1fr);
+    padding:28px;
+  }
+  .home :global(.r2-hp-final-distributor-intro h2){max-width:22ch}
+  .home :global(.r2-hp-final-points){grid-template-columns:repeat(2,minmax(0,1fr))}
+  .home :global(.r2-point-card-wrap:last-child){grid-column:1/-1}
+}
+@media(max-width:767px){
+  .home :global(.r2-hp-final-distributor){
+    width:calc(100% - 32px);
+    margin:36px auto 0;
+    padding:22px 16px 18px;
+    grid-template-columns:minmax(0,1fr);
+    gap:22px;
+    border-radius:20px;
+  }
+  .home :global(.r2-hp-final-distributor-intro h2){font-size:clamp(29px,8vw,38px);line-height:1.18}
+  .home :global(.r2-hp-final-distributor-intro p){font-size:14px;line-height:1.6}
+  .home :global(.r2-hp-final-distributor-actions){display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:19px}
+  .home :global(.r2-hp-final-distributor-actions a){width:100%;min-height:48px;font-size:12px}
+  .home :global(.r2-hp-final-distributor-status){gap:7px;margin-top:18px;padding-top:15px}
+  .home :global(.r2-hp-final-distributor-status span){min-height:32px;padding:5px 9px;font-size:12px}
+  .home :global(.r2-point-toggle),.home :global(.r2-point-static){padding:16px;column-gap:11px;row-gap:10px}
+  .home :global(.r2-point-content strong){font-size:17px}
+  .home :global(.r2-point-content > span){font-size:14px}
+  .home :global(.r2-point-index b),.home :global(.r2-point-index span){font-size:12px}
+}
+@media(max-width:390px){
+  .home :global(.r2-hp-final-distributor){width:calc(100% - 32px);padding:20px 13px 16px}
+  .home :global(.r2-hp-final-distributor-kicker){gap:6px;font-size:11px;letter-spacing:.04em}
+  .home :global(.r2-hp-final-distributor-kicker-line){width:18px}
+  .home :global(.r2-hp-final-distributor-kicker small){font-size:11px}
+  .home :global(.r2-point-toggle),.home :global(.r2-point-static){padding:14px;column-gap:10px}
+  .home :global(.r2-point-icon){width:44px;height:44px}
+  .home :global(.r2-point-content strong){font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){
+  .home :global(.r2-hp-final-distributor),
+  .home :global(.r2-hp-final-distributor) *,
+  .home :global(.r2-point-skeleton){animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .home :global(.r2-point-card),
+  .home :global(.r2-point-card:hover){transform:none!important}
+}
