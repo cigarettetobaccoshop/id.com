@@ -63,6 +63,14 @@ Production table list includes `products` (233), `orders` (11), `newsletter_subs
 - Vercel grouped runtime errors returned no errors for the selected last-24-hour window. This is not a substitute for interactive browser QA or full route smoke tests; runtime-log retrieval had plan-retention limitations for the broader window.
 - Draft diagnostic PR #157 was opened, with documentation-only changes, to run the repository CI workflow. At the latest observation, CI run 38168561825 was `in_progress` at dependency installation. Its result is not yet known. The PR is draft and must not be merged.
 
+## Supabase Preview check execution (diagnostic PR #157)
+
+- Check run on the PR head: `Supabase Preview` concluded `skipped`, with the explicit reason: `This git branch is not associated with any Supabase Branch. You can open a PR to create a new branch.`
+- Read-only Supabase branch listing for project `zgsbtexngystdmakqjyi` shows only the default `main` branch, whose status is `MIGRATIONS_FAILED`.
+- Therefore PR #157 did **not** validate migration repair; it only ran the repository CI workflow. The CI run `38168589426` completed successfully: `npm ci`, smoke test, production build, rendered CSS selector inventory, and duplicate CSS declaration audit all passed.
+- Creating a new Supabase branch is not being done automatically: the branch-creation tool requires cost confirmation and replays migrations from the current Preview parent. Because that parent is already `MIGRATIONS_FAILED`, creating a branch before authentic source/lineage recovery could simply reproduce the failure and incur cost.
+- Safe next action: recover the exact historical migration bodies and resolve the default Preview branch migration state using an approved, non-destructive plan; then create/associate a Supabase branch only after its cost and migration behavior are understood.
+
 ## Additional advisor observations (not auto-remediated)
 
 - Preview Security Advisor: leaked-password protection is disabled.
