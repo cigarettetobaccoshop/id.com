@@ -54,6 +54,15 @@ Production table list includes `products` (233), `orders` (11), `newsletter_subs
 5. **Admin and visual QA are incomplete** — an unauthenticated HTTP 403 is evidence that access is denied, not evidence that a valid admin session can use the dashboard. Authenticated admin checks and desktop/mobile browser QA remain required.
 6. **CI evidence must be current for the candidate commit** — previously recorded CI/build checks on older commits do not prove this branch or a future fix passes. Rerun checks after the real remediation.
 
+## Vercel Production deployment evidence (read-only)
+
+- Vercel project `id-com` latest recorded Production deployment: `dpl_AwD9TSEzHyYHiXZ55yG8DyQc75pF`, state `READY`, built from `main` commit `d5e51ca706f33798bc3102e4524e7111e169b5ec`.
+- Deployment build logs include `Build Completed in /vercel/output` and `Deployment completed`. The build ran `npm ci` and `npm run build`; it emitted deprecation warnings for Supabase auth helpers and ESLint, plus Next.js middleware/cache-control warnings, but no build-failure line was observed.
+- Domain `r2nusantara-shop.vercel.app` is attached to the Vercel project/deployment alias and Vercel domain config returned `misconfigured: false` with no conflicts.
+- The same Production commit still has GitHub status `Vercel – id-com: failure`, while `Vercel – r2-nusantara-shop.id: success`. This is an unresolved check discrepancy; a READY build does not clear it.
+- Vercel grouped runtime errors returned no errors for the selected last-24-hour window. This is not a substitute for interactive browser QA or full route smoke tests; runtime-log retrieval had plan-retention limitations for the broader window.
+- Draft diagnostic PR #157 was opened, with documentation-only changes, to run the repository CI workflow. At the latest observation, CI run 38168561825 was `in_progress` at dependency installation. Its result is not yet known. The PR is draft and must not be merged.
+
 ## Additional advisor observations (not auto-remediated)
 
 - Preview Security Advisor: leaked-password protection is disabled.
