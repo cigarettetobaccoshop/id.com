@@ -9,9 +9,10 @@
 - Repository: `cigarettetobaccoshop/id.com`
 - Base: `main` at `55ebdf26e85eb436523ae8671af96531b463d20c`
 - Audit branch: `fix/separate-finance-inventory-migrations-2026-10`
-- Branch delta at time of check: one documentation commit only.
-- Documentation commit: `03a5486dd6126a5631b377cadffd9618dc77953e`
-- No application or migration SQL changes are included.
+- Branch delta at verification: two commits ahead of `main`, zero commits behind.
+- Documentation commits: `03a5486dd6126a5631b377cadffd9618dc77953e` (migration reconciliation) and `1560322923631a2dc7119bcdd37774da8c2414cf` (this production-readiness gate).
+- Compare result: exactly two added documentation files; no application code or migration SQL changes are included.
+- Workflow-run lookup for both documentation commits returned no PR-triggered runs, and the combined status lookup for the latest commit returned no statuses. This is **missing CI evidence**, not a passing result.
 
 ## Supabase target and migration evidence
 
