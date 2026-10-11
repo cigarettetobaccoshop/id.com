@@ -23,13 +23,14 @@ Live read-only project metadata and migration listings were queried on 2026-10-1
 | Preview check target | `zgsbtexngystdmakqjyi` | `r2.com` | 23 |
 | Production | `nwrqdcrknipnfvhogjyg` | `cigarettetobaccoshop's r2nusantara` | 14 |
 
-The R2 repository's `main` has 16 SQL files under `supabase/migrations` according to the existing repository audit. The Preview history is not simply the same as Production plus two finance migrations: the Preview migration names/versions show a different lineage, including R2-specific versions that do not match the current Production lineage, plus:
+The R2 repository's `main` has 16 SQL files under `supabase/migrations`. The exact-version comparison is now recorded in [the migration lineage matrix](2026-10-12-preview-migration-lineage-matrix.md):
 
-- `20261002015702_create_finance_inventory_app_schema_v1`
-- `20261002015743_allow_authenticated_audit_log_insert_v1`
+- Preview history: 23 versions; **0 of 23** have an exact-version file in the R2 repository's migration directory.
+- Production history: 14 versions; **all 14** have exact-version files in the repository.
+- Two local versions are absent from Production: `20260908133500_fix_inventory_reservation_expiry_order_status.sql` and `20260911000000_activity_monitoring.sql`.
+- The Preview's 21 non-finance versions form a different historical lineage, not just missing filenames. Two additional Preview versions are finance/inventory migrations whose ownership must be confirmed.
 
-The two finance migration SQL files are absent from the R2 repository at the expected paths. The separate finance/inventory repository has similar table definitions in `supabase/schema.sql`, but that schema file is not an authoritative copy of the missing historical migration bodies.
-
+This is strong evidence that the Supabase Preview check is encountering a migration-lineage mismatch. It does **not** establish that the project target is wrong; the intended Preview is explicitly `zgsbtexngystdmakqjyi`. Do not change the integration target, invent old migration files, rewrite migration history, or reset the project. The separate finance/inventory repository exposes `supabase/schema.sql` and `supabase/production_hardening.sql`, but not a `supabase/migrations` directory, so these files do not establish the exact historical migration bodies.
 ### Schema footprint observed
 
 Preview tables and row counts include:
