@@ -71,6 +71,12 @@ Production table list includes `products` (233), `orders` (11), `newsletter_subs
 - Creating a new Supabase branch is not being done automatically: the branch-creation tool requires cost confirmation and replays migrations from the current Preview parent. Because that parent is already `MIGRATIONS_FAILED`, creating a branch before authentic source/lineage recovery could simply reproduce the failure and incur cost.
 - Safe next action: recover the exact historical migration bodies and resolve the default Preview branch migration state using an approved, non-destructive plan; then create/associate a Supabase branch only after its cost and migration behavior are understood.
 
+## Historical migration-recovery PR cross-check
+
+A prior merged PR, [#151 — restore missing migration history files](https://github.com/cigarettetobaccoshop/id.com/pull/151), restored 14 SQL files from the recorded Production migration history. Its source versions are the same 14 exact versions currently present in Production and in the R2 repository. That work is valid for Production's migration lineage, but it does **not** recover the Preview's 23 different versions: exact-version overlap between Preview and the current local migration directory remains 0/23. Do not assume PR #151 resolved the current Preview blocker.
+
+The repository branch search and historical PR review did not locate authentic SQL for the 21 non-finance Preview-only versions. A read-only SQL metadata retrieval attempt was blocked by the available safety controls; no query was executed and no database was changed. Continue with approved source recovery (Supabase dashboard/export, original deployment artifacts, or an authorized project owner) rather than reconstructing SQL by guesswork.
+
 ## Additional advisor observations (not auto-remediated)
 
 - Preview Security Advisor: leaked-password protection is disabled.
