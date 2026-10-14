@@ -26,6 +26,10 @@ function jakartaDayStart() {
   return new Date(Date.UTC(Number(values.year), Number(values.month) - 1, Number(values.day), -7)).toISOString()
 }
 
+function jakartaNextDayStart() {
+  return new Date(Date.parse(jakartaDayStart()) + 24 * 60 * 60 * 1000).toISOString()
+}
+
 function normalizeProduct(body, creating = false) {
   const result = {}
   if (creating || body.name !== undefined) {
@@ -69,7 +73,7 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const [productsResult, todayResult] = await Promise.all([
         db.from('products').select('id,name,price,category,segment,segment_name,description,is_active,updated_at').order('name', { ascending: true }).limit(250),
-        db.from('orders').select('id,total,status,created_at').gte('created_at', jakartaDayStart()).limit(1000),
+        db.from('orders').select('id,total,status,created_at').gte('created_at', jakartaDayStart()).lt('created_at', jakartaNextDayStart()).limit(1000),
       ])
       if (productsResult.error) throw productsResult.error
       if (todayResult.error) throw todayResult.error
