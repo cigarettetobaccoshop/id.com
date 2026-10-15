@@ -54,6 +54,7 @@ export default async function handler(req, res) {
   try {
     const { customer, items } = req.body || {}
     if (!customer || !Array.isArray(items) || !items.length) return res.status(400).json({ error: 'Data checkout belum lengkap.' })
+    if (items.length > 50) return res.status(400).json({ error: 'Maksimal 50 jenis produk per pesanan.' })
     const customer_name = clean(customer.name, 120), whatsapp = clean(customer.whatsapp, 40), email = clean(customer.email, 160), address = clean(customer.address, 500), city = clean(customer.city, 100), postal_code = clean(customer.postal_code, 10), courier = clean(customer.courier, 30), payment_method = clean(customer.payment_method, 60), notes = clean(customer.notes, 500)
     if (!customer_name || !whatsapp || !address || !courier || !payment_method) return res.status(400).json({ error: 'Nama, WhatsApp, alamat, kurir, dan pembayaran wajib diisi.' })
     if (!(courier in COURIERS)) return res.status(400).json({ error: 'Kurir tidak valid.' })
@@ -75,12 +76,23 @@ export default async function handler(req, res) {
     }
 
     const normalized = []; let subtotal = 0
-    for (const raw of items.slice(0,50)) {
-      const qty = Math.max(1,Math.min(999,Number(raw.qty||raw.quantity||1))), key = raw.sku ? `sku:${clean(raw.sku,120)}` : `handle:${clean(raw.handle,200)}`, product = byKey.get(key)
+    for (const raw of items) {
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return res.status(400).json({ error: 'Format item pesanan tidak valid.' })
+      const rawQty = raw.qty ?? raw.quantity
+      const qty = Number(rawQty)
+      if (rawQty == null || rawQty === '' || !Number.isSafeInteger(qty) || qty < 1 || qty > 999) {
+        return res.status(400).json({ error: 'Jumlah setiap produk harus bilangan bulat antara 1 dan 999.' })
+      }
+      const key = raw.sku ? `sku:${clean(raw.sku,120)}` : `handle:${clean(raw.handle,200)}`
+      const product = byKey.get(key)
       if (!product) return res.status(400).json({ error:'Ada produk yang sudah tidak tersedia.' })
       const unit_price = Number(product.price) || 0
-      if (unit_price <= 0) return res.status(400).json({ error: 'Harga produk tidak valid.' })
-      subtotal += unit_price * qty
+      if (!Number.isSafeInteger(unit_price) || unit_price <= 0) return res.status(400).json({ error: 'Harga produk tidak valid.' })
+      const lineTotal = unit_price * qty
+      if (!Number.isSafeInteger(lineTotal) || lineTotal <= 0 || subtotal + lineTotal > 2147483647) {
+        return res.status(400).json({ error: 'Total pesanan melebihi batas yang didukung. Kurangi jumlah produk.' })
+      }
+      subtotal += lineTotal
       normalized.push({ sku: product.id, handle: product.id, title: product.name || product.id, qty, unit_price })
     }
 
