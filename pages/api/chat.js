@@ -227,7 +227,8 @@ async function runProvider(provider, messages, res, requestId, toolRound = 0) {
   for (const toolUse of toolUses) {
     let output
     try {
-      output = await executeAiTool(toolUse.name, toolUse.input || {})
+      const normalizedToolName = String(toolUse.name || '').trim().toLowerCase() === 'cariproduk' ? 'cari_produk' : toolUse.name
+      output = await executeAiTool(normalizedToolName, toolUse.input || {})
     } catch (error) {
       console.error('[R2 AI] tool failed', requestId, toolUse.name, error)
       output = { error: 'Tool tidak dapat dijalankan. Jangan menebak hasilnya.' }
