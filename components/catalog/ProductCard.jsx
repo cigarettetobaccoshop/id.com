@@ -32,6 +32,9 @@ export default function ProductCard({
   const inventory = stock(product?.['Variant Inventory Qty']);
   const availability = inventory == null ? Boolean(product?.Published && product?.Status === 'active') : inventory > 0;
   const availabilityLabel = inventory == null ? (availability ? (text(product?.['Stock Status']) || 'READY STOCK') : 'TIDAK TERSEDIA') : (inventory > 0 ? 'READY STOCK' : 'STOK HABIS');
+  const rawVariant = text(product?.['Option1 Value']);
+  const normalizedVariant = rawVariant.toLowerCase().replace(/[_-]+/g, ' ').trim();
+  const showVariant = Boolean(rawVariant) && !['default', 'default title'].includes(normalizedVariant);
   const variant = professionalVariant(product);
   const sku = text(product?.['Variant SKU']);
   const catalog = text(product?.Catalog || product?.catalog);
@@ -52,9 +55,9 @@ export default function ProductCard({
 
       <div className={styles.body}>
         <h2>{title}</h2>
-        <div className={styles.rating} aria-label={`Varian ${variant}`}>
+        {showVariant && <div className={styles.rating} aria-label={`Varian ${variant}`}>
           <span aria-hidden="true">VARIAN</span><b>{variant}</b>{sku && <small>SKU {sku}</small>}
-        </div>
+        </div>}
         <div className={styles.priceRow}>
           <strong>{money(price)}</strong>
         </div>
