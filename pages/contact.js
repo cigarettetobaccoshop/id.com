@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useState } from 'react'
 
 const initialForm = { name: '', email: '', subject: '', message: '' }
@@ -25,6 +26,18 @@ export default function ContactPage() {
 
   return (
     <main className="r2-contact-page">
+      <Head>
+        <title>{`Kontak R2 NUSANTARA — Distributor Malang`}</title>
+        <meta name="description" content="Hubungi R2 NUSANTARA, gudang distributor di Karangduren, Pakisaji, Kabupaten Malang. Layanan Senin–Sabtu pukul 08.00–17.00 WIB." />
+        <link rel="canonical" href="https://r2nusantara-shop.vercel.app/contact" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="R2 NUSANTARA" />
+        <meta property="og:title" content="Kontak R2 NUSANTARA — Distributor Malang" />
+        <meta property="og:description" content="Hubungi R2 NUSANTARA di Karangduren, Pakisaji, Kabupaten Malang. Layanan Senin–Sabtu 08.00–17.00 WIB." />
+        <meta property="og:url" content="https://r2nusantara-shop.vercel.app/contact" />
+        <meta property="og:image" content="https://r2nusantara-shop.vercel.app/assets/logo/logo.png" />
+        <meta property="og:locale" content="id_ID" />
+      </Head>
       <section className="r2-contact-card" aria-labelledby="contact-title">
         <a href="/" className="r2-contact-back">← Beranda</a>
         <p className="r2-contact-eyebrow">R2 NUSANTARA</p>
