@@ -96,13 +96,9 @@
 }
 .r2-hp-final .r2-hp-final-distributor-status{position:relative!important;z-index:1!important}
 .r2-hp-final .r2-hp-final-points article{
-  animation:r2DistributorCardIn .65s cubic-bezier(.2,.8,.2,1) both;
-}
-.r2-hp-final .r2-hp-final-points article:nth-child(2){animation-delay:90ms}
-.r2-hp-final .r2-hp-final-points article:nth-child(3){animation-delay:180ms}
-@keyframes r2DistributorCardIn{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:none}
+  opacity:1!important;
+  transform:none!important;
+  animation:none!important;
 }
 @media(max-width:767px){
   .r2-hp-final .r2-hp-final-distributor-actions{
