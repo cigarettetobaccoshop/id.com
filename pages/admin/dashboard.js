@@ -5,6 +5,7 @@ import { getAdminSupabase } from '../../lib/supabaseAdminBrowser'
 
 import { ADMIN_UUID } from '../../lib/admin/constants'
 import MobileAdminOperations from '../../components/admin/MobileAdminOperations'
+import OperationsClock from '../../components/admin/OperationsClock'
 const STATUSES = ['pending','confirmed','shipped','completed','cancelled']
 const LABELS = { pending:'Menunggu Konfirmasi', confirmed:'Diproses', processing:'Diproses', shipped:'Dikirim', completed:'Selesai', cancelled:'Dibatalkan' }
 const money = (v) => new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(v)||0)
@@ -130,6 +131,8 @@ export default function AdminDashboard() {
         <div className="hero-grid"><div><span className="eyebrow"><b className="live-dot"/> SECURE OPERATIONS · LIVE MONITORING</span><h1>Dashboard <em>Monitoring</em></h1><p>Command center untuk order, reservation, aktivitas audit, katalog, dan kesehatan sistem.</p></div><div className="hero-right"><div className={`system-pill ${system.status}`}><b>●</b><span>{system.status === 'online' ? 'SYSTEM ONLINE' : system.status === 'degraded' ? 'CHECK REQUIRED' : 'CHECKING'}</span><small>Production</small></div><a href="/" target="_blank" rel="noreferrer">Buka Website <b>↗</b></a></div></div>
         <div className="hero-meta"><span>ENV <b>PRODUCTION</b></span><span>DATABASE <b>{system.database === 'connected' ? 'CONNECTED' : String(system.database).toUpperCase()}</b></span><span>LAST SYNC <b>{lastSync ? lastSync.toLocaleTimeString('id-ID') : '—'}</b></span></div>
       </section>
+
+      <OperationsClock lastSync={lastSync} />
 
       <MobileAdminOperations session={session} orders={filteredOrders} stats={stats} database={database} onRefresh={() => load(session)} />
 
