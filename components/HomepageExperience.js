@@ -1,238 +1,419 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import dynamic from 'next/dynamic'
-import { useEffect, useState } from 'react'
-import { Activity, ArrowRight, ChevronRight, Clock3, Database, ExternalLink, Layers3, PackageCheck, ShieldCheck, Truck, ShoppingCart, Workflow, BadgeCheck } from 'lucide-react'
-import styles from './homepage/HomepageExperience.module.css'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  ArrowRight,
+  CheckCircle2,
+  ChevronDown,
+  Clock3,
+  Database,
+  MapPin,
+  MessageCircle,
+  PackageCheck,
+  ShieldCheck,
+  ShoppingBag,
+  Truck,
+} from 'lucide-react'
+import styles from './homepage/HomepageModern.module.css'
+import { bodyFont, headingFont } from './homepage/fonts'
 
-const DeferredWarehouseMap = dynamic(() => import('./homepage/DeferredWarehouseMap'), { ssr: false })
-const benefits=[['live','Katalog live','Produk aktif ditampilkan dari sistem katalog kami.'],['stock','Stok aktif','Ketersediaan mengikuti inventory yang tersimpan di sistem.'],['ship','Distribusi nasional','Pengiriman disiapkan dari gudang Malang ke berbagai kota.'],['safe','Alur profesional','Order, verifikasi, dan konfirmasi mengikuti alur operasional.']]
-const faqs=[['Bagaimana cara melakukan pemesanan?','Pilih produk dari katalog, masukkan ke keranjang, lanjut checkout, lalu ikuti proses konfirmasi admin.'],['Apakah katalog menggunakan data stok live?','Ya. Katalog di beranda menampilkan produk aktif dan ketersediaan stok yang diperbarui langsung dari sistem kami.'],['Berapa minimal program gratis ongkir?','Program subsidi ongkir dimulai dari minimal 1 bal (20 slop), mengikuti ketentuan operasional yang berlaku.'],['Di mana lokasi gudang?','Gudang R2 NUSANTARA berada di Malang, Jawa Timur. Detail kunjungan dapat dikonfirmasi terlebih dahulu.']]
-function BenefitIcon({type}){if(type==='ship')return <Truck size={19}/>;if(type==='stock')return <PackageCheck size={19}/>;if(type==='safe')return <ShieldCheck size={19}/>;return <Database size={19} strokeWidth={1.8} aria-hidden="true"/>}
-export default function HomepageExperience(){
- const [products,setProducts]=useState([]),[count,setCount]=useState(0),[loading,setLoading]=useState(true),[dataError,setDataError]=useState(false)
- const [whyTyped,setWhyTyped]=useState(''),[activeBenefit,setActiveBenefit]=useState(0),[activePoint,setActivePoint]=useState(0),[distributorVisible,setDistributorVisible]=useState(false),[catalogCountDisplay,setCatalogCountDisplay]=useState(0)
- useEffect(()=>{const target='Infrastruktur untuk bisnis jangka panjang.';const node=document.getElementById('r2-hp-final-pillars-title');if(!node)return;const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduce||!('IntersectionObserver'in window)){setWhyTyped(target);return}let timer;const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){observer.disconnect();let i=0;timer=window.setInterval(()=>{i+=1;setWhyTyped(target.slice(0,i));if(i>=target.length)window.clearInterval(timer)},42)}},{threshold:.35});observer.observe(node);return()=>{observer.disconnect();if(timer)window.clearInterval(timer)}},[])
- useEffect(()=>{let active=true;fetch('/api/products?limit=8',{headers:{Accept:'application/json'},cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('catalog');return r.json()}).then(p=>{if(!active)return;setProducts(p.data||[]);setCount(Number(p.count)||Number(p.meta?.total)||0);setDataError(false)}).catch(()=>{if(active){setProducts([]);setCount(0);setDataError(true)}}).finally(()=>{if(active)setLoading(false)});return()=>{active=false}},[])
- useEffect(()=>{const elements=Array.from(document.querySelectorAll('[data-r2-reveal]'));if(!('IntersectionObserver'in window)){elements.forEach(el=>el.classList.add('is-visible'));return}const observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('is-visible')}),{threshold:.08});elements.forEach(el=>observer.observe(el));return()=>observer.disconnect()},[products.length]);useEffect(()=>{const root=document.querySelector('.r2-hp-final-distributor');if(!root)return;root.classList.add('is-visible');setDistributorVisible(true)},[])
- useEffect(()=>{if(!distributorVisible||count<=0)return;let frame=0,start=0;const duration=900;const tick=now=>{if(!start)start=now;const p=Math.min(1,(now-start)/duration);const eased=1-Math.pow(1-p,3);setCatalogCountDisplay(Math.round(count*eased));if(p<1)frame=requestAnimationFrame(tick)};frame=requestAnimationFrame(tick);return()=>cancelAnimationFrame(frame)},[distributorVisible,count])
- 
-  return <><Head><title>R2 NUSANTARA — Gudang Distributor R2 & Resmi</title><meta name="description" content="R2 NUSANTARA — gudang distributor Malang dengan katalog produk live, stok aktif, dan distribusi nasional."/><meta name="theme-color" content="#071a35"/><link rel="preconnect" href="https://images.unsplash.com"/></Head><div id="main-content" className={`r2-hp-final ${styles.home}`}>
- <section className="r2-hp-final-hero"><div className="r2-hp-final-hero-bg"/><div className="r2-hp-final-hero-inner"><div className="r2-hp-final-copy" data-r2-reveal><div className="r2-hp-final-emblem" aria-hidden="true"><img src="/assets/logo/logo.png" alt="" width="62" height="62"/></div><span className="r2-hp-final-eyebrow"><i/> OFFICIAL DISTRIBUTOR · VERIFIED SYSTEM</span><h1 className="r2-hero-brand-copy" aria-label="R2 NUSANTARA — Premium Distribution System"><span className="r2-hp-final-title-main">R2 NUSANTARA</span><span className="r2-hp-final-title-sub"><em>PREMIUM DISTRIBUTION SYSTEM</em></span></h1><p className="r2-hero-description">Katalog live, data produk aktif, dan alur order terstruktur dari gudang Malang untuk kebutuhan distribusi jangka panjang.</p><div className="r2-hp-final-actions"><Link href="/products" className="primary">BUKA KATALOG <ArrowRight size={16}/></Link><Link href="#distributor" className="secondary">LIHAT SISTEM</Link></div><div className="r2-hp-final-proof"><span><Activity size={14} strokeWidth={1.8}/> DATA LIVE</span><span><Layers3 size={14} strokeWidth={1.8}/> TERSTRUKTUR</span><span><Truck size={14} strokeWidth={1.8}/> NASIONAL</span></div></div><aside className="r2-hp-final-live" data-r2-reveal><div><span><i/> LIVE CATALOG</span><small>SYS / 01</small></div><strong>{loading?'…':dataError?<span style={{fontSize:'clamp(18px,3vw,26px)',lineHeight:1.2,letterSpacing:0}}>Katalog live</span>:count}<small>{loading?'MEMUAT KATALOG':dataError?'STATUS KATALOG':'PRODUK AKTIF'}</small></strong><div className="r2-hp-final-bars">{Array.from({length:22},(_,i)=><i key={i} style={{height:`${22+((i*17)%60)}%`}}/>)}</div><footer><span>CATALOG STATUS</span><b>{dataError?'CHECK':'OPERATIONAL'}</b></footer>
-<p className="r2-hp-final-live-summary">Lihat produk aktif dari katalog R2 dan Resmi.</p><Link href="/products" className="r2-hp-final-live-link">BUKA KATALOG <ArrowRight size={13}/></Link></aside>
-<section className="r2-hp-final-pillars" id="keunggulan" aria-labelledby="r2-hp-final-pillars-title">
-  <div className="r2-hp-final-pillars-head"><div><span>WHY R2 NUSANTARA</span><h2 id="r2-hp-final-pillars-title" aria-label="Infrastruktur untuk bisnis jangka panjang."><span aria-hidden="true" style={{position:"absolute",width:"1px",height:"1px",padding:0,margin:"-1px",overflow:"hidden",clip:"rect(0, 0, 0, 0)",whiteSpace:"nowrap",border:0}}>Infrastruktur untuk bisnis jangka panjang.</span><span aria-hidden="true">{whyTyped}</span><span className="r2-why-type-cursor" aria-hidden="true">▍</span></h2></div><p>Ringkas di depan, terstruktur di belakang.</p></div>
-  <div className="r2-hp-final-carousel" aria-label="Slider empat pilar layanan R2 NUSANTARA">
-    <div className="r2-hp-final-carousel-top"><span>PILAR {String(activeBenefit+1).padStart(2,'0')} <i/> 04</span><span>{['LIVE CATALOG','INVENTORY','DISTRIBUSI','OPERASIONAL'][activeBenefit]}</span></div>
-    <div className="r2-hp-final-carousel-window" aria-live="polite" aria-atomic="true">
-      <div className="r2-hp-final-carousel-track" style={{transform:`translateX(-${activeBenefit*100}%)`}}>
-        {benefits.map(([type,title,desc],i)=><article className="r2-hp-final-pillar" key={title} aria-label={`Pilar ${i+1} dari 4: ${title}`} aria-hidden={i!==activeBenefit}>
-          <span className="r2-hp-final-pillar-icon"><BenefitIcon type={type}/></span>
-          <div className="r2-hp-final-pillar-copy"><span className="r2-hp-final-pillar-index">0{i+1} / R2 SYSTEM</span><strong>{title}</strong><p>{desc}</p><small>{i===0?(loading?'MEMUAT DATA KATALOG':dataError?'PERIKSA KONEKSI':'KATALOG BERHASIL DIMUAT'):i===1?'MENGACU INVENTORY SISTEM':i===2?'GUDANG MALANG · NASIONAL':'ORDER → VERIFIKASI → KONFIRMASI'}</small></div>
-        </article>)}
-      </div>
-    </div>
-    <div className="r2-hp-final-carousel-controls">
-      <div className="r2-hp-final-carousel-dots" role="group" aria-label="Pilih pilar layanan">
-        {benefits.map(([type,title],i)=><button key={title} type="button" className={i===activeBenefit?'is-active':''} aria-label={`Tampilkan pilar ${i+1}: ${title}`} aria-pressed={i===activeBenefit} onClick={()=>setActiveBenefit(i)}><span/></button>)}
-      </div>
-      <div className="r2-hp-final-carousel-arrows">
-        <button type="button" aria-label="Pilar sebelumnya" onClick={()=>setActiveBenefit(i=>(i+benefits.length-1)%benefits.length)}><ChevronRight size={17}/></button>
-        <button type="button" aria-label="Pilar berikutnya" onClick={()=>setActiveBenefit(i=>(i+1)%benefits.length)}><ChevronRight size={17}/></button>
-      </div>
-    </div>
-  </div>
-</section></div></section>
- 
+const WHATSAPP_URL = 'https://wa.me/6285715905079?text=Halo%20R2%20NUSANTARA%2C%20saya%20ingin%20tanya%20produk%20grosir.'
+const GOOGLE_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=Malang%2C%20Jawa%20Timur'
+const MAP_EMBED_URL = 'https://maps.google.com/maps?q=Malang%2C%20Jawa%20Timur&z=12&output=embed&hl=id'
+const EMAIL = 'cigaratetobacoshop@gmail.com'
+const ALAMAT_LENGKAP = ''
 
- <section className={`r2-hp-final-distributor ${distributorVisible?'is-interactive':''}`} id="distributor" data-r2-reveal aria-labelledby="r2-distributor-title">
-  <span className="r2-distributor-accent" aria-hidden="true"/><div className="r2-distributor-aurora" aria-hidden="true"/><div className="r2-distributor-particles" aria-hidden="true">{Array.from({length:12},(_,i)=><i key={i} style={{'--particle-i':i}}/>)}</div>
-  <div className="r2-hp-final-distributor-intro">
-    <div className="r2-hp-final-distributor-kicker"><span className="r2-hp-final-distributor-kicker-line"/><span>GUDANG DISTRIBUTOR · MALANG</span><small>OPERASIONAL</small></div>
-    <h2 id="r2-distributor-title"><span className="r2-distributor-word">Dibangun</span>{' '}<span className="r2-distributor-word">untuk</span>{' '}<span className="r2-distributor-word">kebutuhan</span>{' '}<span className="r2-distributor-word">distribusi</span>{' '}<em><span className="r2-distributor-word">jangka</span>{' '}<span className="r2-distributor-word">panjang.</span></em></h2>
-    <p>R2 NUSANTARA menggabungkan katalog digital, data produk aktif, dan proses pemesanan terstruktur agar toko dapat bekerja lebih cepat tanpa mengorbankan ketelitian.</p>
-    <div className="r2-hp-final-distributor-actions"><Link href="/products">MULAI DARI KATALOG <ArrowRight size={15}/></Link><Link href="/contact">HUBUNGI ADMIN</Link></div>
-    <div className="r2-hp-final-distributor-status" aria-label="Status operasional"><span><i/> SISTEM OPERASIONAL</span><span><i/> GUDANG MALANG</span><span><i/> DISTRIBUSI NASIONAL</span></div>
-  </div>
-  <div className="r2-distributor-system">
-  <ul className="r2-hp-final-points" aria-label="Struktur layanan R2 NUSANTARA">
-    <li className={"r2-point-card-wrap " + (activePoint===0?"is-active":"")} data-r2-distributor-card="0">
-      <article className="r2-point-card">
-        <button type="button" className="r2-point-toggle" aria-expanded={activePoint===0} aria-controls="r2-point-detail-01" onClick={()=>setActivePoint(activePoint===0?-1:0)}>
-          <span className="r2-point-index"><b>01</b><span>KATALOG</span></span>
-          <span className="r2-point-icon" aria-hidden="true"><Database size={22}/></span>
-          <span className="r2-point-content">
-            <strong>Data katalog aktif</strong>
-            <span>Satu sumber data produk yang selalu sinkron dengan katalog.</span>
-            <small className={"r2-point-badge " + (!loading&&!dataError?"is-live":"")}><BadgeCheck size={13} aria-hidden="true"/>{!loading&&!dataError&&<i className="r2-point-live-dot" aria-hidden="true"/>} DATA LIVE</small>
-          </span>
-          <ChevronRight className="r2-point-chevron" size={18} aria-hidden="true"/>
-        </button>
-        <div className={"r2-point-detail " + (activePoint===0?"is-open ":"") + (loading?"is-loading":"")} id="r2-point-detail-01" aria-hidden={activePoint!==0}>
-          {loading ? <span className="r2-point-skeleton" aria-label="Memuat jumlah produk" /> : dataError ? <span>Katalog live</span> : <span><b>{catalogCountDisplay.toLocaleString("id-ID")}</b> produk aktif, diperbarui langsung dari katalog.</span>}
-        </div>
-      </article>
-    </li>
-    <li className="r2-point-card-wrap" data-r2-distributor-card="1">
-      <article className="r2-point-card">
-        <div className="r2-point-static">
-          <span className="r2-point-index"><b>02</b><span>PESANAN</span></span>
-          <span className="r2-point-icon" aria-hidden="true"><ShoppingCart size={22}/></span>
-          <span className="r2-point-content">
-            <strong>Order terstruktur</strong>
-            <span>Keranjang dan checkout berjalan dalam satu alur yang rapi dan terjaga.</span>
-            <small className="r2-point-badge"><Workflow size={13} aria-hidden="true"/> FLOW TERJAGA</small>
-          </span>
-        </div>
-      </article>
-    </li>
-    <li className="r2-point-card-wrap" data-r2-distributor-card="2">
-      <article className="r2-point-card">
-        <div className="r2-point-static">
-          <span className="r2-point-index"><b>03</b><span>KONFIRMASI</span></span>
-          <span className="r2-point-icon" aria-hidden="true"><ShieldCheck size={22}/></span>
-          <span className="r2-point-content">
-            <strong>Konfirmasi profesional</strong>
-            <span>Detail pesanan diteruskan melalui proses admin.</span>
-            <small className="r2-point-badge"><BadgeCheck size={13} aria-hidden="true"/> VERIFIED PROCESS</small>
-          </span>
-        </div>
-      </article>
-    </li>
-  </ul>
-</div>
-</section>
-<section className="r2-hp-final-section" id="faq" data-r2-reveal><div className="r2-hp-final-head"><div><span>FAQ</span><h2>Jawaban sebelum<br/><em>Anda mulai.</em></h2></div></div><div className="r2-hp-final-faq">{faqs.map(([q,a])=><details key={q}><summary>{q}<ChevronRight size={17}/></summary><p>{a}</p></details>)}</div></section>
- <section className="r2-hp-final-location" data-r2-reveal><div><span>WAREHOUSE LOCATION</span><h2>Gudang R2 NUSANTARA<br/><em>Malang, Jawa Timur.</em></h2><p>Lokasi fisik distributor untuk kebutuhan operasional dan konfirmasi kunjungan.</p><div className="r2-hp-final-hours"><Clock3 size={17}/><span>Senin—Sabtu <b>08.00—17.00 WIB</b></span></div><a href="https://maps.google.com/?q=Malang%2C%20Jawa%20Timur%2C%20Indonesia" target="_blank" rel="noreferrer">BUKA GOOGLE MAPS <ExternalLink size={14}/></a></div><DeferredWarehouseMap/></section>
- <footer className="r2-hp-final-footer"><div className="r2-hp-final-footer-grid"><div><Link href="/" className="r2-hp-final-brand"><span><img src="/assets/logo/logo.png" alt="Logo R2 NUSANTARA" width="46" height="46" /></span><strong>R2 NUSANTARA<small>GUDANG DISTRIBUTOR R2 & RESMI</small></strong></Link><p>Distributor dan gudang R2 NUSANTARA untuk kebutuhan toko dan pembelian grosir.</p></div><div><b>NAVIGASI</b><Link href="/">Beranda</Link><Link href="/products">Katalog</Link><Link href="/checkout">Keranjang</Link><Link href="/contact">Kontak</Link><Link href="/login">Login Admin</Link></div><div><b>OPERASIONAL</b><span>Malang · Jawa Timur</span><span>Senin—Sabtu · 08.00—17.00</span><span>Distribusi nasional</span></div></div><div className="r2-hp-final-footer-bottom r2-hp-final-copyright"><span>©2026 R2 NUSANTARA - Cigarette Tobacco Shop</span></div></footer>
- <style jsx>{`.r2-hp-final .r2-hp-final-emblem{display:none!important;visibility:hidden!important}.r2-hp-final{--navy:#071a35;--blue:#2878e8;--gold:#d8b36c;--ink:#0a1d36;--muted:#6b7c91;--line:#dfe7f0;background:#fff;color:var(--ink);font-family:Inter,"Plus Jakarta Sans",ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}.r2-hp-final *{box-sizing:border-box}.r2-hp-final a{text-decoration:none;color:inherit}.r2-hp-final [data-r2-reveal]{opacity:1;transform:none;transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}.r2-hp-final [data-r2-reveal].is-visible{opacity:1;transform:none}.r2-hp-final-hero{position:relative;isolation:isolate;min-height:560px;display:grid;align-items:center;background:var(--navy);color:#fff;overflow:hidden}.r2-hp-final-hero-inner{width:min(1240px,calc(100% - 40px));margin:auto;display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:46px;align-items:center}.r2-hp-final-copy{max-width:730px}.r2-hp-final-eyebrow,.r2-hp-final-head>div>span,.r2-hp-final-distributor>div>span,.r2-hp-final-location>div>span{font-size:8px;letter-spacing:.18em;font-weight:950;color:#bcd7ff}.r2-hp-final-copy h1{margin:18px 0;font-size:clamp(43px,7vw,82px);line-height:.96;letter-spacing:-.065em;text-shadow:0 3px 25px rgba(0,0,0,.34)}.r2-hp-final-hero-bg{background:linear-gradient(90deg,rgba(2,18,55,.70) 0%,rgba(3,31,83,.58) 46%,rgba(5,52,112,.34) 100%),url('/assets/logo/hero-bg.jpg') center/cover!important}.r2-hp-final-hero-bg:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,24,72,.22),rgba(0,53,128,.08) 60%,transparent);pointer-events:none}.r2-home-header__verified{width:20px;height:20px;border-radius:50%;display:grid!important;place-items:center!important;background:#1d9bf0!important;color:#fff!important;border:2px solid rgba(255,255,255,.95);box-shadow:0 3px 9px rgba(29,155,240,.30);filter:none!important;margin-left:-2px!important}.r2-home-header__verified svg{width:14px!important;height:14px!important;stroke:#fff!important;fill:none!important}.r2-home-header{background:rgba(255,255,255,.76)!important;backdrop-filter:blur(20px) saturate(160%)!important;-webkit-backdrop-filter:blur(20px) saturate(160%)!important}.r2-hp-final-copy h1 em,.r2-hp-final-head h2 em,.r2-hp-final-distributor h2 em,.r2-hp-final-location h2 em{font-style:normal;color:#e4bf77}.r2-hp-final-copy>p{max-width:650px;color:rgba(255,255,255,.78);font-size:14px;line-height:1.8;text-shadow:0 2px 15px rgba(0,0,0,.35)}.r2-hp-final-actions{display:flex;gap:10px;margin-top:20px}.r2-hp-final-actions a,.r2-hp-final-distributor a,.r2-hp-final-location>a{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:12px;font-size:9px;font-weight:950;letter-spacing:.08em;transition:.25s ease}.r2-hp-final-actions .primary{background:linear-gradient(135deg,#1766d5,#3185f3);box-shadow:0 15px 35px rgba(23,102,213,.3)}.r2-hp-final-actions .secondary{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);backdrop-filter:blur(10px)}.r2-hp-final-actions a:hover,.r2-hp-final-distributor a:hover,.r2-hp-final-location>a:hover{transform:translateY(-2px)}.r2-hp-final-proof{display:flex;gap:18px;flex-wrap:wrap;margin-top:24px}.r2-hp-final-proof span{display:flex;gap:5px;align-items:center;color:rgba(255,255,255,.65);font-size:8px;font-weight:850;letter-spacing:.1em}.r2-hp-final-live{padding:22px;border:1px solid rgba(255,255,255,.14);border-radius:24px;background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.035));backdrop-filter:blur(20px);box-shadow:0 28px 70px rgba(0,0,0,.24)}.r2-hp-final-live>div:first-child{display:flex;justify-content:space-between;font-size:8px;font-weight:900;letter-spacing:.1em;color:#d7e6fb}.r2-hp-final-live i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#63dfa0;box-shadow:0 0 0 5px rgba(99,223,160,.12);margin-right:7px}.r2-hp-final-live>strong{display:block;margin:38px 0 16px;font-size:48px;letter-spacing:-.06em}.r2-hp-final-live>strong small{font-size:9px;letter-spacing:.12em;color:#9fb4cd}.r2-hp-final-bars{height:78px;display:flex;align-items:end;gap:3px}.r2-hp-final-bars i{flex:1;min-height:9px;border-radius:3px 3px 0 0;background:linear-gradient(180deg,#72aef8,rgba(114,174,248,.15))}.r2-hp-final-live footer{display:flex;justify-content:space-between;padding-top:14px;margin-top:18px;border-top:1px solid rgba(255,255,255,.1);font-size:7px;letter-spacing:.12em;color:#8fa5bf}.r2-hp-final-live footer b{color:#74e4a6}.r2-hp-final-section{width:min(1180px,calc(100% - 40px));margin:105px auto}.r2-hp-final-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:30px}.r2-hp-final-head h2{margin:12px 0 0;font-size:clamp(31px,4vw,48px);line-height:1.02;letter-spacing:-.055em}.r2-hp-final-head>p,.r2-hp-final-head>span{font-size:10px;color:#8190a4}.r2-hp-final-head>a{display:inline-flex;align-items:center;gap:7px;color:var(--blue);font-size:8px;font-weight:950;letter-spacing:.1em}.r2-hp-final-benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.r2-hp-final-benefits article{padding:26px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#fff,#f7faff);box-shadow:0 10px 30px rgba(7,29,73,.045);transition:.3s ease}.r2-hp-final-benefits article:hover{transform:translateY(-5px);box-shadow:0 22px 45px rgba(7,29,73,.1)}.r2-hp-final-benefits article>div{width:43px;height:43px;border-radius:13px;display:grid;place-items:center;color:var(--blue);background:#edf5ff;margin-bottom:22px}.r2-hp-final-benefits strong{font-size:13px}.r2-hp-final-benefits p{margin:8px 0 0;color:var(--muted);font-size:10px;line-height:1.65}.r2-hp-final-distributor{width:min(1180px,calc(100% - 40px));margin:105px auto;padding:58px;border-radius:30px;background:linear-gradient(135deg,#071a35,#123a6d);color:#fff;display:grid;grid-template-columns:1.2fr .8fr;gap:60px;position:relative;overflow:hidden}.r2-hp-final-distributor:after{content:"";position:absolute;width:420px;height:420px;right:-150px;top:-160px;border-radius:50%;background:radial-gradient(circle,rgba(75,147,242,.32),transparent 68%)}.r2-hp-final-distributor>div{position:relative;z-index:1}.r2-hp-final-distributor h2{margin:13px 0 15px;font-size:clamp(32px,4vw,52px);line-height:1;letter-spacing:-.055em}.r2-hp-final-distributor p{max-width:650px;color:#b5c7dd;font-size:12px;line-height:1.8}.r2-hp-final-distributor>div:first-child>div{display:flex;gap:9px;margin-top:25px}.r2-hp-final-distributor a{background:#e5bd73;color:#10233f}.r2-hp-final-distributor a+a{background:rgba(255,255,255,.07);color:#fff;border:1px solid rgba(255,255,255,.15)}.r2-hp-final-points{display:grid;gap:10px}.r2-hp-final-points article{padding:19px;border:1px solid rgba(255,255,255,.1);border-radius:15px;background:rgba(255,255,255,.055)}.r2-hp-final-points b{display:block;color:#e1bc73;font-size:9px}.r2-hp-final-points strong{display:block;margin:5px 0;font-size:12px}.r2-hp-final-points span{font-size:9px;color:#9fb2c9}.r2-hp-final-faq{display:grid;grid-template-columns:1fr 1fr;gap:9px}.r2-hp-final-faq details{border:1px solid var(--line);border-radius:14px;padding:0 17px;background:#fff}.r2-hp-final-faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;font-size:10px;font-weight:900}.r2-hp-final-faq summary::-webkit-details-marker{display:none}.r2-hp-final-faq summary svg{transition:.2s}.r2-hp-final-faq details[open] summary svg{transform:rotate(90deg)}.r2-hp-final-faq p{margin:0 0 18px;color:#6e7d90;font-size:9px;line-height:1.7}.r2-hp-final-location{width:min(1180px,calc(100% - 40px));margin:105px auto;display:grid;grid-template-columns:.9fr 1.1fr;gap:18px}.r2-hp-final-location>div:first-child{padding:42px;border-radius:26px;background:#f4f8fd;border:1px solid var(--line)}.r2-hp-final-location h2{margin:14px 0;font-size:clamp(30px,4vw,46px);line-height:1;letter-spacing:-.055em}.r2-hp-final-location p{color:#687b91;font-size:11px;line-height:1.7}.r2-hp-final-hours{display:flex;gap:9px;align-items:center;margin:24px 0;color:#4f647d;font-size:9px}.r2-hp-final-hours b{display:block;margin-top:3px;color:#102c4e}.r2-hp-final-location>a{background:#102e56;color:#fff}.r2-hp-final-footer{background:#071a35;color:#fff;padding:55px max(20px,calc((100% - 1180px)/2)) 100px}.r2-hp-final-footer-grid{display:grid;grid-template-columns:1.5fr .6fr .8fr;gap:60px}.r2-hp-final-brand{display:flex;align-items:center;gap:10px}.r2-hp-final-brand>span{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#164c92,#0a2853);font-weight:950}.r2-hp-final-brand>strong{font-size:11px;letter-spacing:.12em}.r2-hp-final-brand small{display:block;margin-top:4px;color:#8fa7c2;font-size:7px;letter-spacing:.1em}.r2-hp-final-footer p{max-width:360px;color:#8fa5be;font-size:9px;line-height:1.7;margin-top:18px}.r2-hp-final-footer-grid>div>b{display:block;color:#e1bd78;font-size:7px;letter-spacing:.14em;margin-bottom:16px}.r2-hp-final-footer-grid>div>a,.r2-hp-final-footer-grid>div>span{display:block;color:#9bb0c7;font-size:9px;margin-bottom:10px}.r2-hp-final-footer-bottom{display:flex;justify-content:space-between;gap:20px;padding-top:25px;margin-top:35px;border-top:1px solid rgba(255,255,255,.09);font-size:7px;color:#738aa4;letter-spacing:.08em}@media(max-width:900px){.r2-hp-final-hero{min-height:690px}.r2-hp-final-hero-inner{grid-template-columns:1fr;gap:30px;padding:65px 0}.r2-hp-final-live{max-width:430px}.r2-hp-final-benefits,.r2-hp-final-distributor,.r2-hp-final-location{grid-template-columns:1fr}.r2-hp-final-faq{grid-template-columns:1fr}}@media(max-width:620px){.r2-hp-final-hero{min-height:690px}.r2-hp-final-hero-bg{background:linear-gradient(180deg,rgba(2,18,55,.68) 0%,rgba(3,31,83,.54) 55%,rgba(5,52,112,.36) 100%),url('/assets/logo/hero-bg.jpg') center/cover}.r2-hp-final-hero-inner{width:calc(100% - 28px);padding:48px 0 38px}.r2-hp-final-eyebrow{font-size:7px}.r2-hp-final-copy h1{font-size:42px}.r2-hp-final-copy>p{font-size:11px;line-height:1.75}.r2-hp-final-actions{margin-top:21px}.r2-hp-final-actions a{padding:11px 13px;font-size:8px}.r2-hp-final-proof{gap:9px;margin-top:18px}.r2-hp-final-proof span{font-size:6px}.r2-hp-final-live{padding:16px;border-radius:18px}.r2-hp-final-live>strong{font-size:38px;margin:25px 0 10px}.r2-hp-final-section{width:calc(100% - 28px);margin:70px auto}.r2-hp-final-head{display:block;margin-bottom:22px}.r2-hp-final-head h2{font-size:30px}.r2-hp-final-head>p{margin-top:9px}.r2-hp-final-benefits{gap:8px}.r2-hp-final-benefits article{padding:16px;border-radius:14px}.r2-hp-final-benefits article>div{width:36px;height:36px;margin-bottom:17px}.r2-hp-final-benefits strong{font-size:11px}.r2-hp-final-benefits p{font-size:8px}.r2-hp-final-distributor{width:calc(100% - 28px);margin:70px auto;padding:30px 22px;border-radius:22px;gap:30px}.r2-hp-final-distributor h2{font-size:31px}.r2-hp-final-distributor p{font-size:9px}.r2-hp-final-distributor>div:first-child>div{flex-direction:column}.r2-hp-final-location{width:calc(100% - 28px);margin:70px auto}.r2-hp-final-location>div:first-child{padding:25px 20px;border-radius:20px}.r2-hp-final-location h2{font-size:31px}.r2-hp-final-footer{padding:38px 18px 85px}.r2-hp-final-footer-grid{grid-template-columns:1fr 1fr;gap:28px}.r2-hp-final-footer-grid>div:first-child{grid-column:1/-1}.r2-hp-final-footer-bottom{display:block;line-height:1.7}.r2-hp-final-footer-bottom span{display:block}.r2-hp-final-footer-bottom span+span{margin-top:6px}}@media(prefers-reduced-motion:reduce){.r2-hp-final [data-r2-reveal]{opacity:1;transform:none;transition:none}.r2-hp-final *{scroll-behavior:auto!important;transition:none!important}}}.r2-hp-final{--section-pad:clamp(42px,5vw,72px)}.r2-hp-final-hero{min-height:540px}.r2-hp-final-hero-inner{gap:42px}.r2-hp-final-copy h1{margin:16px 0;font-size:clamp(42px,6.2vw,76px);line-height:.94}.r2-hp-final-copy>p{line-height:1.7;max-width:680px}.r2-hp-final-section{padding-top:var(--section-pad)!important;padding-bottom:var(--section-pad)!important}.r2-hp-final-head{margin-bottom:20px!important}.r2-hp-final-location{padding-top:44px!important;padding-bottom:44px!important}.r2-hp-final-footer{padding-top:48px!important}.r2-hp-final-footer-bottom{margin-top:24px!important;padding-top:18px!important}@media(max-width:767px){.r2-hp-final-hero{min-height:620px}.r2-hp-final-hero-inner{width:calc(100% - 28px);gap:20px}.r2-hp-final-copy h1{font-size:clamp(36px,11vw,52px)}.r2-hp-final-copy>p{font-size:12px;line-height:1.5}.r2-hp-final-section{padding-top:38px!important;padding-bottom:38px!important}.r2-hp-final-head{margin-bottom:16px!important}.r2-hp-final-head h2{font-size:clamp(31px,8.8vw,44px)!important;line-height:1!important}.r2-hp-final-location{padding:36px 18px!important}.r2-hp-final-footer{padding-top:36px!important}}@media(max-width:380px){.r2-hp-final-hero{min-height:580px}.r2-hp-final-section{padding-top:32px!important;padding-bottom:32px!important}.r2-hp-final-distributor{padding-top:32px!important;padding-bottom:32px!important}.r2-hp-final-copyright{justify-content:center!important;text-align:center!important;padding-top:18px!important;margin-top:22px!important;color:#8195ad!important;font-size:8px!important;letter-spacing:.08em!important}.r2-hp-final-copyright span{display:block!important;width:100%}
-/* Screenshot parity — visual-only mobile hero */
-.r2-hp-final-hero{background:#06152f!important}
-.r2-hp-final-hero-bg:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(104,160,226,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(104,160,226,.055) 1px,transparent 1px);background-size:52px 52px;mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.68) 72%,transparent 100%)}
-.r2-hp-final-emblem{display:none}.r2-hp-final-title-main{display:block}.r2-hp-final-title-sub{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.r2-hp-final svg{vertical-align:-0.12em}.r2-hp-final-proof svg,.r2-hp-final-actions svg,.r2-hp-final-head svg,.r2-hp-final-location svg{stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}.r2-hp-final-title-sub em{display:inline!important;margin:0!important}
-/* Verification is intentionally represented once in the global header; no decorative duplicate in the hero. */
-.r2-hp-final-title-verified{display:none!important}
-.r2-hp-final-eyebrow i{display:inline-block;width:9px;height:9px;flex:0 0 9px;margin-right:7px;border-radius:50%;background:#55a9ff;box-shadow:0 0 0 5px rgba(85,169,255,.12)}
-.r2-hp-final-bars{height:118px!important;gap:7px!important;padding:0 2px!important;border-bottom:1px solid rgba(255,255,255,.07)}
-.r2-hp-final-live{background:linear-gradient(145deg,rgba(37,49,66,.97),rgba(25,37,54,.97))!important;border-color:rgba(174,202,238,.16)!important;box-shadow:0 20px 55px rgba(0,0,0,.22)!important}
-.r2-hp-final-live>strong{font-size:clamp(42px,7vw,62px)!important;margin:32px 0 20px!important}.r2-hp-final-live>strong small{font-size:11px!important;letter-spacing:.12em!important}.r2-hp-final-live footer{margin-top:20px!important;padding-top:18px!important;font-size:9px!important}.r2-hp-final-live footer b{font-size:9px!important;letter-spacing:.08em!important}
-@media(max-width:767px){
-.r2-hp-final-hero{min-height:0!important}.r2-hp-final-hero-inner{width:calc(100% - 48px)!important;padding:26px 0 32px!important;gap:34px!important}.r2-hp-final-copy{max-width:none!important}
-.r2-hp-final-emblem{display:grid;place-items:center;width:76px;height:76px;margin:0 0 24px 4px;border-radius:50%;background:rgba(11,38,78,.88);border:1px solid rgba(119,174,242,.16);box-shadow:0 0 0 10px rgba(81,145,226,.055),0 12px 30px rgba(0,0,0,.16)}.r2-hp-final-emblem img{display:block;width:58px;height:58px;object-fit:contain;border-radius:50%}
-.r2-hp-final-eyebrow{font-size:clamp(7px,1.45vw,10px)!important;padding:11px 16px!important;letter-spacing:.15em!important;background:rgba(255,255,255,.075)!important;border-color:rgba(185,214,255,.25)!important;color:#d5e4f7!important}
-.r2-hp-final-copy h1{margin:22px 0!important;font-size:clamp(44px,9vw,68px)!important;line-height:.98!important;letter-spacing:-.06em!important}.r2-hp-final-title-sub{margin-top:20px!important;gap:12px!important}.r2-hp-final-copy h1 em{font-size:clamp(19px,4.5vw,34px)!important;line-height:1.1!important;letter-spacing:.035em!important;color:#e6c77f!important;text-transform:uppercase!important}
-.r2-hp-final-copy>p{font-size:clamp(12px,2.35vw,18px)!important;line-height:1.72!important;color:rgba(235,242,251,.84)!important;max-width:none!important}
-.r2-hp-final-actions{display:flex!important;gap:18px!important;margin-top:30px!important}.r2-hp-final-actions a{min-height:82px!important;flex:1 1 0!important;justify-content:center!important;border-radius:18px!important;font-size:clamp(9px,1.6vw,12px)!important}
-.r2-hp-final-proof{gap:12px!important;margin-top:32px!important}.r2-hp-final-proof span{min-height:54px!important;flex:1 1 0!important;padding:0 10px!important;border:1px solid rgba(178,207,244,.17)!important;border-radius:13px!important;background:rgba(255,255,255,.055)!important;font-size:clamp(7px,1.4vw,10px)!important;letter-spacing:.08em!important}
-.r2-hp-final-live{width:100%!important;max-width:none!important;min-height:500px!important;padding:26px!important;border-radius:30px!important}.r2-hp-final-live>div:first-child{font-size:clamp(9px,1.6vw,12px)!important}.r2-hp-final-live>strong{margin:70px 0 46px!important;font-size:clamp(54px,10vw,76px)!important}.r2-hp-final-live>strong small{font-size:clamp(10px,1.8vw,14px)!important}.r2-hp-final-bars{height:145px!important;gap:clamp(5px,1.2vw,10px)!important}.r2-hp-final-live footer{margin-top:24px!important;padding-top:22px!important;font-size:clamp(9px,1.5vw,12px)!important}.r2-hp-final-live footer b{font-size:clamp(9px,1.5vw,12px)!important}
-}
-@media(max-width:599px){
-.r2-hp-final-hero-inner{width:calc(100% - 28px)!important;padding:24px 0 26px!important;gap:24px!important}.r2-hp-final-emblem{width:62px;height:62px;margin-bottom:20px}.r2-hp-final-emblem img{width:48px;height:48px}
-.r2-hp-final-copy h1{font-size:clamp(36px,10.5vw,48px)!important;margin:18px 0!important}.r2-hp-final-title-sub{gap:8px!important;margin-top:14px!important}.r2-hp-final-copy h1 em{font-size:clamp(15px,4.2vw,22px)!important}.r2-hp-final-title-verified{display:none!important}.r2-hp-final-title-verified svg{width:15px;height:15px}
-.r2-hp-final-copy>p{font-size:12px!important;line-height:1.65!important}.r2-hp-final-actions{gap:8px!important;margin-top:22px!important}.r2-hp-final-actions a{min-height:54px!important;padding:0 8px!important;border-radius:13px!important;font-size:8px!important}
-.r2-hp-final-proof{gap:6px!important;margin-top:20px!important}.r2-hp-final-proof span{min-height:42px!important;padding:0 5px!important;font-size:6.5px!important}.r2-hp-final-live{min-height:380px!important;padding:18px!important;border-radius:22px!important}.r2-hp-final-live>strong{margin:40px 0 25px!important;font-size:48px!important}.r2-hp-final-live>strong small{font-size:9px!important}.r2-hp-final-bars{height:100px!important;gap:4px!important}.r2-hp-final-live footer{margin-top:18px!important;padding-top:16px!important}
-}
-@media(prefers-reduced-motion:reduce){.r2-hp-final-emblem img{animation:none!important}}
-.r2-hp-final-copy h1 .r2-hp-final-title-sub em{display:inline!important}.r2-hp-final-copy h1 .r2-hp-final-title-sub{display:flex!important;align-items:center!important;flex-wrap:nowrap!important}
-/* Compact integrated hero pillars */
-.r2-hp-final-hero-inner{grid-template-columns:minmax(0,1fr) 330px;row-gap:26px}
-.r2-hp-final-pillars{grid-column:1/-1;min-width:0;padding:19px 22px;border:1px solid rgba(180,210,247,.16);border-radius:22px;background:linear-gradient(120deg,rgba(7,28,58,.78),rgba(17,57,101,.64));backdrop-filter:blur(14px);box-shadow:0 16px 40px rgba(0,0,0,.12)}
-.r2-hp-final-pillars-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:13px}
-.r2-hp-final-pillars-head>div>span{font-size:8px;letter-spacing:.17em;font-weight:900;color:#a9cbf8}
-.r2-hp-final-pillars-head h2{margin:5px 0 0;font-size:clamp(17px,2.1vw,25px);line-height:1.1;letter-spacing:-.035em;color:#fff}
-.r2-hp-final-pillars-head h2 em{font-style:normal;color:#e4bf77}
-.r2-hp-final-pillars-head h2{min-height:1.1em}.r2-why-type-cursor{display:inline-block;margin-left:3px;color:#75b8ff;animation:r2WhyBlink .85s steps(2,start) infinite}@keyframes r2WhyBlink{to{visibility:hidden}}@media(prefers-reduced-motion:reduce){.r2-why-type-cursor{display:none}}
-.r2-hp-final-pillars-head>p{margin:0;color:#b7c9df;font-size:9px}
-.r2-hp-final-pillars-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
-.r2-hp-final-pillar{display:flex;align-items:flex-start;gap:10px;min-width:0;padding:12px;border:1px solid rgba(190,216,247,.12);border-radius:14px;background:rgba(255,255,255,.055);transition:transform .22s ease,border-color .22s ease,background .22s ease;outline:none}
-.r2-hp-final-pillar:hover,.r2-hp-final-pillar:focus-visible{transform:translateY(-3px);border-color:rgba(117,179,255,.55);background:rgba(38,105,183,.19)}
-.r2-hp-final-pillar-icon{display:grid;place-items:center;flex:0 0 32px;width:32px;height:32px;border-radius:10px;background:rgba(71,145,236,.18);color:#91c5ff}
-.r2-hp-final-pillar-copy{min-width:0}
-.r2-hp-final-pillar strong{display:block;color:#fff;font-size:11px;line-height:1.25}
-.r2-hp-final-pillar p{margin:5px 0;color:#b9cbe0;font-size:9px;line-height:1.45}
-.r2-hp-final-pillar small{display:block;color:#7fe0b0;font-size:6.5px;font-weight:850;letter-spacing:.055em;line-height:1.35}
-@media(max-width:900px){.r2-hp-final-hero-inner{grid-template-columns:1fr}.r2-hp-final-pillars-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:620px){.r2-hp-final-pillars{padding:15px 12px;border-radius:17px}.r2-hp-final-pillars-head{display:block;margin-bottom:10px}.r2-hp-final-pillars-head h2{font-size:19px}.r2-hp-final-pillars-head>p{margin-top:5px;font-size:8px}.r2-hp-final-pillars-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.r2-hp-final-pillar{display:block;padding:10px;border-radius:12px}.r2-hp-final-pillar-icon{margin-bottom:8px;width:29px;height:29px}.r2-hp-final-pillar strong{font-size:10px}.r2-hp-final-pillar p{font-size:8px}.r2-hp-final-pillar small{font-size:6px}}
-@media(prefers-reduced-motion:reduce){.r2-hp-final-pillar{transition:none}.r2-hp-final-pillar:hover{transform:none}}
-/* WHY pillars: desktop grid, mobile swipe cards */
-.r2-hp-final-pillars-grid{scrollbar-width:thin;scrollbar-color:rgba(145,197,255,.45) transparent}
-.r2-hp-final-pillar{min-height:126px;position:relative;overflow:hidden}
-.r2-hp-final-pillar:before{content:"";position:absolute;inset:0 auto 0 0;width:2px;background:linear-gradient(180deg,#80bdff,#e4bf77);opacity:.7}
-.r2-hp-final-pillar:focus-visible{outline:2px solid #8bc2ff;outline-offset:3px}
-@media(max-width:620px){.r2-hp-final-pillars-grid{display:flex;gap:10px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding:8px;padding:2px 8px 12px;margin:0 -8px;-webkit-overflow-scrolling:touch}.r2-hp-final-pillar{flex:0 0 min(82%,290px);min-height:150px;display:flex;align-items:flex-start;padding:15px 13px;border-radius:15px;scroll-snap-align:start;scroll-snap-stop:always;background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.035));box-shadow:0 9px 22px rgba(0,0,0,.12)}.r2-hp-final-pillar-icon{flex-basis:34px;width:34px;height:34px}.r2-hp-final-pillar strong{font-size:12px}.r2-hp-final-pillar p{font-size:9px;line-height:1.55}.r2-hp-final-pillar small{font-size:6.5px}.r2-hp-final-pillars-grid:focus-visible{outline:2px solid #8bc2ff;outline-offset:2px}}
-@media(min-width:621px){.r2-hp-final-pillars-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}}
-/* Hero typography — real display font for the requested Unicode mathematical-sans look. Presentation-only; no business logic/integration changes. */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Math&display=swap');
-.r2-hp-final-hero .r2-hero-brand-copy{
-  font-family:"Noto Sans Math","Cambria Math","STIX Two Math","DejaVu Sans",system-ui,sans-serif;
-  font-variant-ligatures:none;
-  font-variant-numeric:normal;
-  unicode-bidi:plaintext;
-}
-.r2-hp-final-hero .r2-hp-final-title-main,
-.r2-hp-final-hero .r2-hp-final-title-sub em,
-.r2-hp-final-hero .r2-hero-description{
-  font-family:inherit;
-  font-style:normal;
-  font-weight:400;
-  text-rendering:geometricPrecision;
-}
-.r2-hp-final-hero .r2-hp-final-title-main{
-  display:block;
-  white-space:normal;
-  letter-spacing:-.055em;
-}
-.r2-hp-final-hero .r2-hp-final-title-sub{
-  display:block!important;
-  margin-top:14px;
-}
-.r2-hp-final-hero .r2-hp-final-title-sub em{
-  display:block!important;
-  color:#e6c77f!important;
-  font-size:.42em;
-  line-height:1.2;
-  letter-spacing:.01em;
-}
-.r2-hp-final-hero .r2-hero-description{
-  font-size:13px;
-  line-height:1.85;
-  letter-spacing:.002em;
-  color:rgba(245,248,252,.84);
-}
-@media(max-width:767px){
- .r2-hp-final-hero .r2-hp-final-copy h1{
-   font-size:clamp(34px,8.8vw,62px)!important;
-   line-height:1.02!important;
-   letter-spacing:-.04em!important;
- }
- .r2-hp-final-hero .r2-hp-final-title-sub{margin-top:13px!important}
- .r2-hp-final-hero .r2-hp-final-title-sub em{
-   font-size:clamp(16px,4vw,25px)!important;
-   line-height:1.2!important;
-   letter-spacing:.008em!important;
- }
- .r2-hp-final-hero .r2-hero-description{
-   font-size:11px!important;
-   line-height:1.72!important;
- }
-}
-@media(max-width:380px){
- .r2-hp-final-hero .r2-hp-final-copy h1{
-   font-size:clamp(31px,8.6vw,43px)!important;
- }
- .r2-hp-final-hero .r2-hp-final-title-sub em{
-   font-size:clamp(14px,3.9vw,18px)!important;
- }
- .r2-hp-final-hero .r2-hero-description{
-   font-size:10px!important;
-   line-height:1.68!important;
- }
+const benefits = [
+  {
+    icon: Database,
+    title: 'Katalog live',
+    description: 'Produk aktif ditampilkan dari katalog yang berjalan.',
+  },
+  {
+    icon: PackageCheck,
+    title: 'Stok aktif',
+    description: 'Status ketersediaan mengikuti data yang tersedia di sistem.',
+  },
+  {
+    icon: Truck,
+    title: 'Distribusi nasional',
+    description: 'Pengiriman disiapkan dari gudang Malang ke berbagai kota.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Alur profesional',
+    description: 'Pemesanan melalui katalog, checkout, dan konfirmasi admin.',
+  },
+]
+
+const orderSteps = [
+  {
+    icon: ShoppingBag,
+    title: 'Pilih produk',
+    description: 'Jelajahi katalog dan pilih produk yang dibutuhkan.',
+  },
+  {
+    icon: CheckCircle2,
+    title: 'Lanjut checkout',
+    description: 'Periksa keranjang dan lengkapi informasi pemesanan.',
+  },
+  {
+    icon: MessageCircle,
+    title: 'Konfirmasi admin',
+    description: 'Admin membantu konfirmasi detail pesanan dan pengiriman.',
+  },
+]
+
+const faqs = [
+  ['Bagaimana cara melakukan pemesanan?', 'Pilih produk dari katalog, masukkan ke keranjang, lanjut checkout, lalu ikuti proses konfirmasi admin.'],
+  ['Apakah katalog menggunakan data stok live?', 'Ya. Katalog di beranda menampilkan produk aktif dan ketersediaan stok yang diperbarui langsung dari sistem kami.'],
+  ['Berapa minimal program gratis ongkir?', 'Program subsidi ongkir dimulai dari minimal 1 bal (20 slop), mengikuti ketentuan operasional yang berlaku.'],
+  ['Di mana lokasi gudang?', 'Gudang R2 NUSANTARA berada di Malang, Jawa Timur. Detail kunjungan dapat dikonfirmasi terlebih dahulu.'],
+]
+
+const formatPrice = (value) => {
+  const price = Number(value)
+  if (!Number.isFinite(price) || price <= 0) return 'Harga belum tersedia'
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    maximumFractionDigits: 0,
+  }).format(price)
 }
 
-/* Hero artwork framing: preserve composition on narrow screens; do not upscale by CSS crop */
-.r2-hp-final-hero-bg{background-position:center center!important;background-repeat:no-repeat!important;background-size:cover!important}
-@media(max-width:620px){.r2-hp-final-hero-bg{background-position:center top!important;background-size:auto 100%!important;background-color:#06152f!important}}
-@media(prefers-reduced-motion:reduce){.r2-hp-final-pillars-grid{scroll-behavior:auto}.r2-hp-final-pillar{transition:none!important}}
-.r2-hp-final-live-summary{margin:12px 0 0;color:rgba(255,255,255,.74);font-size:10px;line-height:1.55}.r2-hp-final-live-link{display:flex!important;align-items:center;justify-content:center;gap:7px;min-height:44px;margin-top:10px;padding:10px 12px;border:1px solid rgba(216,179,108,.45);border-radius:10px;color:#f0d59a!important;font-size:9px;font-weight:900;letter-spacing:.08em;background:rgba(7,26,53,.24)}.r2-hp-final-live-link:focus-visible{outline:2px solid #f0d59a;outline-offset:3px}`}</style></div></>
+function ProductMockup() {
+  return (
+    <span className={styles.pack} aria-hidden="true">
+      R2
+    </span>
+  )
+}
+
+function ProductSkeleton({ featured = false }) {
+  return featured ? (
+    <div className={styles.skeleton} aria-hidden="true" />
+  ) : (
+    <article className={styles.productCard} aria-hidden="true">
+      <div className={styles.skeleton} style={{ minHeight: 164, borderRadius: 0 }} />
+      <div className={styles.productInfo}>
+        <div className={styles.skeleton} style={{ minHeight: 14 }} />
+        <div className={styles.skeleton} style={{ minHeight: 14, marginTop: 8 }} />
+      </div>
+    </article>
+  )
+}
+
+export default function HomepageExperience() {
+  const [products, setProducts] = useState([])
+  const [count, setCount] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const [dataError, setDataError] = useState(false)
+  const [openFaq, setOpenFaq] = useState(-1)
+
+  const featuredProducts = useMemo(() => products.slice(0, 4), [products])
+
+  useEffect(() => {
+    let active = true
+    fetch('/api/products?limit=8', {
+      headers: { Accept: 'application/json' },
+      cache: 'no-store',
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error('catalog')
+        return response.json()
+      })
+      .then((payload) => {
+        if (!active) return
+        setProducts(Array.isArray(payload?.data) ? payload.data : [])
+        setCount(Number(payload?.count) || Number(payload?.meta?.total) || 0)
+        setDataError(false)
+      })
+      .catch(() => {
+        if (!active) return
+        setProducts([])
+        setCount(0)
+        setDataError(true)
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+    return () => {
+      active = false
+    }
+  }, [])
+
+  useEffect(() => {
+    const elements = Array.from(document.querySelectorAll('[data-home-reveal]'))
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      elements.forEach((element) => element.classList.add('is-visible'))
+      return undefined
+    }
+    elements.forEach((element) => element.setAttribute('data-reveal-ready', 'true'))
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return
+        entry.target.classList.add('is-visible')
+        observer.unobserve(entry.target)
+      })
+    }, { threshold: 0.08 })
+    elements.forEach((element) => observer.observe(element))
+    return () => observer.disconnect()
+  }, [])
+
+  const catalogUnavailable = dataError || (!loading && featuredProducts.length === 0)
+
+  return (
+    <>
+      <Head>
+        <title>R2 NUSANTARA — Gudang Distributor R2 &amp; Resmi</title>
+        <meta name="description" content="R2 NUSANTARA — gudang distributor Malang dengan katalog produk aktif, alur pemesanan terstruktur, dan distribusi nasional." />
+        <meta name="theme-color" content="#0F3D6E" />
+      </Head>
+
+      <main id="main-content" className={`${styles.page} ${bodyFont.variable} ${headingFont.variable}`}>
+        <section className={styles.hero} aria-labelledby="home-title">
+          <div className={styles.heroBackdrop} aria-hidden="true" />
+          <div className={styles.heroInner}>
+            <div className={styles.heroCopy} data-home-reveal>
+              <span className={styles.eyebrow}>OFFICIAL DISTRIBUTOR</span>
+              <h1 id="home-title" className={styles.heroTitle}>
+                Grosir langsung dari <em>gudang Malang.</em>
+              </h1>
+              <p className={styles.heroLead}>
+                Katalog produk aktif, alur pemesanan terstruktur, dan pengiriman ke seluruh Indonesia.
+              </p>
+              <div className={styles.heroActions}>
+                <Link href="/products" className={styles.primaryButton}>
+                  Lihat Katalog <ArrowRight size={17} aria-hidden="true" />
+                </Link>
+                <a href={WHATSAPP_URL} className={styles.secondaryButton} target="_blank" rel="noreferrer">
+                  <MessageCircle size={17} aria-hidden="true" /> Chat WhatsApp
+                </a>
+              </div>
+              <div className={styles.heroFacts} aria-label="Informasi operasional">
+                <span className={styles.heroFact}><MapPin size={16} aria-hidden="true" /> Gudang Malang</span>
+                <span className={styles.heroFact}><Clock3 size={16} aria-hidden="true" /> Senin–Sabtu, 08.00–17.00 WIB</span>
+                <span className={styles.heroFact}><Truck size={16} aria-hidden="true" /> Distribusi nasional</span>
+              </div>
+            </div>
+
+            <aside className={styles.featuredPanel} aria-label="Produk unggulan dari katalog" aria-busy={loading} data-home-reveal>
+              <div className={styles.panelHeader}>
+                <span>Produk pilihan dari katalog</span>
+                <small>{loading ? 'Memuat' : dataError ? 'Pembaruan' : `${count.toLocaleString('id-ID')} produk aktif`}</small>
+              </div>
+              {loading ? (
+                <div className={styles.featuredList} role="status" aria-label="Memuat katalog produk">
+                  {Array.from({ length: 4 }, (_, index) => <ProductSkeleton key={index} featured />)}
+                </div>
+              ) : catalogUnavailable ? (
+                <div className={styles.stateMessage} role="status">
+                  <strong>Katalog sedang diperbarui</strong>
+                  <p>Hubungi admin melalui WhatsApp untuk informasi produk.</p>
+                  <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className={styles.secondaryButton}>
+                    Hubungi admin <ArrowRight size={16} aria-hidden="true" />
+                  </a>
+                </div>
+              ) : (
+                <div className={styles.featuredList}>
+                  {featuredProducts.map((product) => (
+                    <div className={styles.featuredItem} key={product['Variant SKU'] || product.Handle || product.Title}>
+                      <span className={styles.productVisual}><ProductMockup /></span>
+                      <span className={styles.featuredMeta}>
+                        <strong className={styles.featuredName}>{product.Title || product.Handle || 'Produk R2 NUSANTARA'}</strong>
+                        <small className={styles.featuredCategory}>{product.Type || product.Catalog || 'Produk grosir'}</small>
+                      </span>
+                      <strong className={styles.featuredPrice}>{formatPrice(product['Variant Price'])}</strong>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </aside>
+          </div>
+        </section>
+
+        <section className={styles.section} id="keunggulan" aria-labelledby="benefits-title">
+          <div className={styles.sectionHeading} data-home-reveal>
+            <span>R2 NUSANTARA</span>
+            <h2 id="benefits-title">Dukungan distribusi yang lebih terarah.</h2>
+            <p>Informasi katalog dan proses pemesanan disajikan dengan jelas dari awal.</p>
+          </div>
+          <div className={styles.benefitsGrid}>
+            {benefits.map(({ icon: Icon, title, description }) => (
+              <article className={styles.benefitCard} key={title} data-home-reveal>
+                <span className={styles.iconBox}><Icon size={22} aria-hidden="true" /></span>
+                <h3>{title}</h3>
+                <p>{description}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.orderSection} aria-labelledby="order-title">
+          <div className={styles.orderInner}>
+            <div className={styles.sectionHeading} data-home-reveal>
+              <span>CARA ORDER</span>
+              <h2 id="order-title">Tiga langkah pemesanan.</h2>
+              <p>Alur sederhana untuk membantu proses pemesanan lebih terstruktur.</p>
+            </div>
+            <div className={styles.orderSteps}>
+              {orderSteps.map(({ icon: Icon, title, description }, index) => (
+                <article className={styles.step} key={title} data-home-reveal>
+                  <span className={styles.stepNumber}>{index + 1}</span>
+                  <div>
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                  </div>
+                  <Icon size={21} aria-hidden="true" />
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className={`${styles.section} ${styles.productsSection}`} aria-labelledby="products-title">
+          <div className={styles.sectionHeading} data-home-reveal>
+            <span>KATALOG R2 &amp; RESMI</span>
+            <h2 id="products-title">Produk unggulan.</h2>
+            <p>Produk ditampilkan berdasarkan data katalog yang tersedia saat halaman dibuka.</p>
+          </div>
+
+          {loading ? (
+            <div className={styles.productsGrid} role="status" aria-label="Memuat produk">
+              {Array.from({ length: 4 }, (_, index) => <ProductSkeleton key={index} />)}
+            </div>
+          ) : catalogUnavailable ? (
+            <div className={styles.stateMessage}>
+              <strong>Katalog sedang diperbarui</strong>
+              <p>Hubungi admin melalui WhatsApp untuk informasi produk.</p>
+              <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className={styles.primaryButton}>
+                Chat WhatsApp <ArrowRight size={16} aria-hidden="true" />
+              </a>
+            </div>
+          ) : (
+            <div className={styles.productsGrid}>
+              {featuredProducts.map((product) => {
+                const title = product.Title || product.Handle || 'Produk R2 NUSANTARA'
+                const available = product.Published === true || product.Status === 'active'
+                return (
+                  <article className={styles.productCard} key={product['Variant SKU'] || product.Handle || title} data-home-reveal>
+                    <div className={styles.productVisualLarge}><ProductMockup /></div>
+                    <div className={styles.productInfo}>
+                      <span className={styles.productCategory}>{product.Type || product.Catalog || 'Produk grosir'}</span>
+                      <h3 className={styles.productName}>{title}</h3>
+                      <strong className={styles.productPrice}>{formatPrice(product['Variant Price'])}</strong>
+                      <span className={styles.productStock}>{available ? (product['Stock Status'] || 'Ready stock') : 'Ketersediaan dikonfirmasi admin'}</span>
+                      <Link className={styles.productLink} href="/products">
+                        Lihat produk <ArrowRight size={15} aria-hidden="true" />
+                      </Link>
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
+          )}
+          <div className={styles.sectionFooter}>
+            <Link href="/products" className={styles.primaryButton}>
+              Lihat semua produk <ArrowRight size={17} aria-hidden="true" />
+            </Link>
+          </div>
+        </section>
+
+        <section className={`${styles.section} ${styles.faqSection}`} id="faq" aria-labelledby="faq-title">
+          <div className={styles.sectionHeading} data-home-reveal>
+            <span>BANTUAN</span>
+            <h2 id="faq-title">Pertanyaan yang sering diajukan.</h2>
+            <p>Informasi singkat sebelum Anda menghubungi tim R2 NUSANTARA.</p>
+          </div>
+          <div className={styles.faqList}>
+            {faqs.map(([question, answer], index) => {
+              const isOpen = openFaq === index
+              const answerId = `r2-home-faq-answer-${index + 1}`
+              return (
+                <article className={styles.faqItem} key={question} data-home-reveal>
+                  <h3>
+                    <button
+                      type="button"
+                      className={styles.faqQuestion}
+                      aria-expanded={isOpen}
+                      aria-controls={answerId}
+                      onClick={() => setOpenFaq(isOpen ? -1 : index)}
+                    >
+                      {question}
+                      <ChevronDown size={19} aria-hidden="true" />
+                    </button>
+                  </h3>
+                  {isOpen && <div className={styles.faqAnswer} id={answerId} role="region">{answer}</div>}
+                </article>
+              )
+            })}
+          </div>
+        </section>
+
+        <section className={styles.section} id="lokasi-gudang" aria-labelledby="location-title">
+          <div className={styles.sectionHeading} data-home-reveal>
+            <span>LOKASI</span>
+            <h2 id="location-title">Gudang R2 NUSANTARA.</h2>
+            <p>Lokasi operasional di Malang, Jawa Timur.</p>
+          </div>
+          <div className={styles.locationGrid}>
+            <div className={styles.locationCard} data-home-reveal>
+              <span className={styles.eyebrow}>GUDANG MALANG</span>
+              <h3>Malang, Jawa Timur</h3>
+              <p>Untuk detail kunjungan dan informasi operasional, silakan hubungi admin terlebih dahulu.</p>
+              <div className={styles.locationDetail}><Clock3 size={18} aria-hidden="true" /> Senin–Sabtu, 08.00–17.00 WIB</div>
+              <div className={styles.locationDetail}><Truck size={18} aria-hidden="true" /> Distribusi ke seluruh Indonesia</div>
+              {ALAMAT_LENGKAP && <div className={styles.locationDetail}><MapPin size={18} aria-hidden="true" /> {ALAMAT_LENGKAP}</div>}
+              <a href={GOOGLE_MAPS_URL} target="_blank" rel="noreferrer" className={styles.mapLink}>
+                Buka Google Maps <ArrowRight size={16} aria-hidden="true" />
+              </a>
+            </div>
+            <div className={styles.mapFrame} data-home-reveal>
+              <iframe
+                src={MAP_EMBED_URL}
+                title="Peta area Gudang R2 NUSANTARA di Malang, Jawa Timur"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </section>
+
+        <footer className={styles.footer}>
+          <div className={styles.footerGrid}>
+            <div>
+              <Link href="/" className={styles.footerBrand} aria-label="R2 NUSANTARA — Beranda">
+                <span className={styles.brandLogo}><img src="/assets/logo/logo.png" alt="" width="48" height="48" /></span>
+                <strong>R2 NUSANTARA</strong>
+              </Link>
+              <p className={styles.footerDescription}>Gudang distributor R2 &amp; Resmi untuk kebutuhan toko dan pembelian grosir.</p>
+            </div>
+            <nav className={styles.footerLinks} aria-label="Navigasi footer">
+              <strong className={styles.footerTitle}>NAVIGASI</strong>
+              <Link href="/">Beranda</Link>
+              <Link href="/products">Katalog produk</Link>
+              <Link href="/checkout">Keranjang</Link>
+              <Link href="/contact">Kontak</Link>
+              <Link href="/lokasi">Lokasi gudang</Link>
+              <Link href="/login">Login Admin</Link>
+            </nav>
+            <div className={styles.footerContact}>
+              <strong className={styles.footerTitle}>HUBUNGI KAMI</strong>
+              <a href="https://wa.me/6285715905079" target="_blank" rel="noreferrer"><MessageCircle size={17} aria-hidden="true" /> +62 857-1590-5079</a>
+              <a href={`mailto:${EMAIL}`}><MessageCircle size={17} aria-hidden="true" /> {EMAIL}</a>
+              <span><Clock3 size={17} aria-hidden="true" /> Senin–Sabtu, 08.00–17.00 WIB</span>
+              <span><MapPin size={17} aria-hidden="true" /> Gudang Malang, Jawa Timur</span>
+            </div>
+          </div>
+          <div className={styles.footerBottom}>©2026 R2 NUSANTARA - Cigarette Tobacco Shop</div>
+        </footer>
+
+        <a className={styles.floatingWhatsapp} href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label="Chat WhatsApp">
+          <MessageCircle size={25} aria-hidden="true" />
+        </a>
+      </main>
+    </>
+  )
 }
