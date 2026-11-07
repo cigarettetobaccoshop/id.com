@@ -345,7 +345,7 @@ export default function HomepageExperience() {
                       <ChevronDown size={19} aria-hidden="true" />
                     </button>
                   </h3>
-                  {isOpen && <div className={styles.faqAnswer} id={answerId} role="region">{answer}</div>}
+                  <div className={styles.faqAnswer} id={answerId} role="region" hidden={!isOpen}>{answer}</div>
                 </article>
               )
             })}
