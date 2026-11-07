@@ -539,3 +539,45 @@
   }
   .skeleton { animation: none; }
 }
+
+
+/* Tablet navigation breakpoint keeps the header usable at 768–900px. */
+@media (max-width: 900px) {
+  .headerInner { min-height: 66px; gap: 10px; }
+  .brand { min-width: 0; flex: 1; }
+  .nav, .headerWhatsapp { display: none; }
+  .menuButton { display: inline-grid; }
+  .mobileBackdrop {
+    position: fixed;
+    z-index: 121;
+    inset: 66px 0 0;
+    display: block;
+    border: 0;
+    background: rgba(5,18,31,.48);
+  }
+  .mobilePanel {
+    position: absolute;
+    z-index: 122;
+    top: calc(100% + 8px);
+    right: 12px;
+    left: 12px;
+    display: grid;
+    gap: 4px;
+    padding: 10px;
+    border: 1px solid var(--r2-modern-line);
+    border-radius: 17px;
+    background: #fff;
+    box-shadow: 0 20px 50px rgba(5,18,31,.2);
+  }
+  .mobilePanel a {
+    display: flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 13px;
+    border-radius: 10px;
+    color: var(--r2-modern-navy);
+    font-size: 15px;
+    font-weight: 700;
+  }
+}
