@@ -507,3 +507,35 @@
   line-height: 1;
 }
 .productVisualLarge .pack::after { margin-top: -9px; font-size: 6px; letter-spacing: .45px; }
+
+
+/* P7 — restrained viewport reveal, readable labels, and visible keyboard focus */
+.page [data-home-reveal][data-reveal-ready] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .55s ease, transform .55s cubic-bezier(.2,.75,.25,1);
+}
+.page [data-home-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+.brandText small { font-size: 12px; }
+.panelHeader small, .featuredCategory { font-size: 12px; }
+.featuredPrice { font-size: 13px; }
+.productName, .productPrice { font-size: 14px; }
+.page :focus-visible, .header :focus-visible {
+  outline: 3px solid #d8b56c;
+  outline-offset: 3px;
+}
+@media (max-width: 390px) {
+  .brandText small { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page [data-home-reveal][data-reveal-ready],
+  .page [data-home-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .skeleton { animation: none; }
+}
