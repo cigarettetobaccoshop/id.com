@@ -460,3 +460,32 @@
   .skeleton { animation: none; }
   .productCard:hover, .floatingWhatsapp:hover, .primaryButton:hover, .secondaryButton:hover { transform: none; }
 }
+
+/* P4 — one consolidated benefits band and connected three-step order flow */
+.benefitCard { position: relative; }
+.benefitCard .iconBox { color: #8a6a32; }
+.step { overflow: visible; }
+.step > svg { flex: 0 0 auto; margin: 10px 0 0 auto; color: #9a783e; }
+.step:not(:last-child)::after {
+  position: absolute;
+  top: 43px;
+  right: -19px;
+  z-index: 2;
+  width: 19px;
+  height: 2px;
+  background: var(--r2-modern-gold);
+  content: "";
+}
+@media (max-width: 760px) {
+  .step:not(:last-child)::after {
+    top: auto;
+    right: auto;
+    bottom: -11px;
+    left: 38px;
+    width: 2px;
+    height: 11px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .step:not(:last-child)::after { transition: none; }
+}
