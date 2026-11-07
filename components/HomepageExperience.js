@@ -7,6 +7,7 @@ import {
   ChevronDown,
   Clock3,
   Database,
+  Mail,
   MapPin,
   MessageCircle,
   PackageCheck,
@@ -402,7 +403,7 @@ export default function HomepageExperience() {
             <div className={styles.footerContact}>
               <strong className={styles.footerTitle}>HUBUNGI KAMI</strong>
               <a href="https://wa.me/6285715905079" target="_blank" rel="noreferrer"><MessageCircle size={17} aria-hidden="true" /> +62 857-1590-5079</a>
-              <a href={`mailto:${EMAIL}`}><MessageCircle size={17} aria-hidden="true" /> {EMAIL}</a>
+              <a href={`mailto:${EMAIL}`}><Mail size={17} aria-hidden="true" /> {EMAIL}</a>
               <span><Clock3 size={17} aria-hidden="true" /> Senin–Sabtu, 08.00–17.00 WIB</span>
               <span><MapPin size={17} aria-hidden="true" /> Gudang Malang, Jawa Timur</span>
             </div>
