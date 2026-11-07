@@ -581,3 +581,22 @@
     font-weight: 700;
   }
 }
+
+
+/* Mobile reading-size floor for descriptive copy; compact metadata stays labeled. */
+.faqItem h3 { margin: 0; }
+.productInfo .skeleton { min-height: 14px; }
+@media (max-width: 760px) {
+  .benefitCard p,
+  .step p,
+  .faqAnswer,
+  .locationCard p,
+  .footerDescription,
+  .footerLinks a,
+  .footerContact a,
+  .footerContact span {
+    font-size: 16px;
+  }
+  .faqQuestion { font-size: 16px; }
+  .featuredName { font-size: 14px; }
+}
