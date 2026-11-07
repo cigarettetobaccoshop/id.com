@@ -169,3 +169,57 @@
     transition: none !important;
   }
 }
+
+
+/* Apple-inspired navigation refinement: translucent porcelain over deep brand ink. */
+.header {
+  color: #17283b;
+  background: rgba(250,252,254,.88);
+  border-bottom: 1px solid rgba(18,43,67,.08);
+  box-shadow: 0 2px 16px rgba(12,35,58,.045);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+}
+.headerInner { min-height: 70px; gap: 22px; }
+.brandLogo {
+  border-color: rgba(201,169,105,.58);
+  box-shadow: none;
+}
+.brandText strong { color: #102d49; letter-spacing: -.035em; }
+.brandText small { color: #718093; }
+.navLink { color: #43566a; border-radius: 999px; font-weight: 600; }
+.navLink:hover { background: #edf2f6; color: #102d49; }
+.cart, .menuButton {
+  width: 42px;
+  height: 42px;
+  flex-basis: 42px;
+  border: 1px solid #e4eaf0;
+  border-radius: 50%;
+  background: #fff;
+  color: #173b5b;
+}
+.cart:hover, .menuButton:hover { border-color: #d8c49b; background: #f8f5ef; }
+.cartBadge { border-color: #fff; background: #d9bd80; }
+.headerWhatsapp {
+  min-height: 42px;
+  padding-inline: 17px;
+  border-radius: 999px;
+  background: #153a5b;
+  color: #fff !important;
+  font-size: 12px;
+  font-weight: 700;
+}
+.headerWhatsapp:hover { background: #204e75; transform: translateY(-1px); }
+.skipLink { color: #173b5b; }
+@media (max-width: 900px) {
+  .headerInner { min-height: 64px; }
+  .cart, .menuButton { width: 42px; height: 42px; flex-basis: 42px; }
+  .mobileBackdrop { inset-block-start: 64px; background: rgba(9,24,39,.28); }
+  .mobilePanel {
+    border-color: #e5ebf1;
+    border-radius: 20px;
+    box-shadow: 0 18px 48px rgba(11,34,56,.14);
+  }
+  .mobilePanel a { border-radius: 999px; color: #183a59; }
+  .mobilePanel a:hover { background: #f1f5f8; }
+}
