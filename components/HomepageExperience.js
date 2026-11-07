@@ -304,7 +304,7 @@ export default function HomepageExperience() {
                       <span className={styles.productCategory}>{product.Type || product.Catalog || 'Produk grosir'}</span>
                       <h3 className={styles.productName}>{title}</h3>
                       <strong className={styles.productPrice}>{formatPrice(product['Variant Price'])}</strong>
-                      <span className={styles.productStock}>{available ? (product['Stock Status'] || 'Ready stock') : 'Ketersediaan dikonfirmasi admin'}</span>
+                      <span className={styles.productStock}>{available ? 'Produk aktif di katalog' : 'Ketersediaan dikonfirmasi admin'}</span>
                       <Link className={styles.productLink} href="/products">
                         Lihat produk <ArrowRight size={15} aria-hidden="true" />
                       </Link>
