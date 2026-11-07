@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, LayoutGrid, MapPin, Menu, MessageCircle, ShoppingBag, X } from 'lucide-react'
-import styles from './HomepageModern.module.css'
-import { bodyFont, headingFont } from './fonts'
+import styles from './HomeHeader.module.css'
 
 const WHATSAPP_URL = 'https://wa.me/6285715905079?text=Halo%20R2%20NUSANTARA%2C%20saya%20ingin%20tanya%20produk%20grosir.'
 
@@ -50,10 +49,10 @@ export default function HomeHeader() {
 
   return (
     <>
-      <a className={`${styles.skipLink} ${bodyFont.variable} ${headingFont.variable}`} href="#main-content">
+      <a className={styles.skipLink} href="#main-content">
         Lewati ke konten utama
       </a>
-      <header className={`${styles.header} ${bodyFont.variable} ${headingFont.variable}`}>
+      <header className={styles.header}>
         <div className={styles.headerInner}>
           <Link href="/" className={styles.brand} aria-label="R2 NUSANTARA — Beranda">
             <span className={styles.brandLogo}>
