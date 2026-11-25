@@ -3,7 +3,7 @@ import { supabaseServer as supabase } from '../../lib/supabaseServer'
 
 const COURIERS = { JNE: 25000, 'J&T': 22000, SiCepat: 22000, Pickup: 0 }
 const DEFAULT_WA_BUSINESS = '6285715905079'
-const PAYMENT_METHODS = new Set(['Bank Transfer', 'Escrow (Bayar Setelah Resi)'])
+const PAYMENT_METHODS = new Set(['Bank Transfer', 'QRIS', 'Escrow (Bayar Setelah Resi)'])
 const clean = (v, max = 500) => String(v ?? '').trim().slice(0, max)
 const money = (v) => new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(v)||0)
 
