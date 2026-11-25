@@ -145,21 +145,45 @@ export default function HomepageExperience() {
 
   useEffect(() => {
     const elements = Array.from(document.querySelectorAll('[data-home-reveal]'))
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduceMotion || !('IntersectionObserver' in window)) {
-      elements.forEach((element) => element.classList.add('is-visible'))
+    const revealAll = () => {
+      elements.forEach((element) => {
+        element.classList.add('is-visible')
+        element.removeAttribute('data-reveal-ready')
+      })
+    }
+
+    if (!elements.length) return undefined
+
+    try {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        revealAll()
+        return undefined
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return
+          entry.target.classList.add('is-visible')
+          observer.unobserve(entry.target)
+        })
+      }, { threshold: 0.08 })
+
+      elements.forEach((element) => {
+        try {
+          observer.observe(element)
+          element.setAttribute('data-reveal-ready', 'true')
+        } catch {
+          element.classList.add('is-visible')
+          element.removeAttribute('data-reveal-ready')
+        }
+      })
+
+      return () => observer.disconnect()
+    } catch {
+      revealAll()
       return undefined
     }
-    elements.forEach((element) => element.setAttribute('data-reveal-ready', 'true'))
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return
-        entry.target.classList.add('is-visible')
-        observer.unobserve(entry.target)
-      })
-    }, { threshold: 0.08 })
-    elements.forEach((element) => observer.observe(element))
-    return () => observer.disconnect()
   }, [])
 
   const catalogUnavailable = dataError || (!loading && featuredProducts.length === 0)
