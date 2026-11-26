@@ -24,7 +24,7 @@ function GlobalInteractionGuard(){
     const root=document.documentElement
     const socialTargets=[
       {selector:'.r2-hp-final-footer-grid>div:nth-child(3)>span:nth-of-type(1)',url:'https://www.facebook.com/share/1CExeV8ix3/',label:'Facebook'},
-      {selector:'.r2-hp-final-footer-grid>div:nth-child(3)>span:nth-of-type(2)',url:'https://wa.me/6285715905079',label:'WhatsApp Business'}
+      {selector:'.r2-hp-final-footer-grid>div:nth-child(3)>span:nth-of-type(2)',url:'https://r2nusantara-shop.vercel.app/contact',label:'Kontak & Sales R2 NUSANTARA'}
     ]
     const enhanceSocialLinks=()=>socialTargets.forEach(({selector,url,label})=>document.querySelectorAll(selector).forEach(el=>{el.setAttribute('role','link');el.setAttribute('tabindex','0');el.setAttribute('aria-label',`Buka ${label}`);el.dataset.r2SocialUrl=url;el.dataset.r2SocialLabel=label}))
     const syncThemeControl=()=>{const dark=root.dataset.r2Theme==='dark';document.querySelectorAll('.r2-icon-btn[aria-label="Tampilan"],.r2-icon-btn[data-r2-theme-toggle]').forEach(el=>{el.setAttribute('data-r2-theme-toggle','true');const label=dark?'Mode terang':'Mode gelap';if(el.getAttribute('aria-label')!==label)el.setAttribute('aria-label',label);if(el.getAttribute('title')!==label)el.setAttribute('title',label)});enhanceSocialLinks()}
