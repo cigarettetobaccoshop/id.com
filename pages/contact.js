@@ -44,7 +44,9 @@ export default function ContactPage() {
         <h1 id="contact-title">Hubungi Kami</h1>
         <p className="r2-contact-subtitle">Sampaikan pertanyaan atau kebutuhan Anda melalui formulir berikut.</p>
         <div className="r2-contact-info" aria-label="Kontak resmi R2 NUSANTARA">
-          <a href="https://wa.me/6285715905079" target="_blank" rel="noreferrer" aria-label="Hubungi R2 NUSANTARA melalui WhatsApp">WhatsApp <strong>+62 857-1590-5079</strong></a>
+          <a href="https://wa.me/6285715905079" target="_blank" rel="noopener noreferrer" aria-label="Hubungi Sales 1 R2 NUSANTARA melalui WhatsApp">Sales 1 <strong>+62 857-1590-5079</strong></a>
+          <a href="https://wa.me/6283169386894" target="_blank" rel="noopener noreferrer" aria-label="Hubungi Sales 2 R2 NUSANTARA melalui WhatsApp">Sales 2 <strong>+62 831-6938-6894</strong></a>
+          <a href="https://wa.me/6288101014981" target="_blank" rel="noopener noreferrer" aria-label="Hubungi Sales 3 R2 NUSANTARA melalui WhatsApp">Sales 3 <strong>+62 881-0101-4981</strong></a>
           <a href="mailto:cigaratetobacoshop@gmail.com" aria-label="Kirim email ke R2 NUSANTARA">Email <strong>cigaratetobacoshop@gmail.com</strong></a>
           <a href="https://r2nusantara-shop.vercel.app/" aria-label="Buka website R2 NUSANTARA">Website <strong>r2nusantara-shop.vercel.app</strong></a>
           <p><b>Jam operasional</b><span>Senin—Sabtu · 08.00—17.00 WIB</span></p>

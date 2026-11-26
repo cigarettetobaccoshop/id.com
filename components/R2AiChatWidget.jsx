@@ -1,8 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 
+function getLocalGreeting() {
+  const hour = new Date().getHours()
+  if (hour >= 4 && hour < 11) return 'Selamat pagi'
+  if (hour >= 11 && hour < 15) return 'Selamat siang'
+  if (hour >= 15 && hour < 18) return 'Selamat sore'
+  return 'Selamat malam'
+}
+
 const initialMessage = {
   role: 'assistant',
-  content: 'Halo Mas, saya R2 NUSANTARA Assistant. Saya bisa membantu mencari produk, mengecek stok, membantu alur pemesanan, dan mengecek status pesanan.'
+  content: `${getLocalGreeting()}, Mas. Saya AI Customer Assistant Resmi R2 Nusantara. Saya siap membantu pertanyaan umum dan informasi layanan yang tersedia di website. Untuk data harga, stok, pengiriman, atau pesanan yang perlu verifikasi, saya akan mengarahkan Mas ke Admin resmi.`
 }
 
 const REQUEST_TIMEOUT_MS = 45_000
@@ -149,7 +157,7 @@ export default function R2AiChatWidget() {
     </button>
     {open && <section className="r2-ai-panel" aria-label="R2 NUSANTARA AI Assistant">
       <header className="r2-ai-head">
-        <div className="r2-ai-head-brand"><span className="r2-ai-head-avatar"><RobotIcon open /></span><span><strong>R2 NUSANTARA</strong><small>AI Customer Service • Siap membantu</small></span></div>
+        <div className="r2-ai-head-brand"><span className="r2-ai-head-avatar"><RobotIcon open /></span><span><strong>R2 NUSANTARA</strong><small>AI Customer Assistant Resmi • Siap membantu</small></span></div>
         <button type="button" onClick={() => setOpen(false)} aria-label="Tutup">×</button>
       </header>
       <div className="r2-ai-messages" aria-live="polite">
