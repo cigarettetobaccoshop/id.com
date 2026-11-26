@@ -1,0 +1,33 @@
+/* R2 NUSANTARA — fail-open homepage reveal safety v56
+ * Prevents legacy scroll-reveal hooks from leaving homepage content transparent.
+ * Entrance reveal is intentionally disabled; content visibility must never depend
+ * on IntersectionObserver, hydration timing, or a successful animation callback.
+ * Scoped to homepage-only reveal attributes; no commerce or application logic changes.
+ */
+
+body .r2-hp-final [data-r2-reveal],
+body .r2-hp-final [data-home-reveal],
+body .r2-hp-final [data-home-reveal][data-reveal-ready],
+body .r2-hp-final [data-reveal-ready],
+body .Om31SG_page [data-home-reveal],
+body .Om31SG_page [data-home-reveal][data-reveal-ready],
+body .Om31SG_page [data-reveal-ready] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  filter: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Keep reduced-motion and unsupported-observer experiences fully visible too. */
+@media (prefers-reduced-motion: reduce) {
+  body .r2-hp-final [data-r2-reveal],
+  body .r2-hp-final [data-home-reveal],
+  body .Om31SG_page [data-home-reveal] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}

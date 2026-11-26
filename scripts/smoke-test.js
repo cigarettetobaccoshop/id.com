@@ -25,6 +25,7 @@ const requiredFiles = [
   'styles/catalog-modern.css',
   'styles/catalog-mobile-grid.css',
   'styles/r2-cross-page-theme-final.css',
+  'styles/r2-home-reveal-safety-v56.css',
   'next.config.js',
   'vercel.json',
 ]
@@ -53,6 +54,7 @@ const app = fs.readFileSync(path.join(process.cwd(), 'pages/_app.js'), 'utf8')
 const globalEntry = fs.readFileSync(path.join(process.cwd(), 'styles/r2-global-entry.css'), 'utf8')
 const mobile = fs.readFileSync(path.join(process.cwd(), 'styles/mobile-lock.css'), 'utf8')
 const theme = fs.readFileSync(path.join(process.cwd(), 'styles/r2-cross-page-theme-final.css'), 'utf8')
+const revealSafety = fs.readFileSync(path.join(process.cwd(), 'styles/r2-home-reveal-safety-v56.css'), 'utf8')
 
 if (!products.includes(".from('products')")) throw new Error('Catalog must use public.products source of truth')
 if (!products.includes(".eq('is_active', true)")) throw new Error('Catalog active-status filter missing')
@@ -84,6 +86,9 @@ if (!homepage.includes('Login Admin')) throw new Error('Admin login navigation m
 if (!app.includes("import '../styles/r2-global-entry.css'")) throw new Error('Consolidated global CSS entrypoint is not registered')
 if (!globalEntry.includes("@import url('./mobile-lock.css')")) throw new Error('Global mobile lock is not registered in consolidated entrypoint')
 if (!globalEntry.includes("@import url('./r2-cross-page-theme-final.css')")) throw new Error('Canonical visual system is not registered in consolidated entrypoint')
+if (!globalEntry.includes("@import url('./r2-home-reveal-safety-v56.css')")) throw new Error('Homepage reveal safety layer is not registered')
+if (!revealSafety.includes('opacity: 1 !important') || !revealSafety.includes('visibility: visible !important')) throw new Error('Homepage reveal safety must fail open and keep content visible')
+if (!revealSafety.includes('[data-home-reveal][data-reveal-ready]')) throw new Error('Legacy homepage reveal selector is not covered')
 if (!mobile.includes('@media (max-width:620px)')) throw new Error('Mobile breakpoint missing')
 if (!theme.includes('--r2-gold')) throw new Error('Canonical visual token system missing')
 
